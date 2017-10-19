@@ -1,7 +1,9 @@
 #pragma once
-#include"scene.h"
-#include<vector>
+#include"scenemgr.h"
+#include<unordered_map>
 
+class scene;
+class mapinfo;
 
 class scenemgr
 {
@@ -16,10 +18,11 @@ public:
 	}
 
 	bool init();
-	bool loadscene(int mapid);
-	scene *createscene(int mapid);
-
+	void run();
+	bool loadscene(mapinfo* mapconfig);
+	scene *createscene(mapinfo* mapconfig);
+	scene *getscene(int mapid);
 private:
 
-	std::vector<scene *> m_scenelist;
+	std::unordered_map<int ,scene *> m_scenelist;
 };

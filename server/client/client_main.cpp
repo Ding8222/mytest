@@ -38,9 +38,8 @@ void PingMsg(lxnet::Socketer *clientsocket)
 //用于用户输入
 void InputMsg(lxnet::Socketer *clientsocket)
 {
-	MessagePack msg;
+ 	MessagePack msg;
 	std::string str;
-	msg.SetType(MSG_CHAT);
 	while (g_run)
 	{
 		if (!clientsocket || clientsocket->IsClose())
@@ -49,6 +48,7 @@ void InputMsg(lxnet::Socketer *clientsocket)
 			break;
 		}
 
+		std::cout << "请输入命令：" << std::endl;
 		std::cin >> str;
 
 		if (str == "quit")
@@ -58,7 +58,32 @@ void InputMsg(lxnet::Socketer *clientsocket)
 		}
 
 		msg.Reset();
+		msg.SetType(MSG_CHAT);
 		msg.PushString(str.c_str());
+
+		if (str == "load")
+		{
+			std::cout << "请输入角色名：" << std::endl;
+			std::cin >> str;
+			msg.Reset();
+			msg.SetType(MSG_LOAD);
+			msg.PushString(str.c_str());
+		}
+		else if (str == "move")
+		{
+			msg.Reset();
+			msg.SetType(MSG_MOVE);
+			std::cout << "请输入x坐标：" << std::endl;
+			std::cin >> str;
+			msg.PushFloat(atof(str.c_str()));
+			std::cout << "请输入y坐标：" << std::endl;
+			std::cin >> str;
+			msg.PushFloat(atof(str.c_str()));
+			std::cout << "请输入z坐标：" << std::endl;
+			std::cin >> str;
+			msg.PushFloat(atof(str.c_str()));
+		}
+
 		clientsocket->SendMsg(&msg);
 
 		delaytime(10);
@@ -84,9 +109,9 @@ void PrintMsg(lxnet::Socketer *clientsocket)
 			{
 			case MSG_PING:
 			{
-				recvpack->Begin();
-				MsgPing *msg = (MsgPing *)recvpack;
-				std::cout << "Server Time :" << msg->m_servertime << std::endl;
+				//recvpack->Begin();
+				//MsgPing *msg = (MsgPing *)recvpack;
+				//std::cout << "Server Time :" << msg->m_servertime << std::endl;
 				break;
 			}
 			case MSG_CHAT:
@@ -96,6 +121,13 @@ void PrintMsg(lxnet::Socketer *clientsocket)
 				recvpack->GetString(stBuff, 512);
 				std::cout << "Get Msg From Server: " << stBuff << std::endl;
 				break;
+			}
+			case MSG_ENTER:
+			{
+				char stBuff[48] = { 0 };
+				recvpack->Begin();
+				recvpack->GetString(stBuff, 512);
+				std::cout << "Player:"<< stBuff <<" Enter View" << std::endl;
 			}
 			default:
 			{

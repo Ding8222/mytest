@@ -86,34 +86,122 @@ bool mapconfig::init()
 			return false;
 		}
 
-		m_maplist.insert(std::make_pair(mapid, m_mapinfo));
+		if (!loadbar(m_mapinfo))
+		{
+			log_error("load map bar error ,mapid: %d", mapid);
+			return false;
+		}
 
+		m_maplist.insert(std::make_pair(mapid, m_mapinfo));
 		pinfo = pinfo->NextSiblingElement("maps");
 	}
-
-	loadbar();
-
+	
 	return true;
 }
 
-bool mapconfig::loadbar()
+bool mapconfig::loadbar(mapinfo* map)
 {
-	auto iterB = m_maplist.begin();
-	auto iterE = m_maplist.end();
+	if (!map)
+		return false;
 
-	for (; iterB != iterE; iterB++)
+	XMLDocument doc;
+	if (doc.LoadFile(map->getbarfilename().c_str()) != XML_SUCCESS)
 	{
-		mapinfo* _mapinfo = iterB->second;
-		if (_mapinfo)
-		{
-			if (!_mapinfo->loadbar())
-			{
-				log_error("load map bar error ,mapid: %d", iterB->first);
-				return false;
-			}
-		}
+		log_error("load %s failed!", map->getbarfilename().c_str());
+		return false;
 	}
 
+	// 添加地图阻挡点信息
+
+	XMLElement *pinfo = doc.FirstChildElement("bar_map");
+	if (!pinfo)
+	{
+		log_error("not find first child element, element name: 'bar_map'");
+		return false;
+	}
+
+	int width = 0;
+	int height = 0;
+	if (pinfo->QueryIntAttribute("width", &width) != XML_SUCCESS)
+	{
+		log_error("query int attribute failed, attribute name: 'width'");
+		return false;
+	}
+
+	if (width <= 0)
+	{
+		log_error("map width <= 0 ,mapid:%d ", map->getmapid());
+		return false;
+	}
+	
+	if (pinfo->QueryIntAttribute("height", &height) != XML_SUCCESS)
+	{
+		log_error("query int attribute failed, attribute name: 'height'");
+		return false;
+	}
+
+	if (height <= 0)
+	{
+		log_error("map height <= 0 ,mapid:%d ", map->getmapid());
+		return false;
+	}
+	
+	bool* barinfo = new bool[width * height];
+
+	if (!barinfo)
+	{
+		log_error("application memory failed! new m_barinfo ");
+		return false;
+	}
+	memset(barinfo, 0, width * height * sizeof(bool));
+	
+	pinfo = pinfo->FirstChildElement("bar");
+	if (!pinfo)
+	{
+		log_error("not find first child element, element name: 'bar'");
+		delete(barinfo);
+		return false;
+	}
+
+	while (pinfo)
+	{
+		int row = 0;
+		int col = 0;
+
+		if (pinfo->QueryIntAttribute("row", &row) != XML_SUCCESS)
+		{
+			log_error("query int attribute failed, attribute name: 'row'");
+			delete(barinfo);
+			return false;
+		}
+
+		if (row < 0 || row > width)
+		{
+			log_error("map bar row < 0 or row > m_width ,mapid:%d ", map->getmapid());
+			delete(barinfo);
+			return false;
+		}
+
+		if (pinfo->QueryIntAttribute("col", &col) != XML_SUCCESS)
+		{
+			log_error("query int attribute failed, attribute name: 'col'");
+			delete(barinfo);
+			return false;
+		}
+
+		if (col < 0 || col > height)
+		{
+			log_error("map bar col < 0 or col > m_height ,mapid:%d ", map->getmapid());
+			delete(barinfo);
+			return false;
+		}
+
+		barinfo[row * col] = true;
+
+		pinfo = pinfo->NextSiblingElement("bar");
+	}
+
+	map->setmapbarinfo(width, height, barinfo);
 	return true;
 }
 
@@ -128,21 +216,7 @@ mapinfo *mapconfig::getmapinfo(int mapid)
 	return nullptr;
 }
 
-bool mapconfig::loadallscene()
+std::unordered_map<int, mapinfo*>* mapconfig::getmaplist()
 {
-	auto iterB = m_maplist.begin();
-	auto iterE = m_maplist.end();
-
-	for (; iterB != iterE; iterB++)
-	{
-		mapinfo* _mapinfo = iterB->second;
-		if (_mapinfo)
-		{
-			if (!scenemgr::Instance().loadscene(iterB->first))
-			{
-				return false;
-			}
-		}
-	}
-	return true;
+	return &m_maplist;
 }

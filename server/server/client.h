@@ -23,7 +23,8 @@ public:
 	void SetPingTime(int64 currenttime) { m_pingtime = currenttime; }
 	//是否超时
 	bool bOverTime(int64 currenttime,int clientovertime);
-
+	void SetPlayer(playerobj * player) { m_player = player; }
+	playerobj *GetPlayer() { return m_player; }
 public:
 	
 	//设置client的socket
@@ -46,4 +47,5 @@ private:
 	char m_ip[128];
 	//该client的socket
 	lxnet::Socketer *m_socket;
+	playerobj *m_player;
 };

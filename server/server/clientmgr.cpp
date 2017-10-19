@@ -1,5 +1,4 @@
-#include"stdfx.h"
-#include"msgbase.h"
+#include "stdfx.h"
 
 extern int64 g_currenttime;
 extern bool g_run;
@@ -182,6 +181,34 @@ void clientmgr::processclientmsg(client *cl)
 			msg->GetString(stBuff, 512);
 			std::cout << cl->GetIP() << ":" << stBuff << std::endl;
 			SendMsgToAll(msg);
+			break;
+		}
+		case MSG_LOAD:
+		{
+			//¼ÓÔØ
+			MessagePack * msg = (MessagePack *)pMsg;
+			msg->Begin();
+			char sName[48];
+			msg->GetString(sName,48);
+			playerobj * player = new playerobj;
+			cl->SetPlayer(player);
+			if (!player->load(sName, scenemgr::Instance().getscene(1), cl))
+			{
+				std::cout << "Player " << sName << " Load Faild" << std::endl;
+			}
+			break;
+		}
+		case MSG_MOVE:
+		{
+			//ÒÆ¶¯
+			MessagePack * msg = (MessagePack *)pMsg;
+			msg->Begin();
+			float _Pos[3] = {0};
+			_Pos[0] = msg->GetFloat();
+			_Pos[1] = msg->GetFloat();
+			_Pos[2] = msg->GetFloat();
+			playerobj * player = cl->GetPlayer();
+			player->moveto(_Pos[0], _Pos[1], _Pos[2]);
 			break;
 		}
 		default:

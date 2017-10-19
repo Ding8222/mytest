@@ -1,4 +1,4 @@
-#include"stdfx.h"
+#include "stdfx.h"
 
 client::client()
 {

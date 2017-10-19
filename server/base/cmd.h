@@ -13,5 +13,8 @@ enum
 	MSG_PING	= 1,
 	MSG_END		= 2,
 	MSG_CHAT	= 3,
+	MSG_LOAD	= 4,
+	MSG_MOVE	= 5,
+	MSG_ENTER	= 6,
 	MSG_MAX
 };

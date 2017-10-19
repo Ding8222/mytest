@@ -28,6 +28,7 @@ void run()
 		g_currenttime = get_millisecond();
 		//网络库run
 		lxnet::net_run();
+		scenemgr::Instance().run();
 		//clientmgr run 逻辑相关的都在这里面跑
 		clientmgr::Instance().run();
 		//clientmgr endrun  主要是将前面加到队列中的msg在这边实际的发送出去
@@ -44,6 +45,12 @@ void run()
 bool init()
 {
 	if (!mapconfig::Instance().init())
+	{
+		std::cout << "init map failed!" << std::endl;
+		return false;
+	}
+
+	if (!scenemgr::Instance().init())
 	{
 		std::cout << "init map failed!" << std::endl;
 		return false;

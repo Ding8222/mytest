@@ -1,0 +1,6 @@
+[submodule "server/3rd/lxnet"]
+	path = server/3rd/lxnet
+	url = https://github.com/Ding8222/lxnet.git
+[submodule "server/3rd/tinyxml2"]
+	path = server/3rd/tinyxml2
+	url = https://github.com/leethomason/tinyxml2.git

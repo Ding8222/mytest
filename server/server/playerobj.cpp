@@ -1,10 +1,9 @@
-#include "playerobj.h"
+#include "stdfx.h"
 
 playerobj::playerobj()
 {
 	m_now_mapid = 0;
-	m_now_pos_x = 0;
-	m_now_pos_y = 0;
+	memset(m_now_pos, 0, sizeof(float) * EPP_MAX);
 	m_name.clear();
 	m_scene = nullptr;
 }
@@ -12,43 +11,62 @@ playerobj::playerobj()
 playerobj::~playerobj()
 {
 	m_now_mapid = 0;
-	m_now_pos_x = 0;
-	m_now_pos_y = 0;
+	memset(m_now_pos, 0, sizeof(float) * EPP_MAX);
 	m_name.clear();
 	m_scene = nullptr;
 }
 
-bool playerobj::load(int mapid, int x, int y, std::string name, scene* _scene)
+bool playerobj::load(std::string name, scene* _scene, client* _client)
 {
-	m_now_mapid = mapid;
-	m_now_pos_x = x;
-	m_now_pos_y = y;
-	m_name = name;
+	if (!_scene || !_client)
+		return false;
 
-	if(_scene)
-		m_scene = _scene;
+	m_now_mapid = _scene->getmapid();
+	m_name = name;
+	m_scene = _scene;
+	m_client = _client;
+
+	_scene->obj_enter(this);
 
 	return true;
 }
 
-bool playerobj::moveto(int x, int y)
+bool playerobj::moveto(float &x, float &y, float &z)
 {
-	if (!m_scene->moveto(this, x, y))
+	if (m_scene)
 	{
-		return false;
+		if (m_scene->moveto(this, x, y, z))
+		{
+			return true;
+		}
 	}
 
-	return true;
+	return false;
 }
 
-void playerobj::getnowpos(int &x, int &y)
+void playerobj::getnowpos(float &x, float &y, float &z)
 {
-	x = m_now_pos_x;
-	y = m_now_pos_y;
+	x = m_now_pos[EPP_X];
+	y = m_now_pos[EPP_Y];
+	z = m_now_pos[EPP_Z];
 }
 
-void playerobj::setnowpos(const int &x, int const &y)
+void playerobj::setnowpos(const float &x, const float &y, const float &z)
 {
-	m_now_pos_x = x;
-	m_now_pos_y = y;
+	m_now_pos[EPP_X] = x;
+	m_now_pos[EPP_Y] = y;
+	m_now_pos[EPP_Z] = z;
+}
+
+void playerobj::addtoaoilist(playerobj * p)
+{
+	if (p)
+	{
+		m_aoilist[p->gettempid()] = p;
+		MessagePack msg;
+		msg.Reset();
+		msg.SetType(MSG_ENTER);
+		msg.PushString(p->getname().c_str());
+		m_client->SendMsg(&msg);
+	}
 }

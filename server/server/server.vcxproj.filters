@@ -48,10 +48,10 @@
     <ClCompile Include="playerobj.cpp">
       <Filter>玩家对象</Filter>
     </ClCompile>
-    <ClCompile Include="cell.cpp">
+    <ClCompile Include="scenemgr.cpp">
       <Filter>场景地图</Filter>
     </ClCompile>
-    <ClCompile Include="scenemgr.cpp">
+    <ClCompile Include="aoi.c">
       <Filter>场景地图</Filter>
     </ClCompile>
   </ItemGroup>
@@ -86,10 +86,10 @@
     <ClInclude Include="playerobj.h">
       <Filter>玩家对象</Filter>
     </ClInclude>
-    <ClInclude Include="cell.h">
+    <ClInclude Include="scenemgr.h">
       <Filter>场景地图</Filter>
     </ClInclude>
-    <ClInclude Include="scenemgr.h">
+    <ClInclude Include="aoi.h">
       <Filter>场景地图</Filter>
     </ClInclude>
   </ItemGroup>

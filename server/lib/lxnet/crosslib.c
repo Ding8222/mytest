@@ -4,6 +4,7 @@
  * lcinx@163.com
  */
 
+#include <time.h>
 #include "crosslib.h"
 
 #ifdef _WIN32
@@ -25,29 +26,29 @@ static __inline int64 __GetSecondCount__() {
 
 /* get current millisecond time */
 int64 high_millisecond_() {
-	double tmp;
+	double temp;
 	LARGE_INTEGER liCurrent;
 	QueryPerformanceCounter(&liCurrent);
-	tmp = (double)liCurrent.QuadPart / (double)__GetSecondCount__();
-	return (int64)(tmp * 1000);
+	temp = (double)liCurrent.QuadPart / (double)__GetSecondCount__();
+	return (int64)(temp * 1000);
 }
 
 /* get current microsecond time */
 int64 high_microsecond_() {
-	double tmp;
+	double temp;
 	LARGE_INTEGER liCurrent;
 	QueryPerformanceCounter(&liCurrent);
-	tmp = (double)liCurrent.QuadPart / (double)__GetSecondCount__();
-	return (int64)(tmp * 1000000);
+	temp = (double)liCurrent.QuadPart / (double)__GetSecondCount__();
+	return (int64)(temp * 1000000);
 }
 
 /* get current nanosecond time */
 int64 high_nanosecond_() {
-	double tmp;
+	double temp;
 	LARGE_INTEGER liCurrent;
 	QueryPerformanceCounter(&liCurrent);
-	tmp = (double)liCurrent.QuadPart / (double)__GetSecondCount__();
-	return (int64)(tmp * 1000000000);
+	temp = (double)liCurrent.QuadPart / (double)__GetSecondCount__();
+	return (int64)(temp * 1000000000);
 }
 
 int get_cpu_num() {
@@ -58,11 +59,12 @@ int get_cpu_num() {
 
 #else
 
-#include <time.h>
-#include <sys/time.h>
 #include <unistd.h>
 
+
 #ifdef __APPLE__
+
+#ifndef CLOCK_MONOTONIC
 
 #include <mach/mach_time.h>
 #define CLOCK_MONOTONIC 0
@@ -94,13 +96,15 @@ static int clock_gettime(int clk_id, struct timespec *t) {
 
 #endif
 
+#endif
+
 
 /* get current millisecond time */
 int64 high_millisecond_() {
 	struct timespec ts;
 	int64 res;
 	clock_gettime(CLOCK_MONOTONIC, &ts);
-	res = (int64)(ts.tv_sec * 1000) + (int64)(ts.tv_nsec / 1000000);
+	res = (int64)ts.tv_sec * 1000 + (int64)ts.tv_nsec / 1000000;
 	return res;
 }
 
@@ -109,7 +113,7 @@ int64 high_microsecond_() {
 	struct timespec ts;
 	int64 res;
 	clock_gettime(CLOCK_MONOTONIC, &ts);
-	res = (int64)(ts.tv_sec * 1000000) + (int64)(ts.tv_nsec / 1000);
+	res = (int64)ts.tv_sec * 1000000 + (int64)ts.tv_nsec / 1000;
 	return res;
 }
 
@@ -118,7 +122,7 @@ int64 high_nanosecond_() {
 	struct timespec ts;
 	int64 res;
 	clock_gettime(CLOCK_MONOTONIC, &ts);
-	res = (int64)(ts.tv_sec * 1000000000) + (int64)ts.tv_nsec;
+	res = (int64)ts.tv_sec * 1000000000 + (int64)ts.tv_nsec;
 	return res;
 }
 
