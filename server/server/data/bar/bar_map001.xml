@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<bar_map width="10" height="10">
-	<bar row="0" col="0"/>
-	<bar row="1" col="1"/>
-	<bar row="2" col="2"/>
-	<bar row="3" col="3"/>
-	<bar row="4" col="4"/>
-	<bar row="5" col="5"/>
-	<bar row="6" col="6"/>
-	<bar row="7" col="7"/>
-	<bar row="8" col="8"/>
-	<bar row="9" col="9"/>
-	<bar row="10" col="10"/>
+<bar_map width="1000" height="1000">
 </bar_map>

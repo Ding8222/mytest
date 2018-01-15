@@ -1,28 +1,29 @@
 #include"mapconfig.h"
+#include"mapinfo.h"
 #include"scenemgr.h"
 #include"tinyxml2.h"
 #include"log.h"
 
 using namespace tinyxml2;
 
-mapconfig::mapconfig()
+CMapConfig::CMapConfig()
 {
-	m_maplist.clear();
+	m_MapList.clear();
 }
 
-mapconfig::~mapconfig()
+CMapConfig::~CMapConfig()
 {
-	auto iterB = m_maplist.begin();
-	auto iterE = m_maplist.end();
+	auto iterB = m_MapList.begin();
+	auto iterE = m_MapList.end();
 	for (; iterB != iterE; iterB++)
 	{
 		delete iterB->second;
 	}
 
-	m_maplist.clear();
+	m_MapList.clear();
 }
 
-bool mapconfig::init()
+bool CMapConfig::Init()
 {
 	const char *filename = "./data/maplist.xml";
 	XMLDocument doc;
@@ -32,7 +33,7 @@ bool mapconfig::init()
 		return false;
 	}
 
-	// 将maplist.xml中的信息添加到m_maplist
+	// 将maplist.xml中的信息添加到m_MapList
 
 	XMLElement *pinfo = doc.FirstChildElement("maplist");
 	if (!pinfo)
@@ -50,7 +51,7 @@ bool mapconfig::init()
 
 	while (pinfo)
 	{
-		mapinfo* m_mapinfo = new mapinfo;
+		CMapInfo* m_mapinfo = new CMapInfo;
 		if (!m_mapinfo)
 		{
 			log_error("application memory failed! new m_mapinfo ");
@@ -77,37 +78,37 @@ bool mapconfig::init()
 			log_error("attribute failed, attribute name: 'bar_filename'");
 			return false;
 		}
-		m_mapinfo->init(mapid, filename);
+		m_mapinfo->Init(mapid, filename);
 
-		auto iter = m_maplist.find(mapid);
-		if (iter != m_maplist.end())
+		auto iter = m_MapList.find(mapid);
+		if (iter != m_MapList.end())
 		{
 			log_error("add map list error ,mapid: %d already exist!", mapid);
 			return false;
 		}
 
-		if (!loadbar(m_mapinfo))
+		if (!LoadBar(m_mapinfo))
 		{
 			log_error("load map bar error ,mapid: %d", mapid);
 			return false;
 		}
 
-		m_maplist.insert(std::make_pair(mapid, m_mapinfo));
+		m_MapList.insert(std::make_pair(mapid, m_mapinfo));
 		pinfo = pinfo->NextSiblingElement("maps");
 	}
 	
 	return true;
 }
 
-bool mapconfig::loadbar(mapinfo* map)
+bool CMapConfig::LoadBar(CMapInfo* map)
 {
 	if (!map)
 		return false;
 
 	XMLDocument doc;
-	if (doc.LoadFile(map->getbarfilename().c_str()) != XML_SUCCESS)
+	if (doc.LoadFile(map->GetBarFileName().c_str()) != XML_SUCCESS)
 	{
-		log_error("load %s failed!", map->getbarfilename().c_str());
+		log_error("load %s failed!", map->GetBarFileName().c_str());
 		return false;
 	}
 
@@ -130,7 +131,7 @@ bool mapconfig::loadbar(mapinfo* map)
 
 	if (width <= 0)
 	{
-		log_error("map width <= 0 ,mapid:%d ", map->getmapid());
+		log_error("map width <= 0 ,mapid:%d ", map->GetMapID());
 		return false;
 	}
 	
@@ -142,7 +143,7 @@ bool mapconfig::loadbar(mapinfo* map)
 
 	if (height <= 0)
 	{
-		log_error("map height <= 0 ,mapid:%d ", map->getmapid());
+		log_error("map height <= 0 ,mapid:%d ", map->GetMapID());
 		return false;
 	}
 	
@@ -156,12 +157,6 @@ bool mapconfig::loadbar(mapinfo* map)
 	memset(barinfo, 0, width * height * sizeof(bool));
 	
 	pinfo = pinfo->FirstChildElement("bar");
-	if (!pinfo)
-	{
-		log_error("not find first child element, element name: 'bar'");
-		delete(barinfo);
-		return false;
-	}
 
 	while (pinfo)
 	{
@@ -177,7 +172,7 @@ bool mapconfig::loadbar(mapinfo* map)
 
 		if (row < 0 || row > width)
 		{
-			log_error("map bar row < 0 or row > m_width ,mapid:%d ", map->getmapid());
+			log_error("map bar row < 0 or row > m_width ,mapid:%d ", map->GetMapID());
 			delete(barinfo);
 			return false;
 		}
@@ -191,7 +186,7 @@ bool mapconfig::loadbar(mapinfo* map)
 
 		if (col < 0 || col > height)
 		{
-			log_error("map bar col < 0 or col > m_height ,mapid:%d ", map->getmapid());
+			log_error("map bar col < 0 or col > m_height ,mapid:%d ", map->GetMapID());
 			delete(barinfo);
 			return false;
 		}
@@ -201,14 +196,14 @@ bool mapconfig::loadbar(mapinfo* map)
 		pinfo = pinfo->NextSiblingElement("bar");
 	}
 
-	map->setmapbarinfo(width, height, barinfo);
+	map->SetMapBarInfo(width, height, barinfo);
 	return true;
 }
 
-mapinfo *mapconfig::getmapinfo(int mapid)
+const CMapInfo *CMapConfig::GetMapInfo(int mapid)
 {
-	auto iter = m_maplist.find(mapid);
-	if (iter != m_maplist.end())
+	auto iter = m_MapList.find(mapid);
+	if (iter != m_MapList.end())
 	{
 		return iter->second;
 	}
@@ -216,7 +211,7 @@ mapinfo *mapconfig::getmapinfo(int mapid)
 	return nullptr;
 }
 
-std::unordered_map<int, mapinfo*>* mapconfig::getmaplist()
+const std::unordered_map<int, CMapInfo*>& CMapConfig::GetMapList()
 {
-	return &m_maplist;
+	return m_MapList;
 }

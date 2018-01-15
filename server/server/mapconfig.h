@@ -1,24 +1,32 @@
+/*
+读取地图配置
+*/
 #pragma once
 #include<unordered_map>
-#include "mapinfo.h"
 
-class mapconfig
+class CMapInfo;
+
+class CMapConfig
 {
 public:
-	mapconfig();
-	~mapconfig();
+	CMapConfig();
+	~CMapConfig();
 
-	static mapconfig &Instance()
+	static CMapConfig &Instance()
 	{
-		static mapconfig m;
+		static CMapConfig m;
 		return m;
 	}
 
-	bool init();
-	bool loadbar(mapinfo* map); //加载所有地图的阻挡点
-	mapinfo *getmapinfo(int mapid);
-	std::unordered_map<int, mapinfo*>* getmaplist();
+	// 初始化读取所有地图配置
+	bool Init();
+	// 加载地图中的阻挡点
+	bool LoadBar(CMapInfo* map);
+	// 获取地图信息指针
+	const CMapInfo *GetMapInfo(int mapid);
+	// 获取所有地图
+	const std::unordered_map<int, CMapInfo*>& GetMapList();
 private:
-
-	std::unordered_map<int, mapinfo*> m_maplist;//所有的map信息
+	//所有的Map信息
+	std::unordered_map<int, CMapInfo*> m_MapList;
 };

@@ -22,18 +22,15 @@
     <Filter Include="玩家对象">
       <UniqueIdentifier>{af62f7a1-f887-4a21-94ee-bacda25be0e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Client">
+      <UniqueIdentifier>{5f24962e-e995-4aa9-abd8-7ba79cc9112b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="server_main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="clientmgr.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="config.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="client.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="mapinfo.cpp">
@@ -45,27 +42,30 @@
     <ClCompile Include="scene.cpp">
       <Filter>场景地图</Filter>
     </ClCompile>
-    <ClCompile Include="playerobj.cpp">
-      <Filter>玩家对象</Filter>
-    </ClCompile>
     <ClCompile Include="scenemgr.cpp">
       <Filter>场景地图</Filter>
     </ClCompile>
     <ClCompile Include="aoi.c">
       <Filter>场景地图</Filter>
     </ClCompile>
+    <ClCompile Include="BaseObj.cpp">
+      <Filter>玩家对象</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>玩家对象</Filter>
+    </ClCompile>
+    <ClCompile Include="client.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="clientmgr.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdfx.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="clientmgr.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="config.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="client.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\base\cmd.h">
@@ -83,14 +83,23 @@
     <ClInclude Include="scene.h">
       <Filter>场景地图</Filter>
     </ClInclude>
-    <ClInclude Include="playerobj.h">
-      <Filter>玩家对象</Filter>
-    </ClInclude>
     <ClInclude Include="scenemgr.h">
       <Filter>场景地图</Filter>
     </ClInclude>
     <ClInclude Include="aoi.h">
       <Filter>场景地图</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseObj.h">
+      <Filter>玩家对象</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>玩家对象</Filter>
+    </ClInclude>
+    <ClInclude Include="clientmgr.h">
+      <Filter>Client</Filter>
+    </ClInclude>
+    <ClInclude Include="client.h">
+      <Filter>Client</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

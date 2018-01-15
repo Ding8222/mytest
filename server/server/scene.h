@@ -1,10 +1,12 @@
 #pragma once
+#include <unordered_map>
 extern "C"
 {
 #include "aoi.h"
 }
 
-class mapinfo;
+class CMapInfo;
+class CBaseObj;
 
 struct alloc_cookie {
 	int count;
@@ -12,40 +14,59 @@ struct alloc_cookie {
 	int current;
 };
 
-class scene
+class CScene
 {
 public:
-	scene();
-	~scene();
+	CScene();
+	~CScene();
 
-	bool init(mapinfo * _mapinfo, aoi_space * space, alloc_cookie * cookie);
-	void run();
+	// 初始化
+	bool Init(CMapInfo * _mapinfo, aoi_space * space, alloc_cookie * cookie);
+	// Run 每帧跑
+	void Run();
 
-	bool obj_enter(playerobj * obj);
-	playerobj * getobj(uint32_t id);
-
-	bool canmove(int x, int y, int z);
-	bool moveto(playerobj * obj, float x, float y, float z);
-
-	void message();
-	void update(uint32_t id, const char * mode, float pos[3]);
-
-	inline uint32_t gettempid() { return ++m_tempid; };
-	inline int getmapid() { return m_mapid; }
+	// 进入场景
+	bool AddObj(CBaseObj * obj);
+	// 获取场景中的对象
+	CBaseObj * GetObj(uint32_t id);
+	// 返回是否可以移动到某个点
+	bool bCanMove(int x, int y, int z);
+	// 移动至某个点
+	bool MoveTo(CBaseObj * obj, float x, float y, float z);
+	// Aoi Run
+	void Message();
+	// 更新对象在Aoi中的位置
+	void Update(uint32_t id, const char * mode, float pos[3]);
+	// 生成一个临时ID
+	inline uint32_t GetTempID() { return ++m_TempID; };
+	// 获取当前场景所属的MapID
+	inline int GetMapID() { return m_MapID; }
 private:
-	int m_mapid;
-	int m_width;
-	int m_height;
+	// 所需地图ID
+	int m_MapID;
+	// 场景宽
+	int m_Width;
+	// 场景高
+	int m_Height;
 
-	int m_birth_point_x;
-	int m_birth_point_y;
+	// 出生点
+	int m_BirthPoint_X;
+	int m_BirthPoint_Y;
+	int m_BirthPoint_Z;
 
-	uint32_t m_tempid;
+	// 场景临时ID
+	uint32_t m_TempID;
 
-	bool *m_barinfo; //阻挡信息
-	mapinfo *m_mapinfo;
-	struct alloc_cookie* m_cookie;
-	struct aoi_space * m_space;
+	// 阻挡信息
+	bool *m_Barinfo;
+	// 地图信息
+	CMapInfo *m_MapInfo;
+	// Aoi内存分配信息
+	struct alloc_cookie* m_Cookie;
+	// Aoi 空间
+	struct aoi_space * m_Space;
+	// 是否更新过Aoi
 	bool m_bMessage;
-	std::unordered_map<uint32_t, playerobj *> m_playermap;
+	// 场景中对象map
+	std::unordered_map<uint32_t, CBaseObj *> m_ObjMap;
 };

@@ -137,12 +137,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="aoi.c" />
+    <ClCompile Include="BaseObj.cpp" />
     <ClCompile Include="client.cpp" />
     <ClCompile Include="clientmgr.cpp" />
     <ClCompile Include="config.cpp" />
     <ClCompile Include="mapconfig.cpp" />
     <ClCompile Include="mapinfo.cpp" />
-    <ClCompile Include="playerobj.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="scenemgr.cpp" />
     <ClCompile Include="server_main.cpp" />
@@ -151,12 +152,13 @@
     <ClInclude Include="..\base\cmd.h" />
     <ClInclude Include="..\base\msgdef.h" />
     <ClInclude Include="aoi.h" />
+    <ClInclude Include="BaseObj.h" />
     <ClInclude Include="client.h" />
     <ClInclude Include="clientmgr.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="mapconfig.h" />
     <ClInclude Include="mapinfo.h" />
-    <ClInclude Include="playerobj.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="scenemgr.h" />
     <ClInclude Include="stdfx.h" />

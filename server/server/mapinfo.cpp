@@ -4,50 +4,55 @@
 
 using namespace tinyxml2;
 
-mapinfo::mapinfo()
+CMapInfo::CMapInfo()
 {
-	m_mapid = 0;
-	m_width = 0;
-	m_height = 0;
-	m_birth_point_x = 0;
-	m_birth_point_y = 0;
-	m_barinfo = nullptr;
-	m_bar_filename.clear();
+	m_Mapid = 0;
+	m_Width = 0;
+	m_Height = 0;
+	m_BirthPoint_X = 0;
+	m_BirthPoint_Y = 0;
+	m_BirthPoint_Z = 0;
+	m_BarInfo = nullptr;
+	s_BarFileName.clear();
 }
 
-mapinfo::~mapinfo()
+CMapInfo::~CMapInfo()
 {
-	if (m_barinfo)
+	m_Mapid = 0;
+	m_Width = 0;
+	m_Height = 0;
+	m_BirthPoint_X = 0;
+	m_BirthPoint_Y = 0;
+	m_BirthPoint_Z = 0;
+	if (m_BarInfo)
 	{
-		delete m_barinfo;
-		m_barinfo = nullptr;
+		delete m_BarInfo;
+		m_BarInfo = nullptr;
 	}
-	m_barinfo = nullptr;
-	m_bar_filename.clear();
-	m_mapid = 0;
-	m_width = 0;
-	m_height = 0;
+	m_BarInfo = nullptr;
+	s_BarFileName.clear();
 }
 
-bool mapinfo::init(int mapid, std::string bar_filename)
+bool CMapInfo::Init(int mapid, std::string bar_filename)
 {
 	// 设置读取的路径
-	m_mapid = mapid;
-	m_bar_filename = bar_filename;
+	m_Mapid = mapid;
+	s_BarFileName = bar_filename;
 	return true;
 }
 
-void mapinfo::getmapbirthpoint(int &x, int &y)
+void CMapInfo::GetMapBirthPoint(int &x, int &y, int &z)
 {
-	x = m_birth_point_x;
-	y = m_birth_point_y;
+	x = m_BirthPoint_X;
+	y = m_BirthPoint_Y;
+	z = m_BirthPoint_Z;
 }
-int mapinfo::getmapid()
+int CMapInfo::GetMapID()
 {
-	return m_mapid;
+	return m_Mapid;
 }
-void mapinfo::getmapwidthandheight(int &x, int &y)
+void CMapInfo::GetMapWidthAndHeight(int &x, int &y)
 {
-	x = m_width;
-	y = m_height;
+	x = m_Width;
+	y = m_Height;
 }

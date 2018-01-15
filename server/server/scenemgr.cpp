@@ -1,24 +1,25 @@
 #include "stdfx.h"
+#include "scenemgr.h"
+#include "mapconfig.h"
+#include "scene.h"
 
-scenemgr::scenemgr()
+CScenemgr::CScenemgr()
 {
-	m_scenelist.clear();
+	m_SceneList.clear();
 }
 
-scenemgr::~scenemgr()
+CScenemgr::~CScenemgr()
 {
-	m_scenelist.clear();
+	m_SceneList.clear();
 }
 
-bool scenemgr::init()
+bool CScenemgr::Init()
 {
-	std::unordered_map<int, mapinfo*> * maplist = mapconfig::Instance().getmaplist();
-	if (!maplist)
-		return false;
+	const std::unordered_map<int, CMapInfo*> maplist = CMapConfig::Instance().GetMapList();
 
-	for (auto &iter : *maplist)
+	for (auto &iter : maplist)
 	{
-		if (!loadscene(iter.second))
+		if (!LoadScene(iter.second))
 		{
 			log_error("load scene error ,mapid: %d", iter.first);
 			return false;
@@ -28,24 +29,24 @@ bool scenemgr::init()
 	return true;
 }
 
-void scenemgr::run()
+void CScenemgr::Run()
 {
-	for (auto &i : m_scenelist)
+	for (auto &i : m_SceneList)
 	{
-		i.second->run();
+		i.second->Run();
 	}
 }
 
-bool scenemgr::loadscene(mapinfo* mapconfig)
+bool CScenemgr::LoadScene(CMapInfo* mapconfig)
 {
 	if (!mapconfig)
 		return false;
 
-	scene * m_scene = createscene(mapconfig);
+	CScene * m_scene = CreateScene(mapconfig);
 	if (!m_scene)
 		return false;
 
-	m_scenelist[m_scene->getmapid()] = m_scene;
+	m_SceneList[m_scene->GetMapID()] = m_scene;
 
 	return true;
 }
@@ -69,12 +70,12 @@ static void *my_alloc(void * ud, void *ptr, size_t sz) {
 	return NULL;
 }
 
-scene *scenemgr::createscene(mapinfo* mapconfig)
+CScene *CScenemgr::CreateScene(CMapInfo* mapconfig)
 {
 	if (!mapconfig)
 		return nullptr;
 
-	scene * m_scene = new scene;
+	CScene * m_scene = new CScene;
 	alloc_cookie* cookie = (struct alloc_cookie * )malloc(sizeof(struct alloc_cookie));
 	if (cookie)
 	{
@@ -82,7 +83,7 @@ scene *scenemgr::createscene(mapinfo* mapconfig)
 		aoi_space * space = aoi_create(my_alloc, cookie);
 		if (m_scene)
 		{
-			m_scene->init(mapconfig, space, cookie);
+			m_scene->Init(mapconfig, space, cookie);
 			return m_scene;
 		}
 	}
@@ -90,10 +91,10 @@ scene *scenemgr::createscene(mapinfo* mapconfig)
 	return nullptr;
 }
 
-scene *scenemgr::getscene(int mapid)
+CScene *CScenemgr::GetScene(int mapid)
 {
-	auto iter = m_scenelist.find(mapid);
-	if (iter != m_scenelist.end())
+	auto iter = m_SceneList.find(mapid);
+	if (iter != m_SceneList.end())
 		return iter->second;
 
 	return nullptr;

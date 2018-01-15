@@ -1,88 +1,91 @@
 #include "stdfx.h"
+#include "Player.h"
+#include "clientmgr.h"
+#include "client.h"
 
 extern int64 g_currenttime;
 extern bool g_run;
 
-clientmgr::clientmgr()
+CClientMgr::CClientMgr()
 {
-	m_listen_port = 0;
-	m_needlisten = false;
-	m_clientovertime = 0;
-	m_listen = NULL;
-	m_client_list.clear();
+	m_ListenPort = 0;
+	m_NeedListen = false;
+	m_ClientOverTime = 0;
+	m_Listen = nullptr;
+	m_ClientList.clear();
 }
 
-clientmgr::~clientmgr()
+CClientMgr::~CClientMgr()
 {
-	m_listen_port = 0;
-	m_needlisten = false;
-	m_clientovertime = 0;
-	m_listen = NULL;
-	m_client_list.clear();
+	m_ListenPort = 0;
+	m_NeedListen = false;
+	m_ClientOverTime = 0;
+	m_Listen = nullptr;
+	m_ClientList.clear();
 }
 
-bool clientmgr::init(int port, int clientovertime)
+bool CClientMgr::Init(int port, int clientovertime)
 {
-	m_listen_port = port;
-	m_clientovertime = clientovertime;
+	m_ListenPort = port;
+	m_ClientOverTime = clientovertime;
 
-	m_listen = lxnet::Listener::Create();
-	if (!m_listen)
+	m_Listen = lxnet::Listener::Create();
+	if (!m_Listen)
 	{
-		std::cout << "create Listener failed!" << std::endl;
+		log_error("create Listener failed!");
 		return false;
 	}
 
-	m_needlisten = true;
+	m_NeedListen = true;
 	return true;
 }
 
-void clientmgr::release()
+void CClientMgr::Release()
 {
-	for (auto &i : m_client_list)
+	for (auto &i : m_ClientList)
 	{
 		OnClientDisconnect(i);
 	}
 
-	lxnet::Listener::Release(m_listen);
+	lxnet::Listener::Release(m_Listen);
 }
 
-void clientmgr::testandlisten()
+void CClientMgr::TestAndListen()
 {
-	if (!m_needlisten)
+	if (!m_NeedListen)
 		return ;
 
-	if (!m_listen->IsClose())
+	if (!m_Listen->IsClose())
 	{
-		m_needlisten = false;
+		m_NeedListen = false;
 		return;
 	}
 
-	if (m_listen->Listen(m_listen_port, s_backlog))
+	if (m_Listen->Listen(m_ListenPort, s_backlog))
 	{
-		m_needlisten = false;
-		std::cout << "listen "<< m_listen_port <<" succeed!" << std::endl;
+		m_NeedListen = false;
+		log_error("listen %d succeed!", m_ListenPort);
 	}
 	else
 	{
-		std::cout << "listen " << m_listen_port << " error!" << std::endl;
+		log_error("listen %d error!", m_ListenPort);
 	}
 }
 
-void clientmgr::acceptnewclient()
+void CClientMgr::AcceptNewClient()
 {
 	lxnet::Socketer *socket = NULL;
 
 	for (int i = 0; i < s_backlog; ++i)
 	{
-		if (!m_listen->CanAccept())
+		if (!m_Listen->CanAccept())
 			return;
 
-		if (!(socket = m_listen->Accept()))
+		if (!(socket = m_Listen->Accept()))
 			return;
 
 		//这边可以做一个client pool
-		client *newclient = new client;
+		CClient *newclient = new CClient;
 		assert(newclient != NULL);
 		if (!newclient)
 		{
@@ -106,122 +109,44 @@ void clientmgr::acceptnewclient()
 		newclient->SetConnectTime(g_currenttime);
 		newclient->SetPingTime(g_currenttime);
 		newclient->SetIP(ip);
-		m_client_list.insert(newclient);
+		m_ClientList.insert(newclient);
 
-		std::cout << "accept new client, ip:" << ip << std::endl;
+		log_error("accept new client, ip:%d", ip);
 	}
 }
 
-void clientmgr::processallclient()
+void CClientMgr::ProcessAllClient()
 {
 	MessagePack *recvpack = NULL;
-	std::set<client *>::iterator iter, tempiter;
-	for (iter = m_client_list.begin(); iter != m_client_list.end();)
+	std::set<CClient *>::iterator iter, tempiter;
+	for (iter = m_ClientList.begin(); iter != m_ClientList.end();)
 	{
 		tempiter = iter;
 		iter ++;
 
-		if ((*tempiter)->bOverTime(g_currenttime,m_clientovertime))
+		if ((*tempiter)->bOverTime(g_currenttime,m_ClientOverTime))
 		{
-			std::cout << "client is over time! ip:" << (*tempiter)->GetIP() << std::endl;
+			log_error("client is over time! ip: %s", (*tempiter)->GetIP().c_str());
 			OnClientDisconnect(*tempiter);
-			m_client_list.erase((*tempiter));
+			m_ClientList.erase((*tempiter));
 			continue;
 		}
 
 		if ((*tempiter)->GetSocket()->IsClose())
 		{
-			std::cout << "client is close! ip:" << (*tempiter)->GetIP() << std::endl;
+			log_error("client is close! ip: %s", (*tempiter)->GetIP().c_str());
 			OnClientDisconnect(*tempiter);
-			m_client_list.erase((*tempiter));
+			m_ClientList.erase((*tempiter));
 			continue;
 		}
 
-		processclientmsg(*tempiter);
+		(*tempiter)->ProcessMsg();
 	}
 }
 
-void clientmgr::processclientmsg(client *cl)
+void CClientMgr::SendMsgToAll(Msg *pMsg,CClient *cl)
 {
-	assert(cl != NULL);
-	if (cl == NULL)
-		return;
-
-	Msg *pMsg = NULL;
-	while (1)
-	{
-		pMsg = cl->GetMsg();
-		if (!pMsg)
-			break;
-		switch (pMsg->GetType())
-		{
-		case MSG_PING:
-		{
-			//收到ping消息的时候，也发送ping消息给前端，然后设置ping消息的接受时间
-			MsgPing* msg = (MsgPing*)pMsg;
-			if (msg)
-			{
-				msg->m_servertime = g_currenttime;
-				cl->SendMsg(pMsg);
-				cl->SetPingTime(g_currenttime);
-			}
-			break;
-		}
-		case MSG_END:
-		{
-			std::cout << cl->GetIP() << ":get end msg" << std::endl;
-			break;
-		}
-		case MSG_CHAT:
-		{
-			//把收到的chat消息发给所有在线的client
-			MessagePack * msg = (MessagePack *)pMsg;
-			char stBuff[521] = { 0 };
-			msg->Begin();
-			msg->GetString(stBuff, 512);
-			std::cout << cl->GetIP() << ":" << stBuff << std::endl;
-			SendMsgToAll(msg);
-			break;
-		}
-		case MSG_LOAD:
-		{
-			//加载
-			MessagePack * msg = (MessagePack *)pMsg;
-			msg->Begin();
-			char sName[48];
-			msg->GetString(sName,48);
-			playerobj * player = new playerobj;
-			cl->SetPlayer(player);
-			if (!player->load(sName, scenemgr::Instance().getscene(1), cl))
-			{
-				std::cout << "Player " << sName << " Load Faild" << std::endl;
-			}
-			break;
-		}
-		case MSG_MOVE:
-		{
-			//移动
-			MessagePack * msg = (MessagePack *)pMsg;
-			msg->Begin();
-			float _Pos[3] = {0};
-			_Pos[0] = msg->GetFloat();
-			_Pos[1] = msg->GetFloat();
-			_Pos[2] = msg->GetFloat();
-			playerobj * player = cl->GetPlayer();
-			player->moveto(_Pos[0], _Pos[1], _Pos[2]);
-			break;
-		}
-		default:
-		{
-			std::cout << "msg type error!" << std::endl;
-		}
-		}
-	}
-}
-
-void clientmgr::SendMsgToAll(Msg *pMsg,client *cl)
-{
-	for (auto &i : m_client_list)
+	for (auto &i : m_ClientList)
 	{
 		if (cl != NULL)
 		{
@@ -232,28 +157,26 @@ void clientmgr::SendMsgToAll(Msg *pMsg,client *cl)
 	}
 }
 
-void clientmgr::OnClientDisconnect(client *cl)
+void CClientMgr::OnClientDisconnect(CClient *cl)
 {
 	assert(cl != NULL);
 	if (cl == NULL)
 		return;
-	std::cout << "client disconnect! ip:" << cl->GetIP() << std::endl;
-	cl->~client();
+	log_error("client disconnect! ip: %s", cl->GetIP().c_str());
 	delete cl;
 	cl = NULL;
 }
 
-void clientmgr::run()
+void CClientMgr::Run()
 {
-	testandlisten();
-	acceptnewclient();
-
-	processallclient();
+	TestAndListen();
+	AcceptNewClient();
+	ProcessAllClient();
 }
 
-void clientmgr::endrun()
+void CClientMgr::EndRun()
 {
-	for (auto &i : m_client_list)
+	for (auto &i : m_ClientList)
 	{
 		i->GetSocket()->CheckRecv();
 		i->GetSocket()->CheckSend();

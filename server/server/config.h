@@ -6,22 +6,22 @@
 
 #pragma once
 
-class config
+class CConfig
 {
 public:
-	config();
-	~config();
+	CConfig();
+	~CConfig();
 
-	static config &Instance()
+	static CConfig &Instance()
 	{
-		static config m;
+		static CConfig m;
 		return m;
 	}
 
-	bool init();
-	int GetListenPort() { return m_listen_port; }
-	int GetClientOverTime() { return m_clientovertime; }
+	bool Init();
+	int GetListenPort() { return m_ListenPort; }
+	int GetClientOverTime() { return m_ClientOverTime; }
 private:
-	int m_listen_port;
-	int m_clientovertime;
+	int m_ListenPort;
+	int m_ClientOverTime;
 };

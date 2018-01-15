@@ -4,17 +4,18 @@
 
 using namespace tinyxml2;
 
-config::config()
+CConfig::CConfig()
 {
-	m_listen_port = 0;
-	m_clientovertime = 0;
+	m_ListenPort = 0;
+	m_ClientOverTime = 0;
 }
-config::~config()
+CConfig::~CConfig()
 {
-
+	m_ListenPort = 0;
+	m_ClientOverTime = 0;
 }
 
-bool config::init()
+bool CConfig::Init()
 {
 	const char *filename = "./config/config.xml";
 	XMLDocument doc;
@@ -31,13 +32,13 @@ bool config::init()
 		return false;
 	}
 
-	if (pinfo->QueryIntAttribute("listen_port", &m_listen_port)!=XML_SUCCESS)
+	if (pinfo->QueryIntAttribute("listen_port", &m_ListenPort)!=XML_SUCCESS)
 	{
 		log_error("query int attribute failed!, attribute name: 'listen_port'");
 		return false;
 	}
 
-	if (pinfo->QueryIntAttribute("client_over_time", &m_clientovertime) != XML_SUCCESS)
+	if (pinfo->QueryIntAttribute("client_over_time", &m_ClientOverTime) != XML_SUCCESS)
 	{
 		log_error("query int attribute failed!, attribute name: 'listen_port'");
 		return false;

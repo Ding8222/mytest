@@ -5,6 +5,9 @@
 */
 
 #include"stdfx.h"
+#include"clientmgr.h"
+#include"scenemgr.h"
+#include"mapconfig.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -28,31 +31,31 @@ void run()
 		g_currenttime = get_millisecond();
 		//网络库run
 		lxnet::net_run();
-		scenemgr::Instance().run();
+		CScenemgr::Instance().Run();
 		//clientmgr run 逻辑相关的都在这里面跑
-		clientmgr::Instance().run();
+		CClientMgr::Instance().Run();
 		//clientmgr endrun  主要是将前面加到队列中的msg在这边实际的发送出去
-		clientmgr::Instance().endrun();
+		CClientMgr::Instance().EndRun();
 		//检测当前帧使用时间，未达到最小值的时候，sleep
 		delay = static_cast<int>(get_millisecond() - g_currenttime);
 		if (delay < 100)
 			delaytime(100 - delay);
 		else
-			std::cout << "run time out :" << delay << std::endl;
+			log_error("run time out : %d", delay);
 	}
 }
 
 bool init()
 {
-	if (!mapconfig::Instance().init())
+	if (!CMapConfig::Instance().Init())
 	{
-		std::cout << "init map failed!" << std::endl;
+		log_error("init mapconfig failed!");
 		return false;
 	}
 
-	if (!scenemgr::Instance().init())
+	if (!CScenemgr::Instance().Init())
 	{
-		std::cout << "init map failed!" << std::endl;
+		log_error("init scenemgr failed!");
 		return false;
 	}
 
@@ -61,33 +64,33 @@ bool init()
 
 int main(void)
 {
-	std::cout << "server start!" << std::endl;
+	log_error("server start!");
 
 	//读取配置文件
-	if (!config::Instance().init())
+	if (!CConfig::Instance().Init())
 	{
-		std::cout << "init config error!" << std::endl;
+		log_error("init config error!");
 		system("pause");
 		return 0;
 	}
 	//初始化网络库
 	if (!lxnet::net_init(512, 1, 1024 * 32, 100, 1, 4, 1))
 	{
-		std::cout << "init network error!" << std::endl;
+		log_error("init network error!");
 		system("pause");
 		return 0;
 	}
 	//设置监听端口，创建listener
-	if (!clientmgr::Instance().init(config::Instance().GetListenPort(), config::Instance().GetClientOverTime()))
+	if (!CClientMgr::Instance().Init(CConfig::Instance().GetListenPort(), CConfig::Instance().GetClientOverTime()))
 	{
-		std::cout << "init clientmgr error!" << std::endl;
+		log_error("init clientmgr error!");
 		system("pause");
 		return 0;
 	}
 
 	if (!init())
 	{
-		std::cout << "server init failed!" << std::endl;
+		log_error("server init failed!");
 		system("pause");
 		return 0;
 	}
@@ -96,7 +99,7 @@ int main(void)
 	//死循环
 	run();
 	//循环结束后的资源释放
-	clientmgr::Instance().release();
+	CClientMgr::Instance().Release();
 	delaytime(1000);
 
 	lxnet::net_release();

@@ -1,28 +1,27 @@
 #pragma once
-#include"scenemgr.h"
 #include<unordered_map>
 
-class scene;
-class mapinfo;
+class CScene;
+class CMapInfo;
 
-class scenemgr
+class CScenemgr
 {
 public:
-	scenemgr();
-	~scenemgr();
+	CScenemgr();
+	~CScenemgr();
 
-	static scenemgr &Instance()
+	static CScenemgr &Instance()
 	{
-		static scenemgr m;
+		static CScenemgr m;
 		return m;
 	}
 
-	bool init();
-	void run();
-	bool loadscene(mapinfo* mapconfig);
-	scene *createscene(mapinfo* mapconfig);
-	scene *getscene(int mapid);
+	bool Init();
+	void Run();
+	bool LoadScene(CMapInfo* mapconfig);
+	CScene *CreateScene(CMapInfo* mapconfig);
+	CScene *GetScene(int mapid);
 private:
 
-	std::unordered_map<int ,scene *> m_scenelist;
+	std::unordered_map<int ,CScene *> m_SceneList;
 };

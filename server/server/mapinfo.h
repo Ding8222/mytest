@@ -5,35 +5,42 @@
 */
 
 /*
-	表中读到的地图信息
+	处理表中读到的地图信息
 */
 
 #pragma once
 #include "string"
 
-class mapinfo
+class CMapInfo
 {
 public:
-	mapinfo();
-	~mapinfo();
+	CMapInfo();
+	~CMapInfo();
 
-	bool init(int mapid, std::string bar_filename);
-	void getmapbirthpoint(int &x, int &y); //获取出生点
-	int  getmapid(); //获取地图id
-	void getmapwidthandheight(int &x, int &y); //获取地图宽高
-	inline const std::string &getbarfilename() { return m_bar_filename; }
-	void setmapbarinfo(int width, int height, bool* barinfo) {
-		m_width = width; m_height = height; m_barinfo = barinfo;
+	bool Init(int mapid, std::string bar_filename);
+	// 获取出生点
+	void GetMapBirthPoint(int &x, int &y, int &z);
+	// 获取地图id
+	int  GetMapID();
+	// 获取地图宽高
+	void GetMapWidthAndHeight(int &x, int &y);
+	// 获取地图阻挡点文件名称
+	inline const std::string &GetBarFileName() { return s_BarFileName; }
+	// 设置地图阻挡点信息
+	void SetMapBarInfo(int width, int height, bool* barinfo) {
+		m_Width = width; m_Height = height; m_BarInfo = barinfo;
 	};
-	bool *getbarinfo() { return m_barinfo; }
+	bool *GetBarInfo() { return m_BarInfo; }
 private:
-	int m_mapid;
-	int m_width;
-	int m_height;
+	int m_Mapid;
+	int m_Width;
+	int m_Height;
 
-	int m_birth_point_x;
-	int m_birth_point_y;
+	int m_BirthPoint_X;
+	int m_BirthPoint_Y;
+	int m_BirthPoint_Z;
 
-	bool *m_barinfo; //阻挡信息
-	std::string m_bar_filename;
+	//阻挡信息
+	bool *m_BarInfo;
+	std::string s_BarFileName;
 };

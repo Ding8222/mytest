@@ -1,105 +1,108 @@
 #include "stdfx.h"
+#include "scene.h"
+#include "BaseObj.h"
+#include "mapinfo.h"
 
-scene::scene()
+CScene::CScene()
 {
-	m_mapid = 0;
-	m_width = 0;
-	m_height = 0;
-	m_birth_point_x = 0;
-	m_birth_point_y = 0;
-	m_tempid = 0;
-	m_barinfo = nullptr;
-	m_mapinfo = nullptr;
-	m_cookie = nullptr;
-	m_space = nullptr;
+	m_MapID = 0;
+	m_Width = 0;
+	m_Height = 0;
+	m_BirthPoint_X = 0;
+	m_BirthPoint_Y = 0;
+	m_TempID = 0;
+	m_Barinfo = nullptr;
+	m_MapInfo = nullptr;
+	m_Cookie = nullptr;
+	m_Space = nullptr;
 	m_bMessage = false;
-	m_playermap.clear();
+	m_ObjMap.clear();
 }
 
-scene::~scene()
+CScene::~CScene()
 {
-	if (m_mapinfo)
+	if (m_MapInfo)
 	{
-		delete m_mapinfo;
-		m_mapinfo = nullptr;
+		delete m_MapInfo;
+		m_MapInfo = nullptr;
 	}
-	m_mapinfo = nullptr;
+	m_MapInfo = nullptr;
 
-	if (m_space)
+	if (m_Space)
 	{
-		aoi_release(m_space);
-		m_space = nullptr;
+		aoi_release(m_Space);
+		m_Space = nullptr;
 	}
-	if (m_cookie)
+	if (m_Cookie)
 	{
-		free(m_cookie);
+		free(m_Cookie);
 	}
 }
 
-bool scene::init(mapinfo * _mapinfo, aoi_space * space, alloc_cookie * cookie)
+bool CScene::Init(CMapInfo * _mapinfo, aoi_space * space, alloc_cookie * cookie)
 {
 	if (!_mapinfo || !space)
 		return false;
 
-	m_mapinfo = _mapinfo;
-	m_space = space;
-	m_cookie = cookie;
-	m_barinfo = m_mapinfo->getbarinfo();
+	m_MapInfo = _mapinfo;
+	m_Space = space;
+	m_Cookie = cookie;
+	m_Barinfo = m_MapInfo->GetBarInfo();
 
-	m_mapid = _mapinfo->getmapid();
-	_mapinfo->getmapbirthpoint(m_birth_point_x, m_birth_point_y);
-	_mapinfo->getmapwidthandheight(m_width, m_height);
+	m_MapID = _mapinfo->GetMapID();
+	_mapinfo->GetMapBirthPoint(m_BirthPoint_X, m_BirthPoint_Y, m_BirthPoint_Z);
+	_mapinfo->GetMapWidthAndHeight(m_Width, m_Height);
 
-	if (m_width <= 0 && m_height <= 0)
+	if (m_Width <= 0 && m_Height <= 0)
 	{
-		log_error("scene get map width and height failed!");
+		log_error("CScene get map width and height failed!");
 		return false;
 	}
 	return true;
 }
 
-bool scene::obj_enter(playerobj * obj)
+bool CScene::AddObj(CBaseObj * obj)
 {
 	if (!obj)
 		return false;
 	
-	obj->setteampid(gettempid());
-	m_playermap[obj->gettempid()] = obj;
+	obj->SetTempID(GetTempID());
+	m_ObjMap[obj->GetTempID()] = obj;
 
 	char *mode = "wm";
 	float pos[3];
-	obj->getnowpos(pos[0], pos[1], pos[2]);
-	update(obj->gettempid(), mode, pos);
+	obj->GetNowPos(pos[0], pos[1], pos[2]);
+	Update(obj->GetTempID(), mode, pos);
 
 	return true;
 }
 
-bool scene::canmove(int x, int y, int z)
+bool CScene::bCanMove(int x, int y, int z)
 {
-	if (x >= 0 && x < m_width)
+	if (x >= 0 && x < m_Width)
 	{
-		if (y >= 0 && y < m_height)
+		if (y >= 0 && y < m_Height)
 		{
-			if (m_barinfo)
+			if (m_Barinfo)
 			{
-				return !m_barinfo[x * y];
+				return !m_Barinfo[x * y];
 			}
 		}
 	}
 	return false;
 }
 
-bool scene::moveto(playerobj * obj, float x, float y, float z)
+bool CScene::MoveTo(CBaseObj * obj, float x, float y, float z)
 {
 	if (obj)
 	{
-		if (canmove(x, y, z))
+		if (bCanMove(x, y, z))
 		{
-			obj->setnowpos(x, y, z);
+			obj->SetNowPos(x, y, z);
 			char *mode = "wm";
 			float pos[3];
-			obj->getnowpos(pos[0], pos[1], pos[2]);
-			update(obj->gettempid(), mode, pos);
+			obj->GetNowPos(pos[0], pos[1], pos[2]);
+			Update(obj->GetTempID(), mode, pos);
 			return true;
 		}
 	}
@@ -109,39 +112,44 @@ bool scene::moveto(playerobj * obj, float x, float y, float z)
 
 static void callbackmessage(void *ud, uint32_t watcher, uint32_t marker) 
 {
-	scene* sc = (scene*)ud;
-	playerobj * p1 = sc->getobj(watcher);
+	CScene* sc = (CScene*)ud;
+	CBaseObj * p1 = sc->GetObj(watcher);
 	if (p1)
 	{
-		playerobj * p2 = sc->getobj(marker);
-		p1->addtoaoilist(p2);
+		CBaseObj * p2 = sc->GetObj(marker);
+		p1->AddToAoiList(p2);
 	}
 }
 
-void scene::message()
+void CScene::Message()
 {
-	aoi_message(m_space, callbackmessage, this);
+	aoi_message(m_Space, callbackmessage, this);
 }
 
-void scene::update(uint32_t id, const char * mode,float pos[3])
+void CScene::Update(uint32_t id, const char * mode,float pos[3])
 {
-	aoi_update(m_space, id, mode, pos);
+	aoi_update(m_Space, id, mode, pos);
 	m_bMessage = true;
 }
 
-void scene::run()
+void CScene::Run()
 {
 	if (m_bMessage)
 	{
-		message();
+		Message();
 		m_bMessage = false;
+	}
+
+	for (auto &i : m_ObjMap)
+	{
+		i.second->Run();
 	}
 }
 
-playerobj * scene::getobj(uint32_t id)
+CBaseObj * CScene::GetObj(uint32_t id)
 {
-	auto iter = m_playermap.find(id);
-	if (iter != m_playermap.end())
+	auto iter = m_ObjMap.find(id);
+	if (iter != m_ObjMap.end())
 		return iter->second;
 
 	return nullptr;
