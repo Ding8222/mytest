@@ -10,6 +10,3 @@
 [submodule "server/3rd/cryptopp"]
 	path = server/3rd/cryptopp
 	url = https://github.com/weidai11/cryptopp.git
-[submodule "server/3rd/CPPFormatLibrary"]
-	path = server/3rd/CPPFormatLibrary
-	url = https://github.com/sczybt/CPPFormatLibrary.git

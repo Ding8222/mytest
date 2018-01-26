@@ -1,12 +1,10 @@
-
+﻿
 /*
  * Copyright (C) lcinx
  * lcinx@163.com
  */
 
-#ifndef _H_LOG_H_
-#define _H_LOG_H_
-
+#pragma once
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -185,10 +183,19 @@ void filelog_release(struct filelog *self);
 #define log_writelog(fmt, ...)											\
 	filelog_write_log(g_filelog_obj_, fmt, ##__VA_ARGS__)
 
+#ifdef _DEBUG
+#define log_error(fmt, ...)												\
+	do {																\
+		char temp_buf[32] = {0};										\
+		_format_prefix_string_(0, -1, temp_buf, sizeof(temp_buf),		\
+				0, 0, 0);												\
+		_log_printf_(enum_debug_print_time,								\
+				fmt, temp_buf, ##__VA_ARGS__, __END__ARG__FLAG__);		\
+	} while (0)
+#else
 #define log_error(fmt, ...)												\
 	filelog_write_error(g_filelog_obj_, fmt, ##__VA_ARGS__)
-
-
+#endif
 
 #define debug_print(fmt, ...)											\
 	_log_printf_(enum_debug_print, fmt, "", ##__VA_ARGS__, __END__ARG__FLAG__)
@@ -211,7 +218,6 @@ void filelog_release(struct filelog *self);
 				fmt, temp_buf, ##__VA_ARGS__, __END__ARG__FLAG__);		\
 	} while (0)
 
-
 #define debug_enable_print(flag)										\
 	_log_printf_set_show(enum_debug_print, flag)
 
@@ -223,6 +229,5 @@ void filelog_release(struct filelog *self);
 
 #ifdef __cplusplus
 }
-#endif
 #endif
 

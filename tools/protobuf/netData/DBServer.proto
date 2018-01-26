@@ -1,0 +1,15 @@
+syntax = "proto3";
+package SvrData;
+
+// 1-1 请求sql语句查询
+message Execute
+{
+	string type = 1;		//操作类型
+	string sql = 2;			//Sql语句
+}
+
+// 1-2 查询返回
+message ExecuteRet
+{
+	string res = 1;	//Sql查询返回
+}

@@ -1,0 +1,35 @@
+syntax = "proto3";
+package svrData;
+
+// 0-1 ping
+message Ping
+{
+	
+}
+
+// 0-2 请求服务器注册
+message ServerRegister
+{
+	int32 nServerID = 1;		//此服的id
+	int32 nServerType = 2;		//此服的类型
+	int32 nConnectID = 3;		//要连接的服的id
+}
+
+// 0-3 服务器注册返回
+message ServerRegisterRet
+{
+	enum EC
+	{
+		EC_OTHER = 0;
+		EC_SUCC = 1;
+		EC_SERVER_ID_EXIST = 2;
+		EC_TO_CONNECT_ID_NOT_EQUAL = 3;
+	};
+	int32 nRetCode = 1;	// 返回的信息
+}
+
+// 0-4 新的client连接上来了
+message AddNewClient
+{
+
+}

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<config 
-	listen_port = "30012"
-	client_over_time = "0"
-	>
-</config>

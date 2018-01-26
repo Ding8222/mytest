@@ -1,0 +1,8 @@
+syntax = "proto3";
+package netData;
+
+// 3-1 ping
+message Ping
+{
+	
+}
