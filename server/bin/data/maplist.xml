@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<maplist>
+	<maps mapid = "1" bar_filename = "./data/bar/bar_map001.xml" birth_point_x = "2" birth_point_Y = "2"/>
+</maplist>
