@@ -4,3 +4,12 @@
 [submodule "server/3rd/tinyxml2"]
 	path = server/3rd/tinyxml2
 	url = https://github.com/leethomason/tinyxml2.git
+[submodule "server/3rd/protobuf"]
+	path = server/3rd/protobuf
+	url = https://github.com/Ding8222/protobuf.git
+[submodule "server/3rd/cryptopp"]
+	path = server/3rd/cryptopp
+	url = https://github.com/weidai11/cryptopp.git
+[submodule "server/3rd/CPPFormatLibrary"]
+	path = server/3rd/CPPFormatLibrary
+	url = https://github.com/sczybt/CPPFormatLibrary.git
