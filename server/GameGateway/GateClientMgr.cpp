@@ -15,15 +15,16 @@ CGateClientMgr::~CGateClientMgr()
 
 }
 
-bool CGateClientMgr::OnNewClient()
+int64 CGateClientMgr::OnNewClient()
 {
 	if (!CGameConnect::Instance().IsReady())
-		return false;
+		return 0;
 
-	if (!CClientMgr::OnNewClient())
-		return false;
+	int64 nClientID = CClientMgr::OnNewClient();
+	if (nClientID == 0)
+		return 0;
 
-	return true;
+	return nClientID;
 }
 
 void CGateClientMgr::OnClientDisconnect(CClient *cl)

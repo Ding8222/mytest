@@ -62,25 +62,32 @@ void CLoginCenterConnect::ProcessMsg(connector *_con)
 			}
 			break;
 		}
-		case DBSVR_SUB_EXECUTE_RET:
+		case LOGIN_TYPE_MAIN:
 		{
 			switch (pMsg->GetSubType())
 			{
-			case DBSVR_SUB_EXECUTE:
+			case LOGIN_SUB_AUTH_RET:
 			{
-				SvrData::ExecuteRet msg;
-				_CHECK_PARSE_(pMsg, msg);
+				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+				if (msgtail::enum_type_to_client == tl->type)
+				{
+					netData::AuthRet msg;
+					_CHECK_PARSE_(pMsg, msg);
 
-
-				netData::AuthRet sendMsg;
-				sendMsg.set_ncode(netData::ChallengeRet::EC_SUCC);
-				//CLoginClientMgr::Instance().SendMsg(msg.clientid(), sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET);
+					if (msg.ncode() == netData::AuthRet::EC_SUCC)
+					{
+						CLoginClientMgr::Instance().SetClientAuthSucceed(tl->id);
+					}
+					CLoginClientMgr::Instance().SendMsg(tl->id, pMsg);
+				}
 				break;
 			}
 			default:
 			{
 			}
 			}
+			break;
 		}
 		default:
 		{

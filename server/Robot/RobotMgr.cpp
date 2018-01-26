@@ -175,6 +175,7 @@ void CRobotMgr::ProcessRegister(CRobot *con)
 				sendMsg.set_setoken("123");
 
 				con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH);
+				con->SetReady(true);
 				break;
 			}
 			default:
@@ -197,6 +198,21 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 			break;
 		switch (pMsg->GetMainType())
 		{
+		case CLIENT_TYPE_MAIN:
+		{
+			switch (pMsg->GetSubType())
+			{
+			case CLIENT_SUB_PING:
+			{
+				_con->SetRecvPingTime(g_currenttime);
+				break;
+			}
+			default:
+			{
+			}
+			}
+			break;
+		}
 		case SERVER_TYPE_MAIN:
 		{
 			switch (pMsg->GetSubType())
@@ -204,6 +220,24 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 			case SVR_SUB_PING:
 			{
 				_con->SetRecvPingTime(g_currenttime);
+				break;
+			}
+			default:
+			{
+			}
+			}
+			break;
+		}
+		case LOGIN_TYPE_MAIN:
+		{
+			switch (pMsg->GetSubType())
+			{
+			case LOGIN_SUB_AUTH_RET:
+			{
+				netData::AuthRet msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				log_error("AuthRet:%d", msg.ncode());
 				break;
 			}
 			default:

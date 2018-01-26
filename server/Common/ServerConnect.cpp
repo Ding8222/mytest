@@ -108,7 +108,7 @@ void CServerConnect::SendMsg(Msg *pMsg, void *adddata, size_t addsize)
 	m_Con->SendMsg(pMsg, adddata, addsize);
 }
 
-void CServerConnect::SendClientMsgToSvr(google::protobuf::Message *pMsg, int maintype, int subtype, int64 clientid, void *adddata, size_t addsize)
+void CServerConnect::SendClientMsgToSvr(google::protobuf::Message *pMsg, int maintype, int subtype, int64 clientid)
 {
 	assert(pMsg != nullptr);
 
@@ -122,10 +122,10 @@ void CServerConnect::SendClientMsgToSvr(google::protobuf::Message *pMsg, int mai
 	msgtail tail;
 	tail.type = msgtail::enum_type_from_client;
 	tail.id = clientid;
-	m_Con->SendMsg(&pk, adddata, addsize);
+	m_Con->SendMsg(&pk, &tail, sizeof(tail));
 }
 
-void CServerConnect::SendClientMsgToSvr(Msg *pMsg, int64 clientid, void *adddata, size_t addsize)
+void CServerConnect::SendClientMsgToSvr(Msg *pMsg, int64 clientid)
 {
 	assert(pMsg != nullptr);
 
@@ -136,7 +136,24 @@ void CServerConnect::SendClientMsgToSvr(Msg *pMsg, int64 clientid, void *adddata
 	msgtail tail;
 	tail.type = msgtail::enum_type_from_client;
 	tail.id = clientid;
-	m_Con->SendMsg(pMsg, adddata, addsize);
+	m_Con->SendMsg(pMsg, &tail, sizeof(tail));
+}
+
+void CServerConnect::SendMsgToClient(google::protobuf::Message *pMsg, int maintype, int subtype, int64 clientid)
+{
+	assert(pMsg != nullptr);
+
+	MessagePack pk;
+	pk.Pack(pMsg, maintype, subtype);
+
+	assert(clientid > 0);
+	if (clientid <= 0)
+		return;
+
+	msgtail tail;
+	tail.type = msgtail::enum_type_to_client;
+	tail.id = clientid;
+	m_Con->SendMsg(&pk, &tail, sizeof(tail));
 }
 
 void CServerConnect::ResetMsgNum()

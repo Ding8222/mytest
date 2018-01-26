@@ -18,7 +18,7 @@ public:
 		return m;
 	}
 
-	bool OnNewClient();
+	int64 OnNewClient();
 	void OnClientDisconnect(CClient *cl);
 	void ProcessClientMsg(CClient *cl);
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lxnet", "3rd\lxnet\lib\lxnet\lxnet.vcxproj", "{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}"
 EndProject
@@ -113,25 +113,25 @@ Global
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.Debug-Lib|x64.Build.0 = Release|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.Debug-Lib|x86.ActiveCfg = Debug|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.Debug-Lib|x86.Build.0 = Debug|Win32
-		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.DLL-Import Debug|x64.ActiveCfg = Debug|x64
-		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.DLL-Import Debug|x64.Build.0 = Debug|x64
-		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.DLL-Import Debug|x64.Deploy.0 = Debug|x64
+		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.DLL-Import Debug|x64.ActiveCfg = Release|Win32
+		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.DLL-Import Debug|x64.Build.0 = Release|Win32
+		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.DLL-Import Debug|x64.Deploy.0 = Release|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.DLL-Import Debug|x86.ActiveCfg = Debug|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.DLL-Import Debug|x86.Build.0 = Debug|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.DLL-Import Debug|x86.Deploy.0 = Debug|Win32
-		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.DLL-Import Release|x64.ActiveCfg = Release|x64
-		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.DLL-Import Release|x64.Build.0 = Release|x64
-		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.DLL-Import Release|x64.Deploy.0 = Release|x64
+		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.DLL-Import Release|x64.ActiveCfg = Release|Win32
+		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.DLL-Import Release|x64.Build.0 = Release|Win32
+		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.DLL-Import Release|x64.Deploy.0 = Release|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.DLL-Import Release|x86.ActiveCfg = Release|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.DLL-Import Release|x86.Build.0 = Release|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.DLL-Import Release|x86.Deploy.0 = Release|Win32
-		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.MinSizeRel|x64.ActiveCfg = Debug|x64
-		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.MinSizeRel|x64.Build.0 = Debug|x64
-		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.MinSizeRel|x64.Deploy.0 = Debug|x64
+		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.MinSizeRel|x64.ActiveCfg = Release|Win32
+		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.MinSizeRel|x64.Build.0 = Release|Win32
+		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.MinSizeRel|x64.Deploy.0 = Release|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.MinSizeRel|x86.ActiveCfg = Release|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.MinSizeRel|x86.Build.0 = Release|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.MinSizeRel|x86.Deploy.0 = Release|Win32
-		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.Release|x64.ActiveCfg = Release|x64
+		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.Release|x64.ActiveCfg = Release|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.Release|x86.ActiveCfg = Release|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.Release|x86.Build.0 = Release|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.Release-Dll|x64.ActiveCfg = Release|Win32
@@ -142,9 +142,9 @@ Global
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.Release-Lib|x64.Build.0 = Release|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.Release-Lib|x86.ActiveCfg = Release|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.Release-Lib|x86.Build.0 = Release|Win32
-		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.RelWithDebInfo|x64.ActiveCfg = Release|x64
-		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.RelWithDebInfo|x64.Build.0 = Release|x64
-		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.RelWithDebInfo|x64.Deploy.0 = Release|x64
+		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.RelWithDebInfo|x64.ActiveCfg = Release|Win32
+		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.RelWithDebInfo|x64.Build.0 = Release|Win32
+		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.RelWithDebInfo|x64.Deploy.0 = Release|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.RelWithDebInfo|x86.ActiveCfg = Release|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.RelWithDebInfo|x86.Build.0 = Release|Win32
 		{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}.RelWithDebInfo|x86.Deploy.0 = Release|Win32

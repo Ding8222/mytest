@@ -266,13 +266,23 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 				// 来自DBSvr的消息
 				switch (pMsg->GetMainType())
 				{
-				case DBSVR_TYPE_MAIN:
+				case LOGIN_TYPE_MAIN:
 				{
-					msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-					if (msgtail::enum_type_to_client == tl->type)
+					switch (pMsg->GetSubType())
 					{
-						ClientSvr *cl = FindClientSvr(tl->id);
-						SendMsgToServer(pMsg, cl->ServerType);
+					case LOGIN_SUB_AUTH_RET:
+					{
+						msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+						if (msgtail::enum_type_to_client == tl->type)
+						{
+							ClientSvr *cl = FindClientSvr(tl->id);
+							if(cl)
+								SendMsgToServer(pMsg, cl->ServerType);
+						}
+						break;
+					}
+					default:
+						break;
 					}
 					break;
 				}

@@ -27,20 +27,20 @@ CLoginClientMgr::~CLoginClientMgr()
 
 }
 
-bool CLoginClientMgr::OnNewClient()
+int64 CLoginClientMgr::OnNewClient()
 {
 	if (!CLoginCenterConnect::Instance().IsReady())
-		return false;
+		return 0;
 
 	int64 nClientID = CClientMgr::OnNewClient();
 	if (nClientID == 0)
-		return false;
+		return 0;
 
 	MessagePack msg;
 	msg.SetMainType(SERVER_TYPE_MAIN);
 	msg.SetSubType(SVR_SUB_NEW_CLIENT);
 	CLoginCenterConnect::Instance().SendClientMsgToSvr(&msg, nClientID);
-	return true;
+	return nClientID;
 }
 
 void CLoginClientMgr::OnClientDisconnect(CClient *cl)

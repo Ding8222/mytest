@@ -10,3 +10,6 @@
 [submodule "server/3rd/cryptopp"]
 	path = server/3rd/cryptopp
 	url = https://github.com/weidai11/cryptopp.git
+[submodule "server/3rd/fmtlib"]
+	path = server/3rd/fmtlib
+	url = https://github.com/fmtlib/fmt.git

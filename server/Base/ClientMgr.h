@@ -42,7 +42,7 @@ public:
 	//获取当前连接的客户端数量
 	int GetClientConnectNum() { return (int)m_ClientList.size(); }
 
-	int64 OnNewClient();
+	virtual int64 OnNewClient();
 	virtual void OnClientDisconnect(CClient *cl);
 	virtual void ProcessClientMsg(CClient *cl) = 0;
 

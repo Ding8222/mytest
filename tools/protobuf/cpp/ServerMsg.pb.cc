@@ -35,6 +35,11 @@ class ServerRegisterRetDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<ServerRegisterRet>
       _instance;
 } _ServerRegisterRet_default_instance_;
+class AddNewClientDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<AddNewClient>
+      _instance;
+} _AddNewClient_default_instance_;
 }  // namespace svrData
 namespace protobuf_ServerMsg_2eproto {
 void InitDefaultsPingImpl() {
@@ -100,7 +105,28 @@ void InitDefaultsServerRegisterRet() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsServerRegisterRetImpl);
 }
 
-::google::protobuf::Metadata file_level_metadata[3];
+void InitDefaultsAddNewClientImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::svrData::_AddNewClient_default_instance_;
+    new (ptr) ::svrData::AddNewClient();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::svrData::AddNewClient::InitAsDefaultInstance();
+}
+
+void InitDefaultsAddNewClient() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsAddNewClientImpl);
+}
+
+::google::protobuf::Metadata file_level_metadata[4];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
@@ -123,17 +149,24 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::ServerRegisterRet, nretcode_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::AddNewClient, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::svrData::Ping)},
   { 5, -1, sizeof(::svrData::ServerRegister)},
   { 13, -1, sizeof(::svrData::ServerRegisterRet)},
+  { 19, -1, sizeof(::svrData::AddNewClient)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::svrData::_Ping_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::svrData::_ServerRegister_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::svrData::_ServerRegisterRet_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::svrData::_AddNewClient_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -152,7 +185,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 3);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 4);
 }
 
 void AddDescriptorsImpl() {
@@ -164,10 +197,10 @@ void AddDescriptorsImpl() {
       "erRegisterRet\022\020\n\010nRetCode\030\001 \001(\005\"W\n\002EC\022\014\n"
       "\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\026\n\022EC_SERVER_ID"
       "_EXIST\020\002\022\036\n\032EC_TO_CONNECT_ID_NOT_EQUAL\020\003"
-      "b\006proto3"
+      "\"\016\n\014AddNewClientb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 248);
+      descriptor, 264);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "ServerMsg.proto", &protobuf_RegisterTypes);
 }
@@ -953,6 +986,200 @@ void ServerRegisterRet::InternalSwap(ServerRegisterRet* other) {
 }
 
 ::google::protobuf::Metadata ServerRegisterRet::GetMetadata() const {
+  protobuf_ServerMsg_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_ServerMsg_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
+// ===================================================================
+
+void AddNewClient::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+AddNewClient::AddNewClient()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_ServerMsg_2eproto::InitDefaultsAddNewClient();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:svrData.AddNewClient)
+}
+AddNewClient::AddNewClient(const AddNewClient& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  // @@protoc_insertion_point(copy_constructor:svrData.AddNewClient)
+}
+
+void AddNewClient::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+AddNewClient::~AddNewClient() {
+  // @@protoc_insertion_point(destructor:svrData.AddNewClient)
+  SharedDtor();
+}
+
+void AddNewClient::SharedDtor() {
+}
+
+void AddNewClient::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* AddNewClient::descriptor() {
+  ::protobuf_ServerMsg_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_ServerMsg_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const AddNewClient& AddNewClient::default_instance() {
+  ::protobuf_ServerMsg_2eproto::InitDefaultsAddNewClient();
+  return *internal_default_instance();
+}
+
+AddNewClient* AddNewClient::New(::google::protobuf::Arena* arena) const {
+  AddNewClient* n = new AddNewClient;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void AddNewClient::Clear() {
+// @@protoc_insertion_point(message_clear_start:svrData.AddNewClient)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _internal_metadata_.Clear();
+}
+
+bool AddNewClient::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:svrData.AddNewClient)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+  handle_unusual:
+    if (tag == 0) {
+      goto success;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, _internal_metadata_.mutable_unknown_fields()));
+  }
+success:
+  // @@protoc_insertion_point(parse_success:svrData.AddNewClient)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:svrData.AddNewClient)
+  return false;
+#undef DO_
+}
+
+void AddNewClient::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:svrData.AddNewClient)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:svrData.AddNewClient)
+}
+
+::google::protobuf::uint8* AddNewClient::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:svrData.AddNewClient)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:svrData.AddNewClient)
+  return target;
+}
+
+size_t AddNewClient::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:svrData.AddNewClient)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void AddNewClient::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:svrData.AddNewClient)
+  GOOGLE_DCHECK_NE(&from, this);
+  const AddNewClient* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const AddNewClient>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:svrData.AddNewClient)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:svrData.AddNewClient)
+    MergeFrom(*source);
+  }
+}
+
+void AddNewClient::MergeFrom(const AddNewClient& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:svrData.AddNewClient)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+}
+
+void AddNewClient::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:svrData.AddNewClient)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void AddNewClient::CopyFrom(const AddNewClient& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:svrData.AddNewClient)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool AddNewClient::IsInitialized() const {
+  return true;
+}
+
+void AddNewClient::Swap(AddNewClient* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void AddNewClient::InternalSwap(AddNewClient* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata AddNewClient::GetMetadata() const {
   protobuf_ServerMsg_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_ServerMsg_2eproto::file_level_metadata[kIndexInFileMessages];
 }

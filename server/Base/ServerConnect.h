@@ -27,8 +27,10 @@ public:
 	void SendMsg(google::protobuf::Message *pMsg, int maintype, int subtype, void *adddata = nullptr, size_t addsize = 0);
 	void SendMsg(Msg *pMsg, void *adddata = nullptr, size_t addsize = 0);
 
-	void SendClientMsgToSvr(google::protobuf::Message *pMsg, int maintype, int subtype, int64 clientid, void *adddata = nullptr, size_t addsize = 0);
-	void SendClientMsgToSvr(Msg *pMsg, int64 clientid, void *adddata = nullptr, size_t addsize = 0);
+	void SendClientMsgToSvr(google::protobuf::Message *pMsg, int maintype, int subtype, int64 clientid);
+	void SendClientMsgToSvr(Msg *pMsg, int64 clientid);
+
+	void SendMsgToClient(google::protobuf::Message *pMsg, int maintype, int subtype, int64 clientid);
 
 	void ResetMsgNum();
 	int GetRecvMsgNum();

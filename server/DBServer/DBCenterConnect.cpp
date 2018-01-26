@@ -115,19 +115,28 @@ void CDBCenterConnect::ProcessMsg(connector *_con)
 			{
 			case LOGIN_SUB_AUTH:
 			{
-				netData::Auth msg;
-				_CHECK_PARSE_(pMsg, msg);
+				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+				if (msgtail::enum_type_from_client == tl->type)
+				{
+					netData::Auth msg;
+					_CHECK_PARSE_(pMsg, msg);
 
-				DataBase::CRecordset *res = g_dbhand.Execute(fmt::format("select * from account where uid = '{0}' limit 1", msg.setoken().c_str()).c_str());
-				if (res && res->IsOpen())
-				{
-					// 存在的账号
-					g_dbhand.Execute(fmt::format("update account set logintime ={0} where uid = '{1}'", time(nullptr), msg.setoken().c_str()).c_str());
-				}
-				else
-				{
-					// 不存在的账号
-					g_dbhand.Execute(fmt::format("insert into account (uid,createtime,logintime) values ('{0}',{1},{2})", msg.setoken().c_str(), time(nullptr), time(nullptr)).c_str());
+					DataBase::CRecordset *res = g_dbhand.Execute(fmt::format("select * from account where uid = '{0}' limit 1", msg.setoken().c_str()).c_str());
+					if (res && res->IsOpen() && !res->IsEnd())
+					{
+						// 存在的账号
+						res = g_dbhand.Execute(fmt::format("update account set logintime ={0} where uid = '{1}'", time(nullptr), msg.setoken().c_str()).c_str());
+					}
+					else
+					{
+						// 不存在的账号
+						res = g_dbhand.Execute(fmt::format("insert into account (uid,createtime,logintime) values ('{0}',{1},{2})", msg.setoken().c_str(), time(nullptr), time(nullptr)).c_str());
+					}
+
+					netData::AuthRet sendMsg;
+					sendMsg.set_ncode(netData::AuthRet::EC_SUCC);
+					SendMsgToClient(&sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, tl->id);
 				}
 				break;
 			}
