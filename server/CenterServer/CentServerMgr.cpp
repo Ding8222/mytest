@@ -4,6 +4,8 @@
 #include "Config.h"
 
 #include "LoginType.h"
+#include "ServerMsg.pb.h"
+#include "Login.pb.h"
 
 extern int64 g_currenttime;
 
@@ -94,7 +96,7 @@ const char *CCentServerMgr::GetMsgNumInfo()
 	return tempbuf;
 }
 
-void CCentServerMgr::SendMsgToServer(Msg *pMsg, int nType, int nServerID)
+void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int nServerID, int64 nClientID)
 {
 	std::map<int, serverinfo *> *iterList = nullptr;
 	switch (nType)
@@ -126,16 +128,71 @@ void CCentServerMgr::SendMsgToServer(Msg *pMsg, int nType, int nServerID)
 			std::map<int, serverinfo *>::iterator iterFind = iterList->find(nServerID);
 			if (iterFind != iterList->end())
 			{
-				iterFind->second->SendMsg(pMsg);
+				msgtail tail;
+				tail.id = nClientID;
+				SendMsg(iterFind->second, pMsg, &tail, sizeof(tail));
 			}
 			else
 				log_error("请求发送消息到未知的服务器,，服务器ID:[%d]", nServerID);
 		}
 		else
 		{
+			msgtail tail;
+			tail.id = nClientID;
 			for (std::map<int, serverinfo *>::iterator itr = iterList->begin(); itr != iterList->end(); ++itr)
 			{
-				itr->second->SendMsg(pMsg);
+				SendMsg(itr->second, pMsg, &tail, sizeof(tail));
+			}
+		}
+	}
+}
+
+void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int nServerID, int64 nClientID)
+{
+	std::map<int, serverinfo *> *iterList = nullptr;
+	switch (nType)
+	{
+	case ServerEnum::EST_GAME:
+	{
+		iterList = &m_GameList;
+		break;
+	}
+	case ServerEnum::EST_LOGIN:
+	{
+		iterList = &m_LoginList;
+		break;
+	}
+	case ServerEnum::EST_DB:
+	{
+		iterList = &m_DBList;
+		break;
+	}
+	default:
+		log_error("请求发送消息到未知类型的服务器，服务器类型:[%d]", nType);
+		break;
+	}
+
+	if (iterList)
+	{
+		if (nServerID > 0)
+		{
+			std::map<int, serverinfo *>::iterator iterFind = iterList->find(nServerID);
+			if (iterFind != iterList->end())
+			{
+				msgtail tail;
+				tail.id = nClientID;
+				SendMsg(iterFind->second, pMsg, maintype, subtype, &tail, sizeof(tail));
+			}
+			else
+				log_error("请求发送消息到未知的服务器,，服务器ID:[%d]", nServerID);
+		}
+		else
+		{
+			msgtail tail;
+			tail.id = nClientID;
+			for (std::map<int, serverinfo *>::iterator itr = iterList->begin(); itr != iterList->end(); ++itr)
+			{
+				SendMsg(itr->second, pMsg, maintype, subtype, &tail, sizeof(tail));
 			}
 		}
 	}
@@ -208,9 +265,7 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 			case SVR_SUB_NEW_CLIENT:
 			{
 				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
-				if (msgtail::enum_type_from_client == tl->type)
-					AddNewClient(info->GetServerType(), info->GetServerID(), tl->id);
+				AddNewClient(info->GetServerType(), info->GetServerID(), tl->id);
 				break;
 			}
 			default:
@@ -248,7 +303,17 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 					{
 					case LOGIN_SUB_AUTH:
 					{
-						SendMsgToServer(pMsg, ServerEnum::EST_DB);
+						msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+						pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+						ClientSvr *cl = FindClientSvr(tl->id);
+						if (cl)
+						{
+							netData::Auth msg;
+							_CHECK_PARSE_(pMsg, msg);
+							cl->Token = msg.setoken();
+							cl->Secret = msg.ssecret();
+							SendMsgToServer(*pMsg, ServerEnum::EST_DB, 0, cl->ClientID);
+						}
 						break;
 					}
 					default:
@@ -273,11 +338,22 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 					case LOGIN_SUB_AUTH_RET:
 					{
 						msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-						if (msgtail::enum_type_to_client == tl->type)
+						pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+						ClientSvr *cl = FindClientSvr(tl->id);
+						if (cl)
 						{
-							ClientSvr *cl = FindClientSvr(tl->id);
-							if(cl)
-								SendMsgToServer(pMsg, cl->ServerType);
+							netData::AuthRet msg;
+							_CHECK_PARSE_(pMsg, msg);
+							msg.set_nserverid(4000);
+							msg.set_ip("127.0.0.1");
+							msg.set_port(30014);
+
+							SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, cl->ServerType, cl->ServerID, cl->ClientID);
+								
+							svrData::ClientToken sendMsg;
+							sendMsg.set_setoken(cl->Token);
+							sendMsg.set_ssecret(cl->Secret);
+							SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GAME, msg.nserverid(), cl->ClientID);
 						}
 						break;
 					}

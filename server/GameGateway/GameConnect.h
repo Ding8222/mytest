@@ -24,6 +24,15 @@ public:
 	void ConnectDisconnect();
 	// 处理远程服务器发来的消息
 	void ProcessMsg(connector *_con);
+
+	void AddNewClientSvrToken(ClientSvr *cl);
+	ClientSvr *FindClientSvr(std::string t);
+	bool AddNewClientSvrID(std::string token, int servertype, int serverid, int64 clientid);
+	ClientSvr *FindClientSvr(int64 clientid);
 private:
 
+	// token,ClientSvr
+	std::unordered_map < std::string, ClientSvr *> m_ClientSvrToken;
+	// clientid,ClientSvr
+	std::unordered_map < int64, ClientSvr *> m_ClientSvrID;
 };

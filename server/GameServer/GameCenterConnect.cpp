@@ -1,5 +1,6 @@
 ﻿#include "stdfx.h"
 #include "GameCenterConnect.h"
+#include "GameGatewayMgr.h"
 #include "connector.h"
 #include "config.h"
 
@@ -48,6 +49,15 @@ void CGameCenterConnect::ProcessMsg(connector *_con)
 			case SVR_SUB_PING:
 			{
 				_con->SetRecvPingTime(g_currenttime);
+				break;
+			}
+			case SVR_SUB_CLIENT_TOKEN:
+			{
+				// 转发给Gate
+				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+
+				CGameGatewayMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_GATE, 0, tl->id);
 				break;
 			}
 			default:

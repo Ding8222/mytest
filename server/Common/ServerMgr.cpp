@@ -235,12 +235,11 @@ void CServerMgr::SendMsg(serverinfo *info, google::protobuf::Message &pMsg, int 
 }
 
 
-void CServerMgr::SendMsg(serverinfo *info, Msg *pMsg, void *adddata, size_t addsize)
+void CServerMgr::SendMsg(serverinfo *info, Msg &pMsg, void *adddata, size_t addsize)
 {
 	assert(info != nullptr);
-	assert(pMsg != nullptr);
 
-	info->SendMsg(pMsg, adddata, addsize);
+	info->SendMsg(&pMsg, adddata, addsize);
 }
 
 void CServerMgr::OnServerRegister(serverinfo *info, MessagePack *pMsg)

@@ -56,7 +56,7 @@ void CServerConnect::Run()
 	if (m_Con->NeedSendPing(g_currenttime, m_PingTime))
 	{
 		svrData::Ping msg;
-		SendMsg(&msg, SERVER_TYPE_MAIN, SVR_SUB_PING);
+		SendMsg(msg, SERVER_TYPE_MAIN, SVR_SUB_PING);
 	}
 	if (m_Con->IsOverTime(g_currenttime, m_OverTime))
 	{
@@ -92,68 +92,41 @@ void CServerConnect::EndRun()
 	m_Con->CheckRecv();
 }
 
-void CServerConnect::SendMsg(google::protobuf::Message *pMsg, int maintype, int subtype, void *adddata, size_t addsize)
+void CServerConnect::SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int64 clientid)
 {
-	assert(pMsg != nullptr);
-
 	MessagePack pk;
-	pk.Pack(pMsg, maintype, subtype);
-	m_Con->SendMsg(&pk, adddata, addsize);
-}
-
-void CServerConnect::SendMsg(Msg *pMsg, void *adddata, size_t addsize)
-{
-	assert(pMsg != nullptr);
-
-	m_Con->SendMsg(pMsg, adddata, addsize);
-}
-
-void CServerConnect::SendClientMsgToSvr(google::protobuf::Message *pMsg, int maintype, int subtype, int64 clientid)
-{
-	assert(pMsg != nullptr);
-
-	MessagePack pk;
-	pk.Pack(pMsg, maintype, subtype);
+	pk.Pack(&pMsg, maintype, subtype);
 
 	assert(clientid > 0);
 	if (clientid <= 0)
 		return;
 
 	msgtail tail;
-	tail.type = msgtail::enum_type_from_client;
 	tail.id = clientid;
 	m_Con->SendMsg(&pk, &tail, sizeof(tail));
 }
 
-void CServerConnect::SendClientMsgToSvr(Msg *pMsg, int64 clientid)
+void CServerConnect::SendMsgToServer(Msg &pMsg, int64 clientid)
 {
-	assert(pMsg != nullptr);
-
 	assert(clientid > 0);
 	if (clientid <= 0)
 		return;
 
 	msgtail tail;
-	tail.type = msgtail::enum_type_from_client;
 	tail.id = clientid;
-	m_Con->SendMsg(pMsg, &tail, sizeof(tail));
+	m_Con->SendMsg(&pMsg, &tail, sizeof(tail));
 }
 
-void CServerConnect::SendMsgToClient(google::protobuf::Message *pMsg, int maintype, int subtype, int64 clientid)
+void CServerConnect::SendMsg(google::protobuf::Message &pMsg, int maintype, int subtype, void *adddata, size_t addsize)
 {
-	assert(pMsg != nullptr);
-
 	MessagePack pk;
-	pk.Pack(pMsg, maintype, subtype);
+	pk.Pack(&pMsg, maintype, subtype);
+	m_Con->SendMsg(&pk);
+}
 
-	assert(clientid > 0);
-	if (clientid <= 0)
-		return;
-
-	msgtail tail;
-	tail.type = msgtail::enum_type_to_client;
-	tail.id = clientid;
-	m_Con->SendMsg(&pk, &tail, sizeof(tail));
+void CServerConnect::SendMsg(Msg &pMsg, void *adddata, size_t addsize)
+{
+	m_Con->SendMsg(&pMsg);
 }
 
 void CServerConnect::ResetMsgNum()
@@ -180,7 +153,7 @@ void CServerConnect::TryConnect()
 		msg.set_nservertype(m_ServerType);
 		msg.set_nconnectid(m_ID);
 
-		SendMsg(&msg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_REGISTER);
+		SendMsg(msg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_REGISTER);
 		log_error("连接服务器成功!发送注册信息。服务器ID：[%d] IP:[%s]", m_ID, m_IP);
 	}
 }

@@ -9,9 +9,9 @@
 #include "objectpool.h"
 #include "crosslib.h"
 #include "log.h"
-#include "GlobalDefine.h"
 #include "msgbase.h"
 #include "fmt/ostream.h"
+#include "GlobalDefine.h"
 
 #include "MainType.h"
 #include "ServerType.h"

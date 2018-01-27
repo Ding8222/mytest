@@ -29,14 +29,15 @@ public:
 
 public:
 	// 根据类型和SvrID发送消息给服务器
-	virtual void SendMsgToServer(Msg *pMsg, int nType , int nServerID = 0) = 0;
+	virtual void SendMsgToServer(Msg &pMsg, int nType, int nServerID = 0, int64 nClientID = 0) = 0;
+	virtual void SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int nServerID = 0, int64 nClientID = 0) = 0;
 	// 处理未注册服务器消息
 	void ProcessNotRegister(serverinfo *info);
 	// 处理已注册服务器消息
 	virtual void ProcessMsg(serverinfo *info) = 0;
 	// 发送消息
 	void SendMsg(serverinfo *info, google::protobuf::Message &pMsg, int maintype, int subtype, void *adddata = nullptr, size_t addsize = 0);
-	void SendMsg(serverinfo *info, Msg *pMsg, void *adddata = nullptr, size_t addsize = 0);
+	void SendMsg(serverinfo *info, Msg &pMsg, void *adddata = nullptr, size_t addsize = 0);
 private:
 	// 根据类型添加服务器
 	virtual bool AddNewServer(serverinfo *info, int nServerID, int nType) = 0;

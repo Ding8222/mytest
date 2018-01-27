@@ -118,12 +118,13 @@ enum AuthRet_EC {
   AuthRet_EC_EC_OTHER = 0,
   AuthRet_EC_EC_SUCC = 1,
   AuthRet_EC_EC_FAIL = 2,
+  AuthRet_EC_EC_HANDSHAKE = 3,
   AuthRet_EC_AuthRet_EC_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   AuthRet_EC_AuthRet_EC_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool AuthRet_EC_IsValid(int value);
 const AuthRet_EC AuthRet_EC_EC_MIN = AuthRet_EC_EC_OTHER;
-const AuthRet_EC AuthRet_EC_EC_MAX = AuthRet_EC_EC_FAIL;
+const AuthRet_EC AuthRet_EC_EC_MAX = AuthRet_EC_EC_HANDSHAKE;
 const int AuthRet_EC_EC_ARRAYSIZE = AuthRet_EC_EC_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* AuthRet_EC_descriptor();
@@ -697,11 +698,26 @@ class Auth : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   ::std::string* release_setoken();
   void set_allocated_setoken(::std::string* setoken);
 
+  // string sSecret = 2;
+  void clear_ssecret();
+  static const int kSSecretFieldNumber = 2;
+  const ::std::string& ssecret() const;
+  void set_ssecret(const ::std::string& value);
+  #if LANG_CXX11
+  void set_ssecret(::std::string&& value);
+  #endif
+  void set_ssecret(const char* value);
+  void set_ssecret(const char* value, size_t size);
+  ::std::string* mutable_ssecret();
+  ::std::string* release_ssecret();
+  void set_allocated_ssecret(::std::string* ssecret);
+
   // @@protoc_insertion_point(class_scope:netData.Auth)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr setoken_;
+  ::google::protobuf::internal::ArenaStringPtr ssecret_;
   mutable int _cached_size_;
   friend struct ::protobuf_Login_2eproto::TableStruct;
   friend void ::protobuf_Login_2eproto::InitDefaultsAuthImpl();
@@ -795,6 +811,8 @@ class AuthRet : public ::google::protobuf::Message /* @@protoc_insertion_point(c
     AuthRet_EC_EC_SUCC;
   static const EC EC_FAIL =
     AuthRet_EC_EC_FAIL;
+  static const EC EC_HANDSHAKE =
+    AuthRet_EC_EC_HANDSHAKE;
   static inline bool EC_IsValid(int value) {
     return AuthRet_EC_IsValid(value);
   }
@@ -818,17 +836,46 @@ class AuthRet : public ::google::protobuf::Message /* @@protoc_insertion_point(c
 
   // accessors -------------------------------------------------------
 
+  // string ip = 3;
+  void clear_ip();
+  static const int kIpFieldNumber = 3;
+  const ::std::string& ip() const;
+  void set_ip(const ::std::string& value);
+  #if LANG_CXX11
+  void set_ip(::std::string&& value);
+  #endif
+  void set_ip(const char* value);
+  void set_ip(const char* value, size_t size);
+  ::std::string* mutable_ip();
+  ::std::string* release_ip();
+  void set_allocated_ip(::std::string* ip);
+
   // int32 nCode = 1;
   void clear_ncode();
   static const int kNCodeFieldNumber = 1;
   ::google::protobuf::int32 ncode() const;
   void set_ncode(::google::protobuf::int32 value);
 
+  // int32 nServerID = 2;
+  void clear_nserverid();
+  static const int kNServerIDFieldNumber = 2;
+  ::google::protobuf::int32 nserverid() const;
+  void set_nserverid(::google::protobuf::int32 value);
+
+  // int32 port = 4;
+  void clear_port();
+  static const int kPortFieldNumber = 4;
+  ::google::protobuf::int32 port() const;
+  void set_port(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:netData.AuthRet)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr ip_;
   ::google::protobuf::int32 ncode_;
+  ::google::protobuf::int32 nserverid_;
+  ::google::protobuf::int32 port_;
   mutable int _cached_size_;
   friend struct ::protobuf_Login_2eproto::TableStruct;
   friend void ::protobuf_Login_2eproto::InitDefaultsAuthRetImpl();
@@ -917,25 +964,25 @@ class Login : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
 
   // accessors -------------------------------------------------------
 
-  // string sHandShakeKey = 1;
-  void clear_shandshakekey();
-  static const int kSHandShakeKeyFieldNumber = 1;
-  const ::std::string& shandshakekey() const;
-  void set_shandshakekey(const ::std::string& value);
+  // string sToken = 1;
+  void clear_stoken();
+  static const int kSTokenFieldNumber = 1;
+  const ::std::string& stoken() const;
+  void set_stoken(const ::std::string& value);
   #if LANG_CXX11
-  void set_shandshakekey(::std::string&& value);
+  void set_stoken(::std::string&& value);
   #endif
-  void set_shandshakekey(const char* value);
-  void set_shandshakekey(const char* value, size_t size);
-  ::std::string* mutable_shandshakekey();
-  ::std::string* release_shandshakekey();
-  void set_allocated_shandshakekey(::std::string* shandshakekey);
+  void set_stoken(const char* value);
+  void set_stoken(const char* value, size_t size);
+  ::std::string* mutable_stoken();
+  ::std::string* release_stoken();
+  void set_allocated_stoken(::std::string* stoken);
 
   // @@protoc_insertion_point(class_scope:netData.Login)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr shandshakekey_;
+  ::google::protobuf::internal::ArenaStringPtr stoken_;
   mutable int _cached_size_;
   friend struct ::protobuf_Login_2eproto::TableStruct;
   friend void ::protobuf_Login_2eproto::InitDefaultsLoginImpl();
@@ -1246,6 +1293,59 @@ inline void Auth::set_allocated_setoken(::std::string* setoken) {
   // @@protoc_insertion_point(field_set_allocated:netData.Auth.sEtoken)
 }
 
+// string sSecret = 2;
+inline void Auth::clear_ssecret() {
+  ssecret_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Auth::ssecret() const {
+  // @@protoc_insertion_point(field_get:netData.Auth.sSecret)
+  return ssecret_.GetNoArena();
+}
+inline void Auth::set_ssecret(const ::std::string& value) {
+  
+  ssecret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:netData.Auth.sSecret)
+}
+#if LANG_CXX11
+inline void Auth::set_ssecret(::std::string&& value) {
+  
+  ssecret_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:netData.Auth.sSecret)
+}
+#endif
+inline void Auth::set_ssecret(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  ssecret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:netData.Auth.sSecret)
+}
+inline void Auth::set_ssecret(const char* value, size_t size) {
+  
+  ssecret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:netData.Auth.sSecret)
+}
+inline ::std::string* Auth::mutable_ssecret() {
+  
+  // @@protoc_insertion_point(field_mutable:netData.Auth.sSecret)
+  return ssecret_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Auth::release_ssecret() {
+  // @@protoc_insertion_point(field_release:netData.Auth.sSecret)
+  
+  return ssecret_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Auth::set_allocated_ssecret(::std::string* ssecret) {
+  if (ssecret != NULL) {
+    
+  } else {
+    
+  }
+  ssecret_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ssecret);
+  // @@protoc_insertion_point(field_set_allocated:netData.Auth.sSecret)
+}
+
 // -------------------------------------------------------------------
 
 // AuthRet
@@ -1264,61 +1364,142 @@ inline void AuthRet::set_ncode(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:netData.AuthRet.nCode)
 }
 
-// -------------------------------------------------------------------
-
-// Login
-
-// string sHandShakeKey = 1;
-inline void Login::clear_shandshakekey() {
-  shandshakekey_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// int32 nServerID = 2;
+inline void AuthRet::clear_nserverid() {
+  nserverid_ = 0;
 }
-inline const ::std::string& Login::shandshakekey() const {
-  // @@protoc_insertion_point(field_get:netData.Login.sHandShakeKey)
-  return shandshakekey_.GetNoArena();
+inline ::google::protobuf::int32 AuthRet::nserverid() const {
+  // @@protoc_insertion_point(field_get:netData.AuthRet.nServerID)
+  return nserverid_;
 }
-inline void Login::set_shandshakekey(const ::std::string& value) {
+inline void AuthRet::set_nserverid(::google::protobuf::int32 value) {
   
-  shandshakekey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:netData.Login.sHandShakeKey)
+  nserverid_ = value;
+  // @@protoc_insertion_point(field_set:netData.AuthRet.nServerID)
+}
+
+// string ip = 3;
+inline void AuthRet::clear_ip() {
+  ip_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AuthRet::ip() const {
+  // @@protoc_insertion_point(field_get:netData.AuthRet.ip)
+  return ip_.GetNoArena();
+}
+inline void AuthRet::set_ip(const ::std::string& value) {
+  
+  ip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:netData.AuthRet.ip)
 }
 #if LANG_CXX11
-inline void Login::set_shandshakekey(::std::string&& value) {
+inline void AuthRet::set_ip(::std::string&& value) {
   
-  shandshakekey_.SetNoArena(
+  ip_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:netData.Login.sHandShakeKey)
+  // @@protoc_insertion_point(field_set_rvalue:netData.AuthRet.ip)
 }
 #endif
-inline void Login::set_shandshakekey(const char* value) {
+inline void AuthRet::set_ip(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
-  shandshakekey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:netData.Login.sHandShakeKey)
+  ip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:netData.AuthRet.ip)
 }
-inline void Login::set_shandshakekey(const char* value, size_t size) {
+inline void AuthRet::set_ip(const char* value, size_t size) {
   
-  shandshakekey_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  ip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:netData.Login.sHandShakeKey)
+  // @@protoc_insertion_point(field_set_pointer:netData.AuthRet.ip)
 }
-inline ::std::string* Login::mutable_shandshakekey() {
+inline ::std::string* AuthRet::mutable_ip() {
   
-  // @@protoc_insertion_point(field_mutable:netData.Login.sHandShakeKey)
-  return shandshakekey_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  // @@protoc_insertion_point(field_mutable:netData.AuthRet.ip)
+  return ip_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* Login::release_shandshakekey() {
-  // @@protoc_insertion_point(field_release:netData.Login.sHandShakeKey)
+inline ::std::string* AuthRet::release_ip() {
+  // @@protoc_insertion_point(field_release:netData.AuthRet.ip)
   
-  return shandshakekey_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return ip_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void Login::set_allocated_shandshakekey(::std::string* shandshakekey) {
-  if (shandshakekey != NULL) {
+inline void AuthRet::set_allocated_ip(::std::string* ip) {
+  if (ip != NULL) {
     
   } else {
     
   }
-  shandshakekey_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), shandshakekey);
-  // @@protoc_insertion_point(field_set_allocated:netData.Login.sHandShakeKey)
+  ip_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ip);
+  // @@protoc_insertion_point(field_set_allocated:netData.AuthRet.ip)
+}
+
+// int32 port = 4;
+inline void AuthRet::clear_port() {
+  port_ = 0;
+}
+inline ::google::protobuf::int32 AuthRet::port() const {
+  // @@protoc_insertion_point(field_get:netData.AuthRet.port)
+  return port_;
+}
+inline void AuthRet::set_port(::google::protobuf::int32 value) {
+  
+  port_ = value;
+  // @@protoc_insertion_point(field_set:netData.AuthRet.port)
+}
+
+// -------------------------------------------------------------------
+
+// Login
+
+// string sToken = 1;
+inline void Login::clear_stoken() {
+  stoken_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& Login::stoken() const {
+  // @@protoc_insertion_point(field_get:netData.Login.sToken)
+  return stoken_.GetNoArena();
+}
+inline void Login::set_stoken(const ::std::string& value) {
+  
+  stoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:netData.Login.sToken)
+}
+#if LANG_CXX11
+inline void Login::set_stoken(::std::string&& value) {
+  
+  stoken_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:netData.Login.sToken)
+}
+#endif
+inline void Login::set_stoken(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  stoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:netData.Login.sToken)
+}
+inline void Login::set_stoken(const char* value, size_t size) {
+  
+  stoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:netData.Login.sToken)
+}
+inline ::std::string* Login::mutable_stoken() {
+  
+  // @@protoc_insertion_point(field_mutable:netData.Login.sToken)
+  return stoken_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* Login::release_stoken() {
+  // @@protoc_insertion_point(field_release:netData.Login.sToken)
+  
+  return stoken_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void Login::set_allocated_stoken(::std::string* stoken) {
+  if (stoken != NULL) {
+    
+  } else {
+    
+  }
+  stoken_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), stoken);
+  // @@protoc_insertion_point(field_set_allocated:netData.Login.sToken)
 }
 
 #ifdef __GNUC__

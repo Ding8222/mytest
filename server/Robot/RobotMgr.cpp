@@ -237,8 +237,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				netData::AuthRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				log_error("AuthRet:%d", msg.ncode());
-				break;
+				log_error("AuthRet:%d,ip:%s,port:%d", msg.ncode(), msg.ip().c_str(), msg.port());
 			}
 			default:
 			{

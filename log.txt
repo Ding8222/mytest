@@ -1,0 +1,10 @@
+发消息的时候隐藏clientid、serverid
+
+将connect改成多连接支持的
+
+服务器启动后的连接顺序、状态同步，在所有服务器启动完成后才允许client连接
+服务器的关闭处理（可以待client登录创角这块完成后处理）
+
+client连接消息顺序，不同情况下重连的处理
+
+client的login处理

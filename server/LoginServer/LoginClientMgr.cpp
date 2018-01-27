@@ -39,7 +39,7 @@ int64 CLoginClientMgr::OnNewClient()
 	MessagePack msg;
 	msg.SetMainType(SERVER_TYPE_MAIN);
 	msg.SetSubType(SVR_SUB_NEW_CLIENT);
-	CLoginCenterConnect::Instance().SendClientMsgToSvr(&msg, nClientID);
+	CLoginCenterConnect::Instance().SendMsgToServer(msg, nClientID);
 	return nClientID;
 }
 
@@ -104,7 +104,7 @@ void CLoginClientMgr::ProcessClientMsg(CClient *cl)
 					sendMsg.set_sserverkey(reinterpret_cast<const char*>(ServerKey.data()), ServerKey.size());
 					
 					// 算出hmac
-
+					AddClientSecret(cl->GetClientID(),"123");
 					SendMsg(cl,sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_HANDSHAKE_RET);
 					break;
 				}
@@ -125,7 +125,16 @@ void CLoginClientMgr::ProcessClientMsg(CClient *cl)
 					netData::Auth msg;
 					_CHECK_PARSE_(pMsg, msg);
 					
-					CLoginCenterConnect::Instance().SendClientMsgToSvr(pMsg, cl->GetClientID());
+					msg.set_ssecret(GetClientSecret(cl->GetClientID()));
+					if(!msg.ssecret().empty())
+						CLoginCenterConnect::Instance().SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH, cl->GetClientID());
+					else
+					{
+						//要求先握手
+						netData::AuthRet sendMsg;
+						sendMsg.set_ncode(netData::AuthRet::EC_HANDSHAKE);
+						SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET);
+					}
 					break;
 				}
 				default:

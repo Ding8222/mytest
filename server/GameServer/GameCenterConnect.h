@@ -24,6 +24,7 @@ public:
 	void ConnectDisconnect();
 	// 处理远程服务器发来的消息
 	void ProcessMsg(connector *_con);
+	
 private:
 
 };

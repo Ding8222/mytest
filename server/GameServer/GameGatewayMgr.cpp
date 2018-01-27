@@ -56,29 +56,52 @@ const char *CGameGatewayMgr::GetMsgNumInfo()
 	return tempbuf;
 }
 
-void CGameGatewayMgr::SendMsgToServer(Msg *pMsg, int nGateID, int nClientID)
+void CGameGatewayMgr::SendMsgToServer(Msg &pMsg, int nType, int nServerID, int64 nClientID)
 {
-	if (nGateID > 0)
+	if (nServerID > 0)
 	{
-		serverinfo *info = FindServer(nGateID, ServerEnum::EST_GATE);
+		serverinfo *info = FindServer(nServerID, ServerEnum::EST_GATE);
 		if (info)
 		{
 			msgtail tail;
-			tail.type = msgtail::enum_type_to_client;
 			tail.id = nClientID;
-			info->SendMsg(pMsg, &tail, sizeof(tail));
+			SendMsg(info, pMsg, &tail, sizeof(tail));
 		}
 		else
-			log_error("请求发送消息到未知的网关,，网关ID:[%d]", nGateID);
+			log_error("请求发送消息到未知的网关,，网关ID:[%d]", nServerID);
 	}
 	else
 	{
 		msgtail tail;
-		tail.type = msgtail::enum_type_to_client;
 		tail.id = nClientID;
 		for (std::map<int, serverinfo *>::iterator itr = m_GateList.begin(); itr != m_GateList.end(); ++itr)
 		{
-			itr->second->SendMsg(pMsg, &tail, sizeof(tail));
+			SendMsg(itr->second, pMsg, &tail, sizeof(tail));
+		}
+	}
+}
+
+void CGameGatewayMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int nServerID, int64 nClientID)
+{
+	if (nServerID > 0)
+	{
+		serverinfo *info = FindServer(nServerID, ServerEnum::EST_GATE);
+		if (info)
+		{
+			msgtail tail;
+			tail.id = nClientID;
+			SendMsg(info, pMsg, maintype, subtype, &tail, sizeof(tail));
+		}
+		else
+			log_error("请求发送消息到未知的网关,，网关ID:[%d]", nServerID);
+	}
+	else
+	{
+		msgtail tail;
+		tail.id = nClientID;
+		for (std::map<int, serverinfo *>::iterator itr = m_GateList.begin(); itr != m_GateList.end(); ++itr)
+		{
+			SendMsg(itr->second, pMsg, maintype, subtype, &tail, sizeof(tail));
 		}
 	}
 }
@@ -126,6 +149,14 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				info->SetPingTime(g_currenttime);
 				break;
 			}
+			case SVR_SUB_NEW_CLIENT:
+			{
+				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+				
+				AddNewClientSvr(info->GetServerType(), info->GetServerID(), tl->id);
+				break;
+			}
 			default:
 			{
 			}
@@ -141,10 +172,8 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				//获取尾巴，看看是从哪个客户端来的消息
 				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
 				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
-				if (msgtail::enum_type_from_client == tl->type)
-				{
-					ProcessClientMsg(info->GetServerID(), tl->id, pMsg);
-				}
+
+				ProcessClientMsg(info->GetServerID(), tl->id, pMsg);
 				break;
 			}
 			}
@@ -155,7 +184,12 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 
 void CGameGatewayMgr::ProcessClientMsg(int gateid, int64 clientid, Msg *pMsg)
 {
-	
+	switch (pMsg->GetMainType())
+	{
+	case SERVER_TYPE_MAIN:
+	default:
+		break;
+	}
 }
 
 bool CGameGatewayMgr::AddNewServer(serverinfo *info, int nServerID, int nType)
@@ -205,5 +239,32 @@ serverinfo *CGameGatewayMgr::FindServer(int nServerID, int nType)
 	std::map<int, serverinfo*>::iterator itr = _pList->find(nServerID);
 	if (itr != _pList->end())
 		return itr->second;
+	return nullptr;
+}
+
+bool CGameGatewayMgr::AddNewClientSvr(int servertype, int serverid, int64 clientid)
+{
+	auto iter = m_ClientSvr.find(clientid);
+	if (iter == m_ClientSvr.end())
+	{
+		m_ClientSvr.insert(std::make_pair(clientid, ClientSvr(servertype, serverid, clientid)));
+	}
+	else
+	{
+		// todo
+		// T下现有的
+	}
+
+	return true;
+}
+
+ClientSvr *CGameGatewayMgr::FindClientSvr(int64 clientid)
+{
+	auto iter = m_ClientSvr.find(clientid);
+	if (iter != m_ClientSvr.end())
+	{
+		return &(iter->second);
+	}
+
 	return nullptr;
 }

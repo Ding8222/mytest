@@ -24,13 +24,11 @@ public:
 
 	bool IsReady() { return m_IsReady; }
 
-	void SendMsg(google::protobuf::Message *pMsg, int maintype, int subtype, void *adddata = nullptr, size_t addsize = 0);
-	void SendMsg(Msg *pMsg, void *adddata = nullptr, size_t addsize = 0);
+	void SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int64 clientid);
+	void SendMsgToServer(Msg &pMsg, int64 clientid);
 
-	void SendClientMsgToSvr(google::protobuf::Message *pMsg, int maintype, int subtype, int64 clientid);
-	void SendClientMsgToSvr(Msg *pMsg, int64 clientid);
-
-	void SendMsgToClient(google::protobuf::Message *pMsg, int maintype, int subtype, int64 clientid);
+	void SendMsg(google::protobuf::Message &pMsg, int maintype, int subtype, void *adddata = 0, size_t addsize = 0);
+	void SendMsg(Msg &pMsg, void *adddata = 0, size_t addsize = 0);
 
 	void ResetMsgNum();
 	int GetRecvMsgNum();

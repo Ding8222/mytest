@@ -37,7 +37,7 @@ namespace protobuf_ServerMsg_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[4];
+  static const ::google::protobuf::internal::ParseTable schema[5];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -51,17 +51,23 @@ void InitDefaultsServerRegisterRetImpl();
 void InitDefaultsServerRegisterRet();
 void InitDefaultsAddNewClientImpl();
 void InitDefaultsAddNewClient();
+void InitDefaultsClientTokenImpl();
+void InitDefaultsClientToken();
 inline void InitDefaults() {
   InitDefaultsPing();
   InitDefaultsServerRegister();
   InitDefaultsServerRegisterRet();
   InitDefaultsAddNewClient();
+  InitDefaultsClientToken();
 }
 }  // namespace protobuf_ServerMsg_2eproto
 namespace svrData {
 class AddNewClient;
 class AddNewClientDefaultTypeInternal;
 extern AddNewClientDefaultTypeInternal _AddNewClient_default_instance_;
+class ClientToken;
+class ClientTokenDefaultTypeInternal;
+extern ClientTokenDefaultTypeInternal _ClientToken_default_instance_;
 class Ping;
 class PingDefaultTypeInternal;
 extern PingDefaultTypeInternal _Ping_default_instance_;
@@ -515,13 +521,149 @@ class AddNewClient : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // accessors -------------------------------------------------------
 
+  // int32 nClientCountNow = 1;
+  void clear_nclientcountnow();
+  static const int kNClientCountNowFieldNumber = 1;
+  ::google::protobuf::int32 nclientcountnow() const;
+  void set_nclientcountnow(::google::protobuf::int32 value);
+
+  // int32 nClientCountMax = 2;
+  void clear_nclientcountmax();
+  static const int kNClientCountMaxFieldNumber = 2;
+  ::google::protobuf::int32 nclientcountmax() const;
+  void set_nclientcountmax(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:svrData.AddNewClient)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int32 nclientcountnow_;
+  ::google::protobuf::int32 nclientcountmax_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsAddNewClientImpl();
+};
+// -------------------------------------------------------------------
+
+class ClientToken : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:svrData.ClientToken) */ {
+ public:
+  ClientToken();
+  virtual ~ClientToken();
+
+  ClientToken(const ClientToken& from);
+
+  inline ClientToken& operator=(const ClientToken& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ClientToken(ClientToken&& from) noexcept
+    : ClientToken() {
+    *this = ::std::move(from);
+  }
+
+  inline ClientToken& operator=(ClientToken&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ClientToken& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ClientToken* internal_default_instance() {
+    return reinterpret_cast<const ClientToken*>(
+               &_ClientToken_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    4;
+
+  void Swap(ClientToken* other);
+  friend void swap(ClientToken& a, ClientToken& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ClientToken* New() const PROTOBUF_FINAL { return New(NULL); }
+
+  ClientToken* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL;
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ClientToken& from);
+  void MergeFrom(const ClientToken& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ClientToken* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string sEtoken = 1;
+  void clear_setoken();
+  static const int kSEtokenFieldNumber = 1;
+  const ::std::string& setoken() const;
+  void set_setoken(const ::std::string& value);
+  #if LANG_CXX11
+  void set_setoken(::std::string&& value);
+  #endif
+  void set_setoken(const char* value);
+  void set_setoken(const char* value, size_t size);
+  ::std::string* mutable_setoken();
+  ::std::string* release_setoken();
+  void set_allocated_setoken(::std::string* setoken);
+
+  // bytes sSecret = 2;
+  void clear_ssecret();
+  static const int kSSecretFieldNumber = 2;
+  const ::std::string& ssecret() const;
+  void set_ssecret(const ::std::string& value);
+  #if LANG_CXX11
+  void set_ssecret(::std::string&& value);
+  #endif
+  void set_ssecret(const char* value);
+  void set_ssecret(const void* value, size_t size);
+  ::std::string* mutable_ssecret();
+  ::std::string* release_ssecret();
+  void set_allocated_ssecret(::std::string* ssecret);
+
+  // @@protoc_insertion_point(class_scope:svrData.ClientToken)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr setoken_;
+  ::google::protobuf::internal::ArenaStringPtr ssecret_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
+  friend void ::protobuf_ServerMsg_2eproto::InitDefaultsClientTokenImpl();
 };
 // ===================================================================
 
@@ -602,9 +744,149 @@ inline void ServerRegisterRet::set_nretcode(::google::protobuf::int32 value) {
 
 // AddNewClient
 
+// int32 nClientCountNow = 1;
+inline void AddNewClient::clear_nclientcountnow() {
+  nclientcountnow_ = 0;
+}
+inline ::google::protobuf::int32 AddNewClient::nclientcountnow() const {
+  // @@protoc_insertion_point(field_get:svrData.AddNewClient.nClientCountNow)
+  return nclientcountnow_;
+}
+inline void AddNewClient::set_nclientcountnow(::google::protobuf::int32 value) {
+  
+  nclientcountnow_ = value;
+  // @@protoc_insertion_point(field_set:svrData.AddNewClient.nClientCountNow)
+}
+
+// int32 nClientCountMax = 2;
+inline void AddNewClient::clear_nclientcountmax() {
+  nclientcountmax_ = 0;
+}
+inline ::google::protobuf::int32 AddNewClient::nclientcountmax() const {
+  // @@protoc_insertion_point(field_get:svrData.AddNewClient.nClientCountMax)
+  return nclientcountmax_;
+}
+inline void AddNewClient::set_nclientcountmax(::google::protobuf::int32 value) {
+  
+  nclientcountmax_ = value;
+  // @@protoc_insertion_point(field_set:svrData.AddNewClient.nClientCountMax)
+}
+
+// -------------------------------------------------------------------
+
+// ClientToken
+
+// string sEtoken = 1;
+inline void ClientToken::clear_setoken() {
+  setoken_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ClientToken::setoken() const {
+  // @@protoc_insertion_point(field_get:svrData.ClientToken.sEtoken)
+  return setoken_.GetNoArena();
+}
+inline void ClientToken::set_setoken(const ::std::string& value) {
+  
+  setoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:svrData.ClientToken.sEtoken)
+}
+#if LANG_CXX11
+inline void ClientToken::set_setoken(::std::string&& value) {
+  
+  setoken_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:svrData.ClientToken.sEtoken)
+}
+#endif
+inline void ClientToken::set_setoken(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  setoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:svrData.ClientToken.sEtoken)
+}
+inline void ClientToken::set_setoken(const char* value, size_t size) {
+  
+  setoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:svrData.ClientToken.sEtoken)
+}
+inline ::std::string* ClientToken::mutable_setoken() {
+  
+  // @@protoc_insertion_point(field_mutable:svrData.ClientToken.sEtoken)
+  return setoken_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ClientToken::release_setoken() {
+  // @@protoc_insertion_point(field_release:svrData.ClientToken.sEtoken)
+  
+  return setoken_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ClientToken::set_allocated_setoken(::std::string* setoken) {
+  if (setoken != NULL) {
+    
+  } else {
+    
+  }
+  setoken_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), setoken);
+  // @@protoc_insertion_point(field_set_allocated:svrData.ClientToken.sEtoken)
+}
+
+// bytes sSecret = 2;
+inline void ClientToken::clear_ssecret() {
+  ssecret_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ClientToken::ssecret() const {
+  // @@protoc_insertion_point(field_get:svrData.ClientToken.sSecret)
+  return ssecret_.GetNoArena();
+}
+inline void ClientToken::set_ssecret(const ::std::string& value) {
+  
+  ssecret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:svrData.ClientToken.sSecret)
+}
+#if LANG_CXX11
+inline void ClientToken::set_ssecret(::std::string&& value) {
+  
+  ssecret_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:svrData.ClientToken.sSecret)
+}
+#endif
+inline void ClientToken::set_ssecret(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  ssecret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:svrData.ClientToken.sSecret)
+}
+inline void ClientToken::set_ssecret(const void* value, size_t size) {
+  
+  ssecret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:svrData.ClientToken.sSecret)
+}
+inline ::std::string* ClientToken::mutable_ssecret() {
+  
+  // @@protoc_insertion_point(field_mutable:svrData.ClientToken.sSecret)
+  return ssecret_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ClientToken::release_ssecret() {
+  // @@protoc_insertion_point(field_release:svrData.ClientToken.sSecret)
+  
+  return ssecret_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ClientToken::set_allocated_ssecret(::std::string* ssecret) {
+  if (ssecret != NULL) {
+    
+  } else {
+    
+  }
+  ssecret_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ssecret);
+  // @@protoc_insertion_point(field_set_allocated:svrData.ClientToken.sSecret)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

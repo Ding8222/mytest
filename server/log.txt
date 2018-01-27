@@ -1,3 +1,0 @@
-发消息的时候隐藏clientid、serverid
-
-将connect改成多连接支持的

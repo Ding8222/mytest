@@ -31,5 +31,13 @@ message ServerRegisterRet
 // 0-4 新的client连接上来了
 message AddNewClient
 {
+	int32 nClientCountNow = 1;	//服务器当前client数量
+	int32 nClientCountMax = 2;	//服务器最大client数量
+}
 
+// 0-5 ClientToken
+message ClientToken
+{
+	string sEtoken = 1;	//账号信息
+	bytes sSecret = 2;	//秘钥
 }

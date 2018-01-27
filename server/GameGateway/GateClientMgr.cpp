@@ -2,6 +2,10 @@
 #include "Client.h"
 #include "GateClientMgr.h"
 #include "GameConnect.h"
+#include "Config.h"
+
+#include "LoginType.h"
+#include "Login.pb.h"
 
 extern int64 g_currenttime;
 
@@ -66,14 +70,53 @@ void CGateClientMgr::ProcessClientMsg(CClient *cl)
 				if (CGameConnect::Instance().IsReady())
 				{
 					msgtail tail;
-					tail.type = msgtail::enum_type_from_client;
 					tail.id = cl->GetClientID();
-					CGameConnect::Instance().SendMsg(pMsg, &tail, sizeof(tail));
+					CGameConnect::Instance().SendMsg(*pMsg, &tail, sizeof(tail));
 				}
 			}
 			else
 			{
-				// 未认证的，进行认证
+				// 未认证
+				switch (pMsg->GetMainType())
+				{
+				case LOGIN_TYPE_MAIN:
+				{
+					switch (pMsg->GetSubType())
+					{
+					case SVR_SUB_PING:
+					{
+						cl->SendMsg(pMsg);
+						cl->SetPingTime(g_currenttime);
+						break;
+					}
+					case LOGIN_SUB_LOGIN:
+					{
+						netData::Login msg;
+						_CHECK_PARSE_(pMsg, msg);
+
+						if (CGameConnect::Instance().AddNewClientSvrID(msg.stoken(), ServerEnum::EST_GATE, CConfig::Instance().GetServerID(), cl->GetClientID()))
+						{
+							// 认证成功
+							MessagePack msg;
+							msg.SetMainType(SERVER_TYPE_MAIN);
+							msg.SetSubType(SVR_SUB_NEW_CLIENT);
+							CGameConnect::Instance().SendMsgToServer(msg, cl->GetClientID());
+
+							cl->SetAlreadyAuth();
+						}
+						else
+						{
+							// 认证失败
+						}
+						break;
+					}
+					default:
+					{
+					}
+					}
+					break;
+				}
+				}
 			}
 		}
 		}

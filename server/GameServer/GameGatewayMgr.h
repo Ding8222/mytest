@@ -23,7 +23,9 @@ public:
 	void ResetMsgNum();
 	const char *GetMsgNumInfo();
 
-	void SendMsgToServer(Msg *pMsg, int nGateID, int nClientID = 0);
+	void SendMsgToServer(Msg &pMsg, int nType, int nServerID = 0, int64 nClientID = 0);
+	void SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int nServerID = 0, int64 nClientID = 0);
+
 	void OnConnectDisconnect(serverinfo *info, bool overtime = false);
 
 	// 处理服务器发来的消息
@@ -35,6 +37,11 @@ private:
 	bool AddNewServer(serverinfo *info, int nServerID, int nType);
 	serverinfo *FindServer(int nServerID, int nType);
 
+	// 有新的client连接进来
+	bool AddNewClientSvr(int servertype, int serverid, int64 clientid);
+	ClientSvr *FindClientSvr(int64 clientid);
 private:
 	std::map<int, serverinfo *> m_GateList;
+
+	std::unordered_map<int64, ClientSvr> m_ClientSvr;
 };

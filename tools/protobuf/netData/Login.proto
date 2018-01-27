@@ -42,6 +42,7 @@ message Auth
 {
 	//token:base64encode(账号)@base64encode(要登陆的服务器ID)@base64encode(密码)
 	string sEtoken = 1;	//base64encode(desencode(secret,token))
+	string sSecret = 2; //client不用填写
 }
 
 // 2-6 认证返回
@@ -52,8 +53,12 @@ message AuthRet
 		EC_OTHER = 0;
 		EC_SUCC = 1;
 		EC_FAIL = 2;
+		EC_HANDSHAKE = 3;
 	};
 	int32 nCode = 1;
+	int32 nServerID = 2;	//返回要连接的服务器ID
+	string ip = 3;			//返回要去连接的ip地址
+	int32 port = 4;			//返回要去连接的port
 }
 
 // 2-7 登陆
@@ -61,5 +66,5 @@ message Login
 {
 	// handshake = base64encode(token.user)@base64encode(token.server)#base64encode(subid):index)
 	// hmac = hmac64(hashkey(handshake), secret)
-	string sHandShakeKey = 1;	// handshake:base64encode(hmac)
+	string sToken = 1;	// handshake:base64encode(hmac)
 }

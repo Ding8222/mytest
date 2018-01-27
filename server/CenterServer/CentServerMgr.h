@@ -6,21 +6,6 @@
 #pragma once
 #include "ServerMgr.h"
 
-#pragma pack(push, 1)
-struct ClientSvr
-{
-	ClientSvr(int servertype, int serverid, int64 clientid)
-	{
-		ServerType = servertype;
-		ServerID = serverid;
-		ClientID = clientid;
-	}
-	int ServerType;
-	int ServerID;
-	int64 ClientID;
-};
-
-#pragma pack(pop)
 class CCentServerMgr :public CServerMgr
 {
 public:
@@ -38,7 +23,8 @@ public:
 	void ResetMsgNum();
 	const char *GetMsgNumInfo();
 
-	void SendMsgToServer(Msg *pMsg, int nType, int nServerID = 0);
+	void SendMsgToServer(Msg &pMsg, int nType, int nServerID = 0, int64 nClientID = 0);
+	void SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int nServerID = 0, int64 nClientID = 0);
 	void OnConnectDisconnect(serverinfo *info, bool overtime = false);
 
 	void ProcessMsg(serverinfo *info);

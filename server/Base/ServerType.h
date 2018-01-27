@@ -13,3 +13,6 @@
 
 // 新的client连接上来了
 #define SVR_SUB_NEW_CLIENT 4
+
+// 通知game玩家的token
+#define SVR_SUB_CLIENT_TOKEN 5

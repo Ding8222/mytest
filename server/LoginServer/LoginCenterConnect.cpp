@@ -70,17 +70,15 @@ void CLoginCenterConnect::ProcessMsg(connector *_con)
 			{
 				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
 				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
-				if (msgtail::enum_type_to_client == tl->type)
-				{
-					netData::AuthRet msg;
-					_CHECK_PARSE_(pMsg, msg);
 
-					if (msg.ncode() == netData::AuthRet::EC_SUCC)
-					{
-						CLoginClientMgr::Instance().SetClientAuthSucceed(tl->id);
-					}
-					CLoginClientMgr::Instance().SendMsg(tl->id, pMsg);
+				netData::AuthRet msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				if (msg.ncode() == netData::AuthRet::EC_SUCC)
+				{
+					CLoginClientMgr::Instance().SetClientAuthSucceed(tl->id);
 				}
+				CLoginClientMgr::Instance().SendMsg(tl->id, pMsg);
 				break;
 			}
 			default:

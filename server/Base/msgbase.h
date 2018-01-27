@@ -560,18 +560,10 @@ private:
 
 struct msgtail
 {
-	enum tail_type
-	{
-		enum_type_unknow = 0,
-		enum_type_from_client,
-		enum_type_to_client,
-	};
 	msgtail()
 	{
-		type = enum_type_unknow;
 		id = 0;
 	}
-	char type;
 	int64 id;	//此id根据情况，含义不同，可能是gate的客户端id，也可能是逻辑服的id
 };
 
