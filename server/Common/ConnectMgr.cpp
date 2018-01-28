@@ -274,7 +274,7 @@ void CConnectMgr::ProcessRegister(connector *con)
 					case svrData::ServerRegisterRet::EC_SUCC:
 					{
 						// 认证成功
-						con->SetReady();
+						con->SetReady(true);
 						log_error("注册到远程服务器成功！");
 						break;
 					}

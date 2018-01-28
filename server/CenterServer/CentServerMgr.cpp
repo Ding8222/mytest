@@ -184,7 +184,7 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 				SendMsg(iterFind->second, pMsg, maintype, subtype, &tail, sizeof(tail));
 			}
 			else
-				log_error("请求发送消息到未知的服务器,，服务器ID:[%d]", nServerID);
+				log_error("请求发送消息到未知的服务器，服务器ID:[%d]", nServerID);
 		}
 		else
 		{
@@ -371,16 +371,16 @@ void CCentServerMgr::ProcessDBMsg(serverinfo *info, Msg *pMsg)
 			{
 				netData::AuthRet msg;
 				_CHECK_PARSE_(pMsg, msg);
-				msg.set_nserverid(4000);
+				msg.set_nserverid(3000);
 				msg.set_ip("127.0.0.1");
-				msg.set_port(30014);
+				msg.set_port(30012);
 
 				SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, cl->ServerType, cl->ServerID, cl->ClientID);
 
 				svrData::ClientToken sendMsg;
 				sendMsg.set_setoken(cl->Token);
 				sendMsg.set_ssecret(cl->Secret);
-				SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GAME, msg.nserverid(), cl->ClientID);
+				SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GAME, 4000, cl->ClientID);
 			}
 			break;
 		}

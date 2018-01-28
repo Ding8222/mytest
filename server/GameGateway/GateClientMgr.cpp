@@ -5,6 +5,7 @@
 #include "Config.h"
 
 #include "LoginType.h"
+#include "ClientType.h"
 #include "Login.pb.h"
 
 extern int64 g_currenttime;
@@ -46,11 +47,11 @@ void CGateClientMgr::ProcessClientMsg(CClient *cl)
 			break;
 		switch (pMsg->GetMainType())
 		{
-		case SERVER_TYPE_MAIN:
+		case CLIENT_TYPE_MAIN:
 		{
 			switch (pMsg->GetSubType())
 			{
-			case SVR_SUB_PING:
+			case CLIENT_SUB_PING:
 			{
 				cl->SendMsg(pMsg);
 				cl->SetPingTime(g_currenttime);
@@ -90,12 +91,6 @@ void CGateClientMgr::ProcessClientAuth(CClient *cl, Msg *pMsg)
 	{
 		switch (pMsg->GetSubType())
 		{
-		case SVR_SUB_PING:
-		{
-			cl->SendMsg(pMsg);
-			cl->SetPingTime(g_currenttime);
-			break;
-		}
 		case LOGIN_SUB_LOGIN:
 		{
 			netData::Login msg;
@@ -104,16 +99,18 @@ void CGateClientMgr::ProcessClientAuth(CClient *cl, Msg *pMsg)
 			if (CGameConnect::Instance().AddNewClientSvrID(msg.stoken(), ServerEnum::EST_GATE, CConfig::Instance().GetServerID(), cl->GetClientID()))
 			{
 				// 认证成功
-				MessagePack msg;
-				msg.SetMainType(SERVER_TYPE_MAIN);
-				msg.SetSubType(SVR_SUB_NEW_CLIENT);
-				CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), msg, cl->GetClientID());
+				MessagePack sendMsg;
+				sendMsg.SetMainType(SERVER_TYPE_MAIN);
+				sendMsg.SetSubType(SVR_SUB_NEW_CLIENT);
+				CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, cl->GetClientID());
 
 				cl->SetAlreadyAuth();
+				log_error("新的客户端认证成功！token:%s", msg.stoken().c_str());
 			}
 			else
 			{
 				// 认证失败
+				log_error("新的客户端认证失败！token:%s", msg.stoken().c_str());
 			}
 			break;
 		}

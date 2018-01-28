@@ -3,6 +3,9 @@
 #include "serverinfo.h"
 #include "Config.h"
 
+#include "LoginType.h"
+#include "Login.pb.h"
+
 extern int64 g_currenttime;
 
 static const int s_backlog = 16;
@@ -155,6 +158,12 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
 				
 				AddNewClientSvr(info->GetServerType(), info->GetServerID(), tl->id);
+
+				//通知CLient登录成功
+				netData::LoginRet sendMsg;
+				sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
+
+				SendMsgToServer(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, ServerEnum::EST_GATE, 0, tl->id);
 				break;
 			}
 			default:
@@ -191,7 +200,21 @@ void CGameGatewayMgr::ProcessClientMsg(int gateid, int64 clientid, Msg *pMsg)
 {
 	switch (pMsg->GetMainType())
 	{
-	case SERVER_TYPE_MAIN:
+	case LOGIN_TYPE_MAIN:
+	{
+		switch (pMsg->GetSubType())
+		{
+		case LOGIN_SUB_PLAYER_LIST:
+		{
+
+			break;
+		}
+		default:
+		{
+		}
+		}
+		break;
+	}
 	default:
 		break;
 	}

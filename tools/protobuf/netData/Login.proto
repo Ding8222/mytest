@@ -68,3 +68,74 @@ message Login
 	// hmac = hmac64(hashkey(handshake), secret)
 	string sToken = 1;	// handshake:base64encode(hmac)
 }
+
+// 2-8 登录返回
+message LoginRet
+{
+	enum EC
+	{
+		EC_OTHER = 0;
+		EC_SUCC = 1;
+		EC_FAIL = 2;
+	};
+	int32 nCode = 1;
+}
+
+message PlayerLite
+{
+	int64 uid = 1;
+	string sName = 2;
+	int32 nJob = 3;
+	int32 nSex = 4;
+}
+
+// 2-9 请求角色列表
+message PlayerList
+{
+	// 空消息
+}
+
+// 2-10 返回角色列表
+message PlayerListRet
+{
+	repeated PlayerLite list = 1;
+}
+
+// 2-11 请求创建角色
+message CreatePlayer
+{
+	string sName = 1;
+	int32 nJob = 2;
+	int32 nSex = 3;
+}
+
+// 2-12 创建角色返回
+message CreatePlayerRet
+{
+	enum EC
+	{
+		EC_OTHER = 0;
+		EC_SUCC = 1;
+		EC_FAIL = 2;
+	};
+	int32 nCode = 1;
+	PlayerLite player = 2;
+}
+
+// 2-13 请求选择角色
+message SelectPlayer
+{
+	int64 uid = 1;
+}
+
+// 2-14 选择角色返回
+message SelectPlayerRet
+{
+	enum EC
+	{
+		EC_OTHER = 0;
+		EC_SUCC = 1;
+		EC_FAIL = 2;
+	};
+	int32 nCode = 1;
+}

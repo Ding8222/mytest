@@ -35,9 +35,8 @@ bool CRobotMgr::Init(const char *ip, int port, int id, int maxrobot, int pingtim
 	for (int i = 0; i < maxrobot; i++)
 	{
 		CRobot *_pRobot = new CRobot;
-		if (_pRobot->Init(s_LoginServerIP.c_str(), m_LoginServerPort, 
-			m_LoginServerID))
-			m_RobotList.push_back(_pRobot);
+		_pRobot->SetConnectInfo(s_LoginServerIP.c_str(), m_LoginServerPort, m_LoginServerID);
+		m_RobotList.push_back(_pRobot);
 	}
 
 	return true;
@@ -52,7 +51,7 @@ void CRobotMgr::Run()
 		++itr;
 		if (!(*tempitr)->IsAlreadyConnect())
 		{
-			if ((*tempitr)->TryConnect(g_currenttime, s_LoginServerIP.c_str(), m_LoginServerPort))
+			if ((*tempitr)->TryConnect(g_currenttime))
 			{
 				(*tempitr)->GetCon()->UseUncompress();
 				(*tempitr)->GetCon()->UseEncrypt();
@@ -60,34 +59,46 @@ void CRobotMgr::Run()
 				//(*tempitr)->GetCon()->SendTGWInfo(s_LoginServerIP.c_str(), m_LoginServerPort);
 				// 请求登陆
 
-				std::string s1("hello world");
-				CryptoPP::SecByteBlock b1((const unsigned char*)s1.data(), s1.size());
+				if ((*tempitr)->IsAuth())
+				{
+					// 逻辑服
+					netData::Login sendMsg;
+					sendMsg.set_stoken("123");
 
-				// 生成client key
-				CryptoPP::AutoSeededRandomPool prng;
-				CryptoPP::SecByteBlock key(0x00, CryptoPP::DES::DEFAULT_KEYLENGTH);
-				prng.GenerateBlock(key, key.size());
-				(*tempitr)->SetClientKey(key);
+					(*tempitr)->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN);
+				}
+				else
+				{
+					// 登录服
+					std::string s1("hello world");
+					CryptoPP::SecByteBlock b1((const unsigned char*)s1.data(), s1.size());
 
-				std::string test(reinterpret_cast<const char*>(key.data()), key.size());
+					// 生成client key
+					CryptoPP::AutoSeededRandomPool prng;
+					CryptoPP::SecByteBlock key(0x00, CryptoPP::DES::DEFAULT_KEYLENGTH);
+					prng.GenerateBlock(key, key.size());
+					(*tempitr)->SetClientKey(key);
 
-				unsigned char input[CryptoPP::DES::BLOCKSIZE] = "12345";
-				unsigned char output[CryptoPP::DES::BLOCKSIZE];
-				unsigned char txt[CryptoPP::DES::BLOCKSIZE];
+					std::string test(reinterpret_cast<const char*>(key.data()), key.size());
 
-				CryptoPP::DESEncryption encryption_DES;
-				encryption_DES.SetKey(key, CryptoPP::DES::KEYLENGTH);
-				encryption_DES.ProcessBlock(input, output);
+					unsigned char input[CryptoPP::DES::BLOCKSIZE] = "12345";
+					unsigned char output[CryptoPP::DES::BLOCKSIZE];
+					unsigned char txt[CryptoPP::DES::BLOCKSIZE];
 
-				CryptoPP::DESDecryption decryption_DES;
-				decryption_DES.SetKey(key, CryptoPP::DES::KEYLENGTH);
-				decryption_DES.ProcessBlock(output, txt);
+					CryptoPP::DESEncryption encryption_DES;
+					encryption_DES.SetKey(key, CryptoPP::DES::KEYLENGTH);
+					encryption_DES.ProcessBlock(input, output);
 
-				netData::HandShake Msg;
-				std::string temp(reinterpret_cast<const char*>(key.data()), key.size());
+					CryptoPP::DESDecryption decryption_DES;
+					decryption_DES.SetKey(key, CryptoPP::DES::KEYLENGTH);
+					decryption_DES.ProcessBlock(output, txt);
 
-				Msg.set_sclientkey(temp);
-				(*tempitr)->SendMsg(Msg, LOGIN_TYPE_MAIN, LOGIN_SUB_HANDSHAKE);
+					netData::HandShake Msg;
+					std::string temp(reinterpret_cast<const char*>(key.data()), key.size());
+
+					Msg.set_sclientkey(temp);
+					(*tempitr)->SendMsg(Msg, LOGIN_TYPE_MAIN, LOGIN_SUB_HANDSHAKE);
+				}
 			}
 			return;
 		}
@@ -109,7 +120,7 @@ void CRobotMgr::Run()
 			return;
 		}
 
-		if ((*tempitr)->IsReady())
+		if ((*tempitr)->IsHandShake())
 			ProcessMsg((*tempitr));
 		else
 			ProcessRegister((*tempitr));
@@ -175,7 +186,7 @@ void CRobotMgr::ProcessRegister(CRobot *con)
 				sendMsg.set_setoken("123");
 
 				con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH);
-				con->SetReady(true);
+				con->SetHandShake(true);
 				break;
 			}
 			default:
@@ -237,7 +248,15 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				netData::AuthRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
+				_con->ChangeConnect(msg.ip().c_str(), msg.port(), msg.nserverid());
 				log_error("AuthRet:%d,ip:%s,port:%d", msg.ncode(), msg.ip().c_str(), msg.port());
+			}
+			case LOGIN_SUB_LOGIN_RET:
+			{
+				netData::LoginRet msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				log_error("LoginRet:%d", msg.ncode());
 			}
 			default:
 			{

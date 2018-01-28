@@ -6,26 +6,13 @@ extern int64 g_currenttime;
 
 CRobot::CRobot()
 {
-	m_IsReady = false;
-	memset(m_IP, 0, MAX_IP_LEN);
-	m_Port = 0;
-	m_ID = 0;
+	m_isAuth = false;
+	m_isHandShake = false;
 }
 
 CRobot::~CRobot()
 {
 	Destroy();
-}
-
-bool CRobot::Init(const char *ip, int port, int id)
-{
-	strncpy(m_IP, ip, MAX_IP_LEN - 1);
-	m_IP[MAX_IP_LEN - 1] = 0;
-
-	m_Port = port;
-	m_ID = id;
-
-	return true;
 }
 
 void CRobot::SendMsg(google::protobuf::Message &pMsg, int maintype, int subtype, void *adddata, size_t addsize)
@@ -37,13 +24,20 @@ void CRobot::SendMsg(google::protobuf::Message &pMsg, int maintype, int subtype,
 
 void CRobot::OnConnectDisconnect()
 {
-	if (m_IsReady)
+	if (IsReady())
 	{
 
 	}
 
 	ResetConnect();
-	m_IsReady = false;
+	SetReady(false);
+}
+
+void CRobot::ChangeConnect(const char *ip, int port, int id)
+{
+	m_isAuth = true;
+	SetConnectInfo(ip,port,id);
+	OnConnectDisconnect();
 }
 
 void CRobot::Destroy()
@@ -79,21 +73,21 @@ void CRobot::ProcessRegister(connector *con)
 					case svrData::ServerRegisterRet::EC_SUCC:
 					{
 						// 认证成功
-						m_IsReady = true;
+						con->SetReady(true);
 						log_error("注册到远程服务器成功！");
 						break;
 					}
 					case svrData::ServerRegisterRet::EC_SERVER_ID_EXIST:
 					{
 						// 已存在相同ServerID被注册
-						log_error("注册到远程服务器失败！已存在相同ServerID被注册，远程服务器ID：[%d] IP:[%s]", m_ID, m_IP);
+						log_error("注册到远程服务器失败！已存在相同ServerID被注册，远程服务器ID：[%d] IP:[%s]", GetConnectID(), GetConnectIP());
 						exit(-1);
 						break;
 					}
 					case svrData::ServerRegisterRet::EC_TO_CONNECT_ID_NOT_EQUAL:
 					{
 						// 请求注册的ServerID和远程ServerID不同
-						log_error("注册到远程服务器失败！请求注册的ServerID和远程ServerID不同，远程服务器ID：[%d] IP:[%s]", m_ID, m_IP);
+						log_error("注册到远程服务器失败！请求注册的ServerID和远程ServerID不同，远程服务器ID：[%d] IP:[%s]", GetConnectID(), GetConnectIP());
 						exit(-1);
 						break;
 					}

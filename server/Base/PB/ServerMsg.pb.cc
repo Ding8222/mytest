@@ -333,13 +333,6 @@ const Ping& Ping::default_instance() {
   return *internal_default_instance();
 }
 
-Ping* Ping::New(::google::protobuf::Arena* arena) const {
-  Ping* n = new Ping;
-  if (arena != NULL) {
-    arena->Own(n);
-  }
-  return n;
-}
 
 void Ping::Clear() {
 // @@protoc_insertion_point(message_clear_start:svrData.Ping)
@@ -536,13 +529,6 @@ const ServerRegister& ServerRegister::default_instance() {
   return *internal_default_instance();
 }
 
-ServerRegister* ServerRegister::New(::google::protobuf::Arena* arena) const {
-  ServerRegister* n = new ServerRegister;
-  if (arena != NULL) {
-    arena->Own(n);
-  }
-  return n;
-}
 
 void ServerRegister::Clear() {
 // @@protoc_insertion_point(message_clear_start:svrData.ServerRegister)
@@ -846,13 +832,6 @@ const ServerRegisterRet& ServerRegisterRet::default_instance() {
   return *internal_default_instance();
 }
 
-ServerRegisterRet* ServerRegisterRet::New(::google::protobuf::Arena* arena) const {
-  ServerRegisterRet* n = new ServerRegisterRet;
-  if (arena != NULL) {
-    arena->Own(n);
-  }
-  return n;
-}
 
 void ServerRegisterRet::Clear() {
 // @@protoc_insertion_point(message_clear_start:svrData.ServerRegisterRet)
@@ -1089,13 +1068,6 @@ const AddNewClient& AddNewClient::default_instance() {
   return *internal_default_instance();
 }
 
-AddNewClient* AddNewClient::New(::google::protobuf::Arena* arena) const {
-  AddNewClient* n = new AddNewClient;
-  if (arena != NULL) {
-    arena->Own(n);
-  }
-  return n;
-}
 
 void AddNewClient::Clear() {
 // @@protoc_insertion_point(message_clear_start:svrData.AddNewClient)
@@ -1375,13 +1347,6 @@ const ClientToken& ClientToken::default_instance() {
   return *internal_default_instance();
 }
 
-ClientToken* ClientToken::New(::google::protobuf::Arena* arena) const {
-  ClientToken* n = new ClientToken;
-  if (arena != NULL) {
-    arena->Own(n);
-  }
-  return n;
-}
 
 void ClientToken::Clear() {
 // @@protoc_insertion_point(message_clear_start:svrData.ClientToken)
@@ -1614,5 +1579,24 @@ void ClientToken::InternalSwap(ClientToken* other) {
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace svrData
+namespace google {
+namespace protobuf {
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::svrData::Ping* Arena::Create< ::svrData::Ping >(Arena* arena) {
+  return Arena::CreateInternal< ::svrData::Ping >(arena);
+}
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::svrData::ServerRegister* Arena::Create< ::svrData::ServerRegister >(Arena* arena) {
+  return Arena::CreateInternal< ::svrData::ServerRegister >(arena);
+}
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::svrData::ServerRegisterRet* Arena::Create< ::svrData::ServerRegisterRet >(Arena* arena) {
+  return Arena::CreateInternal< ::svrData::ServerRegisterRet >(arena);
+}
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::svrData::AddNewClient* Arena::Create< ::svrData::AddNewClient >(Arena* arena) {
+  return Arena::CreateInternal< ::svrData::AddNewClient >(arena);
+}
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::svrData::ClientToken* Arena::Create< ::svrData::ClientToken >(Arena* arena) {
+  return Arena::CreateInternal< ::svrData::ClientToken >(arena);
+}
+}  // namespace protobuf
+}  // namespace google
 
 // @@protoc_insertion_point(global_scope)

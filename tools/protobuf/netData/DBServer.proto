@@ -11,5 +11,5 @@ message Execute
 // 1-2 查询返回
 message ExecuteRet
 {
-	string res = 1;	//Sql查询返回
+	repeated string res = 1;	//Sql查询返回
 }

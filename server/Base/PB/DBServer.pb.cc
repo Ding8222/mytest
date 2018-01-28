@@ -125,7 +125,7 @@ void AddDescriptorsImpl() {
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\016DBServer.proto\022\007SvrData\"$\n\007Execute\022\014\n\004"
       "type\030\001 \001(\t\022\013\n\003sql\030\002 \001(\t\"\031\n\nExecuteRet\022\013\n"
-      "\003res\030\001 \001(\tb\006proto3"
+      "\003res\030\001 \003(\tb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
       descriptor, 98);
@@ -210,13 +210,6 @@ const Execute& Execute::default_instance() {
   return *internal_default_instance();
 }
 
-Execute* Execute::New(::google::protobuf::Arena* arena) const {
-  Execute* n = new Execute;
-  if (arena != NULL) {
-    arena->Own(n);
-  }
-  return n;
-}
 
 void Execute::Clear() {
 // @@protoc_insertion_point(message_clear_start:SvrData.Execute)
@@ -478,17 +471,13 @@ ExecuteRet::ExecuteRet()
 ExecuteRet::ExecuteRet(const ExecuteRet& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
+      res_(from.res_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  res_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.res().size() > 0) {
-    res_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.res_);
-  }
   // @@protoc_insertion_point(copy_constructor:SvrData.ExecuteRet)
 }
 
 void ExecuteRet::SharedCtor() {
-  res_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _cached_size_ = 0;
 }
 
@@ -498,7 +487,6 @@ ExecuteRet::~ExecuteRet() {
 }
 
 void ExecuteRet::SharedDtor() {
-  res_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void ExecuteRet::SetCachedSize(int size) const {
@@ -516,13 +504,6 @@ const ExecuteRet& ExecuteRet::default_instance() {
   return *internal_default_instance();
 }
 
-ExecuteRet* ExecuteRet::New(::google::protobuf::Arena* arena) const {
-  ExecuteRet* n = new ExecuteRet;
-  if (arena != NULL) {
-    arena->Own(n);
-  }
-  return n;
-}
 
 void ExecuteRet::Clear() {
 // @@protoc_insertion_point(message_clear_start:SvrData.ExecuteRet)
@@ -530,7 +511,7 @@ void ExecuteRet::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  res_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  res_.Clear();
   _internal_metadata_.Clear();
 }
 
@@ -544,14 +525,15 @@ bool ExecuteRet::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // string res = 1;
+      // repeated string res = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_res()));
+                input, this->add_res()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->res().data(), static_cast<int>(this->res().length()),
+            this->res(this->res_size() - 1).data(),
+            static_cast<int>(this->res(this->res_size() - 1).length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "SvrData.ExecuteRet.res"));
         } else {
@@ -586,14 +568,14 @@ void ExecuteRet::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string res = 1;
-  if (this->res().size() > 0) {
+  // repeated string res = 1;
+  for (int i = 0, n = this->res_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->res().data(), static_cast<int>(this->res().length()),
+      this->res(i).data(), static_cast<int>(this->res(i).length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "SvrData.ExecuteRet.res");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      1, this->res(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->res(i), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -610,15 +592,14 @@ void ExecuteRet::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string res = 1;
-  if (this->res().size() > 0) {
+  // repeated string res = 1;
+  for (int i = 0, n = this->res_size(); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->res().data(), static_cast<int>(this->res().length()),
+      this->res(i).data(), static_cast<int>(this->res(i).length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
       "SvrData.ExecuteRet.res");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->res(), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteStringToArray(1, this->res(i), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -638,11 +619,12 @@ size_t ExecuteRet::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // string res = 1;
-  if (this->res().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->res());
+  // repeated string res = 1;
+  total_size += 1 *
+      ::google::protobuf::internal::FromIntSize(this->res_size());
+  for (int i = 0, n = this->res_size(); i < n; i++) {
+    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+      this->res(i));
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -674,10 +656,7 @@ void ExecuteRet::MergeFrom(const ExecuteRet& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.res().size() > 0) {
-
-    res_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.res_);
-  }
+  res_.MergeFrom(from.res_);
 }
 
 void ExecuteRet::CopyFrom(const ::google::protobuf::Message& from) {
@@ -704,7 +683,7 @@ void ExecuteRet::Swap(ExecuteRet* other) {
 }
 void ExecuteRet::InternalSwap(ExecuteRet* other) {
   using std::swap;
-  res_.Swap(&other->res_);
+  res_.InternalSwap(CastToBase(&other->res_));
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -717,5 +696,15 @@ void ExecuteRet::InternalSwap(ExecuteRet* other) {
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace SvrData
+namespace google {
+namespace protobuf {
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::SvrData::Execute* Arena::Create< ::SvrData::Execute >(Arena* arena) {
+  return Arena::CreateInternal< ::SvrData::Execute >(arena);
+}
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::SvrData::ExecuteRet* Arena::Create< ::SvrData::ExecuteRet >(Arena* arena) {
+  return Arena::CreateInternal< ::SvrData::ExecuteRet >(arena);
+}
+}  // namespace protobuf
+}  // namespace google
 
 // @@protoc_insertion_point(global_scope)

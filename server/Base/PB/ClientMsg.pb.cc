@@ -159,13 +159,6 @@ const Ping& Ping::default_instance() {
   return *internal_default_instance();
 }
 
-Ping* Ping::New(::google::protobuf::Arena* arena) const {
-  Ping* n = new Ping;
-  if (arena != NULL) {
-    arena->Own(n);
-  }
-  return n;
-}
 
 void Ping::Clear() {
 // @@protoc_insertion_point(message_clear_start:netData.Ping)
@@ -305,5 +298,12 @@ void Ping::InternalSwap(Ping* other) {
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace netData
+namespace google {
+namespace protobuf {
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::netData::Ping* Arena::Create< ::netData::Ping >(Arena* arena) {
+  return Arena::CreateInternal< ::netData::Ping >(arena);
+}
+}  // namespace protobuf
+}  // namespace google
 
 // @@protoc_insertion_point(global_scope)

@@ -17,7 +17,7 @@ public:
 	Msg *GetMsg ();
 	bool IsAlreadyConnect() { return m_already_connect; }
 	bool IsReady() { return m_isready; }
-	void SetReady() { m_isready = true; }
+	void SetReady(bool ready) { m_isready = ready; }
 	void ResetConnect ();
 	bool TryConnect(int64 currenttime, const char *ip, int port);
 	bool TryConnect(int64 currenttime);
