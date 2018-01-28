@@ -3,7 +3,6 @@
 #include "connector.h"
 #include "config.h"
 #include "sqlinterface.h"
-#include "json.hpp"
 
 #include "DBSvrType.h"
 #include "LoginType.h"
@@ -42,16 +41,25 @@ bool CDBCenterConnect::Init()
 		return false;
 	}
 
-	return CServerConnect::Init(CConfig::Instance().GetCenterServerIP().c_str(),
+	if (!CConnectMgr::AddNewConnect(
+		CConfig::Instance().GetCenterServerIP().c_str(),
 		CConfig::Instance().GetCenterServerPort(),
-		CConfig::Instance().GetCenterServerID(),
+		CConfig::Instance().GetCenterServerID()
+		))
+	{
+		log_error("添加中心服务器失败!");
+		return false;
+	}
+
+	return CConnectMgr::Init(
 		CConfig::Instance().GetServerID(),
 		CConfig::Instance().GetServerType(),
 		CConfig::Instance().GetPingTime(),
-		CConfig::Instance().GetOverTime());
+		CConfig::Instance().GetOverTime()
+	);
 }
 
-void CDBCenterConnect::ConnectDisconnect()
+void CDBCenterConnect::ConnectDisconnect(connector *)
 {
 	
 }
@@ -77,59 +85,65 @@ void CDBCenterConnect::ProcessMsg(connector *_con)
 			}
 			default:
 			{
+				break;
 			}
 			}
 			break;
-		}
-		case DBSVR_TYPE_MAIN:
-		{
-			switch (pMsg->GetSubType())
-			{
-			case DBSVR_SUB_EXECUTE:
-			{
-				break;
-			}
-			default:
-			{
-			}
-			}
-			break;
-		}
-		case LOGIN_TYPE_MAIN:
-		{
-			switch (pMsg->GetSubType())
-			{
-			case LOGIN_SUB_AUTH:
-			{
-				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
-				netData::Auth msg;
-				_CHECK_PARSE_(pMsg, msg);
-
-				DataBase::CRecordset *res = g_dbhand.Execute(fmt::format("select * from account where uid = '{0}' limit 1", msg.setoken().c_str()).c_str());
-				if (res && res->IsOpen() && !res->IsEnd())
-				{
-					// 存在的账号
-					res = g_dbhand.Execute(fmt::format("update account set logintime ={0} where uid = '{1}'", time(nullptr), msg.setoken().c_str()).c_str());
-				}
-				else
-				{
-					// 不存在的账号
-					res = g_dbhand.Execute(fmt::format("insert into account (uid,createtime,logintime) values ('{0}',{1},{2})", msg.setoken().c_str(), time(nullptr), time(nullptr)).c_str());
-				}
-
-				netData::AuthRet sendMsg;
-				sendMsg.set_ncode(netData::AuthRet::EC_SUCC);
-				SendMsgToServer(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, tl->id);
-				break;
-			}
-			default:
-				break;
-			}
 		}
 		default:
 		{
+			ProcessServerMsg(_con, pMsg);
+			break;
 		}
 		}
+	}
+}
+
+void CDBCenterConnect::ProcessServerMsg(connector *_con, Msg *pMsg)
+{
+	switch (pMsg->GetMainType())
+	{
+	case LOGIN_TYPE_MAIN:
+	{
+		ProcessLoginMsg(_con, pMsg);
+		break;
+	}
+	default:
+	{
+		break;
+	}
+	}
+}
+
+void CDBCenterConnect::ProcessLoginMsg(connector *_con, Msg *pMsg)
+{
+	msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+	pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+	switch (pMsg->GetSubType())
+	{
+	case LOGIN_SUB_AUTH:
+	{
+		netData::Auth msg;
+		_CHECK_PARSE_(pMsg, msg);
+
+		DataBase::CRecordset *res = g_dbhand.Execute(fmt::format("select * from account where uid = '{0}' limit 1", msg.setoken().c_str()).c_str());
+		if (res && res->IsOpen() && !res->IsEnd())
+		{
+			// 存在的账号
+			res = g_dbhand.Execute(fmt::format("update account set logintime ={0} where uid = '{1}'", time(nullptr), msg.setoken().c_str()).c_str());
+		}
+		else
+		{
+			// 不存在的账号
+			res = g_dbhand.Execute(fmt::format("insert into account (uid,createtime,logintime) values ('{0}',{1},{2})", msg.setoken().c_str(), time(nullptr), time(nullptr)).c_str());
+		}
+
+		netData::AuthRet sendMsg;
+		sendMsg.set_ncode(netData::AuthRet::EC_SUCC);
+		SendMsgToServer(_con, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, tl->id);
+		break;
+	}
+	default:
+		break;
 	}
 }

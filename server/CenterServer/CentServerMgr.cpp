@@ -280,96 +280,117 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 			case ServerEnum::EST_GAME:
 			{
 				// 来自GameSvr的消息
-				switch (pMsg->GetMainType())
-				{
-				case 1:
-				{
-
-					break;
-				}
-				default:
-					break;
-				}
+				ProcessGameMsg(info, pMsg);
 				break;
 			}
 			case ServerEnum::EST_LOGIN:
 			{
 				// 来自LoginSvr的消息
-				switch (pMsg->GetMainType())
-				{
-				case LOGIN_TYPE_MAIN:
-				{
-					switch (pMsg->GetSubType())
-					{
-					case LOGIN_SUB_AUTH:
-					{
-						msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-						pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
-						ClientSvr *cl = FindClientSvr(tl->id);
-						if (cl)
-						{
-							netData::Auth msg;
-							_CHECK_PARSE_(pMsg, msg);
-							cl->Token = msg.setoken();
-							cl->Secret = msg.ssecret();
-							SendMsgToServer(*pMsg, ServerEnum::EST_DB, 0, cl->ClientID);
-						}
-						break;
-					}
-					default:
-						break;
-					}
-					break;
-				}
-				default:
-					break;
-				}
+				ProcessLoginMsg(info, pMsg);
 				break;
 			}
 			case ServerEnum::EST_DB:
 			{
 				// 来自DBSvr的消息
-				switch (pMsg->GetMainType())
-				{
-				case LOGIN_TYPE_MAIN:
-				{
-					switch (pMsg->GetSubType())
-					{
-					case LOGIN_SUB_AUTH_RET:
-					{
-						msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-						pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
-						ClientSvr *cl = FindClientSvr(tl->id);
-						if (cl)
-						{
-							netData::AuthRet msg;
-							_CHECK_PARSE_(pMsg, msg);
-							msg.set_nserverid(4000);
-							msg.set_ip("127.0.0.1");
-							msg.set_port(30014);
-
-							SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, cl->ServerType, cl->ServerID, cl->ClientID);
-								
-							svrData::ClientToken sendMsg;
-							sendMsg.set_setoken(cl->Token);
-							sendMsg.set_ssecret(cl->Secret);
-							SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GAME, msg.nserverid(), cl->ClientID);
-						}
-						break;
-					}
-					default:
-						break;
-					}
-					break;
-				}
-				default:
-					break;
-				}
+				ProcessDBMsg(info, pMsg);
+				break;
+			}
+			default:
+			{
 				break;
 			}
 			}
+			break;
 		}
 		}
+	}
+}
+
+void CCentServerMgr::ProcessGameMsg(serverinfo *info, Msg *pMsg)
+{
+	msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+	pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+	switch (pMsg->GetMainType())
+	{
+	case 1:
+	{
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void CCentServerMgr::ProcessLoginMsg(serverinfo *info, Msg *pMsg)
+{
+	msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+	pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+	switch (pMsg->GetMainType())
+	{
+	case LOGIN_TYPE_MAIN:
+	{
+		switch (pMsg->GetSubType())
+		{
+		case LOGIN_SUB_AUTH:
+		{
+			ClientSvr *cl = FindClientSvr(tl->id);
+			if (cl)
+			{
+				netData::Auth msg;
+				_CHECK_PARSE_(pMsg, msg);
+				cl->Token = msg.setoken();
+				cl->Secret = msg.ssecret();
+				SendMsgToServer(*pMsg, ServerEnum::EST_DB, 0, cl->ClientID);
+			}
+			break;
+		}
+		default:
+			break;
+		}
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void CCentServerMgr::ProcessDBMsg(serverinfo *info, Msg *pMsg)
+{
+	msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+	pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+	switch (pMsg->GetMainType())
+	{
+	case LOGIN_TYPE_MAIN:
+	{
+		switch (pMsg->GetSubType())
+		{
+		case LOGIN_SUB_AUTH_RET:
+		{
+			ClientSvr *cl = FindClientSvr(tl->id);
+			if (cl)
+			{
+				netData::AuthRet msg;
+				_CHECK_PARSE_(pMsg, msg);
+				msg.set_nserverid(4000);
+				msg.set_ip("127.0.0.1");
+				msg.set_port(30014);
+
+				SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, cl->ServerType, cl->ServerID, cl->ClientID);
+
+				svrData::ClientToken sendMsg;
+				sendMsg.set_setoken(cl->Token);
+				sendMsg.set_ssecret(cl->Secret);
+				SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GAME, msg.nserverid(), cl->ClientID);
+			}
+			break;
+		}
+		default:
+			break;
+		}
+		break;
+	}
+	default:
+		break;
 	}
 }
 
@@ -381,7 +402,6 @@ bool CCentServerMgr::AddNewServer(serverinfo *info, int nServerID, int nType)
 		return false;
 	}
 	
-
 	std::map<int, serverinfo*> *_pList = nullptr;
 	switch (nType)
 	{

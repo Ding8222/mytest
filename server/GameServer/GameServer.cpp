@@ -111,9 +111,8 @@ void CGameServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			log_error("运行超时:%d\n收到消息数量：%d，发送消息数量：%d\n%s", delay, 
-				CGameCenterConnect::Instance().GetRecvMsgNum(),
-				CGameCenterConnect::Instance().GetSendMsgNum(),
+			log_error("运行超时:%d\n%s", delay, 
+				CGameCenterConnect::Instance().GetMsgNumInfo(),
 				CGameGatewayMgr::Instance().GetMsgNumInfo());
 		}
 	}

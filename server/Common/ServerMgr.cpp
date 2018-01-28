@@ -225,6 +225,30 @@ void CServerMgr::ProcessNotRegister(serverinfo *info)
 	}
 }
 
+void CServerMgr::SendMsgToServer(serverinfo *con, google::protobuf::Message &pMsg, int maintype, int subtype, int64 clientid)
+{
+	assert(con);
+	assert(clientid > 0);
+	if (clientid <= 0)
+		return ;
+
+	msgtail tail;
+	tail.id = clientid;
+	SendMsg(con, pMsg, maintype, subtype, &tail, sizeof(tail));
+}
+
+void CServerMgr::SendMsgToServer(serverinfo *con, Msg &pMsg, int64 clientid)
+{
+	assert(con);
+	assert(clientid > 0);
+	if (clientid <= 0)
+		return ;
+
+	msgtail tail;
+	tail.id = clientid;
+	SendMsg(con, pMsg, &tail, sizeof(tail));
+}
+
 void CServerMgr::SendMsg(serverinfo *info, google::protobuf::Message &pMsg, int maintype, int subtype, void *adddata, size_t addsize)
 {
 	assert(info != nullptr);

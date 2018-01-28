@@ -4,9 +4,9 @@
 * 2018
 */
 #pragma once
-#include "ServerConnect.h"
+#include "ConnectMgr.h"
 
-class CLoginCenterConnect : public CServerConnect
+class CLoginCenterConnect : public CConnectMgr
 {
 public:
 	CLoginCenterConnect();
@@ -21,7 +21,7 @@ public:
 	bool Init();
 
 	// 连接断开的处理
-	void ConnectDisconnect();
+	void ConnectDisconnect(connector *);
 	// 处理远程服务器发来的消息
 	void ProcessMsg(connector *_con);
 private:

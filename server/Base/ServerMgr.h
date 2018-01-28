@@ -5,7 +5,6 @@
 */
 #pragma once
 #include <list>
-#include <unordered_map>
 #include "lxnet.h"
 
 class serverinfo;
@@ -28,22 +27,21 @@ public:
 	virtual const char *GetMsgNumInfo() = 0;
 
 public:
-	// 根据类型和SvrID发送消息给服务器
-	virtual void SendMsgToServer(Msg &pMsg, int nType, int nServerID = 0, int64 nClientID = 0) = 0;
-	virtual void SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int nServerID = 0, int64 nClientID = 0) = 0;
 	// 处理未注册服务器消息
 	void ProcessNotRegister(serverinfo *info);
-	// 处理已注册服务器消息
-	virtual void ProcessMsg(serverinfo *info) = 0;
+
 	// 发送消息
+	void SendMsgToServer(serverinfo *con, google::protobuf::Message &pMsg, int maintype, int subtype, int64 nClientID = 0);
+	void SendMsgToServer(serverinfo *con, Msg &pMsg, int64 nClientID = 0);
+
 	void SendMsg(serverinfo *info, google::protobuf::Message &pMsg, int maintype, int subtype, void *adddata = nullptr, size_t addsize = 0);
 	void SendMsg(serverinfo *info, Msg &pMsg, void *adddata = nullptr, size_t addsize = 0);
-private:
-	// 根据类型添加服务器
-	virtual bool AddNewServer(serverinfo *info, int nServerID, int nType) = 0;
-	// 根据类型查找服务器
-	virtual serverinfo *FindServer(int nServerID, int nType) = 0;
 
+	// 处理已注册服务器消息
+	virtual void ProcessMsg(serverinfo *info) = 0;
+	// 根据类型和SvrID发送消息给服务器
+	virtual void SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int nServerID = 0, int64 nClientID = 0) = 0;
+	virtual void SendMsgToServer(Msg &pMsg, int nType, int nServerID = 0, int64 nClientID = 0) = 0;
 private:
 	// 停止监听
 	void StopListen();
@@ -55,10 +53,15 @@ private:
 	void Process();
 	// 服务器注册
 	void OnServerRegister(serverinfo *info, MessagePack *pMsg);
-	// 服务器断开
-	virtual void OnConnectDisconnect(serverinfo *info, bool overtime = false) = 0;
 	// 真正移除服务器连接
 	void CheckAndRemove();
+
+	// 服务器断开
+	virtual void OnConnectDisconnect(serverinfo *info, bool overtime = false) = 0;
+	// 根据类型添加服务器
+	virtual bool AddNewServer(serverinfo *info, int nServerID, int nType) = 0;
+	// 根据类型查找服务器
+	virtual serverinfo *FindServer(int nServerID, int nType) = 0;
 private:
 	int m_ListenPort;
 	int m_OverTime;

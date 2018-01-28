@@ -30,6 +30,8 @@ public:
 
 	// 处理服务器发来的消息
 	void ProcessMsg(serverinfo *info);
+	// 处理逻辑服发来的消息
+	void ProcessGameMsg(serverinfo *info, Msg *pMsg);
 	// 处理Client发来的消息
 	void ProcessClientMsg(int gateid, int64 clientid, Msg *pMsg);
 

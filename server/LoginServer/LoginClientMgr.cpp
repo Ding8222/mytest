@@ -29,7 +29,7 @@ CLoginClientMgr::~CLoginClientMgr()
 
 int64 CLoginClientMgr::OnNewClient()
 {
-	if (!CLoginCenterConnect::Instance().IsReady())
+	if (!CLoginCenterConnect::Instance().IsReady(CConfig::Instance().GetCenterServerID()))
 		return 0;
 
 	int64 nClientID = CClientMgr::OnNewClient();
@@ -39,7 +39,7 @@ int64 CLoginClientMgr::OnNewClient()
 	MessagePack msg;
 	msg.SetMainType(SERVER_TYPE_MAIN);
 	msg.SetSubType(SVR_SUB_NEW_CLIENT);
-	CLoginCenterConnect::Instance().SendMsgToServer(msg, nClientID);
+	CLoginCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), msg, nClientID);
 	return nClientID;
 }
 
@@ -127,7 +127,7 @@ void CLoginClientMgr::ProcessClientMsg(CClient *cl)
 					
 					msg.set_ssecret(GetClientSecret(cl->GetClientID()));
 					if(!msg.ssecret().empty())
-						CLoginCenterConnect::Instance().SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH, cl->GetClientID());
+						CLoginCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH, cl->GetClientID());
 					else
 					{
 						//要求先握手

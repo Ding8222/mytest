@@ -1,5 +1,4 @@
 ﻿#include "stdfx.h"
-#include "ServerConnect.h"
 #include "GameConnect.h"
 #include "connector.h"
 #include "config.h"
@@ -18,16 +17,25 @@ CGameConnect::~CGameConnect()
 
 bool CGameConnect::Init()
 {
-	return CServerConnect::Init(CConfig::Instance().GetGameServerIP().c_str(),
+	if (!CConnectMgr::AddNewConnect(
+		CConfig::Instance().GetGameServerIP().c_str(),
 		CConfig::Instance().GetGameServerPort(),
-		CConfig::Instance().GetGameServerID(),
+		CConfig::Instance().GetGameServerID()
+	))
+	{
+		log_error("添加逻辑服务器失败!");
+		return false;
+	}
+
+	return CConnectMgr::Init(
 		CConfig::Instance().GetServerID(),
 		CConfig::Instance().GetServerType(),
 		CConfig::Instance().GetPingTime(),
-		CConfig::Instance().GetOverTime());
+		CConfig::Instance().GetOverTime()
+	);
 }
 
-void CGameConnect::ConnectDisconnect()
+void CGameConnect::ConnectDisconnect(connector *)
 {
 
 }

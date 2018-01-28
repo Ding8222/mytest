@@ -169,17 +169,22 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 			{
 			case ServerEnum::EST_GATE:
 			{
-				//获取尾巴，看看是从哪个客户端来的消息
-				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
-
-				ProcessClientMsg(info->GetServerID(), tl->id, pMsg);
+				ProcessGameMsg(info, pMsg);
 				break;
 			}
 			}
 		}
 		}
 	}
+}
+
+void CGameGatewayMgr::ProcessGameMsg(serverinfo *info, Msg *pMsg)
+{
+	//获取尾巴，看看是从哪个客户端来的消息
+	msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+	pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+
+	ProcessClientMsg(info->GetServerID(), tl->id, pMsg);
 }
 
 void CGameGatewayMgr::ProcessClientMsg(int gateid, int64 clientid, Msg *pMsg)

@@ -1,8 +1,14 @@
 ﻿#include "connector.h"
+#include "objectpool.h"
 #include "log.h"
 
 connector::connector ()
 {
+	memset(m_ip, 0, MAX_IP_LEN);
+	m_port = 0;
+	m_id = 0;
+	m_isready = false;
+
 	m_isbigbuf = true;
 	m_already_connect = false;
 	m_con = NULL;
@@ -69,12 +75,26 @@ void connector::ResetConnect ()
 	}
 	m_con = lxnet::Socketer::Create(m_isbigbuf);
 	m_already_connect = false;
+	m_isready = false;
 }
 
 bool connector::TryConnect (int64 currenttime, const char *ip, int port)
 {
 	CheckAndInit();
 	if (m_con->Connect(ip, port))
+	{
+		m_already_connect = true;
+		SetRecvPingTime(currenttime);
+		return true;
+	}
+
+	return false;
+}
+
+bool connector::TryConnect(int64 currenttime)
+{
+	CheckAndInit();
+	if (m_con->Connect(m_ip, m_port))
 	{
 		m_already_connect = true;
 		SetRecvPingTime(currenttime);
@@ -132,3 +152,36 @@ void connector::Destroy ()
 	m_already_connect = false;
 }
 
+void connector::SetConnectInfo(const char *ip, int port, int id)
+{
+	strncpy(m_ip, ip, MAX_IP_LEN - 1);
+	m_ip[MAX_IP_LEN - 1] = 0;
+	m_port = port;
+	m_id = id;
+}
+
+static objectpool<connector> &ConnectorPool()
+{
+	static objectpool<connector> m(128, "connector pools");
+	return m;
+}
+
+connector *ConnectorCreate()
+{
+	connector *self = ConnectorPool().GetObject();
+	if (!self)
+	{
+		log_error("创建 connector 失败!");
+		return NULL;
+	}
+	new(self) connector();
+	return self;
+}
+
+void ConnectorRelease(connector *self)
+{
+	if (!self)
+		return;
+	self->~connector();
+	ConnectorPool().FreeObject(self);
+}

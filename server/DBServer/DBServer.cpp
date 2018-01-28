@@ -84,9 +84,7 @@ void CDBServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			log_error("运行超时:%d\n收到消息数量：%d，发送消息数量：%d\n", delay, 
-				CDBCenterConnect::Instance().GetRecvMsgNum(), 
-				CDBCenterConnect::Instance().GetSendMsgNum());
+			log_error("运行超时:%d\n%s", delay, CDBCenterConnect::Instance().GetMsgNumInfo());
 		}
 	}
 	delaytime(300);

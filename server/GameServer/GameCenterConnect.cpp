@@ -18,16 +18,25 @@ CGameCenterConnect::~CGameCenterConnect()
 
 bool CGameCenterConnect::Init()
 {
-	return CServerConnect::Init(CConfig::Instance().GetCenterServerIP().c_str(),
+	if (!CConnectMgr::AddNewConnect(
+		CConfig::Instance().GetCenterServerIP().c_str(),
 		CConfig::Instance().GetCenterServerPort(),
-		CConfig::Instance().GetCenterServerID(),
+		CConfig::Instance().GetCenterServerID()
+	))
+	{
+		log_error("添加中心服务器失败!");
+		return false;
+	}
+
+	return CConnectMgr::Init(
 		CConfig::Instance().GetServerID(),
 		CConfig::Instance().GetServerType(),
 		CConfig::Instance().GetPingTime(),
-		CConfig::Instance().GetOverTime());
+		CConfig::Instance().GetOverTime()
+	);
 }
 
-void CGameCenterConnect::ConnectDisconnect()
+void CGameCenterConnect::ConnectDisconnect(connector *)
 {
 
 }

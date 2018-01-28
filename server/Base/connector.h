@@ -2,6 +2,7 @@
 
 #include "lxnet.h"
 #include "crosslib.h"
+#define MAX_IP_LEN 128
 class connector
 {
 public:
@@ -14,9 +15,12 @@ public:
 	void Close ();
 	bool SendMsg (Msg *pMsg, void *adddata = 0, size_t addsize = 0);
 	Msg *GetMsg ();
-	bool IsAlreadyConnect () { return m_already_connect; }
+	bool IsAlreadyConnect() { return m_already_connect; }
+	bool IsReady() { return m_isready; }
+	void SetReady() { m_isready = true; }
 	void ResetConnect ();
-	bool TryConnect (int64 currenttime, const char *ip, int port);
+	bool TryConnect(int64 currenttime, const char *ip, int port);
+	bool TryConnect(int64 currenttime);
 	bool NeedSendPing (int64 currenttime, int64 interval);
 	bool IsOverTime (int64 currenttime, int64 overtime);
 	void SetRecvPingTime (int64 currenttime);
@@ -25,6 +29,9 @@ public:
 	int GetSendMsgNum () { return m_sendmsgnum; }
 	void UseBigBuf (bool flag);
 	lxnet::Socketer *GetCon () { return m_con; }
+	void SetConnectInfo(const char *ip, int port, int id);
+	int GetConnectID() { return m_id; }
+	char *GetConnectIP() { return m_ip; }
 private:
 	void CheckAndInit ();
 	void Destroy ();
@@ -37,4 +44,12 @@ private:
 
 	int m_recvmsgnum;
 	int m_sendmsgnum;
+
+	char m_ip[MAX_IP_LEN];
+	int m_port;
+	int m_id;
+	bool m_isready;
 };
+
+connector *ConnectorCreate();
+void ConnectorRelease(connector *self);

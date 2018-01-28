@@ -94,9 +94,7 @@ void CLoginServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			log_error("运行超时:%d\n收到消息数量：%d，发送消息数量：%d\n", delay,
-				CLoginCenterConnect::Instance().GetRecvMsgNum(),
-				CLoginCenterConnect::Instance().GetSendMsgNum());
+			log_error("运行超时:%d\n%s", delay, CLoginCenterConnect::Instance().GetMsgNumInfo());
 		}
 	}
 	delaytime(300);
