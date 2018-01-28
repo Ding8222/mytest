@@ -26,6 +26,9 @@ public:
 	void SendMsgToServer(Msg &pMsg, int nType, int nServerID = 0, int64 nClientID = 0);
 	void SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int nServerID = 0, int64 nClientID = 0);
 
+	void SendMsgToClient(Msg &pMsg, int64 nClientID = 0);
+	void SendMsgToClient(google::protobuf::Message &pMsg, int maintype, int subtype, int64 nClientID = 0);
+
 	void OnConnectDisconnect(serverinfo *info, bool overtime = false);
 
 	// 处理服务器发来的消息

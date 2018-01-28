@@ -63,7 +63,7 @@ void CGameGatewayMgr::SendMsgToServer(Msg &pMsg, int nType, int nServerID, int64
 {
 	if (nServerID > 0)
 	{
-		serverinfo *info = FindServer(nServerID, ServerEnum::EST_GATE);
+		serverinfo *info = FindServer(nServerID, nType);
 		if (info)
 		{
 			msgtail tail;
@@ -88,7 +88,7 @@ void CGameGatewayMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maint
 {
 	if (nServerID > 0)
 	{
-		serverinfo *info = FindServer(nServerID, ServerEnum::EST_GATE);
+		serverinfo *info = FindServer(nServerID, nType);
 		if (info)
 		{
 			msgtail tail;
@@ -107,6 +107,20 @@ void CGameGatewayMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maint
 			SendMsg(itr->second, pMsg, maintype, subtype, &tail, sizeof(tail));
 		}
 	}
+}
+
+void CGameGatewayMgr::SendMsgToClient(Msg &pMsg, int64 nClientID)
+{
+	ClientSvr *cl = FindClientSvr(nClientID);
+	if(cl)
+		SendMsgToServer(pMsg, ServerEnum::EST_GATE, cl->ServerID, nClientID);
+}
+
+void CGameGatewayMgr::SendMsgToClient(google::protobuf::Message &pMsg, int maintype, int subtype, int64 nClientID)
+{
+	ClientSvr *cl = FindClientSvr(nClientID);
+	if (cl)
+		SendMsgToServer(pMsg, maintype, subtype, ServerEnum::EST_GATE, cl->ServerID, nClientID);
 }
 
 void CGameGatewayMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
@@ -163,7 +177,7 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				netData::LoginRet sendMsg;
 				sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
 
-				SendMsgToServer(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, ServerEnum::EST_GATE, 0, tl->id);
+				SendMsgToClient(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, tl->id);
 				break;
 			}
 			default:

@@ -11,3 +11,5 @@ client连接消息顺序，不同情况下重连的处理
 
 client的login处理
 --完成了从loginsvr到gatewaysvr的切换
+
+完成client选角流程，最后到可以在地图中移动即可。
