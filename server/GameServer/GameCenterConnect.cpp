@@ -1,6 +1,7 @@
 ﻿#include "stdfx.h"
 #include "GameCenterConnect.h"
 #include "GameGatewayMgr.h"
+#include "serverinfo.h"
 #include "connector.h"
 #include "config.h"
 
@@ -34,6 +35,26 @@ bool CGameCenterConnect::Init()
 		CConfig::Instance().GetPingTime(),
 		CConfig::Instance().GetOverTime()
 	);
+}
+
+void CGameCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
+{
+	// 如果Gate准备好了，发送一次负载信息给Center
+	if (CGameGatewayMgr::Instance().IsAlreadyRegister(CGameGatewayMgr::Instance().GetGateID()))
+	{
+		serverinfo *svr = CGameGatewayMgr::Instance().FindServer(CGameGatewayMgr::Instance().GetGateID(), ServerEnum::EST_GATE);
+		if (svr->GetIP())
+		{
+			svrData::ServerLoadInfo sendMsg;
+			sendMsg.set_nmaxclient(2000);
+			sendMsg.set_nnowclient(CGameGatewayMgr::Instance().GetClientCountNow());
+			sendMsg.set_nport(CConfig::Instance().GetListenPort());
+			sendMsg.set_sip("127.0.0.1");
+			sendMsg.set_ngateport(svr->GetPort());
+			sendMsg.set_sgateip(svr->GetIP());
+			CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_LOADINFO);
+		}
+	}
 }
 
 void CGameCenterConnect::ConnectDisconnect(connector *)

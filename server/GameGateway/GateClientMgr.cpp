@@ -22,7 +22,7 @@ CGateClientMgr::~CGateClientMgr()
 
 int64 CGateClientMgr::OnNewClient()
 {
-	if (!CGameConnect::Instance().IsReady(CConfig::Instance().GetGameServerID()))
+	if (!CGameConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetGameServerID()))
 		return 0;
 
 	int64 nClientID = CClientMgr::OnNewClient();
@@ -68,7 +68,7 @@ void CGateClientMgr::ProcessClientMsg(CClient *cl)
 			if (cl->IsAlreadyAuth())
 			{
 				// 认证通过的,转发至GameServer
-				if (CGameConnect::Instance().IsReady(CConfig::Instance().GetGameServerID()))
+				if (CGameConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetGameServerID()))
 				{
 					CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(),*pMsg,cl->GetClientID());
 				}

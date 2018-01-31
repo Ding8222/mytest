@@ -35,6 +35,7 @@ public:
 private:
 	bool AddNewServer(serverinfo *info, int nServerID, int nType);
 	serverinfo *FindServer(int nServerID, int nType);
+	void ServerRegisterSucc(int id, int type, const char *ip, int port);
 
 	// 有新的client连接进来
 	bool AddNewClient(int servertype, int serverid, int64 clientid);

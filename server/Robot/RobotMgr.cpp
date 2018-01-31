@@ -250,6 +250,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 
 				_con->ChangeConnect(msg.ip().c_str(), msg.port(), msg.nserverid());
 				log_error("AuthRet:%d,ip:%s,port:%d", msg.ncode(), msg.ip().c_str(), msg.port());
+				break;
 			}
 			case LOGIN_SUB_LOGIN_RET:
 			{
@@ -257,6 +258,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				_CHECK_PARSE_(pMsg, msg);
 
 				log_error("LoginRet:%d", msg.ncode());
+				break;
 			}
 			default:
 			{

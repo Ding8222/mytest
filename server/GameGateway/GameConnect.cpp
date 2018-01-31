@@ -1,4 +1,5 @@
 ﻿#include "stdfx.h"
+#include "GateClientMgr.h"
 #include "GameConnect.h"
 #include "connector.h"
 #include "config.h"
@@ -31,8 +32,14 @@ bool CGameConnect::Init()
 		CConfig::Instance().GetServerID(),
 		CConfig::Instance().GetServerType(),
 		CConfig::Instance().GetPingTime(),
-		CConfig::Instance().GetOverTime()
+		CConfig::Instance().GetOverTime(),
+		CConfig::Instance().GetListenPort()
 	);
+}
+
+void CGameConnect::ServerRegisterSucc(int id, const char *ip, int port)
+{
+
 }
 
 void CGameConnect::ConnectDisconnect(connector *)
@@ -61,7 +68,6 @@ void CGameConnect::ProcessMsg(connector *_con)
 			}
 			case SVR_SUB_CLIENT_TOKEN:
 			{
-
 				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
 				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
 
@@ -82,6 +88,10 @@ void CGameConnect::ProcessMsg(connector *_con)
 		}
 		default:
 		{
+			msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+			pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+			// 转发给client
+			CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
 		}
 		}
 	}

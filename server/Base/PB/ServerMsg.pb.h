@@ -37,7 +37,7 @@ namespace protobuf_ServerMsg_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[5];
+  static const ::google::protobuf::internal::ParseTable schema[7];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -49,6 +49,10 @@ void InitDefaultsServerRegisterImpl();
 void InitDefaultsServerRegister();
 void InitDefaultsServerRegisterRetImpl();
 void InitDefaultsServerRegisterRet();
+void InitDefaultsServerLoadInfoImpl();
+void InitDefaultsServerLoadInfo();
+void InitDefaultsUpdateServerLoadImpl();
+void InitDefaultsUpdateServerLoad();
 void InitDefaultsAddNewClientImpl();
 void InitDefaultsAddNewClient();
 void InitDefaultsClientTokenImpl();
@@ -57,6 +61,8 @@ inline void InitDefaults() {
   InitDefaultsPing();
   InitDefaultsServerRegister();
   InitDefaultsServerRegisterRet();
+  InitDefaultsServerLoadInfo();
+  InitDefaultsUpdateServerLoad();
   InitDefaultsAddNewClient();
   InitDefaultsClientToken();
 }
@@ -71,20 +77,28 @@ extern ClientTokenDefaultTypeInternal _ClientToken_default_instance_;
 class Ping;
 class PingDefaultTypeInternal;
 extern PingDefaultTypeInternal _Ping_default_instance_;
+class ServerLoadInfo;
+class ServerLoadInfoDefaultTypeInternal;
+extern ServerLoadInfoDefaultTypeInternal _ServerLoadInfo_default_instance_;
 class ServerRegister;
 class ServerRegisterDefaultTypeInternal;
 extern ServerRegisterDefaultTypeInternal _ServerRegister_default_instance_;
 class ServerRegisterRet;
 class ServerRegisterRetDefaultTypeInternal;
 extern ServerRegisterRetDefaultTypeInternal _ServerRegisterRet_default_instance_;
+class UpdateServerLoad;
+class UpdateServerLoadDefaultTypeInternal;
+extern UpdateServerLoadDefaultTypeInternal _UpdateServerLoad_default_instance_;
 }  // namespace svrData
 namespace google {
 namespace protobuf {
 template<> ::svrData::AddNewClient* Arena::Create< ::svrData::AddNewClient>(Arena*);
 template<> ::svrData::ClientToken* Arena::Create< ::svrData::ClientToken>(Arena*);
 template<> ::svrData::Ping* Arena::Create< ::svrData::Ping>(Arena*);
+template<> ::svrData::ServerLoadInfo* Arena::Create< ::svrData::ServerLoadInfo>(Arena*);
 template<> ::svrData::ServerRegister* Arena::Create< ::svrData::ServerRegister>(Arena*);
 template<> ::svrData::ServerRegisterRet* Arena::Create< ::svrData::ServerRegisterRet>(Arena*);
+template<> ::svrData::UpdateServerLoad* Arena::Create< ::svrData::UpdateServerLoad>(Arena*);
 }  // namespace protobuf
 }  // namespace google
 namespace svrData {
@@ -314,6 +328,12 @@ class ServerRegister : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::int32 nconnectid() const;
   void set_nconnectid(::google::protobuf::int32 value);
 
+  // int32 nPort = 4;
+  void clear_nport();
+  static const int kNPortFieldNumber = 4;
+  ::google::protobuf::int32 nport() const;
+  void set_nport(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:svrData.ServerRegister)
  private:
 
@@ -321,6 +341,7 @@ class ServerRegister : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::int32 nserverid_;
   ::google::protobuf::int32 nservertype_;
   ::google::protobuf::int32 nconnectid_;
+  ::google::protobuf::int32 nport_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsServerRegisterImpl();
@@ -443,20 +464,306 @@ class ServerRegisterRet : public ::google::protobuf::Message /* @@protoc_inserti
 
   // accessors -------------------------------------------------------
 
+  // string sIP = 2;
+  void clear_sip();
+  static const int kSIPFieldNumber = 2;
+  const ::std::string& sip() const;
+  void set_sip(const ::std::string& value);
+  #if LANG_CXX11
+  void set_sip(::std::string&& value);
+  #endif
+  void set_sip(const char* value);
+  void set_sip(const char* value, size_t size);
+  ::std::string* mutable_sip();
+  ::std::string* release_sip();
+  void set_allocated_sip(::std::string* sip);
+
   // int32 nRetCode = 1;
   void clear_nretcode();
   static const int kNRetCodeFieldNumber = 1;
   ::google::protobuf::int32 nretcode() const;
   void set_nretcode(::google::protobuf::int32 value);
 
+  // int32 nPort = 3;
+  void clear_nport();
+  static const int kNPortFieldNumber = 3;
+  ::google::protobuf::int32 nport() const;
+  void set_nport(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:svrData.ServerRegisterRet)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr sip_;
   ::google::protobuf::int32 nretcode_;
+  ::google::protobuf::int32 nport_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsServerRegisterRetImpl();
+};
+// -------------------------------------------------------------------
+
+class ServerLoadInfo : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:svrData.ServerLoadInfo) */ {
+ public:
+  ServerLoadInfo();
+  virtual ~ServerLoadInfo();
+
+  ServerLoadInfo(const ServerLoadInfo& from);
+
+  inline ServerLoadInfo& operator=(const ServerLoadInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ServerLoadInfo(ServerLoadInfo&& from) noexcept
+    : ServerLoadInfo() {
+    *this = ::std::move(from);
+  }
+
+  inline ServerLoadInfo& operator=(ServerLoadInfo&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ServerLoadInfo& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ServerLoadInfo* internal_default_instance() {
+    return reinterpret_cast<const ServerLoadInfo*>(
+               &_ServerLoadInfo_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    3;
+
+  void Swap(ServerLoadInfo* other);
+  friend void swap(ServerLoadInfo& a, ServerLoadInfo& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ServerLoadInfo* New() const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<ServerLoadInfo>(NULL);
+  }
+
+  ServerLoadInfo* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<ServerLoadInfo>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ServerLoadInfo& from);
+  void MergeFrom(const ServerLoadInfo& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ServerLoadInfo* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // string sIP = 4;
+  void clear_sip();
+  static const int kSIPFieldNumber = 4;
+  const ::std::string& sip() const;
+  void set_sip(const ::std::string& value);
+  #if LANG_CXX11
+  void set_sip(::std::string&& value);
+  #endif
+  void set_sip(const char* value);
+  void set_sip(const char* value, size_t size);
+  ::std::string* mutable_sip();
+  ::std::string* release_sip();
+  void set_allocated_sip(::std::string* sip);
+
+  // string sGateIP = 6;
+  void clear_sgateip();
+  static const int kSGateIPFieldNumber = 6;
+  const ::std::string& sgateip() const;
+  void set_sgateip(const ::std::string& value);
+  #if LANG_CXX11
+  void set_sgateip(::std::string&& value);
+  #endif
+  void set_sgateip(const char* value);
+  void set_sgateip(const char* value, size_t size);
+  ::std::string* mutable_sgateip();
+  ::std::string* release_sgateip();
+  void set_allocated_sgateip(::std::string* sgateip);
+
+  // int32 nMaxClient = 1;
+  void clear_nmaxclient();
+  static const int kNMaxClientFieldNumber = 1;
+  ::google::protobuf::int32 nmaxclient() const;
+  void set_nmaxclient(::google::protobuf::int32 value);
+
+  // int32 nNowClient = 2;
+  void clear_nnowclient();
+  static const int kNNowClientFieldNumber = 2;
+  ::google::protobuf::int32 nnowclient() const;
+  void set_nnowclient(::google::protobuf::int32 value);
+
+  // int32 nPort = 3;
+  void clear_nport();
+  static const int kNPortFieldNumber = 3;
+  ::google::protobuf::int32 nport() const;
+  void set_nport(::google::protobuf::int32 value);
+
+  // int32 nGatePort = 5;
+  void clear_ngateport();
+  static const int kNGatePortFieldNumber = 5;
+  ::google::protobuf::int32 ngateport() const;
+  void set_ngateport(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:svrData.ServerLoadInfo)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr sip_;
+  ::google::protobuf::internal::ArenaStringPtr sgateip_;
+  ::google::protobuf::int32 nmaxclient_;
+  ::google::protobuf::int32 nnowclient_;
+  ::google::protobuf::int32 nport_;
+  ::google::protobuf::int32 ngateport_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
+  friend void ::protobuf_ServerMsg_2eproto::InitDefaultsServerLoadInfoImpl();
+};
+// -------------------------------------------------------------------
+
+class UpdateServerLoad : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:svrData.UpdateServerLoad) */ {
+ public:
+  UpdateServerLoad();
+  virtual ~UpdateServerLoad();
+
+  UpdateServerLoad(const UpdateServerLoad& from);
+
+  inline UpdateServerLoad& operator=(const UpdateServerLoad& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  UpdateServerLoad(UpdateServerLoad&& from) noexcept
+    : UpdateServerLoad() {
+    *this = ::std::move(from);
+  }
+
+  inline UpdateServerLoad& operator=(UpdateServerLoad&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const UpdateServerLoad& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const UpdateServerLoad* internal_default_instance() {
+    return reinterpret_cast<const UpdateServerLoad*>(
+               &_UpdateServerLoad_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    4;
+
+  void Swap(UpdateServerLoad* other);
+  friend void swap(UpdateServerLoad& a, UpdateServerLoad& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline UpdateServerLoad* New() const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<UpdateServerLoad>(NULL);
+  }
+
+  UpdateServerLoad* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<UpdateServerLoad>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const UpdateServerLoad& from);
+  void MergeFrom(const UpdateServerLoad& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(UpdateServerLoad* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // int32 nClientCountNow = 1;
+  void clear_nclientcountnow();
+  static const int kNClientCountNowFieldNumber = 1;
+  ::google::protobuf::int32 nclientcountnow() const;
+  void set_nclientcountnow(::google::protobuf::int32 value);
+
+  // int32 nClientCountMax = 2;
+  void clear_nclientcountmax();
+  static const int kNClientCountMaxFieldNumber = 2;
+  ::google::protobuf::int32 nclientcountmax() const;
+  void set_nclientcountmax(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:svrData.UpdateServerLoad)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int32 nclientcountnow_;
+  ::google::protobuf::int32 nclientcountmax_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
+  friend void ::protobuf_ServerMsg_2eproto::InitDefaultsUpdateServerLoadImpl();
 };
 // -------------------------------------------------------------------
 
@@ -495,7 +802,7 @@ class AddNewClient : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_AddNewClient_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    3;
+    5;
 
   void Swap(AddNewClient* other);
   friend void swap(AddNewClient& a, AddNewClient& b) {
@@ -546,24 +853,10 @@ class AddNewClient : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // accessors -------------------------------------------------------
 
-  // int32 nClientCountNow = 1;
-  void clear_nclientcountnow();
-  static const int kNClientCountNowFieldNumber = 1;
-  ::google::protobuf::int32 nclientcountnow() const;
-  void set_nclientcountnow(::google::protobuf::int32 value);
-
-  // int32 nClientCountMax = 2;
-  void clear_nclientcountmax();
-  static const int kNClientCountMaxFieldNumber = 2;
-  ::google::protobuf::int32 nclientcountmax() const;
-  void set_nclientcountmax(::google::protobuf::int32 value);
-
   // @@protoc_insertion_point(class_scope:svrData.AddNewClient)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::int32 nclientcountnow_;
-  ::google::protobuf::int32 nclientcountmax_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsAddNewClientImpl();
@@ -605,7 +898,7 @@ class ClientToken : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_ClientToken_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    4;
+    6;
 
   void Swap(ClientToken* other);
   friend void swap(ClientToken& a, ClientToken& b) {
@@ -751,6 +1044,20 @@ inline void ServerRegister::set_nconnectid(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:svrData.ServerRegister.nConnectID)
 }
 
+// int32 nPort = 4;
+inline void ServerRegister::clear_nport() {
+  nport_ = 0;
+}
+inline ::google::protobuf::int32 ServerRegister::nport() const {
+  // @@protoc_insertion_point(field_get:svrData.ServerRegister.nPort)
+  return nport_;
+}
+inline void ServerRegister::set_nport(::google::protobuf::int32 value) {
+  
+  nport_ = value;
+  // @@protoc_insertion_point(field_set:svrData.ServerRegister.nPort)
+}
+
 // -------------------------------------------------------------------
 
 // ServerRegisterRet
@@ -769,37 +1076,274 @@ inline void ServerRegisterRet::set_nretcode(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:svrData.ServerRegisterRet.nRetCode)
 }
 
+// string sIP = 2;
+inline void ServerRegisterRet::clear_sip() {
+  sip_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ServerRegisterRet::sip() const {
+  // @@protoc_insertion_point(field_get:svrData.ServerRegisterRet.sIP)
+  return sip_.GetNoArena();
+}
+inline void ServerRegisterRet::set_sip(const ::std::string& value) {
+  
+  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:svrData.ServerRegisterRet.sIP)
+}
+#if LANG_CXX11
+inline void ServerRegisterRet::set_sip(::std::string&& value) {
+  
+  sip_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:svrData.ServerRegisterRet.sIP)
+}
+#endif
+inline void ServerRegisterRet::set_sip(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:svrData.ServerRegisterRet.sIP)
+}
+inline void ServerRegisterRet::set_sip(const char* value, size_t size) {
+  
+  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:svrData.ServerRegisterRet.sIP)
+}
+inline ::std::string* ServerRegisterRet::mutable_sip() {
+  
+  // @@protoc_insertion_point(field_mutable:svrData.ServerRegisterRet.sIP)
+  return sip_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ServerRegisterRet::release_sip() {
+  // @@protoc_insertion_point(field_release:svrData.ServerRegisterRet.sIP)
+  
+  return sip_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ServerRegisterRet::set_allocated_sip(::std::string* sip) {
+  if (sip != NULL) {
+    
+  } else {
+    
+  }
+  sip_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), sip);
+  // @@protoc_insertion_point(field_set_allocated:svrData.ServerRegisterRet.sIP)
+}
+
+// int32 nPort = 3;
+inline void ServerRegisterRet::clear_nport() {
+  nport_ = 0;
+}
+inline ::google::protobuf::int32 ServerRegisterRet::nport() const {
+  // @@protoc_insertion_point(field_get:svrData.ServerRegisterRet.nPort)
+  return nport_;
+}
+inline void ServerRegisterRet::set_nport(::google::protobuf::int32 value) {
+  
+  nport_ = value;
+  // @@protoc_insertion_point(field_set:svrData.ServerRegisterRet.nPort)
+}
+
 // -------------------------------------------------------------------
 
-// AddNewClient
+// ServerLoadInfo
+
+// int32 nMaxClient = 1;
+inline void ServerLoadInfo::clear_nmaxclient() {
+  nmaxclient_ = 0;
+}
+inline ::google::protobuf::int32 ServerLoadInfo::nmaxclient() const {
+  // @@protoc_insertion_point(field_get:svrData.ServerLoadInfo.nMaxClient)
+  return nmaxclient_;
+}
+inline void ServerLoadInfo::set_nmaxclient(::google::protobuf::int32 value) {
+  
+  nmaxclient_ = value;
+  // @@protoc_insertion_point(field_set:svrData.ServerLoadInfo.nMaxClient)
+}
+
+// int32 nNowClient = 2;
+inline void ServerLoadInfo::clear_nnowclient() {
+  nnowclient_ = 0;
+}
+inline ::google::protobuf::int32 ServerLoadInfo::nnowclient() const {
+  // @@protoc_insertion_point(field_get:svrData.ServerLoadInfo.nNowClient)
+  return nnowclient_;
+}
+inline void ServerLoadInfo::set_nnowclient(::google::protobuf::int32 value) {
+  
+  nnowclient_ = value;
+  // @@protoc_insertion_point(field_set:svrData.ServerLoadInfo.nNowClient)
+}
+
+// int32 nPort = 3;
+inline void ServerLoadInfo::clear_nport() {
+  nport_ = 0;
+}
+inline ::google::protobuf::int32 ServerLoadInfo::nport() const {
+  // @@protoc_insertion_point(field_get:svrData.ServerLoadInfo.nPort)
+  return nport_;
+}
+inline void ServerLoadInfo::set_nport(::google::protobuf::int32 value) {
+  
+  nport_ = value;
+  // @@protoc_insertion_point(field_set:svrData.ServerLoadInfo.nPort)
+}
+
+// string sIP = 4;
+inline void ServerLoadInfo::clear_sip() {
+  sip_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ServerLoadInfo::sip() const {
+  // @@protoc_insertion_point(field_get:svrData.ServerLoadInfo.sIP)
+  return sip_.GetNoArena();
+}
+inline void ServerLoadInfo::set_sip(const ::std::string& value) {
+  
+  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:svrData.ServerLoadInfo.sIP)
+}
+#if LANG_CXX11
+inline void ServerLoadInfo::set_sip(::std::string&& value) {
+  
+  sip_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:svrData.ServerLoadInfo.sIP)
+}
+#endif
+inline void ServerLoadInfo::set_sip(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:svrData.ServerLoadInfo.sIP)
+}
+inline void ServerLoadInfo::set_sip(const char* value, size_t size) {
+  
+  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:svrData.ServerLoadInfo.sIP)
+}
+inline ::std::string* ServerLoadInfo::mutable_sip() {
+  
+  // @@protoc_insertion_point(field_mutable:svrData.ServerLoadInfo.sIP)
+  return sip_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ServerLoadInfo::release_sip() {
+  // @@protoc_insertion_point(field_release:svrData.ServerLoadInfo.sIP)
+  
+  return sip_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ServerLoadInfo::set_allocated_sip(::std::string* sip) {
+  if (sip != NULL) {
+    
+  } else {
+    
+  }
+  sip_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), sip);
+  // @@protoc_insertion_point(field_set_allocated:svrData.ServerLoadInfo.sIP)
+}
+
+// int32 nGatePort = 5;
+inline void ServerLoadInfo::clear_ngateport() {
+  ngateport_ = 0;
+}
+inline ::google::protobuf::int32 ServerLoadInfo::ngateport() const {
+  // @@protoc_insertion_point(field_get:svrData.ServerLoadInfo.nGatePort)
+  return ngateport_;
+}
+inline void ServerLoadInfo::set_ngateport(::google::protobuf::int32 value) {
+  
+  ngateport_ = value;
+  // @@protoc_insertion_point(field_set:svrData.ServerLoadInfo.nGatePort)
+}
+
+// string sGateIP = 6;
+inline void ServerLoadInfo::clear_sgateip() {
+  sgateip_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ServerLoadInfo::sgateip() const {
+  // @@protoc_insertion_point(field_get:svrData.ServerLoadInfo.sGateIP)
+  return sgateip_.GetNoArena();
+}
+inline void ServerLoadInfo::set_sgateip(const ::std::string& value) {
+  
+  sgateip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:svrData.ServerLoadInfo.sGateIP)
+}
+#if LANG_CXX11
+inline void ServerLoadInfo::set_sgateip(::std::string&& value) {
+  
+  sgateip_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:svrData.ServerLoadInfo.sGateIP)
+}
+#endif
+inline void ServerLoadInfo::set_sgateip(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  sgateip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:svrData.ServerLoadInfo.sGateIP)
+}
+inline void ServerLoadInfo::set_sgateip(const char* value, size_t size) {
+  
+  sgateip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:svrData.ServerLoadInfo.sGateIP)
+}
+inline ::std::string* ServerLoadInfo::mutable_sgateip() {
+  
+  // @@protoc_insertion_point(field_mutable:svrData.ServerLoadInfo.sGateIP)
+  return sgateip_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ServerLoadInfo::release_sgateip() {
+  // @@protoc_insertion_point(field_release:svrData.ServerLoadInfo.sGateIP)
+  
+  return sgateip_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ServerLoadInfo::set_allocated_sgateip(::std::string* sgateip) {
+  if (sgateip != NULL) {
+    
+  } else {
+    
+  }
+  sgateip_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), sgateip);
+  // @@protoc_insertion_point(field_set_allocated:svrData.ServerLoadInfo.sGateIP)
+}
+
+// -------------------------------------------------------------------
+
+// UpdateServerLoad
 
 // int32 nClientCountNow = 1;
-inline void AddNewClient::clear_nclientcountnow() {
+inline void UpdateServerLoad::clear_nclientcountnow() {
   nclientcountnow_ = 0;
 }
-inline ::google::protobuf::int32 AddNewClient::nclientcountnow() const {
-  // @@protoc_insertion_point(field_get:svrData.AddNewClient.nClientCountNow)
+inline ::google::protobuf::int32 UpdateServerLoad::nclientcountnow() const {
+  // @@protoc_insertion_point(field_get:svrData.UpdateServerLoad.nClientCountNow)
   return nclientcountnow_;
 }
-inline void AddNewClient::set_nclientcountnow(::google::protobuf::int32 value) {
+inline void UpdateServerLoad::set_nclientcountnow(::google::protobuf::int32 value) {
   
   nclientcountnow_ = value;
-  // @@protoc_insertion_point(field_set:svrData.AddNewClient.nClientCountNow)
+  // @@protoc_insertion_point(field_set:svrData.UpdateServerLoad.nClientCountNow)
 }
 
 // int32 nClientCountMax = 2;
-inline void AddNewClient::clear_nclientcountmax() {
+inline void UpdateServerLoad::clear_nclientcountmax() {
   nclientcountmax_ = 0;
 }
-inline ::google::protobuf::int32 AddNewClient::nclientcountmax() const {
-  // @@protoc_insertion_point(field_get:svrData.AddNewClient.nClientCountMax)
+inline ::google::protobuf::int32 UpdateServerLoad::nclientcountmax() const {
+  // @@protoc_insertion_point(field_get:svrData.UpdateServerLoad.nClientCountMax)
   return nclientcountmax_;
 }
-inline void AddNewClient::set_nclientcountmax(::google::protobuf::int32 value) {
+inline void UpdateServerLoad::set_nclientcountmax(::google::protobuf::int32 value) {
   
   nclientcountmax_ = value;
-  // @@protoc_insertion_point(field_set:svrData.AddNewClient.nClientCountMax)
+  // @@protoc_insertion_point(field_set:svrData.UpdateServerLoad.nClientCountMax)
 }
+
+// -------------------------------------------------------------------
+
+// AddNewClient
 
 // -------------------------------------------------------------------
 
@@ -914,6 +1458,10 @@ inline void ClientToken::set_allocated_ssecret(::std::string* ssecret) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

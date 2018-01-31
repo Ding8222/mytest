@@ -29,7 +29,7 @@ CLoginClientMgr::~CLoginClientMgr()
 
 int64 CLoginClientMgr::OnNewClient()
 {
-	if (!CLoginCenterConnect::Instance().IsReady(CConfig::Instance().GetCenterServerID()))
+	if (!CLoginCenterConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetCenterServerID()))
 		return 0;
 
 	int64 nClientID = CClientMgr::OnNewClient();

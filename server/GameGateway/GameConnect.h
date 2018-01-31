@@ -20,6 +20,7 @@ public:
 
 	bool Init();
 
+	void ServerRegisterSucc(int id, const char *ip, int port);
 	// 连接断开的处理
 	void ConnectDisconnect(connector *);
 	// 处理远程服务器发来的消息

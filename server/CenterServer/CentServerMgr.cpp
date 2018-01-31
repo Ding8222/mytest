@@ -1,4 +1,5 @@
 ﻿#include"stdfx.h"
+#include "ServerStatusMgr.h"
 #include "CentServerMgr.h"
 #include "serverinfo.h"
 #include "Config.h"
@@ -200,6 +201,7 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 
 void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 {
+	CServerStatusMgr::Instance().DelServer(info->GetServerID());
 	switch (info->GetServerType())
 	{
 	case ServerEnum::EST_GAME:
@@ -260,6 +262,41 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 			{
 				info->SendMsg(pMsg);
 				info->SetPingTime(g_currenttime);
+				break;
+			}
+			case SVR_SUB_SERVER_LOADINFO:
+			{
+				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+
+				svrData::ServerLoadInfo msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				ServerInfo *_pInfo = new ServerInfo;
+
+				_pInfo->nServerID = info->GetServerID();
+				_pInfo->nServerType = info->GetServerType();
+				_pInfo->nMaxClient = msg.nmaxclient();
+				_pInfo->nNowClient = msg.nnowclient();
+				strncpy_s(_pInfo->chIP, MAX_IP_LEN, msg.sip().c_str(), msg.sip().size());
+				_pInfo->nPort = msg.nport();
+				strncpy_s(_pInfo->chGateIP, MAX_IP_LEN, msg.sgateip().c_str(), msg.sgateip().size());
+				_pInfo->nGatePort = msg.ngateport();
+
+				if (!CServerStatusMgr::Instance().AddNewServer(_pInfo))
+					delete _pInfo;
+
+				break;
+			}
+			case SVR_SUB_UPDATE_LOAD:
+			{
+				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+
+				svrData::UpdateServerLoad msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				CServerStatusMgr::Instance().UpdateServerLoad(info->GetServerID(), msg.nclientcountnow(), msg.nclientcountmax());
 				break;
 			}
 			case SVR_SUB_NEW_CLIENT:
@@ -371,16 +408,25 @@ void CCentServerMgr::ProcessDBMsg(serverinfo *info, Msg *pMsg)
 			{
 				netData::AuthRet msg;
 				_CHECK_PARSE_(pMsg, msg);
-				msg.set_nserverid(3000);
-				msg.set_ip("127.0.0.1");
-				msg.set_port(30012);
 
+				ServerInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByServerID(4000);
+				if (_pInfo)
+				{
+					msg.set_ncode(netData::AuthRet::EC_SUCC);
+					msg.set_nserverid(_pInfo->nGateID);
+					msg.set_ip(_pInfo->chGateIP);
+					msg.set_port(_pInfo->nGatePort);
+
+					svrData::ClientToken sendMsg;
+					sendMsg.set_setoken(cl->Token);
+					sendMsg.set_ssecret(cl->Secret);
+					SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, _pInfo->nServerType, _pInfo->nServerID, cl->ClientID);
+
+				}
+				else
+					msg.set_ncode(netData::AuthRet::EC_SERVER);
+				
 				SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, cl->ServerType, cl->ServerID, cl->ClientID);
-
-				svrData::ClientToken sendMsg;
-				sendMsg.set_setoken(cl->Token);
-				sendMsg.set_ssecret(cl->Secret);
-				SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GAME, 4000, cl->ClientID);
 			}
 			break;
 		}
@@ -461,6 +507,11 @@ serverinfo *CCentServerMgr::FindServer(int nServerID, int nType)
 	if (itr != _pList->end())
 		return itr->second;
 	return nullptr;
+}
+
+void CCentServerMgr::ServerRegisterSucc(int id, int type, const char *ip, int port)
+{
+
 }
 
 bool CCentServerMgr::AddNewClient(int servertype, int serverid, int64 clientid)

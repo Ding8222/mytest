@@ -17,6 +17,7 @@ serverinfo::serverinfo ()
 	m_sendmsg_num = 0;
 
 	memset(m_ip, 0, sizeof(m_ip));
+	m_port = 0;
 	m_con = NULL;
 }
 

@@ -10,9 +10,10 @@ message Ping
 // 0-2 请求服务器注册
 message ServerRegister
 {
-	int32 nServerID = 1;		//此服的id
-	int32 nServerType = 2;		//此服的类型
-	int32 nConnectID = 3;		//要连接的服的id
+	int32 nServerID = 1;		// 此服的ID
+	int32 nServerType = 2;		// 此服的类型
+	int32 nConnectID = 3;		// 要连接的服的id
+	int32 nPort = 4;			// 此服的端口
 }
 
 // 0-3 服务器注册返回
@@ -25,19 +26,38 @@ message ServerRegisterRet
 		EC_SERVER_ID_EXIST = 2;
 		EC_TO_CONNECT_ID_NOT_EQUAL = 3;
 	};
-	int32 nRetCode = 1;	// 返回的信息
+	int32 nRetCode = 1;		// 返回的信息
+	string sIP = 2;			// 此服的IP
+	int32 nPort = 3;		// 此服的端口
 }
 
-// 0-4 新的client连接上来了
+// 0-4 发送服务器负载
+message ServerLoadInfo
+{
+	int32 nMaxClient = 1;   // 最大Client
+	int32 nNowClient = 2;   // 当前Client
+	int32 nPort = 3;        // 端口
+	string sIP = 4;			// IP
+	int32 nGatePort = 5;	// 网关端口
+	string sGateIP = 6;		// 网关IP
+}
+
+// 0-5 服务器负载更新
+message UpdateServerLoad
+{
+	int32 nClientCountNow = 1;	// 服务器当前client数量
+	int32 nClientCountMax = 2;	// 服务器最大client数量
+}
+
+// 0-6 新的client连接上来了
 message AddNewClient
 {
-	int32 nClientCountNow = 1;	//服务器当前client数量
-	int32 nClientCountMax = 2;	//服务器最大client数量
+
 }
 
-// 0-5 ClientToken
+// 0-7 ClientToken
 message ClientToken
 {
-	string sEtoken = 1;	//账号信息
-	bytes sSecret = 2;	//秘钥
+	string sEtoken = 1;	// 账号信息
+	bytes sSecret = 2;	// 秘钥
 }

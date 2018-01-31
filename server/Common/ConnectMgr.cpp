@@ -12,6 +12,7 @@ CConnectMgr::CConnectMgr()
 	m_ServerType = 0;
 	m_OverTime = 0;
 	m_PingTime = 0;
+	m_ListenPort = 0;
 	
 	m_List.clear();
 }
@@ -21,12 +22,13 @@ CConnectMgr::~CConnectMgr()
 	Destroy();
 }
 
-bool CConnectMgr::Init(int serverid, int servertype, int pingtime, int overtime)
+bool CConnectMgr::Init(int serverid, int servertype, int pingtime, int overtime, int listenport)
 {
 	m_ServerID = serverid;
 	m_ServerType = servertype;
 	m_PingTime = pingtime;
 	m_OverTime = overtime;
+	m_ListenPort = listenport;
 
 	return true;
 }
@@ -60,7 +62,7 @@ void CConnectMgr::Run()
 			return;
 		}
 
-		if (con->IsReady())
+		if (con->IsAlreadyRegister())
 			ProcessMsg(con);
 		else
 			ProcessRegister(con);
@@ -85,12 +87,12 @@ void CConnectMgr::Destroy()
 	m_List.clear();
 }
 
-bool CConnectMgr::IsReady(int id)
+bool CConnectMgr::IsAlreadyRegister(int id)
 {
 	connector *con= FindConnect(id);
 	if (con)
 	{
-		return con->IsReady();
+		return con->IsAlreadyRegister();
 	}
 	return false;
 }
@@ -153,8 +155,8 @@ bool CConnectMgr::SendMsgToServer(int nServerID, Msg &pMsg, int64 nClientID)
 bool CConnectMgr::SendMsgToServer(connector *con, google::protobuf::Message &pMsg, int maintype, int subtype, int64 clientid)
 {
 	assert(con);
-	assert(clientid > 0);
-	if (clientid <= 0)
+	assert(clientid >= 0);
+	if (clientid < 0)
 		return false;
 
 	msgtail tail;
@@ -165,8 +167,8 @@ bool CConnectMgr::SendMsgToServer(connector *con, google::protobuf::Message &pMs
 bool CConnectMgr::SendMsgToServer(connector *con, Msg &pMsg, int64 clientid)
 {
 	assert(con);
-	assert(clientid > 0);
-	if (clientid <= 0)
+	assert(clientid >= 0);
+	if (clientid < 0)
 		return false;
 
 	msgtail tail;
@@ -224,12 +226,13 @@ void CConnectMgr::TryConnect(connector *con)
 {
 	if (con->TryConnect(g_currenttime))
 	{
-		svrData::ServerRegister msg;
-		msg.set_nserverid(m_ServerID);
-		msg.set_nservertype(m_ServerType);
-		msg.set_nconnectid(con->GetConnectID());
+		svrData::ServerRegister sendMsg;
+		sendMsg.set_nserverid(m_ServerID);
+		sendMsg.set_nservertype(m_ServerType);
+		sendMsg.set_nconnectid(con->GetConnectID());
+		sendMsg.set_nport(m_ListenPort);
 
-		if(SendMsg(con, msg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_REGISTER))
+		if(SendMsg(con, sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_REGISTER))
 			log_error("连接服务器成功!发送注册信息成功！服务器ID：[%d] IP:[%s]", con->GetConnectID(), con->GetConnectIP());
 		else
 			log_error("连接服务器成功!发送注册信息失败！服务器ID：[%d] IP:[%s]", con->GetConnectID(), con->GetConnectIP());
@@ -238,7 +241,7 @@ void CConnectMgr::TryConnect(connector *con)
 
 void CConnectMgr::OnConnectDisconnect(connector *con)
 {
-	if (con->IsReady())
+	if (con->IsAlreadyRegister())
 	{
 		ConnectDisconnect(con);
 	}
@@ -274,7 +277,8 @@ void CConnectMgr::ProcessRegister(connector *con)
 					case svrData::ServerRegisterRet::EC_SUCC:
 					{
 						// 认证成功
-						con->SetReady(true);
+						con->SetAlreadyRegister(true);
+						ServerRegisterSucc(con->GetConnectID(), msg.sip().c_str(), msg.nport());
 						log_error("注册到远程服务器成功！");
 						break;
 					}

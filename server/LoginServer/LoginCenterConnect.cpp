@@ -41,6 +41,11 @@ bool CLoginCenterConnect::Init()
 	);
 }
 
+void CLoginCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
+{
+
+}
+
 void CLoginCenterConnect::ConnectDisconnect(connector *)
 {
 

@@ -124,11 +124,13 @@
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CentServerMgr.cpp" />
+    <ClCompile Include="ServerStatusMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CenterServer.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="CentServerMgr.h" />
+    <ClInclude Include="ServerStatusMgr.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

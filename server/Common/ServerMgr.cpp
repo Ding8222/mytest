@@ -80,6 +80,16 @@ void CServerMgr::Destroy()
 	m_WaitRemove.clear();
 }
 
+bool CServerMgr::IsAlreadyRegister(int id)
+{
+	serverinfo *svr = FindServer(id);
+	if (svr)
+	{
+		return svr->IsAlreadyRegister();
+	}
+	return false;
+}
+
 void CServerMgr::GetCurrentInfo(char *buf, size_t buflen)
 {
 
@@ -268,11 +278,11 @@ void CServerMgr::SendMsg(serverinfo *info, Msg &pMsg, void *adddata, size_t adds
 
 void CServerMgr::OnServerRegister(serverinfo *info, MessagePack *pMsg)
 {
-	svrData::ServerRegister Msg;
-	if (!pMsg->UnPack(Msg))
+	svrData::ServerRegister msg;
+	if (!pMsg->UnPack(msg))
 		return;
 	
-	if (Msg.nconnectid() != m_ServerID)
+	if (msg.nconnectid() != m_ServerID)
 	{
 		//要连的服务器ID不对
 		svrData::ServerRegisterRet ret;
@@ -282,19 +292,22 @@ void CServerMgr::OnServerRegister(serverinfo *info, MessagePack *pMsg)
 
 		//延时删除
 		info->SetRemove(g_currenttime);
-		log_error("一个新的服务器注册失败！请求注册的ServerID和本机ServerID不同，远程服务器ID：[%d] IP:[%s]", Msg.nserverid(), info->GetIP());
+		log_error("一个新的服务器注册失败！请求注册的ServerID和本机ServerID不同，远程服务器ID：[%d] IP:[%s]", info->GetServerID(), info->GetIP());
 		return;
 	}
-
-	if (AddNewServer(info, Msg.nserverid(), Msg.nservertype()))
+	
+	if (AddNewServer(info, msg.nserverid(), msg.nservertype()))
 	{
 		//注册成功
 		svrData::ServerRegisterRet ret;
 		ret.set_nretcode(svrData::ServerRegisterRet::EC_SUCC);
+		ret.set_sip("127.0.0.1");
+		ret.set_nport(m_ListenPort);
 
 		SendMsg(info, ret, SERVER_TYPE_MAIN, SVR_SUB_SERVER_REGISTER_RET);
-
-		log_error("一个新的服务器注册成功，远程服务器ID：[%d] IP:[%s]", Msg.nserverid(), info->GetIP());
+		info->SetPort(msg.nport());
+		ServerRegisterSucc(info->GetServerID(), info->GetServerType(), info->GetIP(), msg.nport());
+		log_error("一个新的服务器注册成功，远程服务器ID：[%d] IP:[%s]", info->GetServerID(), info->GetIP());
 	}
 	else
 	{
@@ -306,7 +319,7 @@ void CServerMgr::OnServerRegister(serverinfo *info, MessagePack *pMsg)
 
 		//延时删除
 		info->SetRemove(g_currenttime);
-		log_error("一个新的服务器注册失败！远程服务器ID：[%d] IP:[%s]", Msg.nserverid(), info->GetIP());
+		log_error("一个新的服务器注册失败！远程服务器ID：[%d] IP:[%s]", info->GetServerID(), info->GetIP());
 	}
 }
 
@@ -323,4 +336,16 @@ void CServerMgr::CheckAndRemove()
 		serverinfo_release(info);
 		m_WaitRemove.pop_front();
 	}
+}
+
+serverinfo *CServerMgr::FindServer(int nServerID)
+{
+	std::list<serverinfo *>::iterator _Iter
+		= std::find_if(m_List.begin(), m_List.end(), [&](serverinfo* svr)->bool { return svr->GetServerID() == nServerID; });
+
+	if (_Iter != m_List.end())
+	{
+		return (*_Iter);
+	}
+	return nullptr;
 }

@@ -186,12 +186,14 @@ enum AuthRet_EC {
   AuthRet_EC_EC_SUCC = 1,
   AuthRet_EC_EC_FAIL = 2,
   AuthRet_EC_EC_HANDSHAKE = 3,
+  AuthRet_EC_EC_SERVER = 4,
+  AuthRet_EC_EC_DB = 5,
   AuthRet_EC_AuthRet_EC_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   AuthRet_EC_AuthRet_EC_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool AuthRet_EC_IsValid(int value);
 const AuthRet_EC AuthRet_EC_EC_MIN = AuthRet_EC_EC_OTHER;
-const AuthRet_EC AuthRet_EC_EC_MAX = AuthRet_EC_EC_HANDSHAKE;
+const AuthRet_EC AuthRet_EC_EC_MAX = AuthRet_EC_EC_DB;
 const int AuthRet_EC_EC_ARRAYSIZE = AuthRet_EC_EC_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* AuthRet_EC_descriptor();
@@ -970,6 +972,10 @@ class AuthRet : public ::google::protobuf::Message /* @@protoc_insertion_point(c
     AuthRet_EC_EC_FAIL;
   static const EC EC_HANDSHAKE =
     AuthRet_EC_EC_HANDSHAKE;
+  static const EC EC_SERVER =
+    AuthRet_EC_EC_SERVER;
+  static const EC EC_DB =
+    AuthRet_EC_EC_DB;
   static inline bool EC_IsValid(int value) {
     return AuthRet_EC_IsValid(value);
   }

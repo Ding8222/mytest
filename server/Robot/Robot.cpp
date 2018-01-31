@@ -24,13 +24,13 @@ void CRobot::SendMsg(google::protobuf::Message &pMsg, int maintype, int subtype,
 
 void CRobot::OnConnectDisconnect()
 {
-	if (IsReady())
+	if (IsAlreadyRegister())
 	{
 
 	}
 
 	ResetConnect();
-	SetReady(false);
+	SetAlreadyRegister(false);
 }
 
 void CRobot::ChangeConnect(const char *ip, int port, int id)
@@ -73,7 +73,7 @@ void CRobot::ProcessRegister(connector *con)
 					case svrData::ServerRegisterRet::EC_SUCC:
 					{
 						// 认证成功
-						con->SetReady(true);
+						con->SetAlreadyRegister(true);
 						log_error("注册到远程服务器成功！");
 						break;
 					}

@@ -53,12 +53,14 @@ message AuthRet
 		EC_OTHER = 0;
 		EC_SUCC = 1;
 		EC_FAIL = 2;
-		EC_HANDSHAKE = 3;
+		EC_HANDSHAKE = 3;	// 握手失败
+		EC_SERVER = 4;		// 分配Server失败
+		EC_DB = 5;			// 数据库查询失败
 	};
 	int32 nCode = 1;
-	int32 nServerID = 2;	//返回要连接的服务器ID
-	string ip = 3;			//返回要去连接的ip地址
-	int32 port = 4;			//返回要去连接的port
+	int32 nServerID = 2;	// 返回要连接的服务器ID
+	string ip = 3;			// 返回要去连接的ip地址
+	int32 port = 4;			// 返回要去连接的port
 }
 
 // 2-7 登陆

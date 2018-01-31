@@ -36,6 +36,8 @@ public:
 	int GetSendMsgNum () { return m_sendmsg_num; }
 	const char *GetIP () { return m_ip; }
 	void SetIP (const char *ip);
+	int GetPort() { return m_port; }
+	void SetPort(int port) { m_port = port; }
 private:
 	bool m_already_register;
 	int m_serverid;
@@ -48,6 +50,7 @@ private:
 	int m_sendmsg_num;
 
 	char m_ip[64];
+	int m_port;	// 如果大于0，说明该服务器处于监听状态
 	lxnet::Socketer *m_con;
 };
 

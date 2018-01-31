@@ -11,8 +11,14 @@
 // 服务器注册返回
 #define SVR_SUB_SERVER_REGISTER_RET 3
 
+//服务器负载信息
+#define SVR_SUB_SERVER_LOADINFO 4
+
+//服务器负载更新
+#define SVR_SUB_UPDATE_LOAD 5
+
 // 新的client连接上来了
-#define SVR_SUB_NEW_CLIENT 4
+#define SVR_SUB_NEW_CLIENT 6
 
 // 通知game玩家的token
-#define SVR_SUB_CLIENT_TOKEN 5
+#define SVR_SUB_CLIENT_TOKEN 7

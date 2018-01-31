@@ -15,12 +15,12 @@ public:
 	CConnectMgr();
 	~CConnectMgr();
 
-	bool Init(int serverid, int servertype, int pingtime, int overtime);
+	bool Init(int serverid, int servertype, int pingtime, int overtime, int listenport = 0);
 	void Run();
 	void EndRun();
 	void Destroy();
 
-	bool IsReady(int id);
+	bool IsAlreadyRegister(int id);
 
 	// 获取当前连接中的服务器数量
 	void GetCurrentInfo(char *buf, size_t buflen);
@@ -45,7 +45,6 @@ public:
 	bool AddNewConnect(const char *ip, int port, int id);
 	// 根据类型查找连接器
 	connector *FindConnect(int nID);
-
 private:
 	// 尝试连接并请求注册
 	void TryConnect(connector *);
@@ -57,12 +56,15 @@ private:
 	void ProcessRegister(connector *);
 	// 注册后处理的消息
 	virtual void ProcessMsg(connector *) = 0;
+	// 注册成功后的回调
+	virtual void ServerRegisterSucc(int id, const char *ip, int port) = 0;
 private:
 	int m_ServerID;
 	int m_ServerType;
 	int m_OverTime;
 	int m_PingTime;
-	
+	int m_ListenPort;
+
 	std::unordered_map<int, connector *> m_List;
 };
 

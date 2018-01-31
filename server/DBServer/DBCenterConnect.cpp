@@ -59,6 +59,11 @@ bool CDBCenterConnect::Init()
 	);
 }
 
+void CDBCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
+{
+
+}
+
 void CDBCenterConnect::ConnectDisconnect(connector *)
 {
 	

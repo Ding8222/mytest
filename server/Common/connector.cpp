@@ -7,7 +7,7 @@ connector::connector ()
 	memset(m_ip, 0, MAX_IP_LEN);
 	m_port = 0;
 	m_id = 0;
-	m_isready = false;
+	m_already_register = false;
 
 	m_isbigbuf = true;
 	m_already_connect = false;
@@ -75,7 +75,7 @@ void connector::ResetConnect ()
 	}
 	m_con = lxnet::Socketer::Create(m_isbigbuf);
 	m_already_connect = false;
-	m_isready = false;
+	m_already_register = false;
 }
 
 bool connector::TryConnect (int64 currenttime, const char *ip, int port)

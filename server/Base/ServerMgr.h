@@ -19,6 +19,8 @@ public:
 	void EndRun();
 	virtual void Destroy();
 
+	bool IsAlreadyRegister(int id);
+
 	// 获取当前连接中的服务器数量
 	virtual void GetCurrentInfo(char *buf, size_t buflen) = 0;
 	// 重置消息数量
@@ -55,6 +57,8 @@ private:
 	void OnServerRegister(serverinfo *info, MessagePack *pMsg);
 	// 真正移除服务器连接
 	void CheckAndRemove();
+	// 根据服务器ID查找
+	serverinfo *FindServer(int nServerID);
 
 	// 服务器断开
 	virtual void OnConnectDisconnect(serverinfo *info, bool overtime = false) = 0;
@@ -62,6 +66,8 @@ private:
 	virtual bool AddNewServer(serverinfo *info, int nServerID, int nType) = 0;
 	// 根据类型查找服务器
 	virtual serverinfo *FindServer(int nServerID, int nType) = 0;
+	// 注册成功后的回调
+	virtual void ServerRegisterSucc(int id, int type, const char *ip, int port) = 0;
 private:
 	int m_ListenPort;
 	int m_OverTime;

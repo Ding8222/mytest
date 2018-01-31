@@ -16,8 +16,8 @@ public:
 	bool SendMsg (Msg *pMsg, void *adddata = 0, size_t addsize = 0);
 	Msg *GetMsg ();
 	bool IsAlreadyConnect() { return m_already_connect; }
-	bool IsReady() { return m_isready; }
-	void SetReady(bool ready) { m_isready = ready; }
+	bool IsAlreadyRegister() { return m_already_register; }
+	void SetAlreadyRegister(bool ready) { m_already_register = ready; }
 	void ResetConnect ();
 	bool TryConnect(int64 currenttime, const char *ip, int port);
 	bool TryConnect(int64 currenttime);
@@ -48,7 +48,7 @@ private:
 	char m_ip[MAX_IP_LEN];
 	int m_port;
 	int m_id;
-	bool m_isready;
+	bool m_already_register;
 };
 
 connector *ConnectorCreate();
