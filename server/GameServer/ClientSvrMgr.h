@@ -15,6 +15,7 @@ public:
 
 	void AddClientSvr(int64 clientid, int serverid);
 	void DelClientSvr(int64 clientid);
+	void DelAllClientSvr();
 	int FindClientSvr(int64 clientid);
 	int GetClientSvrSize() { return m_ClientSvrInfo.size(); }
 private:

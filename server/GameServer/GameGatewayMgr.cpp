@@ -136,10 +136,10 @@ void CGameGatewayMgr::ServerRegisterSucc(int id, int type, const char *ip, int p
 		if (CGameCenterConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetCenterServerID()))
 		{
 			svrData::ServerLoadInfo sendMsg;
-			sendMsg.set_nmaxclient(2000);
+			sendMsg.set_nmaxclient(0);
 			sendMsg.set_nnowclient(CClientSvrMgr::Instance().GetClientSvrSize());
 			sendMsg.set_nport(CConfig::Instance().GetListenPort());
-			sendMsg.set_sip("127.0.0.1");
+			sendMsg.set_sip(CConfig::Instance().GetServerIP());
 			sendMsg.set_ngateport(port);
 			sendMsg.set_sgateip(ip);
 			CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_LOADINFO);
@@ -155,6 +155,7 @@ void CGameGatewayMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	{
 	case ServerEnum::EST_GATE:
 	{
+		CClientSvrMgr::Instance().DelAllClientSvr();
 		m_GateList.erase(info->GetServerID());
 		if (overtime)
 			log_error("逻辑服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
@@ -180,6 +181,10 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 		pMsg = info->GetMsg();
 		if (!pMsg)
 			return;
+
+		msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+		pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+
 		switch (pMsg->GetMainType())
 		{
 		case SERVER_TYPE_MAIN:
@@ -192,11 +197,13 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				info->SetPingTime(g_currenttime);
 				break;
 			}
+			case SVR_SUB_UPDATE_LOAD:
+			{
+				CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), *pMsg);
+				break;
+			}
 			case SVR_SUB_NEW_CLIENT:
 			{
-				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
-
 				CClientSvrMgr::Instance().AddClientSvr(tl->id, info->GetServerID());
 
 				//通知CLient登录成功
@@ -204,6 +211,14 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
 
 				SendMsgToClient(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, tl->id);
+				break;
+			}
+			case SVR_SUB_DEL_CLIENT:
+			{
+				svrData::DelClient msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				CClientSvrMgr::Instance().DelClientSvr(msg.nclientid());
 				break;
 			}
 			default:
@@ -218,8 +233,6 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 			{
 			case ServerEnum::EST_GATE:
 			{
-				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
 				ProcessClientMsg(info->GetServerID(), tl->id, pMsg);
 				break;
 			}

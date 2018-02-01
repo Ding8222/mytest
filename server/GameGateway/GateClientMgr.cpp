@@ -29,6 +29,11 @@ int64 CGateClientMgr::OnNewClient()
 	if (nClientID == 0)
 		return 0;
 
+	svrData::UpdateServerLoad sendMsg;
+	sendMsg.set_nclientcountmax(CConfig::Instance().GetMaxClientNum());
+	sendMsg.set_nclientcountnow(GetClientConnectNum());
+
+	CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_UPDATE_LOAD);
 	return nClientID;
 }
 

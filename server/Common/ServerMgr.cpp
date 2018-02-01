@@ -8,6 +8,7 @@ static const int s_backlog = 16;
 
 CServerMgr::CServerMgr()
 {
+	s_ServerIP.clear();
 	m_ListenPort = 0;
 	m_OverTime = 0;
 	m_ServerID = 0;
@@ -23,8 +24,9 @@ CServerMgr::~CServerMgr()
 	Destroy();
 }
 
-bool CServerMgr::Init(int serverid, int port, int overtime)
+bool CServerMgr::Init(std::string ip, int serverid, int port, int overtime)
 {
+	s_ServerIP = ip;
 	m_ListenPort = port;
 	m_OverTime = overtime;
 	m_ServerID = serverid;
@@ -279,8 +281,7 @@ void CServerMgr::SendMsg(serverinfo *info, Msg &pMsg, void *adddata, size_t adds
 void CServerMgr::OnServerRegister(serverinfo *info, MessagePack *pMsg)
 {
 	svrData::ServerRegister msg;
-	if (!pMsg->UnPack(msg))
-		return;
+	_CHECK_PARSE_(pMsg, msg);
 	
 	if (msg.nconnectid() != m_ServerID)
 	{
@@ -301,7 +302,7 @@ void CServerMgr::OnServerRegister(serverinfo *info, MessagePack *pMsg)
 		//注册成功
 		svrData::ServerRegisterRet ret;
 		ret.set_nretcode(svrData::ServerRegisterRet::EC_SUCC);
-		ret.set_sip("127.0.0.1");
+		ret.set_sip(s_ServerIP);
 		ret.set_nport(m_ListenPort);
 
 		SendMsg(info, ret, SERVER_TYPE_MAIN, SVR_SUB_SERVER_REGISTER_RET);

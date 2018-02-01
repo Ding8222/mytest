@@ -44,13 +44,16 @@ public:
 
 	bool AddNewServer(ServerInfo *info);
 	void UpdateServerLoad(int id, int clientcountnow, int clientcountmax);
-	void DelServer(int id);
+	void DelServerByGameID(int id);
+	void DelServerByGateID(int id);
 
 	// 根据负载返回玩家应该进去的服务器
 	// 传入的为申请的ServerID
 	ServerInfo *GetGateInfoByServerID(int id);
 private:
 
-	// <id,info>
+	// <gameid,info>
 	std::unordered_map<int, ServerInfo *> m_ServerInfo;
+	// <gateid,info>
+	std::unordered_map<int, ServerInfo *> m_GateServerInfo;
 };

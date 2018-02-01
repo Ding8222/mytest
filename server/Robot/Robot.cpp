@@ -66,32 +66,31 @@ void CRobot::ProcessRegister(connector *con)
 			case SVR_SUB_SERVER_REGISTER_RET:
 			{
 				svrData::ServerRegisterRet msg;
-				if (pMsg->UnPack(msg))
+				_CHECK_PARSE_(pMsg, msg);
+
+				switch (msg.nretcode())
 				{
-					switch (msg.nretcode())
-					{
-					case svrData::ServerRegisterRet::EC_SUCC:
-					{
-						// 认证成功
-						con->SetAlreadyRegister(true);
-						log_error("注册到远程服务器成功！");
-						break;
-					}
-					case svrData::ServerRegisterRet::EC_SERVER_ID_EXIST:
-					{
-						// 已存在相同ServerID被注册
-						log_error("注册到远程服务器失败！已存在相同ServerID被注册，远程服务器ID：[%d] IP:[%s]", GetConnectID(), GetConnectIP());
-						exit(-1);
-						break;
-					}
-					case svrData::ServerRegisterRet::EC_TO_CONNECT_ID_NOT_EQUAL:
-					{
-						// 请求注册的ServerID和远程ServerID不同
-						log_error("注册到远程服务器失败！请求注册的ServerID和远程ServerID不同，远程服务器ID：[%d] IP:[%s]", GetConnectID(), GetConnectIP());
-						exit(-1);
-						break;
-					}
-					}
+				case svrData::ServerRegisterRet::EC_SUCC:
+				{
+					// 认证成功
+					con->SetAlreadyRegister(true);
+					log_error("注册到远程服务器成功！");
+					break;
+				}
+				case svrData::ServerRegisterRet::EC_SERVER_ID_EXIST:
+				{
+					// 已存在相同ServerID被注册
+					log_error("注册到远程服务器失败！已存在相同ServerID被注册，远程服务器ID：[%d] IP:[%s]", GetConnectID(), GetConnectIP());
+					exit(-1);
+					break;
+				}
+				case svrData::ServerRegisterRet::EC_TO_CONNECT_ID_NOT_EQUAL:
+				{
+					// 请求注册的ServerID和远程ServerID不同
+					log_error("注册到远程服务器失败！请求注册的ServerID和远程ServerID不同，远程服务器ID：[%d] IP:[%s]", GetConnectID(), GetConnectIP());
+					exit(-1);
+					break;
+				}
 				}
 				break;
 			}

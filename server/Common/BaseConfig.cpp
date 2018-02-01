@@ -79,5 +79,12 @@ bool CBaseConfig::Init(const char *servername)
 		return false;
 	}
 
+	s_ServerIP = pServerInfo->Attribute("Server_IP");
+	if (s_ServerIP.empty())
+	{
+		log_error("没有找到字段： 'Server_IP'");
+		return false;
+	}
+
 	return true;
 }

@@ -44,6 +44,7 @@ bool CCenterServer::Init()
 		}
 #endif
 		if (!CCentServerMgr::Instance().Init(
+			CConfig::Instance().GetServerIP(),
 			CConfig::Instance().GetServerID(),
 			CConfig::Instance().GetListenPort(),
 			CConfig::Instance().GetOverTime()))

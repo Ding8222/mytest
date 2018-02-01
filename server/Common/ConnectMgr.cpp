@@ -47,7 +47,9 @@ void CConnectMgr::Run()
 		if (con->NeedSendPing(g_currenttime, m_PingTime))
 		{
 			svrData::Ping msg;
-			SendMsg(con, msg, SERVER_TYPE_MAIN, SVR_SUB_PING);
+			msgtail tail;
+			tail.id = m_ServerID;
+			SendMsg(con, msg, SERVER_TYPE_MAIN, SVR_SUB_PING, &tail, sizeof(tail));
 		}
 		if (con->IsOverTime(g_currenttime, m_OverTime))
 		{
@@ -270,33 +272,32 @@ void CConnectMgr::ProcessRegister(connector *con)
 			case SVR_SUB_SERVER_REGISTER_RET:
 			{
 				svrData::ServerRegisterRet msg;
-				if (pMsg->UnPack(msg))
+				_CHECK_PARSE_(pMsg, msg);
+
+				switch (msg.nretcode())
 				{
-					switch (msg.nretcode())
-					{
-					case svrData::ServerRegisterRet::EC_SUCC:
-					{
-						// 认证成功
-						con->SetAlreadyRegister(true);
-						ServerRegisterSucc(con->GetConnectID(), msg.sip().c_str(), msg.nport());
-						log_error("注册到远程服务器成功！");
-						break;
-					}
-					case svrData::ServerRegisterRet::EC_SERVER_ID_EXIST:
-					{
-						// 已存在相同ServerID被注册
-						log_error("注册到远程服务器失败！已存在相同ServerID被注册，远程服务器ID：[%d] IP:[%s]", con->GetConnectID(), con->GetConnectIP());
-						exit(-1);
-						break;
-					}
-					case svrData::ServerRegisterRet::EC_TO_CONNECT_ID_NOT_EQUAL:
-					{
-						// 请求注册的ServerID和远程ServerID不同
-						log_error("注册到远程服务器失败！请求注册的ServerID和远程ServerID不同，远程服务器ID：[%d] IP:[%s]", con->GetConnectID(), con->GetConnectIP());
-						exit(-1);
-						break;
-					}
-					}
+				case svrData::ServerRegisterRet::EC_SUCC:
+				{
+					// 认证成功
+					con->SetAlreadyRegister(true);
+					ServerRegisterSucc(con->GetConnectID(), msg.sip().c_str(), msg.nport());
+					log_error("注册到远程服务器成功！");
+					break;
+				}
+				case svrData::ServerRegisterRet::EC_SERVER_ID_EXIST:
+				{
+					// 已存在相同ServerID被注册
+					log_error("注册到远程服务器失败！已存在相同ServerID被注册，远程服务器ID：[%d] IP:[%s]", con->GetConnectID(), con->GetConnectIP());
+					exit(-1);
+					break;
+				}
+				case svrData::ServerRegisterRet::EC_TO_CONNECT_ID_NOT_EQUAL:
+				{
+					// 请求注册的ServerID和远程ServerID不同
+					log_error("注册到远程服务器失败！请求注册的ServerID和远程ServerID不同，远程服务器ID：[%d] IP:[%s]", con->GetConnectID(), con->GetConnectIP());
+					exit(-1);
+					break;
+				}
 				}
 				break;
 			}

@@ -59,6 +59,10 @@ void CLoginCenterConnect::ProcessMsg(connector *_con)
 		pMsg = _con->GetMsg();
 		if (!pMsg)
 			break;
+
+		msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+		pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+
 		switch (pMsg->GetMainType())
 		{
 		case SERVER_TYPE_MAIN:
@@ -82,9 +86,6 @@ void CLoginCenterConnect::ProcessMsg(connector *_con)
 			{
 			case LOGIN_SUB_AUTH_RET:
 			{
-				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
-
 				netData::AuthRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 

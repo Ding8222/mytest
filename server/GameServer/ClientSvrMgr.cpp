@@ -20,11 +20,6 @@ void CClientSvrMgr::AddClientSvr(int64 clientid, int serverid)
 	if (iter == m_ClientSvrInfo.end())
 	{
 		m_ClientSvrInfo.insert(std::make_pair(clientid, serverid));
-		svrData::UpdateServerLoad sendMsg;
-		sendMsg.set_nclientcountmax(2000);
-		sendMsg.set_nclientcountnow(m_ClientSvrInfo.size());
-		CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_UPDATE_LOAD);
-
 	}
 }
 
@@ -34,6 +29,11 @@ void CClientSvrMgr::DelClientSvr(int64 clientid)
 	assert(iter != m_ClientSvrInfo.end());
 	if (iter != m_ClientSvrInfo.end())
 		m_ClientSvrInfo.erase(clientid);
+}
+
+void CClientSvrMgr::DelAllClientSvr()
+{
+	m_ClientSvrInfo.clear();
 }
 
 int CClientSvrMgr::FindClientSvr(int64 clientid)

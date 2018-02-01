@@ -13,3 +13,7 @@ client的login处理
 --完成了从loginsvr到gatewaysvr的切换
 
 完成client选角流程，最后到可以在地图中移动即可。
+
+断开gate，踢下所有在其他server中的client
+
+断开gate的时候，没有去清理center中的serverstatusmgr，导致gate重连的时候，game会重新给center发送serverstatus

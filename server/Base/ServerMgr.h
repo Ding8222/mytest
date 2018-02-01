@@ -14,7 +14,7 @@ public:
 	CServerMgr();
 	~CServerMgr();
 
-	bool Init(int serverid, int port, int overtime);
+	bool Init(std::string ip, int serverid, int port, int overtime);
 	void Run();
 	void EndRun();
 	virtual void Destroy();
@@ -69,6 +69,7 @@ private:
 	// 注册成功后的回调
 	virtual void ServerRegisterSucc(int id, int type, const char *ip, int port) = 0;
 private:
+	std::string s_ServerIP;
 	int m_ListenPort;
 	int m_OverTime;
 	int m_ServerID;

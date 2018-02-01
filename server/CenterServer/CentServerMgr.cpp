@@ -206,7 +206,7 @@ void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	{
 	case ServerEnum::EST_GAME:
 	{
-		CServerStatusMgr::Instance().DelServer(info->GetServerID());
+		CServerStatusMgr::Instance().DelServerByGameID(info->GetServerID());
 		m_GameList.erase(info->GetServerID());
 		if (overtime)
 			log_error("逻辑服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
@@ -252,6 +252,10 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 		pMsg = info->GetMsg();
 		if (!pMsg)
 			return;
+
+		msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+		pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+
 		switch (pMsg->GetMainType())
 		{
 		case SERVER_TYPE_MAIN:
@@ -268,9 +272,6 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 			case SVR_SUB_SERVER_LOADINFO:
 			{
 				// 添加服务器负载信息
-				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
-
 				svrData::ServerLoadInfo msg;
 				_CHECK_PARSE_(pMsg, msg);
 
@@ -293,9 +294,6 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 			case SVR_SUB_UPDATE_LOAD:
 			{
 				// 更新服务器负载信息
-				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
-
 				svrData::UpdateServerLoad msg;
 				_CHECK_PARSE_(pMsg, msg);
 
@@ -305,9 +303,6 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 			case SVR_SUB_DEL_CLIENT:
 			{
 				// client断开
-				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
-
 				svrData::DelClient msg;
 				_CHECK_PARSE_(pMsg, msg);
 
@@ -326,19 +321,19 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 			case ServerEnum::EST_GAME:
 			{
 				// 来自GameSvr的消息
-				ProcessGameMsg(info, pMsg);
+				ProcessGameMsg(info, pMsg, tl);
 				break;
 			}
 			case ServerEnum::EST_LOGIN:
 			{
 				// 来自LoginSvr的消息
-				ProcessLoginMsg(info, pMsg);
+				ProcessLoginMsg(info, pMsg, tl);
 				break;
 			}
 			case ServerEnum::EST_DB:
 			{
 				// 来自DBSvr的消息
-				ProcessDBMsg(info, pMsg);
+				ProcessDBMsg(info, pMsg, tl);
 				break;
 			}
 			default:
@@ -352,10 +347,8 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 	}
 }
 
-void CCentServerMgr::ProcessGameMsg(serverinfo *info, Msg *pMsg)
+void CCentServerMgr::ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 {
-	msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-	pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
 	switch (pMsg->GetMainType())
 	{
 	case 1:
@@ -367,10 +360,8 @@ void CCentServerMgr::ProcessGameMsg(serverinfo *info, Msg *pMsg)
 	}
 }
 
-void CCentServerMgr::ProcessLoginMsg(serverinfo *info, Msg *pMsg)
+void CCentServerMgr::ProcessLoginMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 {
-	msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-	pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
 	switch (pMsg->GetMainType())
 	{
 	case LOGIN_TYPE_MAIN:
@@ -392,10 +383,8 @@ void CCentServerMgr::ProcessLoginMsg(serverinfo *info, Msg *pMsg)
 	}
 }
 
-void CCentServerMgr::ProcessDBMsg(serverinfo *info, Msg *pMsg)
+void CCentServerMgr::ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 {
-	msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-	pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
 	switch (pMsg->GetMainType())
 	{
 	case LOGIN_TYPE_MAIN:

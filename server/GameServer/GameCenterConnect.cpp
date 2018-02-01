@@ -47,10 +47,10 @@ void CGameCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
 		if (svr->GetIP())
 		{
 			svrData::ServerLoadInfo sendMsg;
-			sendMsg.set_nmaxclient(2000);
+			sendMsg.set_nmaxclient(0);
 			sendMsg.set_nnowclient(CClientSvrMgr::Instance().GetClientSvrSize());
 			sendMsg.set_nport(CConfig::Instance().GetListenPort());
-			sendMsg.set_sip("127.0.0.1");
+			sendMsg.set_sip(CConfig::Instance().GetServerIP());
 			sendMsg.set_ngateport(svr->GetPort());
 			sendMsg.set_sgateip(svr->GetIP());
 			CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_LOADINFO);
@@ -71,6 +71,10 @@ void CGameCenterConnect::ProcessMsg(connector *_con)
 		pMsg = _con->GetMsg();
 		if (!pMsg)
 			break;
+
+		msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+		pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+
 		switch (pMsg->GetMainType())
 		{
 		case SERVER_TYPE_MAIN:
@@ -85,9 +89,6 @@ void CGameCenterConnect::ProcessMsg(connector *_con)
 			case SVR_SUB_CLIENT_TOKEN:
 			{
 				// 转发给Gate
-				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
-
 				CGameGatewayMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_GATE, 0, tl->id);
 				break;
 			}

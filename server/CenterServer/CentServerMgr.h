@@ -29,9 +29,9 @@ public:
 
 	void ProcessMsg(serverinfo *info);
 
-	void ProcessGameMsg(serverinfo *info, Msg *pMsg);
-	void ProcessLoginMsg(serverinfo *info, Msg *pMsg);
-	void ProcessDBMsg(serverinfo *info, Msg *pMsg);
+	void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl);
+	void ProcessLoginMsg(serverinfo *info, Msg *pMsg, msgtail *tl);
+	void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl);
 private:
 	bool AddNewServer(serverinfo *info, int nServerID, int nType);
 	serverinfo *FindServer(int nServerID, int nType);

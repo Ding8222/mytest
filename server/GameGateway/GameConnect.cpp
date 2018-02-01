@@ -56,6 +56,10 @@ void CGameConnect::ProcessMsg(connector *_con)
 		pMsg = _con->GetMsg();
 		if (!pMsg)
 			break;
+
+		msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+		pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+
 		switch (pMsg->GetMainType())
 		{
 		case SERVER_TYPE_MAIN:
@@ -69,9 +73,6 @@ void CGameConnect::ProcessMsg(connector *_con)
 			}
 			case SVR_SUB_CLIENT_TOKEN:
 			{
-				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
-
 				CClientAuth::Instance().AddAuthInfo(pMsg);
 				break;
 			}
@@ -83,8 +84,6 @@ void CGameConnect::ProcessMsg(connector *_con)
 		}
 		default:
 		{
-			msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-			pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
 			// 转发给client
 			CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
 		}

@@ -2,6 +2,7 @@
 #include "Client.h"
 #include "ClientAuth.h"
 #include "GameConnect.h"
+#include "GateClientMgr.h"
 #include "Config.h"
 
 #include "Login.pb.h"
@@ -19,7 +20,7 @@ CClientAuth::~CClientAuth()
 
 void CClientAuth::Destroy()
 {
-	for (auto &i : m_ClientAuthInfo)
+	for (auto &i : m_ClientSecretInfo)
 	{
 		if (i.second)
 		{
@@ -62,7 +63,10 @@ void CClientAuth::AddAuthInfo(Msg *pMsg)
 
 void CClientAuth::KickClient(int64 clientid)
 {
-
+	m_ClientAuthInfo.erase(clientid);
+	// 通知延迟关闭Client
+	CGateClientMgr::Instance().DelayCloseClient(clientid);
+	// 通知玩家下线处理
 }
 
 void CClientAuth::AddNewClient(Msg *pMsg, CClient *cl)
@@ -103,8 +107,8 @@ void CClientAuth::Offline(int64 clientid)
 	auto iter = m_ClientAuthInfo.find(clientid);
 	if (iter != m_ClientAuthInfo.end())
 	{
+		m_ClientSecretInfo.erase(iter->second->Token);
 		delete iter->second;
-		m_ClientAuthInfo.erase(iter);
 	}
 	KickClient(clientid);
 }

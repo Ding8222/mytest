@@ -21,20 +21,22 @@ DataLimt_Send		发送数据发小限制，必须大于等于0，小于等于2048
 
 -->
 <Base 
-	Over_Time = "100000"
-	Ping_Time = "50000"
+	Over_Time = "1000"
+	Ping_Time = "500"
 	>
 </Base>
 
 <CenterServer 
 	Server_ID = "1000"
 	Listen_Port = "30010"
+	Server_IP = "127.0.0.1"
 	>
 </CenterServer>
 
 <DBServer 
 	Server_ID = "2000"
 	Listen_Port = "30011"
+	Server_IP = "127.0.0.1"
 	CenterServer_IP = "127.0.0.1"
 	CenterServer_Port = "30010"
 	CenterServer_ID = "1000"
@@ -48,6 +50,7 @@ DataLimt_Send		发送数据发小限制，必须大于等于0，小于等于2048
 <GameGateway 
 	Server_ID = "3000"
 	Listen_Port = "30012"
+	Server_IP = "127.0.0.1"
 	GameServer_IP = "127.0.0.1"
 	GameServer_Port = "30013"
 	GameServer_ID = "4000"
@@ -60,6 +63,7 @@ DataLimt_Send		发送数据发小限制，必须大于等于0，小于等于2048
 <GameServer 
 	Server_ID = "4000"
 	Listen_Port = "30013"
+	Server_IP = "127.0.0.1"
 	CenterServer_IP = "127.0.0.1"
 	CenterServer_Port = "30010"
 	CenterServer_ID = "1000"
@@ -69,6 +73,7 @@ DataLimt_Send		发送数据发小限制，必须大于等于0，小于等于2048
 <LoginServer 
 	Server_ID = "5000"
 	Listen_Port = "30014"
+	Server_IP = "127.0.0.1"
 	CenterServer_IP = "127.0.0.1"
 	CenterServer_Port = "30010"
 	CenterServer_ID = "1000"

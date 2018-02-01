@@ -77,6 +77,10 @@ void CDBCenterConnect::ProcessMsg(connector *_con)
 		pMsg = _con->GetMsg();
 		if (!pMsg)
 			break;
+
+		msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+		pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+
 		switch (pMsg->GetMainType())
 		{
 		case SERVER_TYPE_MAIN:
@@ -97,20 +101,20 @@ void CDBCenterConnect::ProcessMsg(connector *_con)
 		}
 		default:
 		{
-			ProcessServerMsg(_con, pMsg);
+			ProcessServerMsg(_con, pMsg, tl);
 			break;
 		}
 		}
 	}
 }
 
-void CDBCenterConnect::ProcessServerMsg(connector *_con, Msg *pMsg)
+void CDBCenterConnect::ProcessServerMsg(connector *_con, Msg *pMsg, msgtail *tl)
 {
 	switch (pMsg->GetMainType())
 	{
 	case LOGIN_TYPE_MAIN:
 	{
-		ProcessLoginMsg(_con, pMsg);
+		ProcessLoginMsg(_con, pMsg, tl);
 		break;
 	}
 	default:
@@ -120,10 +124,8 @@ void CDBCenterConnect::ProcessServerMsg(connector *_con, Msg *pMsg)
 	}
 }
 
-void CDBCenterConnect::ProcessLoginMsg(connector *_con, Msg *pMsg)
+void CDBCenterConnect::ProcessLoginMsg(connector *_con, Msg *pMsg, msgtail *tl)
 {
-	msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-	pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
 	switch (pMsg->GetSubType())
 	{
 	case LOGIN_SUB_AUTH:
