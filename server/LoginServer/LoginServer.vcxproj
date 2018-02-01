@@ -120,6 +120,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ClientAuth.cpp" />
     <ClCompile Include="LoginCenterConnect.cpp" />
     <ClCompile Include="config.cpp" />
     <ClCompile Include="LoginClientMgr.cpp" />
@@ -127,6 +128,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClientAuth.h" />
     <ClInclude Include="LoginCenterConnect.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="LoginClientMgr.h" />

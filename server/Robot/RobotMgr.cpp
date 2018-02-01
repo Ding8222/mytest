@@ -94,9 +94,7 @@ void CRobotMgr::Run()
 					decryption_DES.ProcessBlock(output, txt);
 
 					netData::HandShake Msg;
-					std::string temp(reinterpret_cast<const char*>(key.data()), key.size());
-
-					Msg.set_sclientkey(temp);
+					Msg.set_sclientkey(reinterpret_cast<const char*>(key.data()), key.size());
 					(*tempitr)->SendMsg(Msg, LOGIN_TYPE_MAIN, LOGIN_SUB_HANDSHAKE);
 				}
 			}

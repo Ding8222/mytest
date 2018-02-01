@@ -3,6 +3,7 @@
 #include "GameGatewayMgr.h"
 #include "serverinfo.h"
 #include "Config.h"
+#include "ClientSvrMgr.h"
 
 #include "LoginType.h"
 #include "Login.pb.h"
@@ -112,16 +113,16 @@ void CGameGatewayMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maint
 
 void CGameGatewayMgr::SendMsgToClient(Msg &pMsg, int64 nClientID)
 {
-	ClientSvr *cl = FindClientSvr(nClientID);
-	if(cl)
-		SendMsgToServer(pMsg, ServerEnum::EST_GATE, cl->ServerID, nClientID);
+	int serverid = CClientSvrMgr::Instance().FindClientSvr(nClientID);
+	if(serverid > 0)
+		SendMsgToServer(pMsg, ServerEnum::EST_GATE, serverid, nClientID);
 }
 
 void CGameGatewayMgr::SendMsgToClient(google::protobuf::Message &pMsg, int maintype, int subtype, int64 nClientID)
 {
-	ClientSvr *cl = FindClientSvr(nClientID);
-	if (cl)
-		SendMsgToServer(pMsg, maintype, subtype, ServerEnum::EST_GATE, cl->ServerID, nClientID);
+	int serverid = CClientSvrMgr::Instance().FindClientSvr(nClientID);
+	if (serverid > 0)
+		SendMsgToServer(pMsg, maintype, subtype, ServerEnum::EST_GATE, serverid, nClientID);
 }
 
 void CGameGatewayMgr::ServerRegisterSucc(int id, int type, const char *ip, int port)
@@ -136,7 +137,7 @@ void CGameGatewayMgr::ServerRegisterSucc(int id, int type, const char *ip, int p
 		{
 			svrData::ServerLoadInfo sendMsg;
 			sendMsg.set_nmaxclient(2000);
-			sendMsg.set_nnowclient(GetClientCountNow());
+			sendMsg.set_nnowclient(CClientSvrMgr::Instance().GetClientSvrSize());
 			sendMsg.set_nport(CConfig::Instance().GetListenPort());
 			sendMsg.set_sip("127.0.0.1");
 			sendMsg.set_ngateport(port);
@@ -195,8 +196,8 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 			{
 				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
 				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
-				
-				AddNewClientSvr(info->GetServerType(), info->GetServerID(), tl->id);
+
+				CClientSvrMgr::Instance().AddClientSvr(tl->id, info->GetServerID());
 
 				//通知CLient登录成功
 				netData::LoginRet sendMsg;
@@ -299,42 +300,5 @@ serverinfo *CGameGatewayMgr::FindServer(int nServerID, int nType)
 	std::map<int, serverinfo*>::iterator itr = _pList->find(nServerID);
 	if (itr != _pList->end())
 		return itr->second;
-	return nullptr;
-}
-
-int CGameGatewayMgr::GetClientCountNow()
-{
-	return m_ClientSvr.size();
-}
-
-bool CGameGatewayMgr::AddNewClientSvr(int servertype, int serverid, int64 clientid)
-{
-	auto iter = m_ClientSvr.find(clientid);
-	if (iter == m_ClientSvr.end())
-	{
-		svrData::UpdateServerLoad sendMsg;
-		sendMsg.set_nclientcountmax(2000);
-		sendMsg.set_nclientcountnow(m_ClientSvr.size());
-		CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_UPDATE_LOAD);
-
-		m_ClientSvr.insert(std::make_pair(clientid, ClientSvr(servertype, serverid, clientid)));
-	}
-	else
-	{
-		// todo
-		// T下现有的
-	}
-
-	return true;
-}
-
-ClientSvr *CGameGatewayMgr::FindClientSvr(int64 clientid)
-{
-	auto iter = m_ClientSvr.find(clientid);
-	if (iter != m_ClientSvr.end())
-	{
-		return &(iter->second);
-	}
-
 	return nullptr;
 }

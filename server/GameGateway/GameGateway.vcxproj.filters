@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="认证">
+      <UniqueIdentifier>{91e2daf3-983c-415f-bd44-0a16244b26ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h">
@@ -26,6 +29,9 @@
     </ClInclude>
     <ClInclude Include="GameConnect.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientAuth.h">
+      <Filter>认证</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +49,9 @@
     </ClCompile>
     <ClCompile Include="GameConnect.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientAuth.cpp">
+      <Filter>认证</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

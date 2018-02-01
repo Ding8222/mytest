@@ -37,7 +37,7 @@ namespace protobuf_ServerMsg_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[7];
+  static const ::google::protobuf::internal::ParseTable schema[8];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -55,6 +55,8 @@ void InitDefaultsUpdateServerLoadImpl();
 void InitDefaultsUpdateServerLoad();
 void InitDefaultsAddNewClientImpl();
 void InitDefaultsAddNewClient();
+void InitDefaultsDelClientImpl();
+void InitDefaultsDelClient();
 void InitDefaultsClientTokenImpl();
 void InitDefaultsClientToken();
 inline void InitDefaults() {
@@ -64,6 +66,7 @@ inline void InitDefaults() {
   InitDefaultsServerLoadInfo();
   InitDefaultsUpdateServerLoad();
   InitDefaultsAddNewClient();
+  InitDefaultsDelClient();
   InitDefaultsClientToken();
 }
 }  // namespace protobuf_ServerMsg_2eproto
@@ -74,6 +77,9 @@ extern AddNewClientDefaultTypeInternal _AddNewClient_default_instance_;
 class ClientToken;
 class ClientTokenDefaultTypeInternal;
 extern ClientTokenDefaultTypeInternal _ClientToken_default_instance_;
+class DelClient;
+class DelClientDefaultTypeInternal;
+extern DelClientDefaultTypeInternal _DelClient_default_instance_;
 class Ping;
 class PingDefaultTypeInternal;
 extern PingDefaultTypeInternal _Ping_default_instance_;
@@ -94,6 +100,7 @@ namespace google {
 namespace protobuf {
 template<> ::svrData::AddNewClient* Arena::Create< ::svrData::AddNewClient>(Arena*);
 template<> ::svrData::ClientToken* Arena::Create< ::svrData::ClientToken>(Arena*);
+template<> ::svrData::DelClient* Arena::Create< ::svrData::DelClient>(Arena*);
 template<> ::svrData::Ping* Arena::Create< ::svrData::Ping>(Arena*);
 template<> ::svrData::ServerLoadInfo* Arena::Create< ::svrData::ServerLoadInfo>(Arena*);
 template<> ::svrData::ServerRegister* Arena::Create< ::svrData::ServerRegister>(Arena*);
@@ -863,6 +870,109 @@ class AddNewClient : public ::google::protobuf::Message /* @@protoc_insertion_po
 };
 // -------------------------------------------------------------------
 
+class DelClient : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:svrData.DelClient) */ {
+ public:
+  DelClient();
+  virtual ~DelClient();
+
+  DelClient(const DelClient& from);
+
+  inline DelClient& operator=(const DelClient& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  DelClient(DelClient&& from) noexcept
+    : DelClient() {
+    *this = ::std::move(from);
+  }
+
+  inline DelClient& operator=(DelClient&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DelClient& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const DelClient* internal_default_instance() {
+    return reinterpret_cast<const DelClient*>(
+               &_DelClient_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    6;
+
+  void Swap(DelClient* other);
+  friend void swap(DelClient& a, DelClient& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline DelClient* New() const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<DelClient>(NULL);
+  }
+
+  DelClient* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<DelClient>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DelClient& from);
+  void MergeFrom(const DelClient& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DelClient* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // int64 nClientID = 1;
+  void clear_nclientid();
+  static const int kNClientIDFieldNumber = 1;
+  ::google::protobuf::int64 nclientid() const;
+  void set_nclientid(::google::protobuf::int64 value);
+
+  // @@protoc_insertion_point(class_scope:svrData.DelClient)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int64 nclientid_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
+  friend void ::protobuf_ServerMsg_2eproto::InitDefaultsDelClientImpl();
+};
+// -------------------------------------------------------------------
+
 class ClientToken : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:svrData.ClientToken) */ {
  public:
   ClientToken();
@@ -898,7 +1008,7 @@ class ClientToken : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_ClientToken_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    6;
+    7;
 
   void Swap(ClientToken* other);
   friend void swap(ClientToken& a, ClientToken& b) {
@@ -1347,6 +1457,24 @@ inline void UpdateServerLoad::set_nclientcountmax(::google::protobuf::int32 valu
 
 // -------------------------------------------------------------------
 
+// DelClient
+
+// int64 nClientID = 1;
+inline void DelClient::clear_nclientid() {
+  nclientid_ = GOOGLE_LONGLONG(0);
+}
+inline ::google::protobuf::int64 DelClient::nclientid() const {
+  // @@protoc_insertion_point(field_get:svrData.DelClient.nClientID)
+  return nclientid_;
+}
+inline void DelClient::set_nclientid(::google::protobuf::int64 value) {
+  
+  nclientid_ = value;
+  // @@protoc_insertion_point(field_set:svrData.DelClient.nClientID)
+}
+
+// -------------------------------------------------------------------
+
 // ClientToken
 
 // string sEtoken = 1;
@@ -1458,6 +1586,8 @@ inline void ClientToken::set_allocated_ssecret(::std::string* ssecret) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

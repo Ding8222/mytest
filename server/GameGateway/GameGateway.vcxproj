@@ -120,12 +120,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ClientAuth.h" />
     <ClInclude Include="GameConnect.h" />
     <ClInclude Include="GameGateway.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="GateClientMgr.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ClientAuth.cpp" />
     <ClCompile Include="GameConnect.cpp" />
     <ClCompile Include="GameGateway.cpp" />
     <ClCompile Include="Config.cpp" />

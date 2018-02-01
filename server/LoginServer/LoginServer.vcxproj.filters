@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="认证">
+      <UniqueIdentifier>{fd38a00c-01a6-4500-ba5b-c0a51eae5ea7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="config.cpp">
@@ -30,6 +33,9 @@
     <ClCompile Include="LoginCenterConnect.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ClientAuth.cpp">
+      <Filter>认证</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -43,6 +49,9 @@
     </ClInclude>
     <ClInclude Include="LoginCenterConnect.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientAuth.h">
+      <Filter>认证</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

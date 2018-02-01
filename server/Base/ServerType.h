@@ -20,5 +20,8 @@
 // 新的client连接上来了
 #define SVR_SUB_NEW_CLIENT 6
 
+// client断开
+#define SVR_SUB_DEL_CLIENT 7
+
 // 通知game玩家的token
-#define SVR_SUB_CLIENT_TOKEN 7
+#define SVR_SUB_CLIENT_TOKEN 8

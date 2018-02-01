@@ -37,15 +37,11 @@ private:
 	serverinfo *FindServer(int nServerID, int nType);
 	void ServerRegisterSucc(int id, int type, const char *ip, int port);
 
-	// 有新的client连接进来
-	bool AddNewClient(int servertype, int serverid, int64 clientid);
-	ClientSvr *FindClientSvr(int64 clientid);
 private:
 
 	std::map<int, serverinfo *> m_GameList;
 	std::map<int, serverinfo *> m_LoginList;
 	std::map<int, serverinfo *> m_DBList;
 
-	std::unordered_map<int64, ClientSvr> m_ClientSvr;
 };
 

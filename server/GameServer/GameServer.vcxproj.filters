@@ -19,6 +19,9 @@
     <Filter Include="玩家对象">
       <UniqueIdentifier>{63467607-1ae3-4e85-abb0-8de900023564}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Client信息">
+      <UniqueIdentifier>{675ef8b2-683a-4c2a-a8cd-a63e8d650cfa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="config.cpp">
@@ -57,6 +60,9 @@
     <ClCompile Include="GameCenterConnect.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ClientSvrMgr.cpp">
+      <Filter>Client信息</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -91,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="GameCenterConnect.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientSvrMgr.h">
+      <Filter>Client信息</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

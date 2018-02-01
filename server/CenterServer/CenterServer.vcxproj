@@ -121,6 +121,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CenterServer.cpp" />
+    <ClCompile Include="ClientAuthMgr.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CentServerMgr.cpp" />
@@ -128,6 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CenterServer.h" />
+    <ClInclude Include="ClientAuthMgr.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="CentServerMgr.h" />
     <ClInclude Include="ServerStatusMgr.h" />

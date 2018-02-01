@@ -145,6 +145,7 @@ void CDBCenterConnect::ProcessLoginMsg(connector *_con, Msg *pMsg)
 
 		netData::AuthRet sendMsg;
 		sendMsg.set_ncode(netData::AuthRet::EC_SUCC);
+		sendMsg.set_nserverid(4000);
 		SendMsgToServer(_con, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, tl->id);
 		break;
 	}

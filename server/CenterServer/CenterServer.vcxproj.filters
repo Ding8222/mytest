@@ -16,6 +16,12 @@
     <Filter Include="消息处理">
       <UniqueIdentifier>{231a80f2-492c-4909-a0f3-2c178aedca72}</UniqueIdentifier>
     </Filter>
+    <Filter Include="认证">
+      <UniqueIdentifier>{aa40db8d-4467-4350-a37a-8730e4376864}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="逻辑服管理">
+      <UniqueIdentifier>{a038a741-e925-4b1a-ac85-88f49d36a70d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -30,8 +36,11 @@
     <ClCompile Include="CentServerMgr.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ClientAuthMgr.cpp">
+      <Filter>认证</Filter>
+    </ClCompile>
     <ClCompile Include="ServerStatusMgr.cpp">
-      <Filter>源文件</Filter>
+      <Filter>逻辑服管理</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -44,8 +53,11 @@
     <ClInclude Include="CentServerMgr.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ClientAuthMgr.h">
+      <Filter>认证</Filter>
+    </ClInclude>
     <ClInclude Include="ServerStatusMgr.h">
-      <Filter>头文件</Filter>
+      <Filter>逻辑服管理</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

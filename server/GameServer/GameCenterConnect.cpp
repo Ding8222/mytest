@@ -4,6 +4,7 @@
 #include "serverinfo.h"
 #include "connector.h"
 #include "config.h"
+#include "ClientSvrMgr.h"
 
 extern int64 g_currenttime;
 
@@ -47,7 +48,7 @@ void CGameCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
 		{
 			svrData::ServerLoadInfo sendMsg;
 			sendMsg.set_nmaxclient(2000);
-			sendMsg.set_nnowclient(CGameGatewayMgr::Instance().GetClientCountNow());
+			sendMsg.set_nnowclient(CClientSvrMgr::Instance().GetClientSvrSize());
 			sendMsg.set_nport(CConfig::Instance().GetListenPort());
 			sendMsg.set_sip("127.0.0.1");
 			sendMsg.set_ngateport(svr->GetPort());

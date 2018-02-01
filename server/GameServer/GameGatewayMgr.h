@@ -45,20 +45,12 @@ public:
 	serverinfo *FindServer(int nServerID, int nType);
 
 public:
-	// 获取当前服务器中Client的数量
-	int GetClientCountNow();
 	// 获取连接上的网关id
 	int GetGateID() { return m_GateID; }
-private:
-	// 添加新的Server
-	bool AddNewClientSvr(int servertype, int serverid, int64 clientid);
-	ClientSvr *FindClientSvr(int64 clientid);
 
 private:
 	// 所属网关
 	int m_GateID;
 
 	std::map<int, serverinfo *> m_GateList;
-
-	std::unordered_map<int64, ClientSvr> m_ClientSvr;
 };

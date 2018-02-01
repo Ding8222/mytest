@@ -1,8 +1,9 @@
 ﻿#include"stdfx.h"
-#include "ServerStatusMgr.h"
 #include "CentServerMgr.h"
 #include "serverinfo.h"
 #include "Config.h"
+#include "ClientAuthMgr.h"
+#include "ServerStatusMgr.h"
 
 #include "LoginType.h"
 #include "ServerMsg.pb.h"
@@ -201,11 +202,11 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 
 void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 {
-	CServerStatusMgr::Instance().DelServer(info->GetServerID());
 	switch (info->GetServerType())
 	{
 	case ServerEnum::EST_GAME:
 	{
+		CServerStatusMgr::Instance().DelServer(info->GetServerID());
 		m_GameList.erase(info->GetServerID());
 		if (overtime)
 			log_error("逻辑服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
@@ -266,6 +267,7 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 			}
 			case SVR_SUB_SERVER_LOADINFO:
 			{
+				// 添加服务器负载信息
 				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
 				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
 
@@ -290,6 +292,7 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 			}
 			case SVR_SUB_UPDATE_LOAD:
 			{
+				// 更新服务器负载信息
 				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
 				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
 
@@ -299,10 +302,16 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 				CServerStatusMgr::Instance().UpdateServerLoad(info->GetServerID(), msg.nclientcountnow(), msg.nclientcountmax());
 				break;
 			}
-			case SVR_SUB_NEW_CLIENT:
+			case SVR_SUB_DEL_CLIENT:
 			{
+				// client断开
 				msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-				AddNewClient(info->GetServerType(), info->GetServerID(), tl->id);
+				pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+
+				svrData::DelClient msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				CClientAuthMgr::Instance().DelClientAuthInfo(msg.nclientid());
 				break;
 			}
 			default:
@@ -370,15 +379,7 @@ void CCentServerMgr::ProcessLoginMsg(serverinfo *info, Msg *pMsg)
 		{
 		case LOGIN_SUB_AUTH:
 		{
-			ClientSvr *cl = FindClientSvr(tl->id);
-			if (cl)
-			{
-				netData::Auth msg;
-				_CHECK_PARSE_(pMsg, msg);
-				cl->Token = msg.setoken();
-				cl->Secret = msg.ssecret();
-				SendMsgToServer(*pMsg, ServerEnum::EST_DB, 0, cl->ClientID);
-			}
+			CClientAuthMgr::Instance().AddClientAuthInfo(pMsg,tl->id);
 			break;
 		}
 		default:
@@ -403,31 +404,7 @@ void CCentServerMgr::ProcessDBMsg(serverinfo *info, Msg *pMsg)
 		{
 		case LOGIN_SUB_AUTH_RET:
 		{
-			ClientSvr *cl = FindClientSvr(tl->id);
-			if (cl)
-			{
-				netData::AuthRet msg;
-				_CHECK_PARSE_(pMsg, msg);
-
-				ServerInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByServerID(4000);
-				if (_pInfo)
-				{
-					msg.set_ncode(netData::AuthRet::EC_SUCC);
-					msg.set_nserverid(_pInfo->nGateID);
-					msg.set_ip(_pInfo->chGateIP);
-					msg.set_port(_pInfo->nGatePort);
-
-					svrData::ClientToken sendMsg;
-					sendMsg.set_setoken(cl->Token);
-					sendMsg.set_ssecret(cl->Secret);
-					SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, _pInfo->nServerType, _pInfo->nServerID, cl->ClientID);
-
-				}
-				else
-					msg.set_ncode(netData::AuthRet::EC_SERVER);
-				
-				SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, cl->ServerType, cl->ServerID, cl->ClientID);
-			}
+			CClientAuthMgr::Instance().SendAuthInfoToLogic(pMsg,tl->id);
 			break;
 		}
 		default:
@@ -512,31 +489,4 @@ serverinfo *CCentServerMgr::FindServer(int nServerID, int nType)
 void CCentServerMgr::ServerRegisterSucc(int id, int type, const char *ip, int port)
 {
 
-}
-
-bool CCentServerMgr::AddNewClient(int servertype, int serverid, int64 clientid)
-{
-	auto iter = m_ClientSvr.find(clientid);
-	if (iter == m_ClientSvr.end())
-	{
-		m_ClientSvr.insert(std::make_pair(clientid, ClientSvr(servertype, serverid, clientid)));
-	}
-	else
-	{
-		// todo
-		// T下现有的
-	}
-
-	return true;
-}
-
-ClientSvr *CCentServerMgr::FindClientSvr(int64 clientid)
-{
-	auto iter = m_ClientSvr.find(clientid);
-	if (iter != m_ClientSvr.end())
-	{
-		return &(iter->second);
-	}
-
-	return nullptr;
 }

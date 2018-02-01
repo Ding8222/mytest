@@ -583,27 +583,28 @@ void AddDescriptorsImpl() {
       "enge\022\r\n\005sHmac\030\001 \001(\t\"K\n\014ChallengeRet\022\r\n\005n"
       "Code\030\001 \001(\005\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUC"
       "C\020\001\022\013\n\007EC_FAIL\020\002\"(\n\004Auth\022\017\n\007sEtoken\030\001 \001("
-      "\t\022\017\n\007sSecret\030\002 \001(\t\"\237\001\n\007AuthRet\022\r\n\005nCode\030"
+      "\t\022\017\n\007sSecret\030\002 \001(\t\"\260\001\n\007AuthRet\022\r\n\005nCode\030"
       "\001 \001(\005\022\021\n\tnServerID\030\002 \001(\005\022\n\n\002ip\030\003 \001(\t\022\014\n\004"
-      "port\030\004 \001(\005\"X\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUC"
+      "port\030\004 \001(\005\"i\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUC"
       "C\020\001\022\013\n\007EC_FAIL\020\002\022\020\n\014EC_HANDSHAKE\020\003\022\r\n\tEC"
-      "_SERVER\020\004\022\t\n\005EC_DB\020\005\"\027\n\005Login\022\016\n\006sToken\030"
-      "\001 \001(\t\"G\n\010LoginRet\022\r\n\005nCode\030\001 \001(\005\",\n\002EC\022\014"
-      "\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002\"D"
-      "\n\nPlayerLite\022\013\n\003uid\030\001 \001(\003\022\r\n\005sName\030\002 \001(\t"
-      "\022\014\n\004nJob\030\003 \001(\005\022\014\n\004nSex\030\004 \001(\005\"\014\n\nPlayerLi"
-      "st\"2\n\rPlayerListRet\022!\n\004list\030\001 \003(\0132\023.netD"
-      "ata.PlayerLite\"9\n\014CreatePlayer\022\r\n\005sName\030"
-      "\001 \001(\t\022\014\n\004nJob\030\002 \001(\005\022\014\n\004nSex\030\003 \001(\005\"s\n\017Cre"
-      "atePlayerRet\022\r\n\005nCode\030\001 \001(\005\022#\n\006player\030\002 "
-      "\001(\0132\023.netData.PlayerLite\",\n\002EC\022\014\n\010EC_OTH"
-      "ER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002\"\033\n\014Select"
-      "Player\022\013\n\003uid\030\001 \001(\003\"N\n\017SelectPlayerRet\022\r"
-      "\n\005nCode\030\001 \001(\005\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_"
-      "SUCC\020\001\022\013\n\007EC_FAIL\020\002b\006proto3"
+      "_SERVER\020\004\022\t\n\005EC_DB\020\005\022\017\n\013EC_AUTHINFO\020\006\"\027\n"
+      "\005Login\022\016\n\006sToken\030\001 \001(\t\"G\n\010LoginRet\022\r\n\005nC"
+      "ode\030\001 \001(\005\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC"
+      "\020\001\022\013\n\007EC_FAIL\020\002\"D\n\nPlayerLite\022\013\n\003uid\030\001 \001"
+      "(\003\022\r\n\005sName\030\002 \001(\t\022\014\n\004nJob\030\003 \001(\005\022\014\n\004nSex\030"
+      "\004 \001(\005\"\014\n\nPlayerList\"2\n\rPlayerListRet\022!\n\004"
+      "list\030\001 \003(\0132\023.netData.PlayerLite\"9\n\014Creat"
+      "ePlayer\022\r\n\005sName\030\001 \001(\t\022\014\n\004nJob\030\002 \001(\005\022\014\n\004"
+      "nSex\030\003 \001(\005\"s\n\017CreatePlayerRet\022\r\n\005nCode\030\001"
+      " \001(\005\022#\n\006player\030\002 \001(\0132\023.netData.PlayerLit"
+      "e\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC"
+      "_FAIL\020\002\"\033\n\014SelectPlayer\022\013\n\003uid\030\001 \001(\003\"N\n\017"
+      "SelectPlayerRet\022\r\n\005nCode\030\001 \001(\005\",\n\002EC\022\014\n\010"
+      "EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002b\006pr"
+      "oto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 947);
+      descriptor, 964);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Login.proto", &protobuf_RegisterTypes);
 }
@@ -655,6 +656,7 @@ bool AuthRet_EC_IsValid(int value) {
     case 3:
     case 4:
     case 5:
+    case 6:
       return true;
     default:
       return false;
@@ -668,6 +670,7 @@ const AuthRet_EC AuthRet::EC_FAIL;
 const AuthRet_EC AuthRet::EC_HANDSHAKE;
 const AuthRet_EC AuthRet::EC_SERVER;
 const AuthRet_EC AuthRet::EC_DB;
+const AuthRet_EC AuthRet::EC_AUTHINFO;
 const AuthRet_EC AuthRet::EC_MIN;
 const AuthRet_EC AuthRet::EC_MAX;
 const int AuthRet::EC_ARRAYSIZE;

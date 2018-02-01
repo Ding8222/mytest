@@ -123,6 +123,7 @@
   <ItemGroup>
     <ClCompile Include="aoi.c" />
     <ClCompile Include="BaseObj.cpp" />
+    <ClCompile Include="ClientSvrMgr.cpp" />
     <ClCompile Include="config.cpp" />
     <ClCompile Include="GameCenterConnect.cpp" />
     <ClCompile Include="GameGatewayMgr.cpp" />
@@ -137,6 +138,7 @@
   <ItemGroup>
     <ClInclude Include="aoi.h" />
     <ClInclude Include="BaseObj.h" />
+    <ClInclude Include="ClientSvrMgr.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="GameCenterConnect.h" />
     <ClInclude Include="GameGatewayMgr.h" />
