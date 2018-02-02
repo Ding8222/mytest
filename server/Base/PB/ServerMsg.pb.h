@@ -37,7 +37,7 @@ namespace protobuf_ServerMsg_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[8];
+  static const ::google::protobuf::internal::ParseTable schema[9];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -53,6 +53,8 @@ void InitDefaultsServerLoadInfoImpl();
 void InitDefaultsServerLoadInfo();
 void InitDefaultsUpdateServerLoadImpl();
 void InitDefaultsUpdateServerLoad();
+void InitDefaultsDelServerImpl();
+void InitDefaultsDelServer();
 void InitDefaultsAddNewClientImpl();
 void InitDefaultsAddNewClient();
 void InitDefaultsDelClientImpl();
@@ -65,6 +67,7 @@ inline void InitDefaults() {
   InitDefaultsServerRegisterRet();
   InitDefaultsServerLoadInfo();
   InitDefaultsUpdateServerLoad();
+  InitDefaultsDelServer();
   InitDefaultsAddNewClient();
   InitDefaultsDelClient();
   InitDefaultsClientToken();
@@ -80,6 +83,9 @@ extern ClientTokenDefaultTypeInternal _ClientToken_default_instance_;
 class DelClient;
 class DelClientDefaultTypeInternal;
 extern DelClientDefaultTypeInternal _DelClient_default_instance_;
+class DelServer;
+class DelServerDefaultTypeInternal;
+extern DelServerDefaultTypeInternal _DelServer_default_instance_;
 class Ping;
 class PingDefaultTypeInternal;
 extern PingDefaultTypeInternal _Ping_default_instance_;
@@ -101,6 +107,7 @@ namespace protobuf {
 template<> ::svrData::AddNewClient* Arena::Create< ::svrData::AddNewClient>(Arena*);
 template<> ::svrData::ClientToken* Arena::Create< ::svrData::ClientToken>(Arena*);
 template<> ::svrData::DelClient* Arena::Create< ::svrData::DelClient>(Arena*);
+template<> ::svrData::DelServer* Arena::Create< ::svrData::DelServer>(Arena*);
 template<> ::svrData::Ping* Arena::Create< ::svrData::Ping>(Arena*);
 template<> ::svrData::ServerLoadInfo* Arena::Create< ::svrData::ServerLoadInfo>(Arena*);
 template<> ::svrData::ServerRegister* Arena::Create< ::svrData::ServerRegister>(Arena*);
@@ -610,9 +617,9 @@ class ServerLoadInfo : public ::google::protobuf::Message /* @@protoc_insertion_
   ::std::string* release_sip();
   void set_allocated_sip(::std::string* sip);
 
-  // string sGateIP = 6;
+  // string sGateIP = 7;
   void clear_sgateip();
-  static const int kSGateIPFieldNumber = 6;
+  static const int kSGateIPFieldNumber = 7;
   const ::std::string& sgateip() const;
   void set_sgateip(const ::std::string& value);
   #if LANG_CXX11
@@ -642,9 +649,15 @@ class ServerLoadInfo : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::int32 nport() const;
   void set_nport(::google::protobuf::int32 value);
 
-  // int32 nGatePort = 5;
+  // int32 nGateID = 5;
+  void clear_ngateid();
+  static const int kNGateIDFieldNumber = 5;
+  ::google::protobuf::int32 ngateid() const;
+  void set_ngateid(::google::protobuf::int32 value);
+
+  // int32 nGatePort = 6;
   void clear_ngateport();
-  static const int kNGatePortFieldNumber = 5;
+  static const int kNGatePortFieldNumber = 6;
   ::google::protobuf::int32 ngateport() const;
   void set_ngateport(::google::protobuf::int32 value);
 
@@ -657,6 +670,7 @@ class ServerLoadInfo : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::int32 nmaxclient_;
   ::google::protobuf::int32 nnowclient_;
   ::google::protobuf::int32 nport_;
+  ::google::protobuf::int32 ngateid_;
   ::google::protobuf::int32 ngateport_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
@@ -774,6 +788,116 @@ class UpdateServerLoad : public ::google::protobuf::Message /* @@protoc_insertio
 };
 // -------------------------------------------------------------------
 
+class DelServer : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:svrData.DelServer) */ {
+ public:
+  DelServer();
+  virtual ~DelServer();
+
+  DelServer(const DelServer& from);
+
+  inline DelServer& operator=(const DelServer& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  DelServer(DelServer&& from) noexcept
+    : DelServer() {
+    *this = ::std::move(from);
+  }
+
+  inline DelServer& operator=(DelServer&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DelServer& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const DelServer* internal_default_instance() {
+    return reinterpret_cast<const DelServer*>(
+               &_DelServer_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    5;
+
+  void Swap(DelServer* other);
+  friend void swap(DelServer& a, DelServer& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline DelServer* New() const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<DelServer>(NULL);
+  }
+
+  DelServer* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<DelServer>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DelServer& from);
+  void MergeFrom(const DelServer& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DelServer* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // int32 nType = 1;
+  void clear_ntype();
+  static const int kNTypeFieldNumber = 1;
+  ::google::protobuf::int32 ntype() const;
+  void set_ntype(::google::protobuf::int32 value);
+
+  // int32 nServerID = 2;
+  void clear_nserverid();
+  static const int kNServerIDFieldNumber = 2;
+  ::google::protobuf::int32 nserverid() const;
+  void set_nserverid(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:svrData.DelServer)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int32 ntype_;
+  ::google::protobuf::int32 nserverid_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
+  friend void ::protobuf_ServerMsg_2eproto::InitDefaultsDelServerImpl();
+};
+// -------------------------------------------------------------------
+
 class AddNewClient : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:svrData.AddNewClient) */ {
  public:
   AddNewClient();
@@ -809,7 +933,7 @@ class AddNewClient : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_AddNewClient_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    5;
+    6;
 
   void Swap(AddNewClient* other);
   friend void swap(AddNewClient& a, AddNewClient& b) {
@@ -905,7 +1029,7 @@ class DelClient : public ::google::protobuf::Message /* @@protoc_insertion_point
                &_DelClient_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    6;
+    7;
 
   void Swap(DelClient* other);
   friend void swap(DelClient& a, DelClient& b) {
@@ -1008,7 +1132,7 @@ class ClientToken : public ::google::protobuf::Message /* @@protoc_insertion_poi
                &_ClientToken_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
-    7;
+    8;
 
   void Swap(ClientToken* other);
   friend void swap(ClientToken& a, ClientToken& b) {
@@ -1352,7 +1476,21 @@ inline void ServerLoadInfo::set_allocated_sip(::std::string* sip) {
   // @@protoc_insertion_point(field_set_allocated:svrData.ServerLoadInfo.sIP)
 }
 
-// int32 nGatePort = 5;
+// int32 nGateID = 5;
+inline void ServerLoadInfo::clear_ngateid() {
+  ngateid_ = 0;
+}
+inline ::google::protobuf::int32 ServerLoadInfo::ngateid() const {
+  // @@protoc_insertion_point(field_get:svrData.ServerLoadInfo.nGateID)
+  return ngateid_;
+}
+inline void ServerLoadInfo::set_ngateid(::google::protobuf::int32 value) {
+  
+  ngateid_ = value;
+  // @@protoc_insertion_point(field_set:svrData.ServerLoadInfo.nGateID)
+}
+
+// int32 nGatePort = 6;
 inline void ServerLoadInfo::clear_ngateport() {
   ngateport_ = 0;
 }
@@ -1366,7 +1504,7 @@ inline void ServerLoadInfo::set_ngateport(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:svrData.ServerLoadInfo.nGatePort)
 }
 
-// string sGateIP = 6;
+// string sGateIP = 7;
 inline void ServerLoadInfo::clear_sgateip() {
   sgateip_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1449,6 +1587,38 @@ inline void UpdateServerLoad::set_nclientcountmax(::google::protobuf::int32 valu
   
   nclientcountmax_ = value;
   // @@protoc_insertion_point(field_set:svrData.UpdateServerLoad.nClientCountMax)
+}
+
+// -------------------------------------------------------------------
+
+// DelServer
+
+// int32 nType = 1;
+inline void DelServer::clear_ntype() {
+  ntype_ = 0;
+}
+inline ::google::protobuf::int32 DelServer::ntype() const {
+  // @@protoc_insertion_point(field_get:svrData.DelServer.nType)
+  return ntype_;
+}
+inline void DelServer::set_ntype(::google::protobuf::int32 value) {
+  
+  ntype_ = value;
+  // @@protoc_insertion_point(field_set:svrData.DelServer.nType)
+}
+
+// int32 nServerID = 2;
+inline void DelServer::clear_nserverid() {
+  nserverid_ = 0;
+}
+inline ::google::protobuf::int32 DelServer::nserverid() const {
+  // @@protoc_insertion_point(field_get:svrData.DelServer.nServerID)
+  return nserverid_;
+}
+inline void DelServer::set_nserverid(::google::protobuf::int32 value) {
+  
+  nserverid_ = value;
+  // @@protoc_insertion_point(field_set:svrData.DelServer.nServerID)
 }
 
 // -------------------------------------------------------------------
@@ -1586,6 +1756,8 @@ inline void ClientToken::set_allocated_ssecret(::std::string* ssecret) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

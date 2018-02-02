@@ -256,6 +256,10 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				_CHECK_PARSE_(pMsg, msg);
 
 				log_error("LoginRet:%d", msg.ncode());
+
+				netData::PlayerList sendMsg;
+
+				_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_PLAYER_LIST);
 				break;
 			}
 			default:

@@ -51,6 +51,7 @@ void CGameCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
 			sendMsg.set_nnowclient(CClientSvrMgr::Instance().GetClientSvrSize());
 			sendMsg.set_nport(CConfig::Instance().GetListenPort());
 			sendMsg.set_sip(CConfig::Instance().GetServerIP());
+			sendMsg.set_ngateid(id);
 			sendMsg.set_ngateport(svr->GetPort());
 			sendMsg.set_sgateip(svr->GetIP());
 			CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_LOADINFO);

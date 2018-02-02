@@ -140,6 +140,7 @@ void CGameGatewayMgr::ServerRegisterSucc(int id, int type, const char *ip, int p
 			sendMsg.set_nnowclient(CClientSvrMgr::Instance().GetClientSvrSize());
 			sendMsg.set_nport(CConfig::Instance().GetListenPort());
 			sendMsg.set_sip(CConfig::Instance().GetServerIP());
+			sendMsg.set_ngateid(id);
 			sendMsg.set_ngateport(port);
 			sendMsg.set_sgateip(ip);
 			CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_LOADINFO);
@@ -156,6 +157,12 @@ void CGameGatewayMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	case ServerEnum::EST_GATE:
 	{
 		CClientSvrMgr::Instance().DelAllClientSvr();
+
+		svrData::DelServer sendMsg;
+		sendMsg.set_ntype(info->GetServerType());
+		sendMsg.set_nserverid(info->GetServerID());
+		CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_SERVER);
+
 		m_GateList.erase(info->GetServerID());
 		if (overtime)
 			log_error("逻辑服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());

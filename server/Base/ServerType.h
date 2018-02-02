@@ -17,11 +17,14 @@
 //服务器负载更新
 #define SVR_SUB_UPDATE_LOAD 5
 
+// 服务器断开
+#define SVR_SUB_DEL_SERVER 6
+
 // 新的client连接上来了
-#define SVR_SUB_NEW_CLIENT 6
+#define SVR_SUB_NEW_CLIENT 7
 
 // client断开
-#define SVR_SUB_DEL_CLIENT 7
+#define SVR_SUB_DEL_CLIENT 8
 
 // 通知game玩家的token
-#define SVR_SUB_CLIENT_TOKEN 8
+#define SVR_SUB_CLIENT_TOKEN 9

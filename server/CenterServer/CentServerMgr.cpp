@@ -285,6 +285,7 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 				_pInfo->nPort = msg.nport();
 				strncpy_s(_pInfo->chGateIP, MAX_IP_LEN, msg.sgateip().c_str(), msg.sgateip().size());
 				_pInfo->nGatePort = msg.ngateport();
+				_pInfo->nGateID = msg.ngateid();
 
 				if (!CServerStatusMgr::Instance().AddNewServer(_pInfo))
 					delete _pInfo;
@@ -307,6 +308,24 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 				_CHECK_PARSE_(pMsg, msg);
 
 				CClientAuthMgr::Instance().DelClientAuthInfo(msg.nclientid());
+				break;
+			}
+			case SVR_SUB_DEL_SERVER:
+			{
+				// 服务器断开连接
+				svrData::DelServer msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				switch (msg.ntype())
+				{
+				case ServerEnum::EST_GATE:
+				{
+					CServerStatusMgr::Instance().DelServerByGateID(msg.nserverid());
+					break;
+				}
+				default:
+					break;
+				}
 				break;
 			}
 			default:

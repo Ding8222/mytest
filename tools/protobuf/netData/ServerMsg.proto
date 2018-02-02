@@ -38,8 +38,9 @@ message ServerLoadInfo
 	int32 nNowClient = 2;   // 当前Client
 	int32 nPort = 3;        // 端口
 	string sIP = 4;			// IP
-	int32 nGatePort = 5;	// 网关端口
-	string sGateIP = 6;		// 网关IP
+	int32 nGateID = 5;		// GateID
+	int32 nGatePort = 6;	// 网关端口
+	string sGateIP = 7;		// 网关IP
 }
 
 // 0-5 服务器负载更新
@@ -49,19 +50,26 @@ message UpdateServerLoad
 	int32 nClientCountMax = 2;	// 服务器最大client数量
 }
 
-// 0-6 新的client连接上来了
+// 0-6 服务器断开
+message DelServer
+{
+	int32 nType = 1;		// 类型
+	int32 nServerID = 2;	// ID
+}
+
+// 0-7 新的client连接上来了
 message AddNewClient
 {
 
 }
 
-// 0-7 client断开
+// 0-8 client断开
 message DelClient
 {
 	int64 nClientID = 1;
 }
 
-// 0-8 ClientToken
+// 0-9 ClientToken
 message ClientToken
 {
 	string sEtoken = 1;	// 账号信息
