@@ -15,5 +15,11 @@ client的login处理
 完成client选角流程，最后到可以在地图中移动即可。
 
 断开gate，踢下所有在其他server中的client
+--在game这边处理
 
 断开gate的时候，没有去清理center中的serverstatusmgr，导致gate重连的时候，game会重新给center发送serverstatus
+--将gate连接到Center了，在断开的时候处理过该消息了
+
+client中的s_Secret应该要改成char类型，确认加密方式后
+
+gateway那边AddNewClient的时候，需要判断好秘钥

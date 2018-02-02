@@ -370,7 +370,7 @@ void CClientMgr::ProcessAllClient()
 
 		if ((*tempitr)->GetCon()->IsClose())
 		{
-			//ClientConnectLog("与Client的连接断开, id:%d, 剩余Client数量:%d", (*tempitr)->GetClientID(), (int)m_ClientList.size() - 1);
+			log_error("与Client的连接断开, id:%d, 剩余Client数量:%d", (*tempitr)->GetClientID(), (int)m_ClientList.size() - 1);
 			OnClientDisconnect(*tempitr);
 			m_ClientList.erase(tempitr);
 			continue;
@@ -378,7 +378,7 @@ void CClientMgr::ProcessAllClient()
 
 		if ((*tempitr)->IsOverTime(g_currenttime, m_OverTime))
 		{
-			//ClientConnectLog("与Client的连接超时关闭, id:%d, 剩余Client数量:%d", (*tempitr)->GetClientID(), (int)m_ClientList.size() - 1);
+			log_error("与Client的连接超时关闭, id:%d, 剩余Client数量:%d", (*tempitr)->GetClientID(), (int)m_ClientList.size() - 1);
 			(*tempitr)->GetCon()->Close();
 			OnClientDisconnect(*tempitr);
 			m_ClientList.erase(tempitr);

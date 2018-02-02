@@ -15,6 +15,7 @@ struct ClientAuthInfo
 	std::string Secret;	// 秘钥
 };
 
+class CClient;
 class CClientAuth
 {
 public:
@@ -31,12 +32,16 @@ public:
 
 	// 中心服务器通知添加token
 	void AddAuthInfo(Msg *pMsg);
+	// 移除Client
+	void DelClient(int64 clientid);
 	// 尝试踢下Client
 	void KickClient(int64 clientid);
 	// client请求认证
 	void AddNewClient(Msg *pMsg, CClient *cl);
 	// client主动退出
 	void Offline(int64 clientid);
+	// 返回当前Client数量
+	int GetClientSize() { return m_ClientSecretInfo.size(); }
 private:
 	// Token,authinfo
 	std::unordered_map<std::string, ClientAuthInfo *> m_ClientSecretInfo;

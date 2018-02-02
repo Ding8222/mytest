@@ -38,7 +38,7 @@ void CLoginClientMgr::OnClientDisconnect(CClient *cl)
 	svrData::DelClient sendMsg;
 	sendMsg.set_nclientid(cl->GetClientID());
 	CLoginCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, cl->GetClientID());
-
+	
 	CClientMgr::OnClientDisconnect(cl);
 }
 

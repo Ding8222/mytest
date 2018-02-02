@@ -127,27 +127,7 @@ void CGameGatewayMgr::SendMsgToClient(google::protobuf::Message &pMsg, int maint
 
 void CGameGatewayMgr::ServerRegisterSucc(int id, int type, const char *ip, int port)
 {
-	switch (type)
-	{
-	case ServerEnum::EST_GATE:
-	{
-		m_GateID = id;
-		// 如果Center准备好了，发送负载信息
-		if (CGameCenterConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetCenterServerID()))
-		{
-			svrData::ServerLoadInfo sendMsg;
-			sendMsg.set_nmaxclient(0);
-			sendMsg.set_nnowclient(CClientSvrMgr::Instance().GetClientSvrSize());
-			sendMsg.set_nport(CConfig::Instance().GetListenPort());
-			sendMsg.set_sip(CConfig::Instance().GetServerIP());
-			sendMsg.set_ngateid(id);
-			sendMsg.set_ngateport(port);
-			sendMsg.set_sgateip(ip);
-			CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_LOADINFO);
-		}
-		break;
-	}
-	}
+
 }
 
 void CGameGatewayMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
@@ -157,17 +137,11 @@ void CGameGatewayMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	case ServerEnum::EST_GATE:
 	{
 		CClientSvrMgr::Instance().DelAllClientSvr();
-
-		svrData::DelServer sendMsg;
-		sendMsg.set_ntype(info->GetServerType());
-		sendMsg.set_nserverid(info->GetServerID());
-		CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_SERVER);
-
 		m_GateList.erase(info->GetServerID());
 		if (overtime)
-			log_error("逻辑服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			log_error("网关服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		else
-			log_error("逻辑服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			log_error("网关服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		break;
 	}
 	default:
@@ -202,11 +176,6 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 			{
 				info->SendMsg(pMsg);
 				info->SetPingTime(g_currenttime);
-				break;
-			}
-			case SVR_SUB_UPDATE_LOAD:
-			{
-				CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), *pMsg);
 				break;
 			}
 			case SVR_SUB_NEW_CLIENT:

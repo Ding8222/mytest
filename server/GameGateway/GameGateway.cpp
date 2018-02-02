@@ -3,6 +3,7 @@
 #include"GameGateway.h"
 #include"GameConnect.h"
 #include"GateClientMgr.h"
+#include"GateCenterConnect.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -55,9 +56,15 @@ bool CGameGateway::Init()
 			break;
 		}
 
-		if (!CGameConnect::Instance().Init())
+		if (!CGateCenterConnect::Instance().Init())
 		{
 			log_error("初始化中心服务器连接失败!");
+			break;
+		}
+
+		if (!CGameConnect::Instance().Init())
+		{
+			log_error("初始化逻辑服务器连接失败!");
 			break;
 		}
 
@@ -85,6 +92,7 @@ void CGameGateway::Run()
 	while (m_Run)
 	{
 		CGameConnect::Instance().ResetMsgNum();
+		CGateCenterConnect::Instance().ResetMsgNum();
 
 		g_currenttime = get_millisecond();
 		RunOnce();
@@ -95,13 +103,14 @@ void CGameGateway::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			log_error("运行超时:%d\n%s", delay, CGameConnect::Instance().GetMsgNumInfo());
+			log_error("运行超时:%d\n%s%s", delay,CGameConnect::Instance().GetMsgNumInfo(),CGateCenterConnect::Instance().GetMsgNumInfo());
 		}
 	}
 	delaytime(300);
 
 	CGateClientMgr::Instance().Destroy();
 	CGameConnect::Instance().Destroy();
+	CGateCenterConnect::Instance().Destroy();
 
 	Destroy();
 }
@@ -117,9 +126,11 @@ void CGameGateway::RunOnce()
 
 	CGameConnect::Instance().Run();
 	CGateClientMgr::Instance().Run();
+	CGateCenterConnect::Instance().Run();
 
 	CGameConnect::Instance().EndRun();
 	CGateClientMgr::Instance().EndRun();
+	CGateCenterConnect::Instance().EndRun();
 }
 
 void CGameGateway::Destroy()

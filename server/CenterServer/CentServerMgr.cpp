@@ -18,6 +18,7 @@ CCentServerMgr::CCentServerMgr()
 	m_GameList.clear();
 	m_LoginList.clear();
 	m_DBList.clear();
+	m_GateList.clear();
 }
 
 CCentServerMgr::~CCentServerMgr()
@@ -31,16 +32,22 @@ void CCentServerMgr::Destroy()
 	m_GameList.clear();
 	m_LoginList.clear();
 	m_DBList.clear();
+	m_GateList.clear();
 }
 
 void CCentServerMgr::GetCurrentInfo(char *buf, size_t buflen)
 {
-	snprintf(buf, buflen - 1, "当前注册的服务器信息：\n逻辑服务器数量：%d\n登陆服务器数量：%d\n数据服务器数量：%d\n",
-		(int)m_GameList.size(), (int)m_LoginList.size(), (int)m_DBList.size());
+	snprintf(buf, buflen - 1, "当前注册的服务器信息：\n网关数量：%d\n逻辑服务器数量：%d\n登陆服务器数量：%d\n数据服务器数量：%d\n",
+		(int)m_GateList.size(), (int)m_GameList.size(), (int)m_LoginList.size(), (int)m_DBList.size());
 }
 
 void CCentServerMgr::ResetMsgNum()
 {
+	for (std::map<int, serverinfo*>::iterator itr = m_GateList.begin(); itr != m_GateList.end(); ++itr)
+	{
+		itr->second->ResetMsgNum();
+	}
+
 	for (std::map<int, serverinfo*>::iterator itr = m_GameList.begin(); itr != m_GameList.end(); ++itr)
 	{
 		itr->second->ResetMsgNum();
@@ -63,6 +70,16 @@ const char *CCentServerMgr::GetMsgNumInfo()
 	char *buf = tempbuf;
 	size_t len = sizeof(tempbuf);
 	int res = 0;
+	for (std::map<int, serverinfo*>::iterator itr = m_GateList.begin(); itr != m_GateList.end(); ++itr)
+	{
+		snprintf(buf, len - 1, "网关服务器: %d, 收到消息数量:%d, 发送消息数量:%d\n", \
+			itr->second->GetServerID(), itr->second->GetRecvMsgNum(), itr->second->GetSendMsgNum());
+
+		res = strlen(buf);
+		buf += res;
+		len -= res;
+	}
+
 	for (std::map<int, serverinfo*>::iterator itr = m_GameList.begin(); itr != m_GameList.end(); ++itr)
 	{
 		snprintf(buf, len - 1, "逻辑服务器: %d, 收到消息数量:%d, 发送消息数量:%d\n", \
@@ -103,6 +120,11 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int nServerID, int64 
 	std::map<int, serverinfo *> *iterList = nullptr;
 	switch (nType)
 	{
+	case ServerEnum::EST_GATE:
+	{
+		iterList = &m_GateList;
+		break;
+	}
 	case ServerEnum::EST_GAME:
 	{
 		iterList = &m_GameList;
@@ -154,6 +176,11 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 	std::map<int, serverinfo *> *iterList = nullptr;
 	switch (nType)
 	{
+	case ServerEnum::EST_GATE:
+	{
+		iterList = &m_GateList;
+		break;
+	}
 	case ServerEnum::EST_GAME:
 	{
 		iterList = &m_GameList;
@@ -204,6 +231,16 @@ void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 {
 	switch (info->GetServerType())
 	{
+	case ServerEnum::EST_GATE:
+	{
+		CServerStatusMgr::Instance().DelServerByGameID(info->GetServerID());
+		m_GateList.erase(info->GetServerID());
+		if (overtime)
+			log_error("网关服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+		else
+			log_error("网关服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+		break;
+	}
 	case ServerEnum::EST_GAME:
 	{
 		CServerStatusMgr::Instance().DelServerByGameID(info->GetServerID());
@@ -272,24 +309,7 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 			case SVR_SUB_SERVER_LOADINFO:
 			{
 				// 添加服务器负载信息
-				svrData::ServerLoadInfo msg;
-				_CHECK_PARSE_(pMsg, msg);
-
-				ServerInfo *_pInfo = new ServerInfo;
-
-				_pInfo->nServerID = info->GetServerID();
-				_pInfo->nServerType = info->GetServerType();
-				_pInfo->nMaxClient = msg.nmaxclient();
-				_pInfo->nNowClient = msg.nnowclient();
-				strncpy_s(_pInfo->chIP, MAX_IP_LEN, msg.sip().c_str(), msg.sip().size());
-				_pInfo->nPort = msg.nport();
-				strncpy_s(_pInfo->chGateIP, MAX_IP_LEN, msg.sgateip().c_str(), msg.sgateip().size());
-				_pInfo->nGatePort = msg.ngateport();
-				_pInfo->nGateID = msg.ngateid();
-
-				if (!CServerStatusMgr::Instance().AddNewServer(_pInfo))
-					delete _pInfo;
-
+				CServerStatusMgr::Instance().AddNewServer(info, pMsg);
 				break;
 			}
 			case SVR_SUB_UPDATE_LOAD:
@@ -308,24 +328,6 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 				_CHECK_PARSE_(pMsg, msg);
 
 				CClientAuthMgr::Instance().DelClientAuthInfo(msg.nclientid());
-				break;
-			}
-			case SVR_SUB_DEL_SERVER:
-			{
-				// 服务器断开连接
-				svrData::DelServer msg;
-				_CHECK_PARSE_(pMsg, msg);
-
-				switch (msg.ntype())
-				{
-				case ServerEnum::EST_GATE:
-				{
-					CServerStatusMgr::Instance().DelServerByGateID(msg.nserverid());
-					break;
-				}
-				default:
-					break;
-				}
 				break;
 			}
 			default:
@@ -436,6 +438,11 @@ bool CCentServerMgr::AddNewServer(serverinfo *info, int nServerID, int nType)
 	std::map<int, serverinfo*> *_pList = nullptr;
 	switch (nType)
 	{
+	case ServerEnum::EST_GATE:
+	{
+		_pList = &m_GateList;
+		break;
+	}
 	case ServerEnum::EST_GAME:
 	{
 		_pList = &m_GameList;
@@ -470,6 +477,11 @@ serverinfo *CCentServerMgr::FindServer(int nServerID, int nType)
 	std::map<int, serverinfo*> *_pList = nullptr;
 	switch (nType)
 	{
+	case ServerEnum::EST_GATE:
+	{
+		_pList = &m_GateList;
+		break;
+	}
 	case ServerEnum::EST_GAME:
 	{
 		_pList = &m_GameList;

@@ -42,6 +42,7 @@ private:
 	std::map<int, serverinfo *> m_GameList;
 	std::map<int, serverinfo *> m_LoginList;
 	std::map<int, serverinfo *> m_DBList;
+	std::map<int, serverinfo *> m_GateList;
 
 };
 

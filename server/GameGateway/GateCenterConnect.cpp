@@ -1,24 +1,24 @@
 ﻿#include "stdfx.h"
-#include "GameCenterConnect.h"
-#include "GameGatewayMgr.h"
+#include "GateCenterConnect.h"
 #include "serverinfo.h"
 #include "connector.h"
 #include "config.h"
-#include "ClientSvrMgr.h"
+
+#include "ClientAuth.h"
 
 extern int64 g_currenttime;
 
-CGameCenterConnect::CGameCenterConnect()
+CGateCenterConnect::CGateCenterConnect()
 {
 
 }
 
-CGameCenterConnect::~CGameCenterConnect()
+CGateCenterConnect::~CGateCenterConnect()
 {
 
 }
 
-bool CGameCenterConnect::Init()
+bool CGateCenterConnect::Init()
 {
 	if (!CConnectMgr::AddNewConnect(
 		CConfig::Instance().GetCenterServerIP().c_str(),
@@ -38,27 +38,24 @@ bool CGameCenterConnect::Init()
 	);
 }
 
-void CGameCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
+void CGateCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
 {
-	// 如果Gate准备好了，发送一次负载信息给Center
-	serverinfo *svr = CGameGatewayMgr::Instance().FindServer(CGameGatewayMgr::Instance().GetGateID(), ServerEnum::EST_GATE);
-	if (svr->GetIP())
-	{
-		svrData::ServerLoadInfo sendMsg;
-		sendMsg.set_nmaxclient(0);
-		sendMsg.set_nnowclient(CClientSvrMgr::Instance().GetClientSvrSize());
-		sendMsg.set_nport(CConfig::Instance().GetListenPort());
-		sendMsg.set_sip(CConfig::Instance().GetServerIP());
-		SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_LOADINFO);
-	}
+	// 发送负载信息给Center
+	svrData::ServerLoadInfo sendMsg;
+	sendMsg.set_nmaxclient(0);
+	sendMsg.set_nnowclient(CClientAuth::Instance().GetClientSize());
+	sendMsg.set_nport(CConfig::Instance().GetListenPort());
+	sendMsg.set_sip(CConfig::Instance().GetServerIP());
+	sendMsg.set_nsubserverid(CConfig::Instance().GetGameServerID());
+	SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_LOADINFO);
 }
 
-void CGameCenterConnect::ConnectDisconnect(connector *)
+void CGateCenterConnect::ConnectDisconnect(connector *)
 {
 
 }
 
-void CGameCenterConnect::ProcessMsg(connector *_con)
+void CGateCenterConnect::ProcessMsg(connector *_con)
 {
 	Msg *pMsg = NULL;
 	for (;;)
@@ -79,6 +76,11 @@ void CGameCenterConnect::ProcessMsg(connector *_con)
 			case SVR_SUB_PING:
 			{
 				_con->SetRecvPingTime(g_currenttime);
+				break;
+			}
+			case SVR_SUB_CLIENT_TOKEN:
+			{
+				CClientAuth::Instance().AddAuthInfo(pMsg);
 				break;
 			}
 			default:

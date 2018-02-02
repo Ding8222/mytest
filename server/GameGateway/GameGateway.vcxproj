@@ -124,6 +124,7 @@
     <ClInclude Include="GameConnect.h" />
     <ClInclude Include="GameGateway.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="GateCenterConnect.h" />
     <ClInclude Include="GateClientMgr.h" />
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +132,7 @@
     <ClCompile Include="GameConnect.cpp" />
     <ClCompile Include="GameGateway.cpp" />
     <ClCompile Include="Config.cpp" />
+    <ClCompile Include="GateCenterConnect.cpp" />
     <ClCompile Include="GateClientMgr.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

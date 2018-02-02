@@ -15,6 +15,9 @@ public:
 	}
 
 	bool Init(const char *servername = "");
+	std::string GetCenterServerIP() { return s_CenterServerIP; }
+	int GetCenterServerPort() { return m_CenterServerPort; }
+	int GetCenterServerID() { return m_CenterServerID; }
 	std::string GetGameServerIP() { return s_GameServerIP; }
 	int GetGameServerPort() { return m_GameServerPort; }
 	int GetGameServerID() { return m_GameServerID; }
@@ -24,9 +27,14 @@ public:
 
 private:
 
+	std::string s_CenterServerIP;
+	int m_CenterServerPort;
+	int m_CenterServerID;
+
 	std::string s_GameServerIP;
 	int m_GameServerPort;
 	int m_GameServerID;
+
 	int m_MaxClientNum;
 	int m_RecvDataLimt;
 	int m_SendDataLimt;

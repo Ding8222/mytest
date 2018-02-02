@@ -1,9 +1,9 @@
 ﻿#include "stdfx.h"
 #include "GateClientMgr.h"
 #include "GameConnect.h"
+#include "ClientAuth.h"
 #include "connector.h"
 #include "config.h"
-#include "ClientAuth.h"
 
 extern int64 g_currenttime;
 
@@ -69,11 +69,6 @@ void CGameConnect::ProcessMsg(connector *_con)
 			case SVR_SUB_PING:
 			{
 				_con->SetRecvPingTime(g_currenttime);
-				break;
-			}
-			case SVR_SUB_CLIENT_TOKEN:
-			{
-				CClientAuth::Instance().AddAuthInfo(pMsg);
 				break;
 			}
 			default:

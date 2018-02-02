@@ -51,18 +51,18 @@ void CClientAuthMgr::SendAuthInfoToLogic(Msg *pMsg, int64 clientid)
 	{
 		ClientAuthInfo &Info = iter->second;
 
-		ServerInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByServerID(msg.nserverid());
+		ServerStatusInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByServerID(msg.nserverid());
 		if (_pInfo)
 		{
 			msg.set_ncode(netData::AuthRet::EC_SUCC);
-			msg.set_nserverid(_pInfo->nGateID);
-			msg.set_ip(_pInfo->chGateIP);
-			msg.set_port(_pInfo->nGatePort);
+			msg.set_nserverid(_pInfo->nServerID);
+			msg.set_ip(_pInfo->chIP);
+			msg.set_port(_pInfo->nPort);
 
 			svrData::ClientToken sendMsg;
 			sendMsg.set_setoken(Info.Token);
 			sendMsg.set_ssecret(Info.Secret);
-			CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GAME, _pInfo->nServerID);
+			CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GATE, _pInfo->nServerID);
 
 		}
 		else

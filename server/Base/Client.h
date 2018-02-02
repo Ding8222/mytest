@@ -41,6 +41,9 @@ public:
 	void SetNotAuth() { m_AlreadyAuth = false; }
 	void SetAlreadyAuth() { m_AlreadyAuth = true; }
 	bool IsAlreadyAuth() { return m_AlreadyAuth; }
+	void SetNotLogin() { m_AlreadyLogin = false; }
+	void SetAlreadyLogin() { m_AlreadyLogin = true; }
+	bool IsAlreadyLogin() { return m_AlreadyLogin; }
 	void SetInLogicServerID(int64 id) { m_PlayerOnlyID = id; }
 	int64 GetInLogicServerID() { return m_PlayerOnlyID; }
 	void SetLogicServerID(int serverid) { m_GameServerID = serverid; }
@@ -48,6 +51,7 @@ public:
 	void SetSecret(const char * str) { s_Secret = str; }
 	std::string GetSecret() { return s_Secret ; }
 private:
+	bool m_AlreadyLogin;	//登录成功标记
 	bool m_AlreadyAuth;		//认证成功标记
 	int64 m_ConnectTime;	//何时连接上来
 	std::string s_Secret;	//秘钥

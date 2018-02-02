@@ -2,6 +2,7 @@
 #include "Client.h"
 #include "GateClientMgr.h"
 #include "GameConnect.h"
+#include "GateCenterConnect.h"
 #include "Config.h"
 #include "ClientAuth.h"
 
@@ -25,6 +26,9 @@ int64 CGateClientMgr::OnNewClient()
 	if (!CGameConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetGameServerID()))
 		return 0;
 
+	if (!CGateCenterConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetCenterServerID()))
+		return 0;
+
 	int64 nClientID = CClientMgr::OnNewClient();
 	if (nClientID == 0)
 		return 0;
@@ -33,12 +37,17 @@ int64 CGateClientMgr::OnNewClient()
 	sendMsg.set_nclientcountmax(CConfig::Instance().GetMaxClientNum());
 	sendMsg.set_nclientcountnow(GetClientConnectNum());
 
-	CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_UPDATE_LOAD);
+	CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_UPDATE_LOAD);
 	return nClientID;
 }
 
 void CGateClientMgr::OnClientDisconnect(CClient *cl)
 {
+	svrData::DelClient sendMsg;
+	sendMsg.set_nclientid(cl->GetClientID());
+	CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, cl->GetClientID());
+
+	CClientAuth::Instance().DelClient(cl->GetClientID());
 	CClientMgr::OnClientDisconnect(cl);
 }
 
@@ -70,9 +79,9 @@ void CGateClientMgr::ProcessClientMsg(CClient *cl)
 		}
 		default:
 		{
-			if (cl->IsAlreadyAuth())
+			if (cl->IsAlreadyLogin())
 			{
-				// 认证通过的,转发至GameServer
+				// 登录成功的,转发至GameServer
 				if (CGameConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetGameServerID()))
 				{
 					CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(),*pMsg,cl->GetClientID());
@@ -80,7 +89,7 @@ void CGateClientMgr::ProcessClientMsg(CClient *cl)
 			}
 			else
 			{
-				// 未认证
+				// 未登录（选角）
 				ProcessClientAuth(cl, pMsg);
 			}
 		}

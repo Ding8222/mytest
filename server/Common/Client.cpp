@@ -7,6 +7,7 @@ int g_RecvFromClientNum = 0;
 
 CClient::CClient()
 {
+	m_AlreadyLogin = false;
 	m_AlreadyAuth = false;
 	m_ConnectTime = 0;
 	m_InlistState = enum_inlist_state_unknow;
