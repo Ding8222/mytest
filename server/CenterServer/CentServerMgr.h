@@ -23,8 +23,8 @@ public:
 	void ResetMsgNum();
 	const char *GetMsgNumInfo();
 
-	void SendMsgToServer(Msg &pMsg, int nType, int nServerID = 0, int64 nClientID = 0);
-	void SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int nServerID = 0, int64 nClientID = 0);
+	void SendMsgToServer(Msg &pMsg, int nType, int64 nClientID = 0, int nServerID = 0, bool bBroad = false);
+	void SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int64 nClientID = 0, int nServerID = 0, bool bBroad = false);
 	void OnConnectDisconnect(serverinfo *info, bool overtime = false);
 
 	void ProcessMsg(serverinfo *info);
@@ -32,6 +32,7 @@ public:
 	void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl);
 	void ProcessLoginMsg(serverinfo *info, Msg *pMsg, msgtail *tl);
 	void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl);
+	void ProcessGateMsg(serverinfo *info, Msg *pMsg, msgtail *tl);
 private:
 	bool AddNewServer(serverinfo *info, int nServerID, int nType);
 	serverinfo *FindServer(int nServerID, int nType);
@@ -43,6 +44,5 @@ private:
 	std::map<int, serverinfo *> m_LoginList;
 	std::map<int, serverinfo *> m_DBList;
 	std::map<int, serverinfo *> m_GateList;
-
 };
 

@@ -42,8 +42,8 @@ public:
 	// 处理已注册服务器消息
 	virtual void ProcessMsg(serverinfo *info) = 0;
 	// 根据类型和SvrID发送消息给服务器
-	virtual void SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int nServerID = 0, int64 nClientID = 0) = 0;
-	virtual void SendMsgToServer(Msg &pMsg, int nType, int nServerID = 0, int64 nClientID = 0) = 0;
+	virtual void SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int64 nClientID = 0, int nServerID = 0, bool bBroad = false) = 0;
+	virtual void SendMsgToServer(Msg &pMsg, int nType, int64 nClientID = 0, int nServerID = 0, bool bBroad = false) = 0;
 private:
 	// 停止监听
 	void StopListen();

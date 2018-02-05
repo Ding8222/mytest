@@ -38,6 +38,9 @@ public:
 	void KickClient(int64 clientid);
 	// client请求认证
 	void AddNewClient(Msg *pMsg, CClient *cl);
+	// 请求角色列表
+	void GetPlayerList(Msg *pMsg, CClient *cl);
+
 	// client主动退出
 	void Offline(int64 clientid);
 	// 返回当前Client数量

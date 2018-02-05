@@ -6,6 +6,7 @@
 #include "Config.h"
 
 #include "Login.pb.h"
+#include "LoginType.h"
 
 CClientAuth::CClientAuth()
 {
@@ -121,18 +122,21 @@ void CClientAuth::AddNewClient(Msg *pMsg, CClient *cl)
 
 		svrData::AddNewClient sendMsg;
 		CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT, cl->GetClientID());
-		return ;
 	}
 	else
 	{
 		netData::LoginRet sendMsg;
 		sendMsg.set_ncode(netData::LoginRet::EC_FAIL);
-		CGateClientMgr::Instance().SendMsg(cl, sendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT);
+		CGateClientMgr::Instance().SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET);
+		// 认证失败
+		log_error("新的客户端认证失败！token:%s", msg.stoken().c_str());
 	}
+}
 
-	// 认证失败
-	log_error("新的客户端认证失败！token:%s", msg.stoken().c_str());
-	return ;
+// 请求角色列表
+void CClientAuth::GetPlayerList(Msg *pMsg, CClient *cl)
+{
+
 }
 
 void CClientAuth::Offline(int64 clientid)

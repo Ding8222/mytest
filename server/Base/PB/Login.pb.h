@@ -1390,11 +1390,11 @@ class PlayerLite : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::std::string* release_sname();
   void set_allocated_sname(::std::string* sname);
 
-  // int64 uid = 1;
-  void clear_uid();
-  static const int kUidFieldNumber = 1;
-  ::google::protobuf::int64 uid() const;
-  void set_uid(::google::protobuf::int64 value);
+  // int64 uuid = 1;
+  void clear_uuid();
+  static const int kUuidFieldNumber = 1;
+  ::google::protobuf::int64 uuid() const;
+  void set_uuid(::google::protobuf::int64 value);
 
   // int32 nJob = 3;
   void clear_njob();
@@ -1413,7 +1413,7 @@ class PlayerLite : public ::google::protobuf::Message /* @@protoc_insertion_poin
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr sname_;
-  ::google::protobuf::int64 uid_;
+  ::google::protobuf::int64 uuid_;
   ::google::protobuf::int32 njob_;
   ::google::protobuf::int32 nsex_;
   mutable int _cached_size_;
@@ -1508,10 +1508,25 @@ class PlayerList : public ::google::protobuf::Message /* @@protoc_insertion_poin
 
   // accessors -------------------------------------------------------
 
+  // string account = 1;
+  void clear_account();
+  static const int kAccountFieldNumber = 1;
+  const ::std::string& account() const;
+  void set_account(const ::std::string& value);
+  #if LANG_CXX11
+  void set_account(::std::string&& value);
+  #endif
+  void set_account(const char* value);
+  void set_account(const char* value, size_t size);
+  ::std::string* mutable_account();
+  ::std::string* release_account();
+  void set_allocated_account(::std::string* account);
+
   // @@protoc_insertion_point(class_scope:netData.PlayerList)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr account_;
   mutable int _cached_size_;
   friend struct ::protobuf_Login_2eproto::TableStruct;
   friend void ::protobuf_Login_2eproto::InitDefaultsPlayerListImpl();
@@ -2662,18 +2677,18 @@ inline void LoginRet::set_ncode(::google::protobuf::int32 value) {
 
 // PlayerLite
 
-// int64 uid = 1;
-inline void PlayerLite::clear_uid() {
-  uid_ = GOOGLE_LONGLONG(0);
+// int64 uuid = 1;
+inline void PlayerLite::clear_uuid() {
+  uuid_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int64 PlayerLite::uid() const {
-  // @@protoc_insertion_point(field_get:netData.PlayerLite.uid)
-  return uid_;
+inline ::google::protobuf::int64 PlayerLite::uuid() const {
+  // @@protoc_insertion_point(field_get:netData.PlayerLite.uuid)
+  return uuid_;
 }
-inline void PlayerLite::set_uid(::google::protobuf::int64 value) {
+inline void PlayerLite::set_uuid(::google::protobuf::int64 value) {
   
-  uid_ = value;
-  // @@protoc_insertion_point(field_set:netData.PlayerLite.uid)
+  uuid_ = value;
+  // @@protoc_insertion_point(field_set:netData.PlayerLite.uuid)
 }
 
 // string sName = 2;
@@ -2760,6 +2775,59 @@ inline void PlayerLite::set_nsex(::google::protobuf::int32 value) {
 // -------------------------------------------------------------------
 
 // PlayerList
+
+// string account = 1;
+inline void PlayerList::clear_account() {
+  account_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& PlayerList::account() const {
+  // @@protoc_insertion_point(field_get:netData.PlayerList.account)
+  return account_.GetNoArena();
+}
+inline void PlayerList::set_account(const ::std::string& value) {
+  
+  account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:netData.PlayerList.account)
+}
+#if LANG_CXX11
+inline void PlayerList::set_account(::std::string&& value) {
+  
+  account_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:netData.PlayerList.account)
+}
+#endif
+inline void PlayerList::set_account(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:netData.PlayerList.account)
+}
+inline void PlayerList::set_account(const char* value, size_t size) {
+  
+  account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:netData.PlayerList.account)
+}
+inline ::std::string* PlayerList::mutable_account() {
+  
+  // @@protoc_insertion_point(field_mutable:netData.PlayerList.account)
+  return account_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* PlayerList::release_account() {
+  // @@protoc_insertion_point(field_release:netData.PlayerList.account)
+  
+  return account_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void PlayerList::set_allocated_account(::std::string* account) {
+  if (account != NULL) {
+    
+  } else {
+    
+  }
+  account_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), account);
+  // @@protoc_insertion_point(field_set_allocated:netData.PlayerList.account)
+}
 
 // -------------------------------------------------------------------
 

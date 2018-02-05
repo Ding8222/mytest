@@ -4,6 +4,7 @@
  * lcinx@163.com
 */
 
+#include "platform_config.h"
 #include "sqlinterface.h"
 #include "errmsg.h"
 #include <string.h>
@@ -79,6 +80,36 @@ void CRecordset::LoadResult (MYSQL *con, CConnection *root)
 			m_root->ErrorOut(tempbuf);
 		}
 	}
+}
+
+int64 CRecordset::GetInt64(const char* fieldname)
+{
+	return std::stoll(Get(fieldname));
+}
+
+int CRecordset::GetInt(const char* fieldname)
+{
+	return std::stoi(Get(fieldname));
+}
+
+float CRecordset::GetFloat(const char* fieldname)
+{
+	return std::stof(Get(fieldname));
+}
+
+double CRecordset::GetDouble(const char* fieldname)
+{
+	return std::stod(Get(fieldname));
+}
+
+const char* CRecordset::GetChar(const char* fieldname)
+{
+	return Get(fieldname);
+}
+
+bool CRecordset::GetBool(const char* fieldname)
+{
+	return std::stoi(Get(fieldname));
 }
 
 //获取字段值

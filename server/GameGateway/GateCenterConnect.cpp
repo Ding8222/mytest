@@ -5,6 +5,7 @@
 #include "config.h"
 
 #include "ClientAuth.h"
+#include "LoginType.h"
 
 extern int64 g_currenttime;
 
@@ -81,6 +82,28 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 			case SVR_SUB_CLIENT_TOKEN:
 			{
 				CClientAuth::Instance().AddAuthInfo(pMsg);
+				break;
+			}
+			default:
+			{
+			}
+			}
+			break;
+		}
+		case LOGIN_TYPE_MAIN:
+		{
+			switch (pMsg->GetSubType())
+			{
+			case LOGIN_SUB_PLAYER_LIST_RET:
+			{
+				break;
+			}
+			case LOGIN_SUB_CREATE_PLAYER_RET:
+			{
+				break;
+			}
+			case LOGIN_SUB_SELECT_PLAYER_RET:
+			{
 				break;
 			}
 			default:

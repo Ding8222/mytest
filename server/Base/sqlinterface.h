@@ -31,9 +31,16 @@ namespace DataBase
 		//装入结果
 		void LoadResult (MYSQL *con, CConnection *root);
 
-
+	public:
+		int64		GetInt64(const char* fieldname);
+		int			GetInt(const char* fieldname);
+		float		GetFloat(const char* fieldname);
+		double		GetDouble(const char* fieldname);
+		const char*	GetChar(const char* fieldname);
+		bool		GetBool(const char* fieldname);
 	//对外的接口，其他模块可用
 	public:
+
 		//获取字段值
 		const char* Get (const char* fieldname);
 

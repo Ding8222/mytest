@@ -60,10 +60,10 @@
     <ClCompile Include="sqlinterface.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="DBExecute.cpp">
+    <ClCompile Include="ConnectMgr.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ConnectMgr.cpp">
+    <ClCompile Include="ClientSvrMgr.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

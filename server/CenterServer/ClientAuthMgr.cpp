@@ -13,6 +13,11 @@ CClientAuthMgr::CClientAuthMgr()
 
 CClientAuthMgr::~CClientAuthMgr()
 {
+	Destroy();
+}
+
+void CClientAuthMgr::Destroy()
+{
 	m_ClientInfo.clear();
 }
 
@@ -27,7 +32,7 @@ void CClientAuthMgr::AddClientAuthInfo(Msg *pMsg, int64 clientid)
 	Info.Secret = msg.ssecret();
 	m_ClientInfo.insert(std::make_pair(clientid, Info));
 
-	CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_DB, 0, clientid);
+	CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_DB, clientid);
 	return ;
 }
 
@@ -62,7 +67,7 @@ void CClientAuthMgr::SendAuthInfoToLogic(Msg *pMsg, int64 clientid)
 			svrData::ClientToken sendMsg;
 			sendMsg.set_setoken(Info.Token);
 			sendMsg.set_ssecret(Info.Secret);
-			CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GATE, _pInfo->nServerID);
+			CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GATE, 0, _pInfo->nServerID);
 
 		}
 		else
@@ -71,5 +76,5 @@ void CClientAuthMgr::SendAuthInfoToLogic(Msg *pMsg, int64 clientid)
 	else
 		msg.set_ncode(netData::AuthRet::EC_AUTHINFO);
 
-	CCentServerMgr::Instance().SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, 0, clientid);
+	//CCentServerMgr::Instance().SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, clientid);
 }

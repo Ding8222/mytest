@@ -23,8 +23,8 @@ public:
 	void ResetMsgNum();
 	const char *GetMsgNumInfo();
 
-	void SendMsgToServer(Msg &pMsg, int nType, int nServerID = 0, int64 nClientID = 0);
-	void SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int nServerID = 0, int64 nClientID = 0);
+	void SendMsgToServer(Msg &pMsg, int nType, int64 nClientID = 0, int nServerID = 0, bool bBroad = false);
+	void SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int64 nClientID = 0, int nServerID = 0, bool bBroad = false);
 
 	void SendMsgToClient(Msg &pMsg, int64 nClientID = 0);
 	void SendMsgToClient(google::protobuf::Message &pMsg, int maintype, int subtype, int64 nClientID = 0);

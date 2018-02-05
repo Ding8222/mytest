@@ -30,6 +30,8 @@ public:
 		return m;
 	}
 
+	void Destroy();
+
 	// Client请求认证,loginSvr调用
 	void AddClientAuthInfo(Msg *pMsg, int64 clientid);
 	// 移除认证信息

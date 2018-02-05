@@ -33,6 +33,11 @@ int64 CGateClientMgr::OnNewClient()
 	if (nClientID == 0)
 		return 0;
 
+	{
+		svrData::AddNewClient sendMsg;
+		CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT, nClientID);
+	}
+
 	svrData::UpdateServerLoad sendMsg;
 	sendMsg.set_nclientcountmax(CConfig::Instance().GetMaxClientNum());
 	sendMsg.set_nclientcountnow(GetClientConnectNum());
@@ -108,6 +113,19 @@ void CGateClientMgr::ProcessClientAuth(CClient *cl, Msg *pMsg)
 		case LOGIN_SUB_LOGIN:
 		{
 			CClientAuth::Instance().AddNewClient(pMsg, cl);
+			break;
+		}
+		case LOGIN_SUB_PLAYER_LIST:
+		{
+			CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), *pMsg, cl->GetClientID());
+			break;
+		}
+		case LOGIN_SUB_CREATE_PLAYER:
+		{
+			break;
+		}
+		case LOGIN_SUB_SELECT_PLAYER:
+		{
 			break;
 		}
 		default:

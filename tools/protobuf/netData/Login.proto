@@ -86,7 +86,7 @@ message LoginRet
 
 message PlayerLite
 {
-	int64 uid = 1;
+	int64 uuid = 1;
 	string sName = 2;
 	int32 nJob = 3;
 	int32 nSex = 4;
@@ -96,6 +96,7 @@ message PlayerLite
 message PlayerList
 {
 	// 空消息
+	string account = 1;	//请求不用填写
 }
 
 // 2-10 返回角色列表

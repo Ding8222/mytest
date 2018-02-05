@@ -143,10 +143,10 @@
     <ClInclude Include="PB\DBServer.pb.h">
       <Filter>PB</Filter>
     </ClInclude>
-    <ClInclude Include="DBExecute.h">
+    <ClInclude Include="ConnectMgr.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="ConnectMgr.h">
+    <ClInclude Include="ClientSvrMgr.h">
       <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>

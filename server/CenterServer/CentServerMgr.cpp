@@ -4,14 +4,13 @@
 #include "Config.h"
 #include "ClientAuthMgr.h"
 #include "ServerStatusMgr.h"
+#include "ClientSvrMgr.h"
 
 #include "LoginType.h"
 #include "ServerMsg.pb.h"
 #include "Login.pb.h"
 
 extern int64 g_currenttime;
-
-static const int s_backlog = 16;
 
 CCentServerMgr::CCentServerMgr()
 {
@@ -115,29 +114,57 @@ const char *CCentServerMgr::GetMsgNumInfo()
 	return tempbuf;
 }
 
-void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int nServerID, int64 nClientID)
+void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int64 nClientID, int nServerID, bool bBroad)
 {
 	std::map<int, serverinfo *> *iterList = nullptr;
 	switch (nType)
 	{
 	case ServerEnum::EST_GATE:
 	{
+		if (!bBroad && nServerID == 0)
+		{
+			ClientSvr *_pData = CClientSvrMgr::Instance().GetClientSvr(nClientID);
+			if (_pData)
+			{
+				nServerID = _pData->nGateID;
+				assert(nServerID);
+			}
+		}
 		iterList = &m_GateList;
 		break;
 	}
 	case ServerEnum::EST_GAME:
 	{
+		if (!bBroad && nServerID == 0)
+		{
+			ClientSvr *_pData = CClientSvrMgr::Instance().GetClientSvr(nClientID);
+			if (_pData)
+			{
+				nServerID = _pData->nGameServerID;
+				assert(nServerID);
+			}
+		}
 		iterList = &m_GameList;
 		break;
 	}
 	case ServerEnum::EST_LOGIN:
 	{
+		if (!bBroad && nServerID == 0)
+		{
+			ClientSvr *_pData = CClientSvrMgr::Instance().GetClientSvr(nClientID);
+			if (_pData)
+			{
+				nServerID = _pData->nLoginServerID;
+				assert(nServerID);
+			}
+		}
 		iterList = &m_LoginList;
 		break;
 	}
 	case ServerEnum::EST_DB:
 	{
 		iterList = &m_DBList;
+		bBroad = true;
 		break;
 	}
 	default:
@@ -147,7 +174,7 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int nServerID, int64 
 
 	if (iterList)
 	{
-		if (nServerID > 0)
+		if (!bBroad)
 		{
 			std::map<int, serverinfo *>::iterator iterFind = iterList->find(nServerID);
 			if (iterFind != iterList->end())
@@ -157,7 +184,7 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int nServerID, int64 
 				SendMsg(iterFind->second, pMsg, &tail, sizeof(tail));
 			}
 			else
-				log_error("请求发送消息到未知的服务器,，服务器ID:[%d]", nServerID);
+				log_error("请求发送消息到未知的服务器,服务器ID:[%d]", nServerID);
 		}
 		else
 		{
@@ -171,29 +198,57 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int nServerID, int64 
 	}
 }
 
-void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int nServerID, int64 nClientID)
+void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int64 nClientID, int nServerID, bool bBroad)
 {
 	std::map<int, serverinfo *> *iterList = nullptr;
 	switch (nType)
 	{
 	case ServerEnum::EST_GATE:
 	{
+		if (!bBroad && nServerID == 0)
+		{
+			ClientSvr *_pData = CClientSvrMgr::Instance().GetClientSvr(nClientID);
+			if (_pData)
+			{
+				nServerID = _pData->nGateID;
+				assert(nServerID);
+			}
+		}
 		iterList = &m_GateList;
 		break;
 	}
 	case ServerEnum::EST_GAME:
 	{
+		if (!bBroad && nServerID == 0)
+		{
+			ClientSvr *_pData = CClientSvrMgr::Instance().GetClientSvr(nClientID);
+			if (_pData)
+			{
+				nServerID = _pData->nGameServerID;
+				assert(nServerID);
+			}
+		}
 		iterList = &m_GameList;
 		break;
 	}
 	case ServerEnum::EST_LOGIN:
 	{
+		if (!bBroad && nServerID == 0)
+		{
+			ClientSvr *_pData = CClientSvrMgr::Instance().GetClientSvr(nClientID);
+			if (_pData)
+			{
+				nServerID = _pData->nLoginServerID;
+				assert(nServerID);
+			}
+		}
 		iterList = &m_LoginList;
 		break;
 	}
 	case ServerEnum::EST_DB:
 	{
 		iterList = &m_DBList;
+		bBroad = true;
 		break;
 	}
 	default:
@@ -203,7 +258,7 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 
 	if (iterList)
 	{
-		if (nServerID > 0)
+		if (!bBroad)
 		{
 			std::map<int, serverinfo *>::iterator iterFind = iterList->find(nServerID);
 			if (iterFind != iterList->end())
@@ -253,6 +308,7 @@ void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	}
 	case ServerEnum::EST_LOGIN:
 	{
+		CClientAuthMgr::Instance().Destroy();
 		m_LoginList.erase(info->GetServerID());
 		if (overtime)
 			log_error("登陆服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
@@ -321,13 +377,29 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 				CServerStatusMgr::Instance().UpdateServerLoad(info->GetServerID(), msg.nclientcountnow(), msg.nclientcountmax());
 				break;
 			}
+			case SVR_SUB_NEW_CLIENT:
+			{
+				svrData::AddNewClient msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				CClientSvrMgr::Instance().AddClientSvr(tl->id, info->GetServerID(), info->GetServerType());
+				break;
+			}
+
 			case SVR_SUB_DEL_CLIENT:
 			{
 				// client断开
 				svrData::DelClient msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				CClientAuthMgr::Instance().DelClientAuthInfo(msg.nclientid());
+				if (info->GetServerType() == ServerEnum::EST_LOGIN)
+				{
+					CClientAuthMgr::Instance().DelClientAuthInfo(msg.nclientid());
+				}
+				else
+				{
+					CClientSvrMgr::Instance().DelClientSvr(tl->id);
+				}
 				break;
 			}
 			default:
@@ -355,6 +427,12 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 			{
 				// 来自DBSvr的消息
 				ProcessDBMsg(info, pMsg, tl);
+				break;
+			}
+			case ServerEnum::EST_GATE:
+			{
+				// 来自GateSvr的消息
+				ProcessGateMsg(info, pMsg, tl);
 				break;
 			}
 			default:
@@ -415,6 +493,34 @@ void CCentServerMgr::ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		case LOGIN_SUB_AUTH_RET:
 		{
 			CClientAuthMgr::Instance().SendAuthInfoToLogic(pMsg,tl->id);
+			break;
+		}
+		case LOGIN_SUB_PLAYER_LIST_RET:
+		{
+			CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_GATE, tl->id);
+			break;
+		}
+		default:
+			break;
+		}
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void CCentServerMgr::ProcessGateMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
+{
+	switch (pMsg->GetMainType())
+	{
+	case LOGIN_TYPE_MAIN:
+	{
+		switch (pMsg->GetSubType())
+		{
+		case LOGIN_SUB_PLAYER_LIST:
+		{
+			CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_DB, tl->id);
 			break;
 		}
 		default:

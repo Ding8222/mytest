@@ -126,12 +126,12 @@
     <ClInclude Include="BaseConfig.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="ClientMgr.h" />
+    <ClInclude Include="ClientSvrMgr.h" />
     <ClInclude Include="ClientType.h" />
     <ClInclude Include="ConnectMgr.h" />
     <ClInclude Include="connector.h" />
     <ClInclude Include="crosslib.h" />
     <ClInclude Include="CtrlHandler.h" />
-    <ClInclude Include="DBExecute.h" />
     <ClInclude Include="DBSvrType.h" />
     <ClInclude Include="GlobalDefine.h" />
     <ClInclude Include="idmgr.h" />

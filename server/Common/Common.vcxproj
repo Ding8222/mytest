@@ -119,11 +119,11 @@
     <ClCompile Include="BaseConfig.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ClientMgr.cpp" />
+    <ClCompile Include="ClientSvrMgr.cpp" />
     <ClCompile Include="ConnectMgr.cpp" />
     <ClCompile Include="connector.cpp" />
     <ClCompile Include="crosslib.c" />
     <ClCompile Include="CtrlHandler.cpp" />
-    <ClCompile Include="DBExecute.cpp" />
     <ClCompile Include="idmgr.c" />
     <ClCompile Include="log.c" />
     <ClCompile Include="MiniDump.cpp" />

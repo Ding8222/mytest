@@ -23,6 +23,11 @@ CClientAuth::CClientAuth()
 
 CClientAuth::~CClientAuth()
 {
+	Destroy();
+}
+
+void CClientAuth::Destroy()
+{
 	m_Secret.clear();
 }
 
@@ -90,9 +95,20 @@ void CClientAuth::Auth(CClient *cl, Msg *pMsg)
 	}
 }
 
+// Client断开连接
+void CClientAuth::OnClientDisconnect(CClient *cl)
+{
+	DelSecret(cl->GetClientID());
+}
+
 void CClientAuth::AddSecret(int64 clientid,std::string secret)
 {
 	m_Secret.insert(std::make_pair(clientid, secret));
+}
+
+void CClientAuth::DelSecret(int64 clientid)
+{
+	m_Secret.erase(clientid);
 }
 
 bool CClientAuth::CheckSecret(int64 clientid, std::string &secret)

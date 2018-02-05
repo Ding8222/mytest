@@ -5,6 +5,7 @@
 #include "Config.h"
 #include "ClientSvrMgr.h"
 
+#include "ClientType.h"
 #include "LoginType.h"
 #include "Login.pb.h"
 
@@ -61,9 +62,9 @@ const char *CGameGatewayMgr::GetMsgNumInfo()
 	return tempbuf;
 }
 
-void CGameGatewayMgr::SendMsgToServer(Msg &pMsg, int nType, int nServerID, int64 nClientID)
+void CGameGatewayMgr::SendMsgToServer(Msg &pMsg, int nType, int64 nClientID, int nServerID, bool bBroad)
 {
-	if (nServerID > 0)
+	if (!bBroad)
 	{
 		serverinfo *info = FindServer(nServerID, nType);
 		if (info)
@@ -86,9 +87,9 @@ void CGameGatewayMgr::SendMsgToServer(Msg &pMsg, int nType, int nServerID, int64
 	}
 }
 
-void CGameGatewayMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int nServerID, int64 nClientID)
+void CGameGatewayMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int64 nClientID, int nServerID, bool bBroad)
 {
-	if (nServerID > 0)
+	if (!bBroad)
 	{
 		serverinfo *info = FindServer(nServerID, nType);
 		if (info)
@@ -115,14 +116,14 @@ void CGameGatewayMgr::SendMsgToClient(Msg &pMsg, int64 nClientID)
 {
 	int serverid = CClientSvrMgr::Instance().FindClientSvr(nClientID);
 	if(serverid > 0)
-		SendMsgToServer(pMsg, ServerEnum::EST_GATE, serverid, nClientID);
+		SendMsgToServer(pMsg, ServerEnum::EST_GATE,  nClientID, serverid);
 }
 
 void CGameGatewayMgr::SendMsgToClient(google::protobuf::Message &pMsg, int maintype, int subtype, int64 nClientID)
 {
 	int serverid = CClientSvrMgr::Instance().FindClientSvr(nClientID);
 	if (serverid > 0)
-		SendMsgToServer(pMsg, maintype, subtype, ServerEnum::EST_GATE, serverid, nClientID);
+		SendMsgToServer(pMsg, maintype, subtype, ServerEnum::EST_GATE, nClientID, serverid);
 }
 
 void CGameGatewayMgr::ServerRegisterSucc(int id, int type, const char *ip, int port)
@@ -187,6 +188,7 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
 
 				SendMsgToClient(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, tl->id);
+				CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), *pMsg, tl->id);
 				break;
 			}
 			case SVR_SUB_DEL_CLIENT:
@@ -195,6 +197,7 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				_CHECK_PARSE_(pMsg, msg);
 
 				CClientSvrMgr::Instance().DelClientSvr(msg.nclientid());
+				CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), *pMsg, tl->id);
 				break;
 			}
 			default:
@@ -226,9 +229,8 @@ void CGameGatewayMgr::ProcessClientMsg(int gateid, int64 clientid, Msg *pMsg)
 	{
 		switch (pMsg->GetSubType())
 		{
-		case LOGIN_SUB_PLAYER_LIST:
+		case CLIENT_SUB_MOVE:
 		{
-
 			break;
 		}
 		default:

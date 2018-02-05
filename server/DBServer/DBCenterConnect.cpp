@@ -151,6 +151,34 @@ void CDBCenterConnect::ProcessLoginMsg(connector *_con, Msg *pMsg, msgtail *tl)
 		SendMsgToServer(_con, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, tl->id);
 		break;
 	}
+	case LOGIN_SUB_PLAYER_LIST:
+	{
+		netData::PlayerList msg;
+		_CHECK_PARSE_(pMsg, msg);
+
+		netData::PlayerListRet sendMsg;
+
+		DataBase::CRecordset *res = g_dbhand.Execute(fmt::format("select * from playerdate where uid = '{0}'", msg.account().c_str()).c_str());
+		if (res && res->IsOpen() && !res->IsEnd())
+		{
+			// 查询到的角色信息
+			while (!res->IsEnd())
+			{
+				netData::PlayerLite *_pInfo = sendMsg.add_list();
+				if (_pInfo)
+				{
+					_pInfo->set_uuid(res->GetInt64("uuid"));
+					_pInfo->set_sname(res->GetChar("name"));
+					_pInfo->set_njob(res->GetInt("job"));
+					_pInfo->set_nsex(res->GetInt("sex"));
+				}
+				res->NextRow();
+			}
+		}
+
+		SendMsgToServer(_con, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_PLAYER_LIST_RET, tl->id);
+		break;
+	}
 	default:
 		break;
 	}
