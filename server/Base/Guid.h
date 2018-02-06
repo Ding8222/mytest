@@ -1,4 +1,9 @@
-﻿#pragma once
+﻿/*
+* Guid生成器
+* Copyright (C) ddl
+* 2018
+*/
+#pragma once
 
 // twitter snowflake算法
 // 64       63--------------24---------12---------0

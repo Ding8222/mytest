@@ -36,6 +36,7 @@ bool CRobotMgr::Init(const char *ip, int port, int id, int maxrobot, int pingtim
 	{
 		CRobot *_pRobot = new CRobot;
 		_pRobot->SetConnectInfo(s_LoginServerIP.c_str(), m_LoginServerPort, m_LoginServerID);
+		_pRobot->SetAccount(fmt::format("RoBot_{0}", i));
 		m_RobotList.push_back(_pRobot);
 	}
 
@@ -63,7 +64,7 @@ void CRobotMgr::Run()
 				{
 					// 逻辑服
 					netData::Login sendMsg;
-					sendMsg.set_stoken("123");
+					sendMsg.set_stoken((*tempitr)->GetAccount());
 
 					(*tempitr)->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN);
 				}
@@ -181,7 +182,7 @@ void CRobotMgr::ProcessRegister(CRobot *con)
 				log_error("ChallengeKey:%s", msg.schallenge().c_str());
 
 				netData::Auth sendMsg;
-				sendMsg.set_setoken("123");
+				sendMsg.set_setoken(con->GetAccount());
 
 				con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH);
 				con->SetHandShake(true);
@@ -253,7 +254,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				else
 				{
 					netData::Auth sendMsg;
-					sendMsg.set_setoken("123");
+					sendMsg.set_setoken(_con->GetAccount());
 					_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH);
 				}
 				log_error("AuthRet:%d,ip:%s,port:%d", msg.ncode(), msg.ip().c_str(), msg.port());
@@ -269,7 +270,6 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				if (msg.ncode() == netData::LoginRet::EC_SUCC)
 				{
 					netData::PlayerList sendMsg;
-
 					_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_PLAYER_LIST);
 				}
 				break;
@@ -284,7 +284,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				{
 					//没有角色，创建角色
 					netData::CreatePlayer sendMsg;
-					sendMsg.set_sname("123");
+					sendMsg.set_sname(_con->GetAccount());
 					sendMsg.set_njob(1);
 					sendMsg.set_nsex(1);
 

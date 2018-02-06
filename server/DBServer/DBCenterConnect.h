@@ -5,6 +5,7 @@
 */
 #pragma once
 #include "ConnectMgr.h"
+#include "sqlinterface.h"
 
 class CDBCenterConnect : public CConnectMgr
 {
@@ -26,7 +27,8 @@ public:
 	// 处理远程服务器发来的消息
 	void ProcessMsg(connector *_con);
 	void ProcessServerMsg(connector *_con, Msg *pMsg, msgtail *tl);
-	void ProcessLoginMsg(connector *_con, Msg *pMsg, msgtail *tl);
 private:
 
 };
+
+extern DataBase::CConnection g_dbhand;

@@ -3,15 +3,11 @@
 #include "connector.h"
 #include "config.h"
 #include "sqlinterface.h"
-#include "Guid.h"
+#include "ClientLogin.h"
 
 #include "DBSvrType.h"
-#include "LoginType.h"
 
-#include "DBServer.pb.h"
-#include "Login.pb.h"
-
-static DataBase::CConnection g_dbhand;
+DataBase::CConnection g_dbhand;
 extern int64 g_currenttime;
 
 CDBCenterConnect::CDBCenterConnect()
@@ -115,113 +111,12 @@ void CDBCenterConnect::ProcessServerMsg(connector *_con, Msg *pMsg, msgtail *tl)
 	{
 	case LOGIN_TYPE_MAIN:
 	{
-		ProcessLoginMsg(_con, pMsg, tl);
+		CClientLogin::Instance().ProcessLoginMsg(_con, pMsg, tl);
 		break;
 	}
 	default:
 	{
 		break;
 	}
-	}
-}
-
-void CDBCenterConnect::ProcessLoginMsg(connector *_con, Msg *pMsg, msgtail *tl)
-{
-	switch (pMsg->GetSubType())
-	{
-	case LOGIN_SUB_AUTH:
-	{
-		netData::Auth msg;
-		_CHECK_PARSE_(pMsg, msg);
-
-		DataBase::CRecordset *res = g_dbhand.Execute(fmt::format("select * from account where uid = '{0}' limit 1", msg.setoken().c_str()).c_str());
-		if (res && res->IsOpen() && !res->IsEnd())
-		{
-			// 存在的账号
-			res = g_dbhand.Execute(fmt::format("update account set logintime ={0} where uid = '{1}'", time(nullptr), msg.setoken().c_str()).c_str());
-		}
-		else
-		{
-			// 不存在的账号
-			res = g_dbhand.Execute(fmt::format("insert into account (uid,createtime,logintime) values ('{0}',{1},{2})", msg.setoken().c_str(), time(nullptr), time(nullptr)).c_str());
-		}
-
-		netData::AuthRet sendMsg;
-		sendMsg.set_ncode(netData::AuthRet::EC_SUCC);
-		sendMsg.set_nserverid(4000);
-		SendMsgToServer(_con, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, tl->id);
-		break;
-	}
-	case LOGIN_SUB_PLAYER_LIST:
-	{
-		netData::PlayerList msg;
-		_CHECK_PARSE_(pMsg, msg);
-
-		netData::PlayerListRet sendMsg;
-
-		DataBase::CRecordset *res = g_dbhand.Execute(fmt::format("select * from playerdate where uid = '{0}'", msg.account().c_str()).c_str());
-		if (res && res->IsOpen() && !res->IsEnd())
-		{
-			// 查询到的角色信息
-			while (!res->IsEnd())
-			{
-				netData::PlayerLite *_pInfo = sendMsg.add_list();
-				if (_pInfo)
-				{
-					_pInfo->set_guid(res->GetInt64("guid"));
-					_pInfo->set_sname(res->GetChar("name"));
-					_pInfo->set_njob(res->GetInt("job"));
-					_pInfo->set_nsex(res->GetInt("sex"));
-				}
-				res->NextRow();
-			}
-		}
-
-		SendMsgToServer(_con, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_PLAYER_LIST_RET, tl->id);
-		break;
-	}
-	case LOGIN_SUB_CREATE_PLAYER:
-	{
-		netData::CreatePlayer msg;
-		_CHECK_PARSE_(pMsg, msg);
-
-		int64 guid = CGuid::Instance().Generate();
-		netData::CreatePlayerRet sendMsg;
-		DataBase::CRecordset *res = g_dbhand.Execute(fmt::format("insert into playerdate (uid,name,guid,sex,job,level,createtime,logintime,mapid) values ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8})", 
-			msg.account().c_str(), msg.sname(),guid, msg.nsex(), msg.njob(), 1, time(nullptr), time(nullptr),1).c_str());
-		if (res)
-		{
-			sendMsg.set_ncode(netData::CreatePlayerRet::EC_SUCC);
-			netData::PlayerLite *_pInfo = sendMsg.mutable_info();
-			if (_pInfo)
-			{
-				_pInfo->set_guid(guid);
-			}
-		}
-		else
-			sendMsg.set_ncode(netData::CreatePlayerRet::EC_FAIL);
-		SendMsgToServer(_con, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_CREATE_PLAYER_RET, tl->id);
-		break;
-	}
-	case LOGIN_SUB_SELECT_PLAYER:
-	{
-		netData::SelectPlayer msg;
-		_CHECK_PARSE_(pMsg, msg);
-
-		netData::SelectPlayerRet sendMsg;
-		DataBase::CRecordset *res = g_dbhand.Execute(fmt::format("select * from playerdate where guid = {0}", msg.guid()).c_str());
-		if (res && res->IsOpen() && !res->IsEnd())
-		{
-			g_dbhand.Execute(fmt::format("update playerdate set logintime ={0} where guid = '{1}'", time(nullptr), msg.guid()).c_str());
-			
-			sendMsg.set_ncode(netData::SelectPlayerRet::EC_SUCC);
-		}
-		else
-			sendMsg.set_ncode(netData::SelectPlayerRet::EC_FAIL);
-		SendMsgToServer(_con, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER_RET, tl->id);
-		break;
-	}
-	default:
-		break;
 	}
 }

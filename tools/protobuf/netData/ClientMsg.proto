@@ -6,3 +6,32 @@ message Ping
 {
 	
 }
+
+// 3-2 通知Client数据加载完毕
+message LoadPlayerDataFinish
+{
+	
+}
+
+// 3-3 通知Server加载地图完毕
+message LoadMapFinish
+{
+	
+}
+
+// 3-4 请求移动
+message PlayerMove
+{
+	float x = 1;
+	float y = 2;
+	float z = 3;
+}
+
+// 3-5 移动返回
+message PlayerMoveRet
+{
+	float x = 1;
+	float y = 2;
+	float z = 3;
+	int32 nCode = 4;//返回的错误码
+}

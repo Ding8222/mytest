@@ -34,6 +34,9 @@ public:
 	void SetClientKey(CryptoPP::SecByteBlock key) { sClientKey = key; }
 	void SetServerKey(CryptoPP::SecByteBlock key) { sServerKey = key; }
 	void SetSecret(std::string key) { sSecret = key; }
+	std::string GetSecret() { return sSecret; }
+	void SetAccount(std::string name) { sAccount = name; }
+	std::string GetAccount() { return sAccount; }
 private:
 	bool m_isHandShake;
 	bool m_isAuth;
@@ -41,4 +44,5 @@ private:
 	CryptoPP::SecByteBlock sClientKey;
 	CryptoPP::SecByteBlock sServerKey;
 	std::string sSecret;
+	std::string sAccount;
 };

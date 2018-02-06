@@ -120,11 +120,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ClientLogin.h" />
     <ClInclude Include="DBCenterConnect.h" />
     <ClInclude Include="DBServer.h" />
     <ClInclude Include="Config.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ClientLogin.cpp" />
     <ClCompile Include="DBCenterConnect.cpp" />
     <ClCompile Include="DBServer.cpp" />
     <ClCompile Include="Config.cpp" />

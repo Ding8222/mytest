@@ -6,6 +6,8 @@ extern int64 g_currenttime;
 
 CRobot::CRobot()
 {
+	sSecret.clear();
+	sAccount.clear();
 	m_isAuth = false;
 	m_isHandShake = false;
 }
