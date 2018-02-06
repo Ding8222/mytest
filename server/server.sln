@@ -79,7 +79,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Robot", "Robot\Robot.vcxpro
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libprotobuf", "3rd\protobuf\builds\libprotobuf.vcxproj", "{8039A88D-832F-3209-A407-9EF5C9CF579F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Base", "base\Base.vcxproj", "{847E3017-0B22-4481-96BF-C86D39734304}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Base", "Base\Base.vcxproj", "{847E3017-0B22-4481-96BF-C86D39734304}"
 	ProjectSection(ProjectDependencies) = postProject
 		{4862BA06-A1EF-3B17-82ED-1C1E1E7B2FF7} = {4862BA06-A1EF-3B17-82ED-1C1E1E7B2FF7}
 	EndProjectSection

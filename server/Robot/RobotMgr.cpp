@@ -246,7 +246,16 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				netData::AuthRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				_con->ChangeConnect(msg.ip().c_str(), msg.port(), msg.nserverid());
+				if (msg.port() > 0)
+				{
+					_con->ChangeConnect(msg.ip().c_str(), msg.port(), msg.nserverid());
+				}
+				else
+				{
+					netData::Auth sendMsg;
+					sendMsg.set_setoken("123");
+					_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH);
+				}
 				log_error("AuthRet:%d,ip:%s,port:%d", msg.ncode(), msg.ip().c_str(), msg.port());
 				break;
 			}

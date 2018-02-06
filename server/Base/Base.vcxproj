@@ -134,6 +134,7 @@
     <ClInclude Include="CtrlHandler.h" />
     <ClInclude Include="DBSvrType.h" />
     <ClInclude Include="GlobalDefine.h" />
+    <ClInclude Include="Guid.h" />
     <ClInclude Include="idmgr.h" />
     <ClInclude Include="log.h" />
     <ClInclude Include="LoginType.h" />

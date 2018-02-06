@@ -124,6 +124,7 @@
     <ClCompile Include="connector.cpp" />
     <ClCompile Include="crosslib.c" />
     <ClCompile Include="CtrlHandler.cpp" />
+    <ClCompile Include="Guid.cpp" />
     <ClCompile Include="idmgr.c" />
     <ClCompile Include="log.c" />
     <ClCompile Include="MiniDump.cpp" />

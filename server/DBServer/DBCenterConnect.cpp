@@ -3,6 +3,7 @@
 #include "connector.h"
 #include "config.h"
 #include "sqlinterface.h"
+#include "Guid.h"
 
 #include "DBSvrType.h"
 #include "LoginType.h"
@@ -184,8 +185,7 @@ void CDBCenterConnect::ProcessLoginMsg(connector *_con, Msg *pMsg, msgtail *tl)
 		netData::CreatePlayer msg;
 		_CHECK_PARSE_(pMsg, msg);
 
-		int64 uuid = 123456;
-
+		int64 uuid = CGuid::Instance().Generate();
 		netData::CreatePlayerRet sendMsg;
 		DataBase::CRecordset *res = g_dbhand.Execute(fmt::format("insert into playerdate (uid,name,uuid,sex,job,level,createtime,logintime,mapid) values ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8})", 
 			msg.account().c_str(), msg.sname(),uuid, msg.nsex(), msg.njob(), 1, time(nullptr), time(nullptr),1).c_str());
@@ -213,6 +213,7 @@ void CDBCenterConnect::ProcessLoginMsg(connector *_con, Msg *pMsg, msgtail *tl)
 		if (res && res->IsOpen() && !res->IsEnd())
 		{
 			g_dbhand.Execute(fmt::format("update playerdate set logintime ={0} where uuid = '{1}'", time(nullptr), msg.uuid()).c_str());
+			
 			sendMsg.set_ncode(netData::SelectPlayerRet::EC_SUCC);
 		}
 		else
