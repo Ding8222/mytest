@@ -40,11 +40,17 @@ public:
 	void AddNewClient(Msg *pMsg, CClient *cl);
 	// 请求角色列表
 	void GetPlayerList(Msg *pMsg, CClient *cl);
-
+	// 请求创建角色
+	void CreatePlayer(Msg *pMsg, CClient *cl);
+	// 请求选择角色
+	void SelectPlayer(Msg *pMsg, CClient *cl);
 	// client主动退出
 	void Offline(int64 clientid);
 	// 返回当前Client数量
 	int GetClientSize() { return m_ClientSecretInfo.size(); }
+private:
+	ClientAuthInfo * FindAuthInfo(int64 clientid);
+	ClientAuthInfo * FindAuthInfo(std::string token);
 private:
 	// Token,authinfo
 	std::unordered_map<std::string, ClientAuthInfo *> m_ClientSecretInfo;

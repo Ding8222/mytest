@@ -1,5 +1,6 @@
 ﻿#include "stdfx.h"
 #include "GateCenterConnect.h"
+#include "GateClientMgr.h"
 #include "serverinfo.h"
 #include "connector.h"
 #include "config.h"
@@ -96,14 +97,17 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 			{
 			case LOGIN_SUB_PLAYER_LIST_RET:
 			{
+				CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
 				break;
 			}
 			case LOGIN_SUB_CREATE_PLAYER_RET:
 			{
+				CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
 				break;
 			}
 			case LOGIN_SUB_SELECT_PLAYER_RET:
 			{
+				CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
 				break;
 			}
 			default:

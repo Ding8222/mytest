@@ -257,9 +257,60 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 
 				log_error("LoginRet:%d", msg.ncode());
 
-				netData::PlayerList sendMsg;
+				if (msg.ncode() == netData::LoginRet::EC_SUCC)
+				{
+					netData::PlayerList sendMsg;
 
-				_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_PLAYER_LIST);
+					_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_PLAYER_LIST);
+				}
+				break;
+			}
+			case LOGIN_SUB_PLAYER_LIST_RET:
+			{
+				netData::PlayerListRet msg;
+				_CHECK_PARSE_(pMsg, msg);
+				log_error("PlayerListRet:%d", msg.list_size());
+
+				if (msg.list_size() == 0)
+				{
+					//没有角色，创建角色
+					netData::CreatePlayer sendMsg;
+					sendMsg.set_sname("123");
+					sendMsg.set_njob(1);
+					sendMsg.set_nsex(1);
+
+					_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_CREATE_PLAYER);
+				}
+				else
+				{
+					//有角色选择角色
+					netData::SelectPlayer sendMsg;
+					sendMsg.set_uuid(msg.list(0).uuid());
+
+					_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER);
+				}
+				break;
+			}
+			case LOGIN_SUB_CREATE_PLAYER_RET:
+			{
+				netData::CreatePlayerRet msg;
+				_CHECK_PARSE_(pMsg, msg);
+				log_error("CreatePlayerRet:%d", msg.ncode());
+				if (msg.ncode() == netData::CreatePlayerRet::EC_SUCC)
+				{
+					netData::SelectPlayer sendMsg;
+					sendMsg.set_uuid(msg.info().uuid());
+
+					_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER);
+				}
+				break;
+			}
+			case LOGIN_SUB_SELECT_PLAYER_RET:
+			{
+				netData::SelectPlayerRet msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				log_error("SelectPlayerRet:%d", msg.ncode());
 				break;
 			}
 			default:

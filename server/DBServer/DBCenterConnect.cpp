@@ -179,6 +179,47 @@ void CDBCenterConnect::ProcessLoginMsg(connector *_con, Msg *pMsg, msgtail *tl)
 		SendMsgToServer(_con, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_PLAYER_LIST_RET, tl->id);
 		break;
 	}
+	case LOGIN_SUB_CREATE_PLAYER:
+	{
+		netData::CreatePlayer msg;
+		_CHECK_PARSE_(pMsg, msg);
+
+		int64 uuid = 123456;
+
+		netData::CreatePlayerRet sendMsg;
+		DataBase::CRecordset *res = g_dbhand.Execute(fmt::format("insert into playerdate (uid,name,uuid,sex,job,level,createtime,logintime,mapid) values ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8})", 
+			msg.account().c_str(), msg.sname(),uuid, msg.nsex(), msg.njob(), 1, time(nullptr), time(nullptr),1).c_str());
+		if (res)
+		{
+			sendMsg.set_ncode(netData::CreatePlayerRet::EC_SUCC);
+			netData::PlayerLite *_pInfo = sendMsg.mutable_info();
+			if (_pInfo)
+			{
+				_pInfo->set_uuid(uuid);
+			}
+		}
+		else
+			sendMsg.set_ncode(netData::CreatePlayerRet::EC_FAIL);
+		SendMsgToServer(_con, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_CREATE_PLAYER_RET, tl->id);
+		break;
+	}
+	case LOGIN_SUB_SELECT_PLAYER:
+	{
+		netData::SelectPlayer msg;
+		_CHECK_PARSE_(pMsg, msg);
+
+		netData::SelectPlayerRet sendMsg;
+		DataBase::CRecordset *res = g_dbhand.Execute(fmt::format("select * from playerdate where uuid = {0}", msg.uuid()).c_str());
+		if (res && res->IsOpen() && !res->IsEnd())
+		{
+			g_dbhand.Execute(fmt::format("update playerdate set logintime ={0} where uuid = '{1}'", time(nullptr), msg.uuid()).c_str());
+			sendMsg.set_ncode(netData::SelectPlayerRet::EC_SUCC);
+		}
+		else
+			sendMsg.set_ncode(netData::SelectPlayerRet::EC_FAIL);
+		SendMsgToServer(_con, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER_RET, tl->id);
+		break;
+	}
 	default:
 		break;
 	}

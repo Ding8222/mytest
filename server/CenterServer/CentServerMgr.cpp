@@ -496,6 +496,8 @@ void CCentServerMgr::ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			break;
 		}
 		case LOGIN_SUB_PLAYER_LIST_RET:
+		case LOGIN_SUB_CREATE_PLAYER_RET:
+		case LOGIN_SUB_SELECT_PLAYER_RET:
 		{
 			CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_GATE, tl->id);
 			break;
@@ -519,6 +521,8 @@ void CCentServerMgr::ProcessGateMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		switch (pMsg->GetSubType())
 		{
 		case LOGIN_SUB_PLAYER_LIST:
+		case LOGIN_SUB_CREATE_PLAYER:
+		case LOGIN_SUB_SELECT_PLAYER:
 		{
 			CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_DB, tl->id);
 			break;

@@ -117,15 +117,17 @@ void CGateClientMgr::ProcessClientAuth(CClient *cl, Msg *pMsg)
 		}
 		case LOGIN_SUB_PLAYER_LIST:
 		{
-			CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), *pMsg, cl->GetClientID());
+			CClientAuth::Instance().GetPlayerList(pMsg, cl);
 			break;
 		}
 		case LOGIN_SUB_CREATE_PLAYER:
 		{
+			CClientAuth::Instance().CreatePlayer(pMsg, cl);
 			break;
 		}
 		case LOGIN_SUB_SELECT_PLAYER:
 		{
+			CClientAuth::Instance().SelectPlayer(pMsg, cl);
 			break;
 		}
 		default:

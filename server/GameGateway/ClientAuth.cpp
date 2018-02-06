@@ -4,6 +4,8 @@
 #include "GameConnect.h"
 #include "GateClientMgr.h"
 #include "Config.h"
+#include "GateCenterConnect.h"
+
 
 #include "Login.pb.h"
 #include "LoginType.h"
@@ -136,7 +138,39 @@ void CClientAuth::AddNewClient(Msg *pMsg, CClient *cl)
 // 请求角色列表
 void CClientAuth::GetPlayerList(Msg *pMsg, CClient *cl)
 {
+	ClientAuthInfo *_pData = FindAuthInfo(cl->GetClientID());
+	if (_pData)
+	{
+		netData::PlayerList sendMsg;
+		_CHECK_PARSE_(pMsg, sendMsg);
+		sendMsg.set_account(_pData->Token);
 
+		CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_PLAYER_LIST, cl->GetClientID());
+	}
+}
+
+// 请求创建角色
+void CClientAuth::CreatePlayer(Msg *pMsg, CClient *cl)
+{
+	ClientAuthInfo *_pData = FindAuthInfo(cl->GetClientID());
+	if (_pData)
+	{
+		netData::CreatePlayer sendMsg;
+		_CHECK_PARSE_(pMsg, sendMsg);
+		sendMsg.set_account(_pData->Token);
+
+		CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_CREATE_PLAYER, cl->GetClientID());
+	}
+}
+
+// 请求选择角色
+void CClientAuth::SelectPlayer(Msg *pMsg, CClient *cl)
+{
+	ClientAuthInfo *_pData = FindAuthInfo(cl->GetClientID());
+	if (_pData)
+	{
+		CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), *pMsg, cl->GetClientID());
+	}
 }
 
 void CClientAuth::Offline(int64 clientid)
@@ -148,4 +182,23 @@ void CClientAuth::Offline(int64 clientid)
 		delete iter->second;
 	}
 	KickClient(clientid);
+}
+
+ClientAuthInfo *CClientAuth::FindAuthInfo(int64 clientid)
+{
+	auto iter = m_ClientAuthInfo.find(clientid);
+	assert(iter != m_ClientAuthInfo.end());
+	if (iter != m_ClientAuthInfo.end())
+		return iter->second;
+
+	return nullptr;
+}
+ClientAuthInfo *CClientAuth::FindAuthInfo(std::string token)
+{
+	auto iter = m_ClientSecretInfo.find(token);
+	assert(iter != m_ClientSecretInfo.end());
+	if (iter != m_ClientSecretInfo.end())
+		return iter->second;
+
+	return nullptr;
 }

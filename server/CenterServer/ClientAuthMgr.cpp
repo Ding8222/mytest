@@ -76,5 +76,5 @@ void CClientAuthMgr::SendAuthInfoToLogic(Msg *pMsg, int64 clientid)
 	else
 		msg.set_ncode(netData::AuthRet::EC_AUTHINFO);
 
-	//CCentServerMgr::Instance().SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, clientid);
+	CCentServerMgr::Instance().SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, clientid);
 }

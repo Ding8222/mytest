@@ -111,6 +111,7 @@ message CreatePlayer
 	string sName = 1;
 	int32 nJob = 2;
 	int32 nSex = 3;
+	string account = 4;//请求不用填写
 }
 
 // 2-12 创建角色返回
@@ -123,13 +124,13 @@ message CreatePlayerRet
 		EC_FAIL = 2;
 	};
 	int32 nCode = 1;
-	PlayerLite player = 2;
+	PlayerLite info = 2;
 }
 
 // 2-13 请求选择角色
 message SelectPlayer
 {
-	int64 uid = 1;
+	int64 uuid = 1;
 }
 
 // 2-14 选择角色返回
