@@ -1390,11 +1390,11 @@ class PlayerLite : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::std::string* release_sname();
   void set_allocated_sname(::std::string* sname);
 
-  // int64 uuid = 1;
-  void clear_uuid();
-  static const int kUuidFieldNumber = 1;
-  ::google::protobuf::int64 uuid() const;
-  void set_uuid(::google::protobuf::int64 value);
+  // int64 guid = 1;
+  void clear_guid();
+  static const int kGuidFieldNumber = 1;
+  ::google::protobuf::int64 guid() const;
+  void set_guid(::google::protobuf::int64 value);
 
   // int32 nJob = 3;
   void clear_njob();
@@ -1413,7 +1413,7 @@ class PlayerLite : public ::google::protobuf::Message /* @@protoc_insertion_poin
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr sname_;
-  ::google::protobuf::int64 uuid_;
+  ::google::protobuf::int64 guid_;
   ::google::protobuf::int32 njob_;
   ::google::protobuf::int32 nsex_;
   mutable int _cached_size_;
@@ -2009,17 +2009,17 @@ class SelectPlayer : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // accessors -------------------------------------------------------
 
-  // int64 uuid = 1;
-  void clear_uuid();
-  static const int kUuidFieldNumber = 1;
-  ::google::protobuf::int64 uuid() const;
-  void set_uuid(::google::protobuf::int64 value);
+  // int64 guid = 1;
+  void clear_guid();
+  static const int kGuidFieldNumber = 1;
+  ::google::protobuf::int64 guid() const;
+  void set_guid(::google::protobuf::int64 value);
 
   // @@protoc_insertion_point(class_scope:netData.SelectPlayer)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::int64 uuid_;
+  ::google::protobuf::int64 guid_;
   mutable int _cached_size_;
   friend struct ::protobuf_Login_2eproto::TableStruct;
   friend void ::protobuf_Login_2eproto::InitDefaultsSelectPlayerImpl();
@@ -2692,18 +2692,18 @@ inline void LoginRet::set_ncode(::google::protobuf::int32 value) {
 
 // PlayerLite
 
-// int64 uuid = 1;
-inline void PlayerLite::clear_uuid() {
-  uuid_ = GOOGLE_LONGLONG(0);
+// int64 guid = 1;
+inline void PlayerLite::clear_guid() {
+  guid_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int64 PlayerLite::uuid() const {
-  // @@protoc_insertion_point(field_get:netData.PlayerLite.uuid)
-  return uuid_;
+inline ::google::protobuf::int64 PlayerLite::guid() const {
+  // @@protoc_insertion_point(field_get:netData.PlayerLite.guid)
+  return guid_;
 }
-inline void PlayerLite::set_uuid(::google::protobuf::int64 value) {
+inline void PlayerLite::set_guid(::google::protobuf::int64 value) {
   
-  uuid_ = value;
-  // @@protoc_insertion_point(field_set:netData.PlayerLite.uuid)
+  guid_ = value;
+  // @@protoc_insertion_point(field_set:netData.PlayerLite.guid)
 }
 
 // string sName = 2;
@@ -3089,18 +3089,18 @@ inline void CreatePlayerRet::set_allocated_info(::netData::PlayerLite* info) {
 
 // SelectPlayer
 
-// int64 uuid = 1;
-inline void SelectPlayer::clear_uuid() {
-  uuid_ = GOOGLE_LONGLONG(0);
+// int64 guid = 1;
+inline void SelectPlayer::clear_guid() {
+  guid_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int64 SelectPlayer::uuid() const {
-  // @@protoc_insertion_point(field_get:netData.SelectPlayer.uuid)
-  return uuid_;
+inline ::google::protobuf::int64 SelectPlayer::guid() const {
+  // @@protoc_insertion_point(field_get:netData.SelectPlayer.guid)
+  return guid_;
 }
-inline void SelectPlayer::set_uuid(::google::protobuf::int64 value) {
+inline void SelectPlayer::set_guid(::google::protobuf::int64 value) {
   
-  uuid_ = value;
-  // @@protoc_insertion_point(field_set:netData.SelectPlayer.uuid)
+  guid_ = value;
+  // @@protoc_insertion_point(field_set:netData.SelectPlayer.guid)
 }
 
 // -------------------------------------------------------------------

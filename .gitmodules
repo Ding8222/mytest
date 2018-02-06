@@ -13,6 +13,3 @@
 [submodule "server/3rd/fmtlib"]
 	path = server/3rd/fmtlib
 	url = https://github.com/fmtlib/fmt.git
-[submodule "server/3rd/guid"]
-	path = server/3rd/guid
-	url = https://github.com/graeme-hill/crossguid.git

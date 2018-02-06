@@ -86,7 +86,7 @@ message LoginRet
 
 message PlayerLite
 {
-	int64 uuid = 1;
+	int64 guid = 1;
 	string sName = 2;
 	int32 nJob = 3;
 	int32 nSex = 4;
@@ -130,7 +130,7 @@ message CreatePlayerRet
 // 2-13 请求选择角色
 message SelectPlayer
 {
-	int64 uuid = 1;
+	int64 guid = 1;
 }
 
 // 2-14 选择角色返回

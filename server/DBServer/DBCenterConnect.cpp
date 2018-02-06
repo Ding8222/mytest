@@ -168,7 +168,7 @@ void CDBCenterConnect::ProcessLoginMsg(connector *_con, Msg *pMsg, msgtail *tl)
 				netData::PlayerLite *_pInfo = sendMsg.add_list();
 				if (_pInfo)
 				{
-					_pInfo->set_uuid(res->GetInt64("uuid"));
+					_pInfo->set_guid(res->GetInt64("guid"));
 					_pInfo->set_sname(res->GetChar("name"));
 					_pInfo->set_njob(res->GetInt("job"));
 					_pInfo->set_nsex(res->GetInt("sex"));
@@ -185,17 +185,17 @@ void CDBCenterConnect::ProcessLoginMsg(connector *_con, Msg *pMsg, msgtail *tl)
 		netData::CreatePlayer msg;
 		_CHECK_PARSE_(pMsg, msg);
 
-		int64 uuid = CGuid::Instance().Generate();
+		int64 guid = CGuid::Instance().Generate();
 		netData::CreatePlayerRet sendMsg;
-		DataBase::CRecordset *res = g_dbhand.Execute(fmt::format("insert into playerdate (uid,name,uuid,sex,job,level,createtime,logintime,mapid) values ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8})", 
-			msg.account().c_str(), msg.sname(),uuid, msg.nsex(), msg.njob(), 1, time(nullptr), time(nullptr),1).c_str());
+		DataBase::CRecordset *res = g_dbhand.Execute(fmt::format("insert into playerdate (uid,name,guid,sex,job,level,createtime,logintime,mapid) values ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8})", 
+			msg.account().c_str(), msg.sname(),guid, msg.nsex(), msg.njob(), 1, time(nullptr), time(nullptr),1).c_str());
 		if (res)
 		{
 			sendMsg.set_ncode(netData::CreatePlayerRet::EC_SUCC);
 			netData::PlayerLite *_pInfo = sendMsg.mutable_info();
 			if (_pInfo)
 			{
-				_pInfo->set_uuid(uuid);
+				_pInfo->set_guid(guid);
 			}
 		}
 		else
@@ -209,10 +209,10 @@ void CDBCenterConnect::ProcessLoginMsg(connector *_con, Msg *pMsg, msgtail *tl)
 		_CHECK_PARSE_(pMsg, msg);
 
 		netData::SelectPlayerRet sendMsg;
-		DataBase::CRecordset *res = g_dbhand.Execute(fmt::format("select * from playerdate where uuid = {0}", msg.uuid()).c_str());
+		DataBase::CRecordset *res = g_dbhand.Execute(fmt::format("select * from playerdate where guid = {0}", msg.guid()).c_str());
 		if (res && res->IsOpen() && !res->IsEnd())
 		{
-			g_dbhand.Execute(fmt::format("update playerdate set logintime ={0} where uuid = '{1}'", time(nullptr), msg.uuid()).c_str());
+			g_dbhand.Execute(fmt::format("update playerdate set logintime ={0} where guid = '{1}'", time(nullptr), msg.guid()).c_str());
 			
 			sendMsg.set_ncode(netData::SelectPlayerRet::EC_SUCC);
 		}

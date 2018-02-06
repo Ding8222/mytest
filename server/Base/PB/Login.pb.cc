@@ -476,7 +476,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::PlayerLite, uuid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::PlayerLite, guid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::PlayerLite, sname_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::PlayerLite, njob_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::PlayerLite, nsex_),
@@ -513,7 +513,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::SelectPlayer, uuid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::SelectPlayer, guid_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::SelectPlayerRet, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -592,7 +592,7 @@ void AddDescriptorsImpl() {
       "_SERVER\020\004\022\t\n\005EC_DB\020\005\022\017\n\013EC_AUTHINFO\020\006\"\027\n"
       "\005Login\022\016\n\006sToken\030\001 \001(\t\"G\n\010LoginRet\022\r\n\005nC"
       "ode\030\001 \001(\005\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC"
-      "\020\001\022\013\n\007EC_FAIL\020\002\"E\n\nPlayerLite\022\014\n\004uuid\030\001 "
+      "\020\001\022\013\n\007EC_FAIL\020\002\"E\n\nPlayerLite\022\014\n\004guid\030\001 "
       "\001(\003\022\r\n\005sName\030\002 \001(\t\022\014\n\004nJob\030\003 \001(\005\022\014\n\004nSex"
       "\030\004 \001(\005\"\035\n\nPlayerList\022\017\n\007account\030\001 \001(\t\"2\n"
       "\rPlayerListRet\022!\n\004list\030\001 \003(\0132\023.netData.P"
@@ -601,7 +601,7 @@ void AddDescriptorsImpl() {
       "\004 \001(\t\"q\n\017CreatePlayerRet\022\r\n\005nCode\030\001 \001(\005\022"
       "!\n\004info\030\002 \001(\0132\023.netData.PlayerLite\",\n\002EC"
       "\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002"
-      "\"\034\n\014SelectPlayer\022\014\n\004uuid\030\001 \001(\003\"N\n\017Select"
+      "\"\034\n\014SelectPlayer\022\014\n\004guid\030\001 \001(\003\"N\n\017Select"
       "PlayerRet\022\r\n\005nCode\030\001 \001(\005\",\n\002EC\022\014\n\010EC_OTH"
       "ER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002b\006proto3"
   };
@@ -2903,7 +2903,7 @@ void LoginRet::InternalSwap(LoginRet* other) {
 void PlayerLite::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int PlayerLite::kUuidFieldNumber;
+const int PlayerLite::kGuidFieldNumber;
 const int PlayerLite::kSNameFieldNumber;
 const int PlayerLite::kNJobFieldNumber;
 const int PlayerLite::kNSexFieldNumber;
@@ -2926,17 +2926,17 @@ PlayerLite::PlayerLite(const PlayerLite& from)
   if (from.sname().size() > 0) {
     sname_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.sname_);
   }
-  ::memcpy(&uuid_, &from.uuid_,
+  ::memcpy(&guid_, &from.guid_,
     static_cast<size_t>(reinterpret_cast<char*>(&nsex_) -
-    reinterpret_cast<char*>(&uuid_)) + sizeof(nsex_));
+    reinterpret_cast<char*>(&guid_)) + sizeof(nsex_));
   // @@protoc_insertion_point(copy_constructor:netData.PlayerLite)
 }
 
 void PlayerLite::SharedCtor() {
   sname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&uuid_, 0, static_cast<size_t>(
+  ::memset(&guid_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&nsex_) -
-      reinterpret_cast<char*>(&uuid_)) + sizeof(nsex_));
+      reinterpret_cast<char*>(&guid_)) + sizeof(nsex_));
   _cached_size_ = 0;
 }
 
@@ -2972,9 +2972,9 @@ void PlayerLite::Clear() {
   (void) cached_has_bits;
 
   sname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&uuid_, 0, static_cast<size_t>(
+  ::memset(&guid_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&nsex_) -
-      reinterpret_cast<char*>(&uuid_)) + sizeof(nsex_));
+      reinterpret_cast<char*>(&guid_)) + sizeof(nsex_));
   _internal_metadata_.Clear();
 }
 
@@ -2988,14 +2988,14 @@ bool PlayerLite::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // int64 uuid = 1;
+      // int64 guid = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &uuid_)));
+                 input, &guid_)));
         } else {
           goto handle_unusual;
         }
@@ -3072,9 +3072,9 @@ void PlayerLite::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int64 uuid = 1;
-  if (this->uuid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->uuid(), output);
+  // int64 guid = 1;
+  if (this->guid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->guid(), output);
   }
 
   // string sName = 2;
@@ -3111,9 +3111,9 @@ void PlayerLite::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int64 uuid = 1;
-  if (this->uuid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->uuid(), target);
+  // int64 guid = 1;
+  if (this->guid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->guid(), target);
   }
 
   // string sName = 2;
@@ -3161,11 +3161,11 @@ size_t PlayerLite::ByteSizeLong() const {
         this->sname());
   }
 
-  // int64 uuid = 1;
-  if (this->uuid() != 0) {
+  // int64 guid = 1;
+  if (this->guid() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->uuid());
+        this->guid());
   }
 
   // int32 nJob = 3;
@@ -3215,8 +3215,8 @@ void PlayerLite::MergeFrom(const PlayerLite& from) {
 
     sname_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.sname_);
   }
-  if (from.uuid() != 0) {
-    set_uuid(from.uuid());
+  if (from.guid() != 0) {
+    set_guid(from.guid());
   }
   if (from.njob() != 0) {
     set_njob(from.njob());
@@ -3251,7 +3251,7 @@ void PlayerLite::Swap(PlayerLite* other) {
 void PlayerLite::InternalSwap(PlayerLite* other) {
   using std::swap;
   sname_.Swap(&other->sname_);
-  swap(uuid_, other->uuid_);
+  swap(guid_, other->guid_);
   swap(njob_, other->njob_);
   swap(nsex_, other->nsex_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
@@ -4424,7 +4424,7 @@ void CreatePlayerRet::InternalSwap(CreatePlayerRet* other) {
 void SelectPlayer::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int SelectPlayer::kUuidFieldNumber;
+const int SelectPlayer::kGuidFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 SelectPlayer::SelectPlayer()
@@ -4440,12 +4440,12 @@ SelectPlayer::SelectPlayer(const SelectPlayer& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  uuid_ = from.uuid_;
+  guid_ = from.guid_;
   // @@protoc_insertion_point(copy_constructor:netData.SelectPlayer)
 }
 
 void SelectPlayer::SharedCtor() {
-  uuid_ = GOOGLE_LONGLONG(0);
+  guid_ = GOOGLE_LONGLONG(0);
   _cached_size_ = 0;
 }
 
@@ -4479,7 +4479,7 @@ void SelectPlayer::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  uuid_ = GOOGLE_LONGLONG(0);
+  guid_ = GOOGLE_LONGLONG(0);
   _internal_metadata_.Clear();
 }
 
@@ -4493,14 +4493,14 @@ bool SelectPlayer::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // int64 uuid = 1;
+      // int64 guid = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &uuid_)));
+                 input, &guid_)));
         } else {
           goto handle_unusual;
         }
@@ -4533,9 +4533,9 @@ void SelectPlayer::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int64 uuid = 1;
-  if (this->uuid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->uuid(), output);
+  // int64 guid = 1;
+  if (this->guid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->guid(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -4552,9 +4552,9 @@ void SelectPlayer::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int64 uuid = 1;
-  if (this->uuid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->uuid(), target);
+  // int64 guid = 1;
+  if (this->guid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->guid(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -4574,11 +4574,11 @@ size_t SelectPlayer::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // int64 uuid = 1;
-  if (this->uuid() != 0) {
+  // int64 guid = 1;
+  if (this->guid() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->uuid());
+        this->guid());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -4610,8 +4610,8 @@ void SelectPlayer::MergeFrom(const SelectPlayer& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.uuid() != 0) {
-    set_uuid(from.uuid());
+  if (from.guid() != 0) {
+    set_guid(from.guid());
   }
 }
 
@@ -4639,7 +4639,7 @@ void SelectPlayer::Swap(SelectPlayer* other) {
 }
 void SelectPlayer::InternalSwap(SelectPlayer* other) {
   using std::swap;
-  swap(uuid_, other->uuid_);
+  swap(guid_, other->guid_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }

@@ -294,7 +294,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				{
 					//有角色选择角色
 					netData::SelectPlayer sendMsg;
-					sendMsg.set_uuid(msg.list(0).uuid());
+					sendMsg.set_guid(msg.list(0).guid());
 
 					_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER);
 				}
@@ -308,7 +308,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				if (msg.ncode() == netData::CreatePlayerRet::EC_SUCC)
 				{
 					netData::SelectPlayer sendMsg;
-					sendMsg.set_uuid(msg.info().uuid());
+					sendMsg.set_guid(msg.info().guid());
 
 					_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER);
 				}
