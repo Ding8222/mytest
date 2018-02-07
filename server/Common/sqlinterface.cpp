@@ -84,32 +84,68 @@ void CRecordset::LoadResult (MYSQL *con, CConnection *root)
 
 int64 CRecordset::GetInt64(const char* fieldname)
 {
-	return std::stoll(Get(fieldname));
+	const char* _Ret = Get(fieldname);
+	assert(_Ret);
+	if (_Ret)
+	{
+		return std::stoll(_Ret);
+	}
+	return 0;
 }
 
 int CRecordset::GetInt(const char* fieldname)
 {
-	return std::stoi(Get(fieldname));
+	const char* _Ret = Get(fieldname);
+	assert(_Ret);
+	if (_Ret)
+	{
+		return std::stoi(_Ret);
+	}
+	return 0;
 }
 
 float CRecordset::GetFloat(const char* fieldname)
 {
-	return std::stof(Get(fieldname));
+	const char* _Ret = Get(fieldname);
+	assert(_Ret);
+	if (_Ret)
+	{
+		return std::stof(_Ret);
+	}
+	return 0.0f;
 }
 
 double CRecordset::GetDouble(const char* fieldname)
 {
-	return std::stod(Get(fieldname));
+	const char* _Ret = Get(fieldname);
+	assert(_Ret);
+	if (_Ret)
+	{
+		return std::stod(_Ret);
+	}
+	return 0.0f;
 }
 
 const char* CRecordset::GetChar(const char* fieldname)
 {
-	return Get(fieldname);
+	const char* _Ret = Get(fieldname);
+	assert(_Ret);
+	if (_Ret)
+	{
+		return _Ret;
+	}
+	return "";
 }
 
 bool CRecordset::GetBool(const char* fieldname)
 {
-	return std::stoi(Get(fieldname));
+	const char* _Ret = Get(fieldname);
+	assert(_Ret);
+	if (_Ret)
+	{
+		return std::stoi(_Ret);
+	}
+	return false;
 }
 
 //获取字段值

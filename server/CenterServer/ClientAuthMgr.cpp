@@ -78,3 +78,8 @@ void CClientAuthMgr::SendAuthInfoToLogic(Msg *pMsg, int64 clientid)
 
 	CCentServerMgr::Instance().SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, clientid);
 }
+
+void CClientAuthMgr::SendLoadPlayerDataToLogic(Msg *pMsg, int64 clientid)
+{
+	CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_GAME, clientid);
+}

@@ -25,3 +25,9 @@
 
 // 通知game玩家的token
 #define SVR_SUB_CLIENT_TOKEN 8
+
+// 通知game加载数据
+#define SVR_SUB_LOAD_PLAYERDATA 9
+
+// 返回加载数据结果
+#define SVR_SUB_LOAD_PLAYERDATA_RET 10

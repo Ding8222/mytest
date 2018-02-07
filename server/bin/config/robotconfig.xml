@@ -13,9 +13,9 @@ Robot_Max			机器人数量
 	LoginServer_IP = "127.0.0.1"
 	LoginServer_Port = "30014"
 	LoginServer_ID = "5"
-	Robot_Max = "100"
+	Robot_Max = "1000"
 	
-	Over_Time = "1000"
-	Ping_Time = "500"
+	Over_Time = "10000"
+	Ping_Time = "5000"
 	>
 </Robot>

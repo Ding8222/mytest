@@ -10,7 +10,13 @@ message Ping
 // 3-2 通知Client数据加载完毕
 message LoadPlayerDataFinish
 {
-	
+	enum EC
+	{
+		EC_OTHER = 0;
+		EC_SUCC = 1;
+		EC_FAIL = 2;
+	};
+	int32 nCode = 1;	// 返回的信息
 }
 
 // 3-3 通知Server加载地图完毕

@@ -22,6 +22,9 @@
     <Filter Include="Client信息">
       <UniqueIdentifier>{675ef8b2-683a-4c2a-a8cd-a63e8d650cfa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="登陆">
+      <UniqueIdentifier>{d907b953-055b-4adc-868e-b1df147f9d1f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="config.cpp">
@@ -60,8 +63,14 @@
     <ClCompile Include="GameCenterConnect.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ClientSvrMgr.cpp">
+    <ClCompile Include="LoginMsg.cpp">
+      <Filter>登陆</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerMgr.cpp">
       <Filter>Client信息</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,8 +107,14 @@
     <ClInclude Include="GameCenterConnect.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ClientSvrMgr.h">
+    <ClInclude Include="LoginMsg.h">
+      <Filter>登陆</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMgr.h">
       <Filter>Client信息</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

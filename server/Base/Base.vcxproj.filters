@@ -36,9 +36,6 @@
     <ClCompile Include="PB\Login.pb.cc">
       <Filter>PB</Filter>
     </ClCompile>
-    <ClCompile Include="Utilities.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="PB\DBServer.pb.cc">
       <Filter>PB</Filter>
     </ClCompile>
@@ -127,9 +124,6 @@
     </ClInclude>
     <ClInclude Include="MainType.h">
       <Filter>MsgType</Filter>
-    </ClInclude>
-    <ClInclude Include="Utilities.h">
-      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="sqlinterface.h">
       <Filter>Common</Filter>

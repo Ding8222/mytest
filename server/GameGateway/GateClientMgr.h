@@ -22,7 +22,7 @@ public:
 	void OnClientDisconnect(CClient *cl);
 	void ProcessClientMsg(CClient *cl);
 	void ProcessClientAuth(CClient *cl, Msg *pMsg);
-
+	void SetClientAlreadyLogin(int64 clientid, bool bLogin);
 private:
 
 };

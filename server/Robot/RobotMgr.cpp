@@ -217,6 +217,53 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				_con->SetRecvPingTime(g_currenttime);
 				break;
 			}
+			case CLIENT_SUB_LOAD_PLAYERDATA:
+			{
+				log_error("逻辑服加载数据成功!");
+				netData::PlayerMove sendMsg;
+				sendMsg.set_x(1);
+				sendMsg.set_y(1);
+				sendMsg.set_z(0);
+				_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
+				break;
+			}
+			case CLIENT_SUB_MOVE_RET:
+			{
+				netData::PlayerMoveRet msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				//log_error("收到移动返回！");
+				netData::PlayerMove sendMsg;
+				int x = msg.x();
+				int y = msg.y();
+				int nRand = rand() % 10000;
+				if (nRand > 5000)
+					x += 1;
+				else
+					x -= 1;
+
+				if (x > 1000)
+					x = 1000;
+				else if (x < 0)
+					x = 0;
+
+				nRand = rand() % 10000;
+				if (nRand > 5000)
+					y += 1;
+				else
+					y -= 1;
+
+				if (y > 1000)
+					y = 1000;
+				else if (y < 0)
+					y = 0;
+
+				sendMsg.set_x(x);
+				sendMsg.set_y(y);
+				sendMsg.set_z(0);
+				_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
+				break;
+			}
 			default:
 			{
 			}

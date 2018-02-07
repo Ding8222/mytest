@@ -1,6 +1,7 @@
 ﻿#include "baseobj.h"
 #include "assert.h"
 #include "scene.h"
+#include "log.h"
 
 #define AOI_RADIS 200.0f
 #define AOI_RADIS2 (AOI_RADIS * AOI_RADIS)
@@ -9,21 +10,23 @@
 
 CBaseObj::CBaseObj()
 {
+	m_WaitRemoveTime = 0;
 	m_NowMapID = 0;
 	memset(m_NowPos, 0, sizeof(float) * EPP_MAX);
 	m_TempID = 0;
 	m_Scene = nullptr;
-	m_ObjName.clear();
+	memset(m_ObjName, 0, MAX_NAME_LEN);
 	m_AoiList.clear();
 }
 
 CBaseObj::~CBaseObj()
 {
+	m_WaitRemoveTime = 0;
 	m_NowMapID = 0;
 	memset(m_NowPos, 0, sizeof(float) * EPP_MAX);
 	m_TempID = 0;
 	m_Scene = nullptr;
-	m_ObjName.clear();
+	memset(m_ObjName, 0, MAX_NAME_LEN);
 	m_AoiList.clear();
 }
 
@@ -38,7 +41,7 @@ void CBaseObj::SetScene(CScene *_Scene)
 }
 
 // 移动到某个坐标
-bool CBaseObj::MoveTo(float &x, float &y, float &z)
+bool CBaseObj::MoveTo(float x, float y, float z)
 {
 	if (m_Scene->MoveTo(this, x, y, z))
 	{
@@ -71,19 +74,24 @@ void CBaseObj::AddToAoiList(CBaseObj * p)
 #ifdef _DEBUG
 	assert(p);
 	auto iter = m_AoiList.find(p->GetTempID());
-	assert(iter == m_AoiList.end());
+	//assert(iter == m_AoiList.end());
 #endif
 	m_AoiList[p->GetTempID()] = p;
+
+	float _Pos[EPP_MAX] = { 0 };
+	p->GetNowPos(_Pos[EPP_X], _Pos[EPP_Y], _Pos[EPP_Z]);
+	//log_error("[%d]进入[%d]视野%d", p->GetTempID(), GetTempID(), (int)DIST2(_Pos, m_NowPos));
 }
 
 // 从AoiList中移除对象
-void CBaseObj::DelFromAoiList(uint32_t id)
+void CBaseObj::DelFromAoiList(uint32 id)
 {
 #ifdef _DEBUG
 	auto iter = m_AoiList.find(id);
 	assert(iter != m_AoiList.end());
 #endif
 	m_AoiList.erase(id);
+	//log_error("[%d]离开[%d]视野%d", id, GetTempID());
 }
 
 // 添加对象至AoiList
@@ -91,20 +99,24 @@ void CBaseObj::AddToAoiListOut(CBaseObj * p)
 {
 #ifdef _DEBUG
 	assert(p);
-	auto iter = m_AoiList.find(p->GetTempID());
-	assert(iter == m_AoiList.end());
+	auto iter = m_AoiListOut.find(p->GetTempID());
+	assert(iter == m_AoiListOut.end());
 #endif
-	m_AoiList[p->GetTempID()] = p;
+	m_AoiListOut[p->GetTempID()] = p;
+
+	float _Pos[EPP_MAX] = { 0 };
+	p->GetNowPos(_Pos[EPP_X], _Pos[EPP_Y], _Pos[EPP_Z]);
+	//log_error("[%d]离开[%d]视野%d", p->GetTempID(), GetTempID(), (int)DIST2(_Pos, m_NowPos));
 }
 
 // 从AoiList中移除对象
-void CBaseObj::DelFromAoiListOut(uint32_t id)
+void CBaseObj::DelFromAoiListOut(uint32 id)
 {
 #ifdef _DEBUG
-	auto iter = m_AoiList.find(id);
-	assert(iter != m_AoiList.end());
+	auto iter = m_AoiListOut.find(id);
+	assert(iter != m_AoiListOut.end());
 #endif
-	m_AoiList.erase(id);
+	m_AoiListOut.erase(id);
 }
 
 // AoiList清理

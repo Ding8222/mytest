@@ -27,8 +27,10 @@ public:
 
 	// 进入场景
 	bool AddObj(CBaseObj * obj);
+	// 退出场景
+	bool DelObj(CBaseObj * obj);
 	// 获取场景中的对象
-	CBaseObj * GetObj(uint32_t id);
+	CBaseObj * GetObj(uint32 id);
 	// 返回是否可以移动到某个点
 	bool bCanMove(int x, int y, int z);
 	// 移动至某个点
@@ -36,9 +38,9 @@ public:
 	// Aoi Run
 	void Message();
 	// 更新对象在Aoi中的位置
-	void Update(uint32_t id, const char * mode, float pos[3]);
+	void Update(uint32 id, const char * mode, float pos[3]);
 	// 生成一个临时ID
-	inline uint32_t GetTempID() { return ++m_TempID; };
+	inline uint32 GetTempID() { return ++m_TempID; };
 	// 获取当前场景所属的MapID
 	inline int GetMapID() { return m_MapID; }
 private:
@@ -55,7 +57,7 @@ private:
 	int m_BirthPoint_Z;
 
 	// 场景临时ID
-	uint32_t m_TempID;
+	uint32 m_TempID;
 
 	// 阻挡信息
 	bool *m_Barinfo;
@@ -68,5 +70,5 @@ private:
 	// 是否更新过Aoi
 	bool m_bMessage;
 	// 场景中对象map
-	std::unordered_map<uint32_t, CBaseObj *> m_ObjMap;
+	std::unordered_map<uint32, CBaseObj *> m_ObjMap;
 };

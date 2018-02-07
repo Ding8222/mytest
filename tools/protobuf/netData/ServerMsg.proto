@@ -70,17 +70,18 @@ message ClientToken
 // 0-9 通知game加载玩家数据
 message LoadPlayerData
 {
-	
-}
-
-// 0-10 game加载玩家数据返回
-message LoadPlayerDataRet
-{
-	enum EC
-	{
-		EC_OTHER = 0;
-		EC_SUCC = 1;
-		EC_FAIL = 2;
-	};
-	int32 nCode = 1;		// 返回的信息
+	int64 clientid = 1;
+	string account = 2;
+	string name = 3;
+	int64 guid = 4;
+	int32 sex = 5;
+	int32 job = 6;
+	int32 level = 7;
+	int32 createtime = 8;
+	int32 logintime = 9;
+	int32 mapid = 10;
+	float x = 11;
+	float y = 12;
+	float z = 13;
+	bytes data = 14;
 }

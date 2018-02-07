@@ -2,6 +2,7 @@
 #include "GameServer.h"
 #include "GameGatewayMgr.h"
 #include "GameCenterConnect.h"
+#include "Playermgr.h"
 #include "scenemgr.h"
 #include "mapconfig.h"
 #include "config.h"
@@ -75,6 +76,12 @@ bool CGameServer::Init()
 			return false;
 		}
 
+		if (!CPlayerMgr::Instance().init())
+		{
+			log_error("初始化PlayerMgr失败!");
+			return false;
+		}
+
 		m_Run = true;
 		return true;
 	} while (true);
@@ -83,6 +90,7 @@ bool CGameServer::Init()
 	CGameCenterConnect::Instance().Destroy();
 	CMapConfig::Instance().Destroy();
 	CScenemgr::Instance().Destroy();
+	CPlayerMgr::Instance().Destroy();
 	Destroy();
 
 	return false;
@@ -112,7 +120,7 @@ void CGameServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			log_error("运行超时:%d\n%s", delay, 
+			log_error("运行超时:%d\n%s%s", delay, 
 				CGameCenterConnect::Instance().GetMsgNumInfo(),
 				CGameGatewayMgr::Instance().GetMsgNumInfo());
 		}
@@ -123,6 +131,7 @@ void CGameServer::Run()
 	CGameCenterConnect::Instance().Destroy();
 	CMapConfig::Instance().Destroy();
 	CScenemgr::Instance().Destroy();
+	CPlayerMgr::Instance().Destroy();
 
 	Destroy();
 }
@@ -135,9 +144,11 @@ void CGameServer::Exit()
 void CGameServer::RunOnce()
 {
 		lxnet::net_run();
-		CScenemgr::Instance().Run();
 		CGameGatewayMgr::Instance().Run();
 		CGameCenterConnect::Instance().Run();
+
+		CPlayerMgr::Instance().Run();
+		CScenemgr::Instance().Run();
 
 		CGameGatewayMgr::Instance().EndRun();
 		CGameCenterConnect::Instance().EndRun();

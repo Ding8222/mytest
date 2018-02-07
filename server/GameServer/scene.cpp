@@ -66,13 +66,27 @@ bool CScene::AddObj(CBaseObj * obj)
 	if (!obj)
 		return false;
 	
-	obj->SetTempID(GetTempID());
 	m_ObjMap[obj->GetTempID()] = obj;
 
 	char *mode = "wm";
 	float pos[3];
 	obj->GetNowPos(pos[0], pos[1], pos[2]);
 	Update(obj->GetTempID(), mode, pos);
+
+	return true;
+}
+
+bool CScene::DelObj(CBaseObj * obj)
+{
+	if (!obj)
+		return false;
+	
+	char *mode = "d";
+	float pos[3];
+	obj->GetNowPos(pos[0], pos[1], pos[2]);
+	Update(obj->GetTempID(), mode, pos);
+
+	m_ObjMap.erase(obj->GetTempID());
 
 	return true;
 }
@@ -110,7 +124,7 @@ bool CScene::MoveTo(CBaseObj * obj, float x, float y, float z)
 	return false;
 }
 
-static void callbackmessage(void *ud, uint32_t watcher, uint32_t marker) 
+static void callbackmessage(void *ud, uint32 watcher, uint32 marker) 
 {
 	CScene* sc = (CScene*)ud;
 	CBaseObj * p1 = sc->GetObj(watcher);
@@ -126,7 +140,7 @@ void CScene::Message()
 	aoi_message(m_Space, callbackmessage, this);
 }
 
-void CScene::Update(uint32_t id, const char * mode,float pos[3])
+void CScene::Update(uint32 id, const char * mode,float pos[3])
 {
 	aoi_update(m_Space, id, mode, pos);
 	m_bMessage = true;
@@ -142,11 +156,11 @@ void CScene::Run()
 
 	for (auto &i : m_ObjMap)
 	{
-		i.second->Run();
+		//i.second->Run();
 	}
 }
 
-CBaseObj * CScene::GetObj(uint32_t id)
+CBaseObj * CScene::GetObj(uint32 id)
 {
 	auto iter = m_ObjMap.find(id);
 	if (iter != m_ObjMap.end())

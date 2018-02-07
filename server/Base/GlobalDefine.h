@@ -6,6 +6,7 @@
 #include "platform_config.h"
 #include <string>
 #define MAX_IP_LEN 128
+#define MAX_NAME_LEN 64
 
 namespace ServerEnum {
 	enum ServerType
@@ -21,7 +22,7 @@ namespace ServerEnum {
 	};
 }
 
-#define _CHECK_PARSE_(x,y) if(!((MessagePack *)x)->UnPack(y)) return;
+#define _CHECK_PARSE_(x,y) if(!((MessagePack *)x)->UnPack(y)) return
 
 #pragma pack(push, 1)
 

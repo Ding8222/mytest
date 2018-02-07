@@ -402,6 +402,11 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 				}
 				break;
 			}
+			case SVR_SUB_LOAD_PLAYERDATA:
+			{
+				CClientAuthMgr::Instance().SendLoadPlayerDataToLogic(pMsg, tl->id);
+				break;
+			}
 			default:
 				break;
 			}

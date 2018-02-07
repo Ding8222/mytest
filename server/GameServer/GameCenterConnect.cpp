@@ -4,7 +4,11 @@
 #include "serverinfo.h"
 #include "connector.h"
 #include "config.h"
-#include "ClientSvrMgr.h"
+#include "PlayerMgr.h"
+#include "Utilities.h"
+
+#include "ClientMsg.pb.h"
+#include "ClientType.h"
 
 extern int64 g_currenttime;
 
@@ -46,7 +50,7 @@ void CGameCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
 	{
 		svrData::ServerLoadInfo sendMsg;
 		sendMsg.set_nmaxclient(0);
-		sendMsg.set_nnowclient(CClientSvrMgr::Instance().GetClientSvrSize());
+		sendMsg.set_nnowclient(CPlayerMgr::Instance().GetPlayerSize());
 		sendMsg.set_nport(CConfig::Instance().GetListenPort());
 		sendMsg.set_sip(CConfig::Instance().GetServerIP());
 		SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_LOADINFO);
@@ -80,6 +84,22 @@ void CGameCenterConnect::ProcessMsg(connector *_con)
 			{
 				_con->SetRecvPingTime(g_currenttime);
 				break;
+			}
+			case SVR_SUB_LOAD_PLAYERDATA:
+			{
+				CPlayer *player = CPlayerMgr::Instance().FindPlayerByClientID(tl->id);
+				netData::LoadPlayerDataFinish sendMsg;
+				if (FuncUti::isValidCret(player))
+				{
+					if(player->LoadData(pMsg))
+						sendMsg.set_ncode(netData::LoadPlayerDataFinish::EC_SUCC);
+					else
+						sendMsg.set_ncode(netData::LoadPlayerDataFinish::EC_FAIL);
+				}
+				else
+					sendMsg.set_ncode(netData::LoadPlayerDataFinish::EC_FAIL);
+
+				CGameGatewayMgr::Instance().SendMsgToClient(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_LOAD_PLAYERDATA, tl->id);
 			}
 			default:
 			{

@@ -5,6 +5,8 @@
 #include "connector.h"
 #include "config.h"
 
+#include "ClientType.h"
+
 extern int64 g_currenttime;
 
 CGameConnect::CGameConnect()
@@ -73,6 +75,23 @@ void CGameConnect::ProcessMsg(connector *_con)
 			}
 			default:
 			{
+			}
+			}
+			break;
+		}
+		case CLIENT_TYPE_MAIN:
+		{
+			switch (pMsg->GetSubType())
+			{
+			case CLIENT_SUB_LOAD_PLAYERDATA:
+			{
+				CGateClientMgr::Instance().SetClientAlreadyLogin(tl->id, true);
+				CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
+				break;
+			}
+			default:
+			{
+				CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
 			}
 			}
 			break;

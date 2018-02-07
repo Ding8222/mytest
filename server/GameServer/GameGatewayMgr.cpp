@@ -3,11 +3,12 @@
 #include "GameGatewayMgr.h"
 #include "serverinfo.h"
 #include "Config.h"
-#include "ClientSvrMgr.h"
+#include "PlayerMgr.h"
 
 #include "ClientType.h"
 #include "LoginType.h"
 #include "Login.pb.h"
+#include "ClientMsg.pb.h"
 
 extern int64 g_currenttime;
 
@@ -74,7 +75,7 @@ void CGameGatewayMgr::SendMsgToServer(Msg &pMsg, int nType, int64 nClientID, int
 			SendMsg(info, pMsg, &tail, sizeof(tail));
 		}
 		else
-			log_error("请求发送消息到未知的网关,，网关ID:[%d]", nServerID);
+			log_error("请求发送消息到未知的网关,网关ID:[%d]", nServerID);
 	}
 	else
 	{
@@ -99,7 +100,7 @@ void CGameGatewayMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maint
 			SendMsg(info, pMsg, maintype, subtype, &tail, sizeof(tail));
 		}
 		else
-			log_error("请求发送消息到未知的网关,，网关ID:[%d]", nServerID);
+			log_error("请求发送消息到未知的网关,网关ID:[%d]", nServerID);
 	}
 	else
 	{
@@ -114,14 +115,14 @@ void CGameGatewayMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maint
 
 void CGameGatewayMgr::SendMsgToClient(Msg &pMsg, int64 nClientID)
 {
-	int serverid = CClientSvrMgr::Instance().FindClientSvr(nClientID);
+	int serverid = CPlayerMgr::Instance().FindPlayerGateID(nClientID);
 	if(serverid > 0)
 		SendMsgToServer(pMsg, ServerEnum::EST_GATE,  nClientID, serverid);
 }
 
 void CGameGatewayMgr::SendMsgToClient(google::protobuf::Message &pMsg, int maintype, int subtype, int64 nClientID)
 {
-	int serverid = CClientSvrMgr::Instance().FindClientSvr(nClientID);
+	int serverid = CPlayerMgr::Instance().FindPlayerGateID(nClientID);
 	if (serverid > 0)
 		SendMsgToServer(pMsg, maintype, subtype, ServerEnum::EST_GATE, nClientID, serverid);
 }
@@ -137,7 +138,7 @@ void CGameGatewayMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	{
 	case ServerEnum::EST_GATE:
 	{
-		CClientSvrMgr::Instance().DelAllClientSvr();
+		CPlayerMgr::Instance().DelAllPlayer();
 		m_GateList.erase(info->GetServerID());
 		if (overtime)
 			log_error("网关服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
@@ -181,7 +182,7 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 			}
 			case SVR_SUB_NEW_CLIENT:
 			{
-				CClientSvrMgr::Instance().AddClientSvr(tl->id, info->GetServerID());
+				CPlayerMgr::Instance().AddPlayer(tl->id, info->GetServerID());
 
 				//通知CLient登录成功
 				netData::LoginRet sendMsg;
@@ -196,7 +197,7 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				svrData::DelClient msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				CClientSvrMgr::Instance().DelClientSvr(msg.nclientid());
+				CPlayerMgr::Instance().DelPlayer(msg.nclientid());
 				CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), *pMsg, tl->id);
 				break;
 			}
@@ -229,8 +230,28 @@ void CGameGatewayMgr::ProcessClientMsg(int gateid, int64 clientid, Msg *pMsg)
 	{
 		switch (pMsg->GetSubType())
 		{
+		default:
+		{
+		}
+		}
+		break;
+	}
+	case CLIENT_TYPE_MAIN:
+	{
+		switch (pMsg->GetSubType())
+		{
 		case CLIENT_SUB_MOVE:
 		{
+			netData::PlayerMove msg;
+			_CHECK_PARSE_(pMsg, msg);
+			CPlayer *player = CPlayerMgr::Instance().FindPlayerByClientID(clientid);
+			if (player)
+			{
+				player->MoveTo(msg.x(), msg.y(), msg.z());
+
+				netData::PlayerMoveRet sendMsg;
+				SendMsgToClient(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE_RET, clientid);
+			}
 			break;
 		}
 		default:

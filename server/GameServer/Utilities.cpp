@@ -21,4 +21,11 @@ namespace FuncUti
 		wszString[wcsLen] = '\0';
 		return wszString;
 	}
+
+	bool isValidCret(CBaseObj *player)
+	{
+		if (player && !player->IsWaitRemove())
+			return true;
+		return false;
+	}
 }

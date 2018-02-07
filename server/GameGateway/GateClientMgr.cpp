@@ -64,40 +64,46 @@ void CGateClientMgr::ProcessClientMsg(CClient *cl)
 		pMsg = cl->GetMsg();
 		if (!pMsg)
 			break;
-		switch (pMsg->GetMainType())
+
+		if (cl->IsAlreadyLogin())
 		{
-		case CLIENT_TYPE_MAIN:
-		{
-			switch (pMsg->GetSubType())
+			switch (pMsg->GetMainType())
 			{
-			case CLIENT_SUB_PING:
+			case CLIENT_TYPE_MAIN:
 			{
-				cl->SendMsg(pMsg);
-				cl->SetPingTime(g_currenttime);
+				switch (pMsg->GetSubType())
+				{
+				case CLIENT_SUB_PING:
+				{
+					cl->SendMsg(pMsg);
+					cl->SetPingTime(g_currenttime);
+					break;
+				}
+				default:
+				{
+					// 登录成功的,转发至GameServer
+					if (CGameConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetGameServerID()))
+					{
+						CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), *pMsg, cl->GetClientID());
+					}
+				}
+				}
 				break;
 			}
 			default:
 			{
-			}
-			}
-			break;
-		}
-		default:
-		{
-			if (cl->IsAlreadyLogin())
-			{
 				// 登录成功的,转发至GameServer
 				if (CGameConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetGameServerID()))
 				{
-					CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(),*pMsg,cl->GetClientID());
+					CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), *pMsg, cl->GetClientID());
 				}
 			}
-			else
-			{
-				// 未登录（选角）
-				ProcessClientAuth(cl, pMsg);
 			}
 		}
+		else
+		{
+			// 未登录（选角）
+			ProcessClientAuth(cl, pMsg);
 		}
 	}
 }
@@ -106,6 +112,22 @@ void CGateClientMgr::ProcessClientAuth(CClient *cl, Msg *pMsg)
 {
 	switch (pMsg->GetMainType())
 	{
+	case CLIENT_TYPE_MAIN:
+	{
+		switch (pMsg->GetSubType())
+		{
+		case CLIENT_SUB_PING:
+		{
+			cl->SendMsg(pMsg);
+			cl->SetPingTime(g_currenttime);
+			break;
+		}
+		default:
+		{
+		}
+		}
+		break;
+	}
 	case LOGIN_TYPE_MAIN:
 	{
 		switch (pMsg->GetSubType())
@@ -136,5 +158,18 @@ void CGateClientMgr::ProcessClientAuth(CClient *cl, Msg *pMsg)
 		}
 		break;
 	}
+	}
+}
+
+void CGateClientMgr::SetClientAlreadyLogin(int64 clientid, bool bLogin)
+{
+	CClient *cl = FindClient(clientid);
+	assert(cl);
+	if (cl)
+	{
+		if (bLogin)
+			cl->SetAlreadyLogin();
+		else
+			cl->SetNotLogin();
 	}
 }

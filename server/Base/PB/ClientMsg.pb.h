@@ -28,6 +28,7 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
+#include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
@@ -36,7 +37,7 @@ namespace protobuf_ClientMsg_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[1];
+  static const ::google::protobuf::internal::ParseTable schema[5];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -44,22 +45,72 @@ struct TableStruct {
 void AddDescriptors();
 void InitDefaultsPingImpl();
 void InitDefaultsPing();
+void InitDefaultsLoadPlayerDataFinishImpl();
+void InitDefaultsLoadPlayerDataFinish();
+void InitDefaultsLoadMapFinishImpl();
+void InitDefaultsLoadMapFinish();
+void InitDefaultsPlayerMoveImpl();
+void InitDefaultsPlayerMove();
+void InitDefaultsPlayerMoveRetImpl();
+void InitDefaultsPlayerMoveRet();
 inline void InitDefaults() {
   InitDefaultsPing();
+  InitDefaultsLoadPlayerDataFinish();
+  InitDefaultsLoadMapFinish();
+  InitDefaultsPlayerMove();
+  InitDefaultsPlayerMoveRet();
 }
 }  // namespace protobuf_ClientMsg_2eproto
 namespace netData {
+class LoadMapFinish;
+class LoadMapFinishDefaultTypeInternal;
+extern LoadMapFinishDefaultTypeInternal _LoadMapFinish_default_instance_;
+class LoadPlayerDataFinish;
+class LoadPlayerDataFinishDefaultTypeInternal;
+extern LoadPlayerDataFinishDefaultTypeInternal _LoadPlayerDataFinish_default_instance_;
 class Ping;
 class PingDefaultTypeInternal;
 extern PingDefaultTypeInternal _Ping_default_instance_;
+class PlayerMove;
+class PlayerMoveDefaultTypeInternal;
+extern PlayerMoveDefaultTypeInternal _PlayerMove_default_instance_;
+class PlayerMoveRet;
+class PlayerMoveRetDefaultTypeInternal;
+extern PlayerMoveRetDefaultTypeInternal _PlayerMoveRet_default_instance_;
 }  // namespace netData
 namespace google {
 namespace protobuf {
+template<> ::netData::LoadMapFinish* Arena::Create< ::netData::LoadMapFinish>(Arena*);
+template<> ::netData::LoadPlayerDataFinish* Arena::Create< ::netData::LoadPlayerDataFinish>(Arena*);
 template<> ::netData::Ping* Arena::Create< ::netData::Ping>(Arena*);
+template<> ::netData::PlayerMove* Arena::Create< ::netData::PlayerMove>(Arena*);
+template<> ::netData::PlayerMoveRet* Arena::Create< ::netData::PlayerMoveRet>(Arena*);
 }  // namespace protobuf
 }  // namespace google
 namespace netData {
 
+enum LoadPlayerDataFinish_EC {
+  LoadPlayerDataFinish_EC_EC_OTHER = 0,
+  LoadPlayerDataFinish_EC_EC_SUCC = 1,
+  LoadPlayerDataFinish_EC_EC_FAIL = 2,
+  LoadPlayerDataFinish_EC_LoadPlayerDataFinish_EC_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  LoadPlayerDataFinish_EC_LoadPlayerDataFinish_EC_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool LoadPlayerDataFinish_EC_IsValid(int value);
+const LoadPlayerDataFinish_EC LoadPlayerDataFinish_EC_EC_MIN = LoadPlayerDataFinish_EC_EC_OTHER;
+const LoadPlayerDataFinish_EC LoadPlayerDataFinish_EC_EC_MAX = LoadPlayerDataFinish_EC_EC_FAIL;
+const int LoadPlayerDataFinish_EC_EC_ARRAYSIZE = LoadPlayerDataFinish_EC_EC_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* LoadPlayerDataFinish_EC_descriptor();
+inline const ::std::string& LoadPlayerDataFinish_EC_Name(LoadPlayerDataFinish_EC value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    LoadPlayerDataFinish_EC_descriptor(), value);
+}
+inline bool LoadPlayerDataFinish_EC_Parse(
+    const ::std::string& name, LoadPlayerDataFinish_EC* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<LoadPlayerDataFinish_EC>(
+    LoadPlayerDataFinish_EC_descriptor(), name, value);
+}
 // ===================================================================
 
 class Ping : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:netData.Ping) */ {
@@ -156,6 +207,474 @@ class Ping : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
   friend struct ::protobuf_ClientMsg_2eproto::TableStruct;
   friend void ::protobuf_ClientMsg_2eproto::InitDefaultsPingImpl();
 };
+// -------------------------------------------------------------------
+
+class LoadPlayerDataFinish : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:netData.LoadPlayerDataFinish) */ {
+ public:
+  LoadPlayerDataFinish();
+  virtual ~LoadPlayerDataFinish();
+
+  LoadPlayerDataFinish(const LoadPlayerDataFinish& from);
+
+  inline LoadPlayerDataFinish& operator=(const LoadPlayerDataFinish& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  LoadPlayerDataFinish(LoadPlayerDataFinish&& from) noexcept
+    : LoadPlayerDataFinish() {
+    *this = ::std::move(from);
+  }
+
+  inline LoadPlayerDataFinish& operator=(LoadPlayerDataFinish&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const LoadPlayerDataFinish& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const LoadPlayerDataFinish* internal_default_instance() {
+    return reinterpret_cast<const LoadPlayerDataFinish*>(
+               &_LoadPlayerDataFinish_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    1;
+
+  void Swap(LoadPlayerDataFinish* other);
+  friend void swap(LoadPlayerDataFinish& a, LoadPlayerDataFinish& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline LoadPlayerDataFinish* New() const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<LoadPlayerDataFinish>(NULL);
+  }
+
+  LoadPlayerDataFinish* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<LoadPlayerDataFinish>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const LoadPlayerDataFinish& from);
+  void MergeFrom(const LoadPlayerDataFinish& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(LoadPlayerDataFinish* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef LoadPlayerDataFinish_EC EC;
+  static const EC EC_OTHER =
+    LoadPlayerDataFinish_EC_EC_OTHER;
+  static const EC EC_SUCC =
+    LoadPlayerDataFinish_EC_EC_SUCC;
+  static const EC EC_FAIL =
+    LoadPlayerDataFinish_EC_EC_FAIL;
+  static inline bool EC_IsValid(int value) {
+    return LoadPlayerDataFinish_EC_IsValid(value);
+  }
+  static const EC EC_MIN =
+    LoadPlayerDataFinish_EC_EC_MIN;
+  static const EC EC_MAX =
+    LoadPlayerDataFinish_EC_EC_MAX;
+  static const int EC_ARRAYSIZE =
+    LoadPlayerDataFinish_EC_EC_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  EC_descriptor() {
+    return LoadPlayerDataFinish_EC_descriptor();
+  }
+  static inline const ::std::string& EC_Name(EC value) {
+    return LoadPlayerDataFinish_EC_Name(value);
+  }
+  static inline bool EC_Parse(const ::std::string& name,
+      EC* value) {
+    return LoadPlayerDataFinish_EC_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // int32 nCode = 1;
+  void clear_ncode();
+  static const int kNCodeFieldNumber = 1;
+  ::google::protobuf::int32 ncode() const;
+  void set_ncode(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:netData.LoadPlayerDataFinish)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int32 ncode_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_ClientMsg_2eproto::TableStruct;
+  friend void ::protobuf_ClientMsg_2eproto::InitDefaultsLoadPlayerDataFinishImpl();
+};
+// -------------------------------------------------------------------
+
+class LoadMapFinish : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:netData.LoadMapFinish) */ {
+ public:
+  LoadMapFinish();
+  virtual ~LoadMapFinish();
+
+  LoadMapFinish(const LoadMapFinish& from);
+
+  inline LoadMapFinish& operator=(const LoadMapFinish& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  LoadMapFinish(LoadMapFinish&& from) noexcept
+    : LoadMapFinish() {
+    *this = ::std::move(from);
+  }
+
+  inline LoadMapFinish& operator=(LoadMapFinish&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const LoadMapFinish& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const LoadMapFinish* internal_default_instance() {
+    return reinterpret_cast<const LoadMapFinish*>(
+               &_LoadMapFinish_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    2;
+
+  void Swap(LoadMapFinish* other);
+  friend void swap(LoadMapFinish& a, LoadMapFinish& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline LoadMapFinish* New() const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<LoadMapFinish>(NULL);
+  }
+
+  LoadMapFinish* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<LoadMapFinish>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const LoadMapFinish& from);
+  void MergeFrom(const LoadMapFinish& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(LoadMapFinish* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:netData.LoadMapFinish)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_ClientMsg_2eproto::TableStruct;
+  friend void ::protobuf_ClientMsg_2eproto::InitDefaultsLoadMapFinishImpl();
+};
+// -------------------------------------------------------------------
+
+class PlayerMove : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:netData.PlayerMove) */ {
+ public:
+  PlayerMove();
+  virtual ~PlayerMove();
+
+  PlayerMove(const PlayerMove& from);
+
+  inline PlayerMove& operator=(const PlayerMove& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  PlayerMove(PlayerMove&& from) noexcept
+    : PlayerMove() {
+    *this = ::std::move(from);
+  }
+
+  inline PlayerMove& operator=(PlayerMove&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PlayerMove& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const PlayerMove* internal_default_instance() {
+    return reinterpret_cast<const PlayerMove*>(
+               &_PlayerMove_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    3;
+
+  void Swap(PlayerMove* other);
+  friend void swap(PlayerMove& a, PlayerMove& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline PlayerMove* New() const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<PlayerMove>(NULL);
+  }
+
+  PlayerMove* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<PlayerMove>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const PlayerMove& from);
+  void MergeFrom(const PlayerMove& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(PlayerMove* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // float x = 1;
+  void clear_x();
+  static const int kXFieldNumber = 1;
+  float x() const;
+  void set_x(float value);
+
+  // float y = 2;
+  void clear_y();
+  static const int kYFieldNumber = 2;
+  float y() const;
+  void set_y(float value);
+
+  // float z = 3;
+  void clear_z();
+  static const int kZFieldNumber = 3;
+  float z() const;
+  void set_z(float value);
+
+  // @@protoc_insertion_point(class_scope:netData.PlayerMove)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  float x_;
+  float y_;
+  float z_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_ClientMsg_2eproto::TableStruct;
+  friend void ::protobuf_ClientMsg_2eproto::InitDefaultsPlayerMoveImpl();
+};
+// -------------------------------------------------------------------
+
+class PlayerMoveRet : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:netData.PlayerMoveRet) */ {
+ public:
+  PlayerMoveRet();
+  virtual ~PlayerMoveRet();
+
+  PlayerMoveRet(const PlayerMoveRet& from);
+
+  inline PlayerMoveRet& operator=(const PlayerMoveRet& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  PlayerMoveRet(PlayerMoveRet&& from) noexcept
+    : PlayerMoveRet() {
+    *this = ::std::move(from);
+  }
+
+  inline PlayerMoveRet& operator=(PlayerMoveRet&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PlayerMoveRet& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const PlayerMoveRet* internal_default_instance() {
+    return reinterpret_cast<const PlayerMoveRet*>(
+               &_PlayerMoveRet_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    4;
+
+  void Swap(PlayerMoveRet* other);
+  friend void swap(PlayerMoveRet& a, PlayerMoveRet& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline PlayerMoveRet* New() const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<PlayerMoveRet>(NULL);
+  }
+
+  PlayerMoveRet* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<PlayerMoveRet>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const PlayerMoveRet& from);
+  void MergeFrom(const PlayerMoveRet& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(PlayerMoveRet* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // float x = 1;
+  void clear_x();
+  static const int kXFieldNumber = 1;
+  float x() const;
+  void set_x(float value);
+
+  // float y = 2;
+  void clear_y();
+  static const int kYFieldNumber = 2;
+  float y() const;
+  void set_y(float value);
+
+  // float z = 3;
+  void clear_z();
+  static const int kZFieldNumber = 3;
+  float z() const;
+  void set_z(float value);
+
+  // int32 nCode = 4;
+  void clear_ncode();
+  static const int kNCodeFieldNumber = 4;
+  ::google::protobuf::int32 ncode() const;
+  void set_ncode(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:netData.PlayerMoveRet)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  float x_;
+  float y_;
+  float z_;
+  ::google::protobuf::int32 ncode_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_ClientMsg_2eproto::TableStruct;
+  friend void ::protobuf_ClientMsg_2eproto::InitDefaultsPlayerMoveRetImpl();
+};
 // ===================================================================
 
 
@@ -167,13 +686,161 @@ class Ping : public ::google::protobuf::Message /* @@protoc_insertion_point(clas
 #endif  // __GNUC__
 // Ping
 
+// -------------------------------------------------------------------
+
+// LoadPlayerDataFinish
+
+// int32 nCode = 1;
+inline void LoadPlayerDataFinish::clear_ncode() {
+  ncode_ = 0;
+}
+inline ::google::protobuf::int32 LoadPlayerDataFinish::ncode() const {
+  // @@protoc_insertion_point(field_get:netData.LoadPlayerDataFinish.nCode)
+  return ncode_;
+}
+inline void LoadPlayerDataFinish::set_ncode(::google::protobuf::int32 value) {
+  
+  ncode_ = value;
+  // @@protoc_insertion_point(field_set:netData.LoadPlayerDataFinish.nCode)
+}
+
+// -------------------------------------------------------------------
+
+// LoadMapFinish
+
+// -------------------------------------------------------------------
+
+// PlayerMove
+
+// float x = 1;
+inline void PlayerMove::clear_x() {
+  x_ = 0;
+}
+inline float PlayerMove::x() const {
+  // @@protoc_insertion_point(field_get:netData.PlayerMove.x)
+  return x_;
+}
+inline void PlayerMove::set_x(float value) {
+  
+  x_ = value;
+  // @@protoc_insertion_point(field_set:netData.PlayerMove.x)
+}
+
+// float y = 2;
+inline void PlayerMove::clear_y() {
+  y_ = 0;
+}
+inline float PlayerMove::y() const {
+  // @@protoc_insertion_point(field_get:netData.PlayerMove.y)
+  return y_;
+}
+inline void PlayerMove::set_y(float value) {
+  
+  y_ = value;
+  // @@protoc_insertion_point(field_set:netData.PlayerMove.y)
+}
+
+// float z = 3;
+inline void PlayerMove::clear_z() {
+  z_ = 0;
+}
+inline float PlayerMove::z() const {
+  // @@protoc_insertion_point(field_get:netData.PlayerMove.z)
+  return z_;
+}
+inline void PlayerMove::set_z(float value) {
+  
+  z_ = value;
+  // @@protoc_insertion_point(field_set:netData.PlayerMove.z)
+}
+
+// -------------------------------------------------------------------
+
+// PlayerMoveRet
+
+// float x = 1;
+inline void PlayerMoveRet::clear_x() {
+  x_ = 0;
+}
+inline float PlayerMoveRet::x() const {
+  // @@protoc_insertion_point(field_get:netData.PlayerMoveRet.x)
+  return x_;
+}
+inline void PlayerMoveRet::set_x(float value) {
+  
+  x_ = value;
+  // @@protoc_insertion_point(field_set:netData.PlayerMoveRet.x)
+}
+
+// float y = 2;
+inline void PlayerMoveRet::clear_y() {
+  y_ = 0;
+}
+inline float PlayerMoveRet::y() const {
+  // @@protoc_insertion_point(field_get:netData.PlayerMoveRet.y)
+  return y_;
+}
+inline void PlayerMoveRet::set_y(float value) {
+  
+  y_ = value;
+  // @@protoc_insertion_point(field_set:netData.PlayerMoveRet.y)
+}
+
+// float z = 3;
+inline void PlayerMoveRet::clear_z() {
+  z_ = 0;
+}
+inline float PlayerMoveRet::z() const {
+  // @@protoc_insertion_point(field_get:netData.PlayerMoveRet.z)
+  return z_;
+}
+inline void PlayerMoveRet::set_z(float value) {
+  
+  z_ = value;
+  // @@protoc_insertion_point(field_set:netData.PlayerMoveRet.z)
+}
+
+// int32 nCode = 4;
+inline void PlayerMoveRet::clear_ncode() {
+  ncode_ = 0;
+}
+inline ::google::protobuf::int32 PlayerMoveRet::ncode() const {
+  // @@protoc_insertion_point(field_get:netData.PlayerMoveRet.nCode)
+  return ncode_;
+}
+inline void PlayerMoveRet::set_ncode(::google::protobuf::int32 value) {
+  
+  ncode_ = value;
+  // @@protoc_insertion_point(field_set:netData.PlayerMoveRet.nCode)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace netData
+
+namespace google {
+namespace protobuf {
+
+template <> struct is_proto_enum< ::netData::LoadPlayerDataFinish_EC> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::netData::LoadPlayerDataFinish_EC>() {
+  return ::netData::LoadPlayerDataFinish_EC_descriptor();
+}
+
+}  // namespace protobuf
+}  // namespace google
 
 // @@protoc_insertion_point(global_scope)
 

@@ -38,6 +38,8 @@ public:
 	void DelClientAuthInfo(int64 clientid);
 	// 发送认证信息到逻辑服
 	void SendAuthInfoToLogic(Msg *pMsg, int64 clientid);
+	// 发送加载玩家数据到逻辑服
+	void SendLoadPlayerDataToLogic(Msg *pMsg, int64 clientid);
 private:
 	// id,info
 	std::unordered_map<int64, ClientAuthInfo > m_ClientInfo;
