@@ -127,14 +127,6 @@ void CClientMgr::GetCurrentInfo(char *buf, size_t buflen)
 	snprintf(buf, buflen - 1, "最大 Client 限制:%d\n当前 Client 数量:%d\n总ID数量 total:%d\n当前使用ID数量:%d, 待移除 Client 数量:%d\n", m_MaxClientNum, (int)m_ClientList.size(), idmgr_total(m_IDPool), idmgr_usednum(m_IDPool), (int)m_WaitRemove.size());
 }
 
-void CClientMgr::SendMsgToServerByID(Msg *pMsg, int clientid)
-{
-	CClient *cl = FindClient(clientid);
-	if (!cl)
-		return;
-	cl->SendMsg(pMsg);
-}
-
 CClient *CClientMgr::FindClient(int clientid)
 {
 	if (clientid <= 0 || clientid >= (int)m_ClientSet.size())
@@ -321,24 +313,46 @@ void CClientMgr::SendMsg(CClient *cl, Msg *pMsg)
 
 void CClientMgr::SendMsg(int64 clientid, google::protobuf::Message &pMsg, int maintype, int subtype)
 {
-	std::list<CClient*>::iterator _Iter
-		= std::find_if(m_ClientList.begin(), m_ClientList.end(), [clientid](CClient* cl)->bool { return cl->GetClientID() == clientid; });
-	if (_Iter != m_ClientList.end())
+	if (clientid > 0)
+	{
+		std::list<CClient*>::iterator _Iter
+			= std::find_if(m_ClientList.begin(), m_ClientList.end(), [clientid](CClient* cl)->bool { return cl->GetClientID() == clientid; });
+		if (_Iter != m_ClientList.end())
+		{
+			MessagePack pk;
+			pk.Pack(&pMsg, maintype, subtype);
+			(*_Iter)->SendMsg(&pk);
+		}
+	}
+	else
 	{
 		MessagePack pk;
 		pk.Pack(&pMsg, maintype, subtype);
-		(*_Iter)->SendMsg(&pk);
+
+		std::list<CClient*>::iterator _Iter = m_ClientList.begin();
+		for (; _Iter != m_ClientList.end(); ++_Iter)
+			(*_Iter)->SendMsg(&pk);
 	}
+
 }
 
 
 void CClientMgr::SendMsg(int64 clientid, Msg *pMsg)
 {
-	std::list<CClient*>::iterator _Iter
-		= std::find_if(m_ClientList.begin(), m_ClientList.end(), [clientid](CClient* cl)->bool { return cl->GetClientID() == clientid; });
-	if (_Iter != m_ClientList.end())
+	if (clientid > 0)
 	{
-		(*_Iter)->SendMsg(pMsg);
+		std::list<CClient*>::iterator _Iter
+			= std::find_if(m_ClientList.begin(), m_ClientList.end(), [clientid](CClient* cl)->bool { return cl->GetClientID() == clientid; });
+		if (_Iter != m_ClientList.end())
+		{
+			(*_Iter)->SendMsg(pMsg);
+		}
+	}
+	else
+	{
+		std::list<CClient*>::iterator _Iter = m_ClientList.begin();
+		for (; _Iter != m_ClientList.end(); ++_Iter)
+			(*_Iter)->SendMsg(pMsg);
 	}
 }
 

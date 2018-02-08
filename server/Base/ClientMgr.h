@@ -23,7 +23,6 @@ public:
 	void Destroy();
 
 	void GetCurrentInfo(char *buf, size_t buflen);
-	void SendMsgToServerByID(Msg *pMsg, int clientid);
 	CClient *FindClient(int clientid);
 
 	//设置某个客户端认证成功

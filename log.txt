@@ -26,6 +26,8 @@ gateway那边AddNewClient的时候，需要判断好秘钥
 
 time、random
 
-消息发送要优化一下方式...
+服务器内的消息发送要优化（清理）一下方式...
 
 加密处理
+
+logsvr，namechecksvr

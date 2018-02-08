@@ -2,6 +2,7 @@
 #include "scene.h"
 #include "BaseObj.h"
 #include "mapinfo.h"
+#include "idmgr.c"
 
 CScene::CScene()
 {
@@ -10,24 +11,26 @@ CScene::CScene()
 	m_Height = 0;
 	m_BirthPoint_X = 0;
 	m_BirthPoint_Y = 0;
-	m_TempID = 0;
+	m_BirthPoint_Z = 0;
 	m_Barinfo = nullptr;
 	m_MapInfo = nullptr;
 	m_Cookie = nullptr;
 	m_Space = nullptr;
 	m_bMessage = false;
+	m_IDPool = nullptr;
 	m_ObjMap.clear();
+	m_ObjSet.clear();
 }
 
 CScene::~CScene()
 {
-	if (m_MapInfo)
-	{
-		delete m_MapInfo;
-		m_MapInfo = nullptr;
-	}
-	m_MapInfo = nullptr;
+	Destroy();
+}
 
+void CScene::Destroy()
+{
+	m_Barinfo = nullptr;
+	m_MapInfo = nullptr;
 	if (m_Space)
 	{
 		aoi_release(m_Space);
@@ -36,19 +39,43 @@ CScene::~CScene()
 	if (m_Cookie)
 	{
 		free(m_Cookie);
+		m_Cookie = nullptr;
 	}
+
+	if (m_IDPool)
+	{
+		idmgr_release(m_IDPool);
+		m_IDPool = nullptr;
+	}
+
+	m_ObjMap.clear();
+	m_ObjSet.clear();
 }
 
-bool CScene::Init(CMapInfo * _mapinfo, aoi_space * space, alloc_cookie * cookie)
+static void *my_alloc(void * ud, void *ptr, size_t sz) {
+	struct alloc_cookie * cookie = (struct alloc_cookie *)ud;
+	if (ptr == NULL) {
+		void *p = malloc(sz);
+		++cookie->count;
+		cookie->current += sz;
+		if (cookie->max < cookie->current) {
+			cookie->max = cookie->current;
+		}
+		//		printf("%p + %u\n",p, sz);
+		return p;
+	}
+	--cookie->count;
+	cookie->current -= sz;
+	//	printf("%p - %u \n",ptr, sz);
+	free(ptr);
+	return NULL;
+}
+
+bool CScene::Init(CMapInfo * _mapinfo)
 {
-	if (!_mapinfo || !space)
+	if (!_mapinfo)
 		return false;
-
-	m_MapInfo = _mapinfo;
-	m_Space = space;
-	m_Cookie = cookie;
-	m_Barinfo = m_MapInfo->GetBarInfo();
-
+	
 	m_MapID = _mapinfo->GetMapID();
 	_mapinfo->GetMapBirthPoint(m_BirthPoint_X, m_BirthPoint_Y, m_BirthPoint_Z);
 	_mapinfo->GetMapWidthAndHeight(m_Width, m_Height);
@@ -58,6 +85,37 @@ bool CScene::Init(CMapInfo * _mapinfo, aoi_space * space, alloc_cookie * cookie)
 		log_error("CScene get map width and height failed!");
 		return false;
 	}
+
+	m_IDPool = idmgr_create(SCENE_ID_MAX + 1, CLIENT_ID_DELAY_TIME);
+	if (!m_IDPool)
+	{
+		log_error("创建IDMgr失败!");
+		return false;
+	}
+
+	alloc_cookie* cookie = (struct alloc_cookie *)malloc(sizeof(struct alloc_cookie));
+	if (cookie)
+	{
+		memset(cookie, 0, sizeof(alloc_cookie));
+		aoi_space * space = aoi_create(my_alloc, cookie);
+		if (space)
+		{
+			m_Space = space;
+			m_Cookie = cookie;
+		}
+		else
+		{
+			free(cookie);
+			idmgr_release(m_IDPool);
+		}
+	}
+	else
+		idmgr_release(m_IDPool);
+
+	m_MapInfo = _mapinfo;
+	m_Barinfo = m_MapInfo->GetBarInfo();
+	
+	m_ObjSet.resize(SCENE_ID_MAX + 1, nullptr);
 	return true;
 }
 
@@ -66,7 +124,18 @@ bool CScene::AddObj(CBaseObj * obj)
 	if (!obj)
 		return false;
 	
+	int id = idmgr_allocid(m_IDPool);
+	if (id <= 0)
+	{
+		log_error("为新对象分配ID失败!, id:%d", id);
+		return false;
+	}
+	obj->SetTempID(id);
+	obj->SetScene(this);
 	m_ObjMap[obj->GetTempID()] = obj;
+
+	assert(m_ObjSet[id] == nullptr);
+	m_ObjSet[id] = obj;
 
 	char *mode = "wm";
 	float pos[3];
@@ -80,7 +149,21 @@ bool CScene::DelObj(CBaseObj * obj)
 {
 	if (!obj)
 		return false;
-	
+
+	int id = obj->GetTempID();
+	if (id <= 0 || id >= static_cast<int> (m_ObjSet.size()))
+	{
+		log_error("要释放的CBaseObj的ID错误!");
+		return false;
+	}
+
+	m_ObjSet[id] = nullptr;
+
+	if (!idmgr_freeid(m_IDPool, obj->GetTempID()))
+	{
+		log_error("释放ID错误, ID:%d", obj->GetTempID());
+	}
+
 	char *mode = "d";
 	float pos[3];
 	obj->GetNowPos(pos[0], pos[1], pos[2]);
@@ -154,17 +237,12 @@ void CScene::Run()
 		m_bMessage = false;
 	}
 
-	for (auto &i : m_ObjMap)
-	{
-		//i.second->Run();
-	}
 }
 
-CBaseObj * CScene::GetObj(uint32 id)
+CBaseObj * CScene::GetObj(int id)
 {
-	auto iter = m_ObjMap.find(id);
-	if (iter != m_ObjMap.end())
-		return iter->second;
+	if (id <= 0 || id >= static_cast<int> (m_ObjSet.size()))
+		return nullptr;
 
-	return nullptr;
+	return m_ObjSet[id];
 }

@@ -26,11 +26,10 @@ bool CPlayer::LoadData(Msg *pMsg)
 
 	SetName(msg.name().c_str());
 	SetNowPos(msg.x(), msg.y(), msg.z());
-
-	SetScene(CScenemgr::Instance().GetScene(msg.mapid()));
-	GetScene()->AddObj(this);
-	SetName("");
-
+	CScene *_pScene = CScenemgr::Instance().GetScene(msg.mapid());
+	if (!_pScene)
+		return false;
+	_pScene->AddObj(this);
 
 	log_error("加载玩家数据成功！%s", msg.account().c_str());
 

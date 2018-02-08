@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include<unordered_map>
 
+struct idmgr;
 class CScene;
 class CMapInfo;
 
@@ -19,10 +20,22 @@ public:
 	bool Init();
 	void Destroy();
 	void Run();
-	bool LoadScene(CMapInfo* mapconfig);
-	CScene *CreateScene(CMapInfo* mapconfig);
+
+	void CheckAndRemove();
+	bool AddScene(CMapInfo* mapconfig);
+	int AddInstance(CMapInfo* mapconfig);
+	void DelInstance(int instanceid);
 	CScene *GetScene(int mapid);
 private:
+	void ReleaseInstanceAndID(CScene *scene);
+private:
 
-	std::unordered_map<int ,CScene *> m_SceneList;
+	// mapid,scene
+	std::unordered_map<int ,CScene *> m_SceneMap;
+
+	//副本
+	std::unordered_map<int, CScene *> m_InstanceMap;
+	std::list<CScene *> m_WaitRemove;
+	std::vector<CScene *> m_InstanceSet;
+	idmgr *m_IDPool;
 };

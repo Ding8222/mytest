@@ -7,8 +7,21 @@ extern "C"
 
 class CMapInfo;
 class CBaseObj;
+struct idmgr;
 
 struct alloc_cookie {
+	alloc_cookie()
+	{
+		count = 0;
+		max = 0;
+		current = 0;
+	}
+	~alloc_cookie()
+	{
+		count = 0;
+		max = 0;
+		current = 0;
+	}
 	int count;
 	int max;
 	int current;
@@ -20,9 +33,8 @@ public:
 	CScene();
 	~CScene();
 
-	// 初始化
-	bool Init(CMapInfo * _mapinfo, aoi_space * space, alloc_cookie * cookie);
-	// Run 每帧跑
+	bool Init(CMapInfo * _mapinfo);
+	void Destroy();
 	void Run();
 
 	// 进入场景
@@ -30,7 +42,7 @@ public:
 	// 退出场景
 	bool DelObj(CBaseObj * obj);
 	// 获取场景中的对象
-	CBaseObj * GetObj(uint32 id);
+	CBaseObj * GetObj(int id);
 	// 返回是否可以移动到某个点
 	bool bCanMove(int x, int y, int z);
 	// 移动至某个点
@@ -39,11 +51,18 @@ public:
 	void Message();
 	// 更新对象在Aoi中的位置
 	void Update(uint32 id, const char * mode, float pos[3]);
-	// 生成一个临时ID
-	inline uint32 GetTempID() { return ++m_TempID; };
 	// 获取当前场景所属的MapID
-	inline int GetMapID() { return m_MapID; }
+	int GetMapID() { return m_MapID; }
+	void SetInsranceID(int id) { m_InstanceID = id; }
+	int GetInsranceID() { return m_InstanceID; }
+	void SetRemoveTime(int64 currenttime) { m_RemoveTime = currenttime; }
+	bool IsNeedRemove() { return m_RemoveTime > 0; }
+	bool CanRemove(int64 currenttime) { if (!IsNeedRemove()) return false; return currenttime >= m_RemoveTime; }
 private:
+	//副本ID
+	int m_InstanceID;
+	//待移除时间
+	int64 m_RemoveTime;
 	// 所需地图ID
 	int m_MapID;
 	// 场景宽
@@ -55,10 +74,7 @@ private:
 	int m_BirthPoint_X;
 	int m_BirthPoint_Y;
 	int m_BirthPoint_Z;
-
-	// 场景临时ID
-	uint32 m_TempID;
-
+	
 	// 阻挡信息
 	bool *m_Barinfo;
 	// 地图信息
@@ -69,6 +85,9 @@ private:
 	struct aoi_space * m_Space;
 	// 是否更新过Aoi
 	bool m_bMessage;
-	// 场景中对象map
+
 	std::unordered_map<uint32, CBaseObj *> m_ObjMap;
+
+	std::vector<CBaseObj *> m_ObjSet;
+	idmgr *m_IDPool;
 };

@@ -8,8 +8,11 @@
 #define MAX_IP_LEN 128
 #define MAX_NAME_LEN 64
 
-#define CLIENT_ID_MAX 800000		  //客户端有效id，从1至此值
-#define CLIENT_ID_DELAY_TIME 300000	  //释放延时时间
+#define CLIENT_ID_MAX 800000			//客户端最大id
+#define CLIENT_ID_DELAY_TIME 300000		//释放延时时间
+#define SCENE_ID_MAX 160000				//地图场景中对象的最大id
+#define INSTANCE_ID_MAX 2000			//副本数量
+#define INSTANCE_ID_DELAY_TIME 300000	//释放延时时间
 
 namespace ServerEnum {
 	enum ServerType

@@ -29,8 +29,6 @@ struct stPlayerInfo
 	CPlayer *pPlayer;
 };
 
-
-struct idmgr;
 class CPlayerMgr
 {
 public:
