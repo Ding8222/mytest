@@ -20,15 +20,6 @@ public:
 	// 下线
 	void OffLine();
 
-	void SetClientID(int64 id) { nClientID = id; }
-	void SetGameServerID(int id) { nGameServerID = id; }
-	void SetGateID(int id) { nGateID = id; }
-	int64 GetClientID() { return nClientID; }
-	int GetGameServerID() { return nGameServerID; }
-	int GetGateID() { return nGateID; }
 private:
 
-	int64 nClientID;
-	int nGameServerID;
-	int nGateID;
 };

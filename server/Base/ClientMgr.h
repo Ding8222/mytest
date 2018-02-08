@@ -13,11 +13,6 @@ struct idmgr;
 class CClientMgr
 {
 public:
-	enum
-	{
-		enum_client_id_max = 800000,					//客户端有效id，从1至此值
-		enum_client_id_delay_time = 300000,				//释放延时时间
-	};
 
 	CClientMgr();
 	~CClientMgr();

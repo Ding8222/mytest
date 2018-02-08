@@ -8,7 +8,7 @@ extern int64 g_currenttime;
 
 static objectpool<CClient> &ClientPool()
 {
-	static objectpool<CClient> m(CClientMgr::enum_client_id_max, "CClient pools");
+	static objectpool<CClient> m(CLIENT_ID_MAX, "CClient pools");
 	return m;
 }
 
@@ -425,13 +425,13 @@ void CClientMgr::ReleaseClientAndID(CClient *cl)
 
 bool CClientMgr::InitIdMgrAndClientSet()
 {
-	m_IDPool = idmgr_create(enum_client_id_max + 1, enum_client_id_delay_time);
+	m_IDPool = idmgr_create(CLIENT_ID_MAX + 1, CLIENT_ID_DELAY_TIME);
 	if (!m_IDPool)
 	{
 		log_error("创建IDMgr失败!");
 		return false;
 	}
-	m_ClientSet.resize(enum_client_id_max + 1, NULL);
+	m_ClientSet.resize(CLIENT_ID_MAX + 1, NULL);
 	return true;
 }
 

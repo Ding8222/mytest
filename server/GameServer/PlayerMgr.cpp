@@ -8,7 +8,7 @@ extern int64 g_currenttime;
 
 static objectpool<CPlayer> &PlayerPool()
 {
-	static objectpool<CPlayer> m(player_max, "Player pools");
+	static objectpool<CPlayer> m(2000, "CPlayer pools");
 	return m;
 }
 
@@ -17,7 +17,7 @@ static CPlayer *player_create()
 	CPlayer *self = PlayerPool().GetObject();
 	if (!self)
 	{
-		log_error("创建 CClient 失败!");
+		log_error("创建 CPlayer 失败!");
 		return NULL;
 	}
 	new(self) CPlayer();
@@ -32,14 +32,42 @@ static void player_release(CPlayer *self)
 	PlayerPool().FreeObject(self);
 }
 
+static objectpool<stPlayerInfo> &PlayerInfoPool()
+{
+	static objectpool<stPlayerInfo> m(CLIENT_ID_MAX, "stPlayerInfo pools");
+	return m;
+}
+
+static stPlayerInfo *playerinfo_create()
+{
+	stPlayerInfo *self = PlayerInfoPool().GetObject();
+	if (!self)
+	{
+		log_error("创建 stPlayerInfo 失败!");
+		return NULL;
+	}
+	new(self) stPlayerInfo();
+	return self;
+}
+
+static void playerinfo_release(stPlayerInfo *self)
+{
+	if (!self)
+		return;
+	self->~stPlayerInfo();
+	PlayerInfoPool().FreeObject(self);
+}
+
 CPlayerMgr::CPlayerMgr()
 {
-	m_PlayerInfo.clear();
+	m_PlayerList.clear();
+	m_WaitRemove.clear();
+	m_PlayerInfoSet.clear();
 }
 
 CPlayerMgr::~CPlayerMgr()
 {
-	m_PlayerInfo.clear();
+	Destroy();
 }
 
 bool CPlayerMgr::init()
@@ -57,8 +85,6 @@ void CPlayerMgr::Destroy()
 
 void CPlayerMgr::Run()
 {
-	idmgr_run(m_IDPool);
-
 	ProcessAllPlayer();
 
 	CheckAndRemove();
@@ -66,75 +92,81 @@ void CPlayerMgr::Run()
 
 void CPlayerMgr::ProcessAllPlayer()
 {
-	for (std::unordered_map<int64, CPlayer *>::iterator itr = m_PlayerInfo.begin(); itr != m_PlayerInfo.end(); ++itr)
+	for (std::list<stPlayerInfo *>::iterator itr = m_PlayerList.begin(); itr != m_PlayerList.end(); ++itr)
 	{
-		itr->second->Run();
+		if ((*itr)->pPlayer)
+			(*itr)->pPlayer->Run();
 	}
 }
 
-void CPlayerMgr::AddPlayer(int64 clientid, int gateid)
+bool CPlayerMgr::AddPlayer(int clientid, int gateid)
 {
-	auto iter = m_PlayerInfo.find(clientid);
-	assert(iter == m_PlayerInfo.end());
-	if (iter == m_PlayerInfo.end())
+	assert(m_PlayerInfoSet[clientid] == nullptr);
+	if (m_PlayerInfoSet[clientid] == nullptr)
 	{
+		stPlayerInfo *newInfo = nullptr;
 		CPlayer *newplayer = nullptr;
-		int id = idmgr_allocid(m_IDPool);
-		if (id <= 0)
+
+		newInfo = playerinfo_create();
+		if (!newInfo)
 		{
-			log_error("为新Player分配ID失败!, id:%d", id);
-			return;
+			log_error("创建stPlayerInfo失败!");
+			return false;
 		}
 
 		newplayer = player_create();
 		if (!newplayer)
 		{
-			log_error("创建Player失败!");
-			if (id > 0)
-			{
-				if (!idmgr_freeid(m_IDPool, id))
-					log_error("释放ID失败!, ID:%d", id);
-			}
-			return;
+			log_error("创建CPlayer失败!");
+			playerinfo_release(newInfo);
+			return false;
 		}
 
-		newplayer->SetTempID(id);
-		newplayer->SetClientID(clientid);
-		newplayer->SetGameServerID(CConfig::Instance().GetServerID());
-		newplayer->SetGateID(gateid);
+		newInfo->nClientID = clientid;
+		newInfo->nGateID = gateid;
+		newInfo->nGameServerID = CConfig::Instance().GetServerID();
+		newInfo->pPlayer = newplayer;
 
-		m_PlayerInfo.insert(std::make_pair(clientid, newplayer));
+		m_PlayerInfoSet[clientid] = newInfo;
+		return true;
 	}
+	return false;
 }
 
-void CPlayerMgr::DelPlayer(int64 clientid)
+void CPlayerMgr::DelPlayer(int clientid)
 {
-	auto iter = m_PlayerInfo.find(clientid);
-	assert(iter != m_PlayerInfo.end());
-	if (iter != m_PlayerInfo.end())
+	assert(m_PlayerInfoSet[clientid]);
+	if (m_PlayerInfoSet[clientid])
 	{
-		if (!iter->second->IsWaitRemove())
+		CPlayer *pPlayer = m_PlayerInfoSet[clientid]->pPlayer;
+		assert(pPlayer);
+		if (pPlayer)
 		{
-			iter->second->SetWaitRemove();
-			iter->second->OffLine();
-			m_WaitRemove.push_back(iter->second);
-			m_PlayerInfo.erase(clientid);
+			assert(!pPlayer->IsWaitRemove());
+			if (!pPlayer->IsWaitRemove())
+			{
+				pPlayer->SetWaitRemove();
+				pPlayer->OffLine();
+				m_WaitRemove.push_back(m_PlayerInfoSet[clientid]);
+			}
 		}
 	}
 }
 
 void CPlayerMgr::DelAllPlayer()
 {
-	for (std::unordered_map<int64, CPlayer *>::iterator itr = m_PlayerInfo.begin(); itr != m_PlayerInfo.end(); ++itr)
+	for (std::list<stPlayerInfo *>::iterator itr = m_PlayerList.begin(); itr != m_PlayerList.end(); ++itr)
 	{
-		itr->second->OffLine();
-		ReleasePlayerAndID(itr->second);
+		if((*itr)->pPlayer)
+			(*itr)->pPlayer->OffLine();
+		ReleasePlayerAndID(*itr);
 	}
-	m_PlayerInfo.clear();
+	m_PlayerList.clear();
 
-	for (std::list<CPlayer*>::iterator itr = m_WaitRemove.begin(); itr != m_WaitRemove.end(); ++itr)
+	for (std::list<stPlayerInfo*>::iterator itr = m_WaitRemove.begin(); itr != m_WaitRemove.end(); ++itr)
 	{
-		(*itr)->OffLine();
+		if((*itr) && (*itr)->pPlayer)
+			(*itr)->pPlayer->OffLine();
 		ReleasePlayerAndID(*itr);
 	}
 	m_WaitRemove.clear();
@@ -142,74 +174,54 @@ void CPlayerMgr::DelAllPlayer()
 
 void CPlayerMgr::CheckAndRemove()
 {
-	CPlayer *player;
+	stPlayerInfo *playerinfo;
 	while (!m_WaitRemove.empty())
 	{
-		player = m_WaitRemove.front();
-		if (!player->CanRemove(g_currenttime))
+		playerinfo = m_WaitRemove.front();
+		if (playerinfo && playerinfo->pPlayer && !playerinfo->pPlayer->CanRemove(g_currenttime))
 			break;
-		ReleasePlayerAndID(player);
+		ReleasePlayerAndID(playerinfo);
 		m_WaitRemove.pop_front();
 	}
 }
 
-void CPlayerMgr::ReleasePlayerAndID(CPlayer * player)
+void CPlayerMgr::ReleasePlayerAndID(stPlayerInfo * playerinfo)
 {
-	if (!player)
+	if (!playerinfo)
 		return;
 
-	int id = player->GetTempID();
-	if (id <= 0 || id >= (int)m_PlayerSet.size())
+	if (playerinfo->nClientID <= 0 || playerinfo->nClientID >= static_cast<int>(m_PlayerInfoSet.size()))
 	{
-		log_error("要释放的Client的ID错误!");
+		log_error("要释放的PlayerInfo的ClientID错误!");
 		return;
 	}
-	m_PlayerSet[id] = NULL;
 
-	if (!idmgr_freeid(m_IDPool, id))
-	{
-		log_error("释放ID错误, ID:%d", id);
-	}
+	m_PlayerInfoSet[playerinfo->nClientID] = NULL;
 
-	player->SetTempID(0);
-	player_release(player);
+	player_release(playerinfo->pPlayer);
+	playerinfo_release(playerinfo);
 }
 
-int CPlayerMgr::FindPlayerGateID(int64 clientid)
+int CPlayerMgr::FindPlayerGateID(int clientid)
 {
-	auto iter = m_PlayerInfo.find(clientid);
-	assert(iter != m_PlayerInfo.end());
-	if (iter != m_PlayerInfo.end())
-		return iter->second->GetGateID();
+	assert(m_PlayerInfoSet[clientid]);
+	if(m_PlayerInfoSet[clientid])
+		return m_PlayerInfoSet[clientid]->nGateID;
+
 	return 0;
 }
 
-CPlayer *CPlayerMgr::FindPlayerByClientID(int64 clientid)
+CPlayer *CPlayerMgr::FindPlayerByClientID(int clientid)
 {
-	auto iter = m_PlayerInfo.find(clientid);
-	assert(iter != m_PlayerInfo.end());
-	if (iter != m_PlayerInfo.end())
-		return iter->second;
+	assert(m_PlayerInfoSet[clientid]);
+	if (m_PlayerInfoSet[clientid])
+		m_PlayerInfoSet[clientid]->pPlayer;
 
 	return nullptr;
 }
 
-CPlayer *CPlayerMgr::FindPlayerByTempID(uint32 tempid)
-{
-	if (tempid > m_PlayerSet.size())
-		return nullptr;
-	
-	return m_PlayerSet[tempid];
-}
-
 bool CPlayerMgr::InitIdMgrAndPlayerSet()
 {
-	m_IDPool = idmgr_create(player_max + 1, player_delay_time);
-	if (!m_IDPool)
-	{
-		log_error("创建IDMgr失败!");
-		return false;
-	}
-	m_PlayerSet.resize(player_max + 1, NULL);
+	m_PlayerInfoSet.resize(CLIENT_ID_MAX + 1, NULL);
 	return true;
 }

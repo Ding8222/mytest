@@ -88,6 +88,7 @@ void CClientAuth::DelClient(int64 clientid)
 void CClientAuth::KickClient(int64 clientid)
 {
 	m_ClientAuthInfo.erase(clientid);
+	
 	// 通知玩家下线处理
 	svrData::DelClient sendMsg;
 	sendMsg.set_nclientid(clientid);
@@ -120,10 +121,10 @@ void CClientAuth::AddNewClient(Msg *pMsg, CClient *cl)
 		_pData->ClientID = cl->GetClientID();
 		m_ClientAuthInfo.insert(std::make_pair(cl->GetClientID(), _pData));
 		log_error("新的客户端认证成功！token:%s", msg.stoken().c_str());
-		cl->SetAlreadyAuth();
 
 		svrData::AddNewClient sendMsg;
 		CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT, cl->GetClientID());
+		cl->SetAlreadyAuth();
 	}
 	else
 	{

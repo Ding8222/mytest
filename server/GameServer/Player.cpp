@@ -6,9 +6,7 @@
 
 CPlayer::CPlayer()
 {
-	nClientID = 0;
-	nGameServerID = 0;
-	nGateID = 0;
+
 }
 
 CPlayer::~CPlayer()

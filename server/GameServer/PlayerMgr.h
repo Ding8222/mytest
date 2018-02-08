@@ -5,6 +5,31 @@
 static int player_max = 2000;
 static int player_delay_time = 30000;
 
+struct stPlayerInfo
+{
+	stPlayerInfo()
+	{
+		nClientID = 0;
+		nGateID = 0;
+		nGameServerID = 0;
+		pPlayer = nullptr;
+	}
+
+	~stPlayerInfo()
+	{
+		nClientID = 0;
+		nGateID = 0;
+		nGameServerID = 0;
+		pPlayer = nullptr;
+	}
+
+	int nClientID;
+	int nGateID;
+	int nGameServerID;
+	CPlayer *pPlayer;
+};
+
+
 struct idmgr;
 class CPlayerMgr
 {
@@ -25,25 +50,20 @@ public:
 
 	void ProcessAllPlayer();
 
-	void AddPlayer(int64 clientid, int gateid);
-	void DelPlayer(int64 clientid);
+	bool AddPlayer(int clientid, int gateid);
+	void DelPlayer(int clientid);
 	void DelAllPlayer();
-	void ReleasePlayerAndID(CPlayer *player);
-	int FindPlayerGateID(int64 clientid);
-	int GetPlayerSize() { return m_PlayerInfo.size(); }
+	void ReleasePlayerAndID(stPlayerInfo *player);
+	int FindPlayerGateID(int clientid);
+	int GetPlayerSize() { return m_PlayerList.size(); }
 
-	CPlayer *FindPlayerByClientID(int64 clientid);
-	CPlayer *FindPlayerByTempID(uint32 tempid);
+	CPlayer *FindPlayerByClientID(int clientid);
 private:
 	void CheckAndRemove();
 	bool InitIdMgrAndPlayerSet();
 private:
 
-	// clientid,serverid
-	// client所在网关服务器
-	std::unordered_map<int64, CPlayer *> m_PlayerInfo;
-	std::list<CPlayer *> m_WaitRemove;
-
-	std::vector<CPlayer *> m_PlayerSet;
-	idmgr *m_IDPool;
+	std::list<stPlayerInfo *> m_PlayerList;
+	std::list<stPlayerInfo *> m_WaitRemove;
+	std::vector<stPlayerInfo *> m_PlayerInfoSet;
 };

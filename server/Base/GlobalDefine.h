@@ -8,6 +8,9 @@
 #define MAX_IP_LEN 128
 #define MAX_NAME_LEN 64
 
+#define CLIENT_ID_MAX 800000		  //客户端有效id，从1至此值
+#define CLIENT_ID_DELAY_TIME 300000	  //释放延时时间
+
 namespace ServerEnum {
 	enum ServerType
 	{

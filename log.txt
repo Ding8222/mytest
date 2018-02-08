@@ -27,3 +27,5 @@ gateway那边AddNewClient的时候，需要判断好秘钥
 time、random
 
 消息发送要优化一下方式...
+
+加密处理
