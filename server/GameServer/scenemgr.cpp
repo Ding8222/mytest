@@ -2,14 +2,14 @@
 #include "SceneMgr.h"
 #include "MapConfig.h"
 #include "MapInfo.h"
-#include "scene.h"
+#include "Scene.h"
 #include "idmgr.c"
 
 extern int64 g_currenttime;
 
 static objectpool<CScene> &ScenePool()
 {
-	static objectpool<CScene> m(2000, "CScene pools");
+	static objectpool<CScene> m(SCENE_ID_MAX, "CScene pools");
 	return m;
 }
 
@@ -36,10 +36,6 @@ static void scene_release(CScene *self)
 CScenemgr::CScenemgr()
 {
 	m_SceneMap.clear();
-	m_InstanceList.clear();
-	m_WaitRemove.clear();
-	m_InstanceSet.clear();
-	m_IDPool = nullptr;
 }
 
 CScenemgr::~CScenemgr()
@@ -59,15 +55,6 @@ bool CScenemgr::Init()
 			return false;
 		}
 	}
-
-	m_IDPool = idmgr_create(INSTANCE_ID_MAX + 1, INSTANCE_ID_DELAY_TIME);
-	if (!m_IDPool)
-	{
-		log_error("创建IDMgr失败!");
-		return false;
-	}
-
-	m_InstanceSet.resize(INSTANCE_ID_MAX + 1, nullptr);
 	
 	return true;
 }
@@ -80,27 +67,6 @@ void CScenemgr::Destroy()
 		iter->second->Destroy();
 	}
 	m_SceneMap.clear();
-
-	for (std::list<CScene*>::iterator itr = m_InstanceList.begin(); itr != m_InstanceList.end(); ++itr)
-	{
-		ReleaseInstanceAndID(iter->second);
-	}
-	m_InstanceList.clear();
-
-	std::list<CScene *>::iterator iterw = m_WaitRemove.begin();
-	for (; iterw != m_WaitRemove.end(); ++iterw)
-	{
-		ReleaseInstanceAndID(*iterw);
-	}
-	m_WaitRemove.clear();
-
-	m_InstanceSet.clear();
-
-	if (m_IDPool)
-	{
-		idmgr_release(m_IDPool);
-		m_IDPool = nullptr;
-	}
 }
 
 void CScenemgr::Run()
@@ -109,36 +75,6 @@ void CScenemgr::Run()
 	for (auto &i : m_SceneMap)
 	{
 		i.second->Run();
-	}
-
-	// 副本
-	std::list<CScene*>::iterator iter, tempiter;
-	for (iter = m_InstanceList.begin(); iter != m_InstanceList.end();)
-	{
-		tempiter = iter;
-		++iter;
-
-		if ((*tempiter)->IsNeedRemove())
-		{
-			m_WaitRemove.push_back(*tempiter);
-			m_InstanceList.erase(tempiter);
-			continue;
-		}
-
-		(*tempiter)->Run();
-	}
-}
-
-void CScenemgr::CheckAndRemove()
-{
-	CScene *scene;
-	while (!m_WaitRemove.empty())
-	{
-		scene = m_WaitRemove.front();
-		if (!scene->CanRemove(g_currenttime))
-			break;
-		ReleaseInstanceAndID(scene);
-		m_WaitRemove.pop_front();
 	}
 }
 
@@ -165,43 +101,6 @@ bool CScenemgr::AddScene(CMapInfo* mapconfig)
 	return false;
 }
 
-int CScenemgr::AddInstance(int instancebaseid)
-{
-	CMapInfo* mapconfig = CMapConfig::Instance().FindMapInfo(instancebaseid);
-
-	if (!mapconfig)
-		return 0;
-
-	int id = idmgr_allocid(m_IDPool);
-	if (id <= 0)
-	{
-		log_error("为新Instance分配ID失败!, id:%d", id);
-		return 0;
-	}
-
-	CScene * newscene = scene_create();
-	if (!newscene)
-	{
-		log_error("创建CScene失败!");
-		return 0;
-	}
-
-	if (newscene->Init(mapconfig))
-	{
-		m_InstanceSet[id] = newscene;
-		m_InstanceList.push_back(newscene);
-		newscene->SetInsranceID(id);
-		return true;
-	}
-	
-	scene_release(newscene);
-
-	if (!idmgr_freeid(m_IDPool, id))
-		log_error("释放ID失败!, ID:%d", id);
-
-	return 0;
-}
-
 CScene *CScenemgr::FindScene(int mapid)
 {
 	auto iter = m_SceneMap.find(mapid);
@@ -211,23 +110,3 @@ CScene *CScenemgr::FindScene(int mapid)
 	return nullptr;
 }
 
-void CScenemgr::ReleaseInstanceAndID(CScene *scene)
-{
-	if (!scene)
-		return;
-	int id = scene->GetInsranceID();
-	if (id <= 0 || id >= (int)m_InstanceSet.size())
-	{
-		log_error("要释放的Instance的ID错误!");
-		return;
-	}
-	m_InstanceSet[id] = NULL;
-
-	if (!idmgr_freeid(m_IDPool, id))
-	{
-		log_error("释放ID错误, ID:%d", id);
-	}
-
-	scene->SetInsranceID(0);
-	scene_release(scene);
-}
