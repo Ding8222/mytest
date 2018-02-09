@@ -1,7 +1,7 @@
 ﻿#include "stdfx.h"
-#include "scene.h"
+#include "Scene.h"
 #include "BaseObj.h"
-#include "mapinfo.h"
+#include "MapInfo.h"
 #include "idmgr.c"
 
 CScene::CScene()
@@ -13,7 +13,6 @@ CScene::CScene()
 	m_BirthPoint_Y = 0;
 	m_BirthPoint_Z = 0;
 	m_Barinfo = nullptr;
-	m_MapInfo = nullptr;
 	m_Cookie = nullptr;
 	m_Space = nullptr;
 	m_bMessage = false;
@@ -29,8 +28,6 @@ CScene::~CScene()
 
 void CScene::Destroy()
 {
-	m_Barinfo = nullptr;
-	m_MapInfo = nullptr;
 	if (m_Space)
 	{
 		aoi_release(m_Space);
@@ -112,9 +109,7 @@ bool CScene::Init(CMapInfo * _mapinfo)
 	else
 		idmgr_release(m_IDPool);
 
-	m_MapInfo = _mapinfo;
-	m_Barinfo = m_MapInfo->GetBarInfo();
-	
+	m_Barinfo = _mapinfo->GetBarInfo();	
 	m_ObjSet.resize(SCENE_ID_MAX + 1, nullptr);
 	return true;
 }

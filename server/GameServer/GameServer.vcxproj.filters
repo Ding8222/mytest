@@ -42,18 +42,6 @@
     <ClCompile Include="aoi.c">
       <Filter>地图场景</Filter>
     </ClCompile>
-    <ClCompile Include="scenemgr.cpp">
-      <Filter>地图场景</Filter>
-    </ClCompile>
-    <ClCompile Include="scene.cpp">
-      <Filter>地图场景</Filter>
-    </ClCompile>
-    <ClCompile Include="mapinfo.cpp">
-      <Filter>地图场景</Filter>
-    </ClCompile>
-    <ClCompile Include="mapconfig.cpp">
-      <Filter>地图场景</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>玩家对象</Filter>
     </ClCompile>
@@ -72,6 +60,18 @@
     <ClCompile Include="Utilities.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>地图场景</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneMgr.cpp">
+      <Filter>地图场景</Filter>
+    </ClCompile>
+    <ClCompile Include="MapInfo.cpp">
+      <Filter>地图场景</Filter>
+    </ClCompile>
+    <ClCompile Include="MapConfig.cpp">
+      <Filter>地图场景</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -84,18 +84,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="aoi.h">
-      <Filter>地图场景</Filter>
-    </ClInclude>
-    <ClInclude Include="mapconfig.h">
-      <Filter>地图场景</Filter>
-    </ClInclude>
-    <ClInclude Include="mapinfo.h">
-      <Filter>地图场景</Filter>
-    </ClInclude>
-    <ClInclude Include="scene.h">
-      <Filter>地图场景</Filter>
-    </ClInclude>
-    <ClInclude Include="scenemgr.h">
       <Filter>地图场景</Filter>
     </ClInclude>
     <ClInclude Include="BaseObj.h">
@@ -115,6 +103,18 @@
     </ClInclude>
     <ClInclude Include="Utilities.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>地图场景</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneMgr.h">
+      <Filter>地图场景</Filter>
+    </ClInclude>
+    <ClInclude Include="MapInfo.h">
+      <Filter>地图场景</Filter>
+    </ClInclude>
+    <ClInclude Include="MapConfig.h">
+      <Filter>地图场景</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

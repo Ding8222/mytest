@@ -1,6 +1,7 @@
 ﻿#include "stdfx.h"
-#include "scenemgr.h"
-#include "mapconfig.h"
+#include "SceneMgr.h"
+#include "MapConfig.h"
+#include "MapInfo.h"
 #include "scene.h"
 #include "idmgr.c"
 
@@ -35,7 +36,7 @@ static void scene_release(CScene *self)
 CScenemgr::CScenemgr()
 {
 	m_SceneMap.clear();
-	m_InstanceMap.clear();
+	m_InstanceList.clear();
 	m_WaitRemove.clear();
 	m_InstanceSet.clear();
 	m_IDPool = nullptr;
@@ -48,27 +49,26 @@ CScenemgr::~CScenemgr()
 
 bool CScenemgr::Init()
 {
+	// 加载普通地图
+	const std::list<CMapInfo*> maplist = CMapConfig::Instance().GetMapList();
+	for (auto &iter : maplist)
+	{
+		if (!AddScene(iter))
+		{
+			log_error("加载普通场景失败，地图ID： %d", (*iter).GetMapID());
+			return false;
+		}
+	}
+
 	m_IDPool = idmgr_create(INSTANCE_ID_MAX + 1, INSTANCE_ID_DELAY_TIME);
 	if (!m_IDPool)
 	{
 		log_error("创建IDMgr失败!");
 		return false;
 	}
+
 	m_InstanceSet.resize(INSTANCE_ID_MAX + 1, nullptr);
-
-	const std::unordered_map<int, CMapInfo*> maplist = CMapConfig::Instance().GetMapList();
-	for (auto &iter : maplist)
-	{
-		if (!AddScene(iter.second))
-		{
-			log_error("load scene error ,mapid: %d", iter.first);
-			idmgr_release(m_IDPool);
-			m_IDPool = nullptr;
-			m_InstanceSet.clear();
-			return false;
-		}
-	}
-
+	
 	return true;
 }
 
@@ -81,21 +81,26 @@ void CScenemgr::Destroy()
 	}
 	m_SceneMap.clear();
 
-	iter = m_InstanceMap.begin();
-	for (; iter != m_InstanceMap.end(); ++iter)
+	for (std::list<CScene*>::iterator itr = m_InstanceList.begin(); itr != m_InstanceList.end(); ++itr)
 	{
 		ReleaseInstanceAndID(iter->second);
 	}
-	m_InstanceMap.clear();
+	m_InstanceList.clear();
 
 	std::list<CScene *>::iterator iterw = m_WaitRemove.begin();
-	for (; iterw != m_WaitRemove.end(); ++iter)
+	for (; iterw != m_WaitRemove.end(); ++iterw)
 	{
-		ReleaseInstanceAndID(iter->second);
+		ReleaseInstanceAndID(*iterw);
 	}
 	m_WaitRemove.clear();
+
 	m_InstanceSet.clear();
-	m_IDPool = nullptr;
+
+	if (m_IDPool)
+	{
+		idmgr_release(m_IDPool);
+		m_IDPool = nullptr;
+	}
 }
 
 void CScenemgr::Run()
@@ -107,9 +112,20 @@ void CScenemgr::Run()
 	}
 
 	// 副本
-	for (auto &i : m_InstanceMap)
+	std::list<CScene*>::iterator iter, tempiter;
+	for (iter = m_InstanceList.begin(); iter != m_InstanceList.end();)
 	{
-		i.second->Run();
+		tempiter = iter;
+		++iter;
+
+		if ((*tempiter)->IsNeedRemove())
+		{
+			m_WaitRemove.push_back(*tempiter);
+			m_InstanceList.erase(tempiter);
+			continue;
+		}
+
+		(*tempiter)->Run();
 	}
 }
 
@@ -124,25 +140,6 @@ void CScenemgr::CheckAndRemove()
 		ReleaseInstanceAndID(scene);
 		m_WaitRemove.pop_front();
 	}
-}
-
-static void *my_alloc(void * ud, void *ptr, size_t sz) {
-	struct alloc_cookie * cookie = (struct alloc_cookie *)ud;
-	if (ptr == NULL) {
-		void *p = malloc(sz);
-		++cookie->count;
-		cookie->current += sz;
-		if (cookie->max < cookie->current) {
-			cookie->max = cookie->current;
-		}
-		//		printf("%p + %u\n",p, sz);
-		return p;
-	}
-	--cookie->count;
-	cookie->current -= sz;
-	//	printf("%p - %u \n",ptr, sz);
-	free(ptr);
-	return NULL;
 }
 
 bool CScenemgr::AddScene(CMapInfo* mapconfig)
@@ -168,8 +165,10 @@ bool CScenemgr::AddScene(CMapInfo* mapconfig)
 	return false;
 }
 
-int CScenemgr::AddInstance(CMapInfo* mapconfig)
+int CScenemgr::AddInstance(int instancebaseid)
 {
+	CMapInfo* mapconfig = CMapConfig::Instance().FindMapInfo(instancebaseid);
+
 	if (!mapconfig)
 		return 0;
 
@@ -190,7 +189,7 @@ int CScenemgr::AddInstance(CMapInfo* mapconfig)
 	if (newscene->Init(mapconfig))
 	{
 		m_InstanceSet[id] = newscene;
-		m_InstanceMap[id] = newscene;
+		m_InstanceList.push_back(newscene);
 		newscene->SetInsranceID(id);
 		return true;
 	}
@@ -203,14 +202,7 @@ int CScenemgr::AddInstance(CMapInfo* mapconfig)
 	return 0;
 }
 
-void CScenemgr::DelInstance(int instanceid) 
-{
-	m_InstanceMap.erase(instanceid);
-	m_InstanceSet[instanceid]->SetRemoveTime(g_currenttime);
-	m_WaitRemove.push_back(m_InstanceSet[instanceid]);
-}
-
-CScene *CScenemgr::GetScene(int mapid)
+CScene *CScenemgr::FindScene(int mapid)
 {
 	auto iter = m_SceneMap.find(mapid);
 	if (iter != m_SceneMap.end())

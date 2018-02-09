@@ -57,7 +57,7 @@ message AddNewClient
 // 0-7 client断开
 message DelClient
 {
-	int64 nClientID = 1;
+	int32 nClientID = 1;
 }
 
 // 0-8 ClientToken

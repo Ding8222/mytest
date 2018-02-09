@@ -395,7 +395,7 @@ void AddDescriptorsImpl() {
       "\003sIP\030\004 \001(\t\022\024\n\014nSubServerID\030\005 \001(\005\"D\n\020Upda"
       "teServerLoad\022\027\n\017nClientCountNow\030\001 \001(\005\022\027\n"
       "\017nClientCountMax\030\002 \001(\005\"\016\n\014AddNewClient\"\036"
-      "\n\tDelClient\022\021\n\tnClientID\030\001 \001(\003\"/\n\013Client"
+      "\n\tDelClient\022\021\n\tnClientID\030\001 \001(\005\"/\n\013Client"
       "Token\022\017\n\007sEtoken\030\001 \001(\t\022\017\n\007sSecret\030\002 \001(\014\""
       "\335\001\n\016LoadPlayerData\022\020\n\010clientid\030\001 \001(\003\022\017\n\007"
       "account\030\002 \001(\t\022\014\n\004name\030\003 \001(\t\022\014\n\004guid\030\004 \001("
@@ -2198,7 +2198,7 @@ DelClient::DelClient(const DelClient& from)
 }
 
 void DelClient::SharedCtor() {
-  nclientid_ = GOOGLE_LONGLONG(0);
+  nclientid_ = 0;
   _cached_size_ = 0;
 }
 
@@ -2232,7 +2232,7 @@ void DelClient::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  nclientid_ = GOOGLE_LONGLONG(0);
+  nclientid_ = 0;
   _internal_metadata_.Clear();
 }
 
@@ -2246,13 +2246,13 @@ bool DelClient::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // int64 nClientID = 1;
+      // int32 nClientID = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &nclientid_)));
         } else {
           goto handle_unusual;
@@ -2286,9 +2286,9 @@ void DelClient::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int64 nClientID = 1;
+  // int32 nClientID = 1;
   if (this->nclientid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->nclientid(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->nclientid(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2305,9 +2305,9 @@ void DelClient::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int64 nClientID = 1;
+  // int32 nClientID = 1;
   if (this->nclientid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->nclientid(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->nclientid(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2327,10 +2327,10 @@ size_t DelClient::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // int64 nClientID = 1;
+  // int32 nClientID = 1;
   if (this->nclientid() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->nclientid());
   }
 

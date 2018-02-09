@@ -64,6 +64,7 @@ bool CGameServer::Init()
 			return 0;
 		}
 
+		// 需要在场景初始化之前初始化MapConfig
 		if (!CMapConfig::Instance().Init())
 		{
 			log_error("初始化MapConfig失败!");

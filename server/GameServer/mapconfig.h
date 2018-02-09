@@ -1,5 +1,7 @@
 ﻿/*
-读取地图配置
+* 地图配置管理
+* Copyright (C) ddl
+* 2018
 */
 #pragma once
 #include<unordered_map>
@@ -18,16 +20,13 @@ public:
 		return m;
 	}
 
-	// 初始化读取所有地图配置
 	bool Init();
 	void Destroy();
-	// 加载地图中的阻挡点
-	bool LoadBar(CMapInfo* map);
-	// 获取地图信息指针
-	const CMapInfo *GetMapInfo(int mapid);
-	// 获取所有地图
-	const std::unordered_map<int, CMapInfo*>& GetMapList();
+
+	CMapInfo *FindMapInfo(int mapid);
+	const std::list<CMapInfo*>& GetMapList();
+	int GetMapSetSize() { return static_cast<int>(m_MapSet.size()); }
 private:
-	//所有的Map信息
-	std::unordered_map<int, CMapInfo*> m_MapList;
+	std::list<CMapInfo*> m_MapList;
+	std::vector<CMapInfo*> m_MapSet;
 };

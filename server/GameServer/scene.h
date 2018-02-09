@@ -1,4 +1,9 @@
-﻿#pragma once
+﻿/*
+* 场景数据
+* Copyright (C) ddl
+* 2018
+*/
+#pragma once
 #include <unordered_map>
 extern "C"
 {
@@ -53,6 +58,9 @@ public:
 	void Update(uint32 id, const char * mode, float pos[3]);
 	// 获取当前场景所属的MapID
 	int GetMapID() { return m_MapID; }
+
+public:
+	// 副本相关
 	void SetInsranceID(int id) { m_InstanceID = id; }
 	int GetInsranceID() { return m_InstanceID; }
 	void SetRemoveTime(int64 currenttime) { m_RemoveTime = currenttime; }
@@ -77,8 +85,6 @@ private:
 	
 	// 阻挡信息
 	bool *m_Barinfo;
-	// 地图信息
-	CMapInfo *m_MapInfo;
 	// Aoi内存分配信息
 	struct alloc_cookie* m_Cookie;
 	// Aoi 空间

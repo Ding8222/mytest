@@ -31,3 +31,5 @@ time、random
 加密处理
 
 logsvr，namechecksvr
+
+把普通地图和副本地图拆分开

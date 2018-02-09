@@ -1,23 +1,49 @@
-﻿#include"mapconfig.h"
-#include"mapinfo.h"
-#include"scenemgr.h"
+﻿#include"MapConfig.h"
+#include"MapInfo.h"
 #include"tinyxml2.h"
 #include"log.h"
+#include "objectpool.h"
 
 using namespace tinyxml2;
+#define MAP_ID_MAX 10000
+
+static objectpool<CMapInfo> &MapPool()
+{
+	static objectpool<CMapInfo> m(MAP_ID_MAX, "CMapInfo pools");
+	return m;
+}
+
+static CMapInfo *map_create()
+{
+	CMapInfo *self = MapPool().GetObject();
+	if (!self)
+	{
+		log_error("创建 CScene 失败!");
+		return NULL;
+	}
+	new(self) CMapInfo();
+	return self;
+}
+
+static void map_release(CMapInfo *self)
+{
+	if (!self)
+		return;
+	self->~CMapInfo();
+	MapPool().FreeObject(self);
+}
 
 CMapConfig::CMapConfig()
 {
-	m_MapList.clear();
+	Destroy();
 }
 
 CMapConfig::~CMapConfig()
 {
 	auto iterB = m_MapList.begin();
-	auto iterE = m_MapList.end();
-	for (; iterB != iterE; iterB++)
+	for (; iterB != m_MapList.end(); iterB++)
 	{
-		delete iterB->second;
+		delete (*iterB);
 	}
 
 	m_MapList.clear();
@@ -25,11 +51,13 @@ CMapConfig::~CMapConfig()
 
 bool CMapConfig::Init()
 {
+	m_MapSet.resize(MAP_ID_MAX, nullptr);
+
 	const char *filename = "./data/maplist.xml";
 	XMLDocument doc;
 	if (doc.LoadFile(filename) != XML_SUCCESS)
 	{
-		log_error("load %s failed!", filename);
+		log_error("加载 %s 失败!", filename);
 		return false;
 	}
 
@@ -38,62 +66,61 @@ bool CMapConfig::Init()
 	XMLElement *pinfo = doc.FirstChildElement("maplist");
 	if (!pinfo)
 	{
-		log_error("not find first child element, element name: 'maplist'");
+		log_error("没有找到字段： 'maplist'");
 		return false;
 	}
 
 	pinfo = pinfo->FirstChildElement("maps");
 	if (!pinfo)
 	{
-		log_error("not find first child element, element name: 'maps'");
+		log_error("没有找到字段： 'maps'");
 		return false;
 	}
 
 	while (pinfo)
 	{
-		CMapInfo* m_mapinfo = new CMapInfo;
-		if (!m_mapinfo)
-		{
-			log_error("application memory failed! new m_mapinfo ");
-			return false;
-		}
-
 		int mapid = 0;
-
 		if (pinfo->QueryIntAttribute("mapid", &mapid) != XML_SUCCESS)
 		{
-			log_error("query int attribute failed, attribute name: 'mapid'");
+			log_error("没有找到字段： 'mapid'");
 			return false;
 		}
 
-		if (mapid <= 0)
+		if (mapid <= 0 || mapid >= static_cast<int>(m_MapSet.size()))
 		{
-			log_error("error: mapid <= 0 !");
+			log_error("地图ID错误！");
 			return false;
 		}
 
 		std::string filename = pinfo->Attribute("bar_filename");
 		if (filename.empty())
 		{
-			log_error("attribute failed, attribute name: 'bar_filename'");
+			log_error("没有找到字段： 'bar_filename'");
 			return false;
 		}
-		m_mapinfo->Init(mapid, filename);
 
-		auto iter = m_MapList.find(mapid);
-		if (iter != m_MapList.end())
+		if (m_MapSet[mapid] != nullptr)
 		{
-			log_error("add map list error ,mapid: %d already exist!", mapid);
+			log_error("添加地图失败!地图ID已存在：%d", mapid);
 			return false;
 		}
 
-		if (!LoadBar(m_mapinfo))
+		CMapInfo* newmap = map_create();
+		if (!newmap)
 		{
-			log_error("load map bar error ,mapid: %d", mapid);
+			log_error("创建CMapInfo失败!");
 			return false;
 		}
 
-		m_MapList.insert(std::make_pair(mapid, m_mapinfo));
+		if (!newmap->Init(mapid, filename.c_str()))
+		{
+			log_error("初始化加载地图配置失败!地图ID：%d", mapid);
+			return false;
+		}
+
+		m_MapSet[mapid] = newmap;
+		m_MapList.push_back(newmap);
+		
 		pinfo = pinfo->NextSiblingElement("maps");
 	}
 	
@@ -102,121 +129,22 @@ bool CMapConfig::Init()
 
 void CMapConfig::Destroy()
 {
-
+	std::list<CMapInfo *>::iterator iter = m_MapList.begin();
+	for (; iter != m_MapList.end(); ++iter)
+	{
+		map_release(*iter);
+	}
 }
 
-bool CMapConfig::LoadBar(CMapInfo* map)
+CMapInfo *CMapConfig::FindMapInfo(int mapid)
 {
-	if (!map)
-		return false;
+	if (mapid <= 0 || mapid > m_MapSet.size())
+		return nullptr;
 
-	XMLDocument doc;
-	if (doc.LoadFile(map->GetBarFileName().c_str()) != XML_SUCCESS)
-	{
-		log_error("load %s failed!", map->GetBarFileName().c_str());
-		return false;
-	}
-
-	// 添加地图阻挡点信息
-
-	XMLElement *pinfo = doc.FirstChildElement("bar_map");
-	if (!pinfo)
-	{
-		log_error("not find first child element, element name: 'bar_map'");
-		return false;
-	}
-
-	int width = 0;
-	int height = 0;
-	if (pinfo->QueryIntAttribute("width", &width) != XML_SUCCESS)
-	{
-		log_error("query int attribute failed, attribute name: 'width'");
-		return false;
-	}
-
-	if (width <= 0)
-	{
-		log_error("map width <= 0 ,mapid:%d ", map->GetMapID());
-		return false;
-	}
-	
-	if (pinfo->QueryIntAttribute("height", &height) != XML_SUCCESS)
-	{
-		log_error("query int attribute failed, attribute name: 'height'");
-		return false;
-	}
-
-	if (height <= 0)
-	{
-		log_error("map height <= 0 ,mapid:%d ", map->GetMapID());
-		return false;
-	}
-	
-	bool* barinfo = new bool[width * height];
-
-	if (!barinfo)
-	{
-		log_error("application memory failed! new m_barinfo ");
-		return false;
-	}
-	memset(barinfo, 0, width * height * sizeof(bool));
-	
-	pinfo = pinfo->FirstChildElement("bar");
-
-	while (pinfo)
-	{
-		int row = 0;
-		int col = 0;
-
-		if (pinfo->QueryIntAttribute("row", &row) != XML_SUCCESS)
-		{
-			log_error("query int attribute failed, attribute name: 'row'");
-			delete(barinfo);
-			return false;
-		}
-
-		if (row < 0 || row > width)
-		{
-			log_error("map bar row < 0 or row > m_width ,mapid:%d ", map->GetMapID());
-			delete(barinfo);
-			return false;
-		}
-
-		if (pinfo->QueryIntAttribute("col", &col) != XML_SUCCESS)
-		{
-			log_error("query int attribute failed, attribute name: 'col'");
-			delete(barinfo);
-			return false;
-		}
-
-		if (col < 0 || col > height)
-		{
-			log_error("map bar col < 0 or col > m_height ,mapid:%d ", map->GetMapID());
-			delete(barinfo);
-			return false;
-		}
-
-		barinfo[row * col] = true;
-
-		pinfo = pinfo->NextSiblingElement("bar");
-	}
-
-	map->SetMapBarInfo(width, height, barinfo);
-	return true;
+	return m_MapSet[mapid];
 }
 
-const CMapInfo *CMapConfig::GetMapInfo(int mapid)
-{
-	auto iter = m_MapList.find(mapid);
-	if (iter != m_MapList.end())
-	{
-		return iter->second;
-	}
-
-	return nullptr;
-}
-
-const std::unordered_map<int, CMapInfo*>& CMapConfig::GetMapList()
+const std::list<CMapInfo*>& CMapConfig::GetMapList()
 {
 	return m_MapList;
 }

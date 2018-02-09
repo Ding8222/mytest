@@ -26,7 +26,7 @@ bool CPlayer::LoadData(Msg *pMsg)
 
 	SetName(msg.name().c_str());
 	SetNowPos(msg.x(), msg.y(), msg.z());
-	CScene *_pScene = CScenemgr::Instance().GetScene(msg.mapid());
+	CScene *_pScene = CScenemgr::Instance().FindScene(msg.mapid());
 	if (!_pScene)
 		return false;
 	_pScene->AddObj(this);

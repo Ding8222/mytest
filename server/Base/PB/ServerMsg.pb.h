@@ -948,17 +948,17 @@ class DelClient : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   // accessors -------------------------------------------------------
 
-  // int64 nClientID = 1;
+  // int32 nClientID = 1;
   void clear_nclientid();
   static const int kNClientIDFieldNumber = 1;
-  ::google::protobuf::int64 nclientid() const;
-  void set_nclientid(::google::protobuf::int64 value);
+  ::google::protobuf::int32 nclientid() const;
+  void set_nclientid(::google::protobuf::int32 value);
 
   // @@protoc_insertion_point(class_scope:svrData.DelClient)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::int64 nclientid_;
+  ::google::protobuf::int32 nclientid_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsDelClientImpl();
@@ -1616,15 +1616,15 @@ inline void UpdateServerLoad::set_nclientcountmax(::google::protobuf::int32 valu
 
 // DelClient
 
-// int64 nClientID = 1;
+// int32 nClientID = 1;
 inline void DelClient::clear_nclientid() {
-  nclientid_ = GOOGLE_LONGLONG(0);
+  nclientid_ = 0;
 }
-inline ::google::protobuf::int64 DelClient::nclientid() const {
+inline ::google::protobuf::int32 DelClient::nclientid() const {
   // @@protoc_insertion_point(field_get:svrData.DelClient.nClientID)
   return nclientid_;
 }
-inline void DelClient::set_nclientid(::google::protobuf::int64 value) {
+inline void DelClient::set_nclientid(::google::protobuf::int32 value) {
   
   nclientid_ = value;
   // @@protoc_insertion_point(field_set:svrData.DelClient.nClientID)

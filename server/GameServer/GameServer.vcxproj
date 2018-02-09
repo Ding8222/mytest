@@ -137,11 +137,11 @@
     <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="LoginMsg.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mapconfig.cpp" />
-    <ClCompile Include="mapinfo.cpp" />
+    <ClCompile Include="MapConfig.cpp" />
+    <ClCompile Include="MapInfo.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="scene.cpp" />
-    <ClCompile Include="scenemgr.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -153,11 +153,11 @@
     <ClInclude Include="GameGatewayMgr.h" />
     <ClInclude Include="GameServer.h" />
     <ClInclude Include="LoginMsg.h" />
-    <ClInclude Include="mapconfig.h" />
-    <ClInclude Include="mapinfo.h" />
+    <ClInclude Include="MapConfig.h" />
+    <ClInclude Include="MapInfo.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="scene.h" />
-    <ClInclude Include="scenemgr.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneMgr.h" />
     <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

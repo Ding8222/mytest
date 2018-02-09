@@ -1,4 +1,4 @@
-﻿#include"mapinfo.h"
+﻿#include"MapInfo.h"
 #include"tinyxml2.h"
 #include"log.h"
 
@@ -13,32 +13,127 @@ CMapInfo::CMapInfo()
 	m_BirthPoint_Y = 0;
 	m_BirthPoint_Z = 0;
 	m_BarInfo = nullptr;
-	s_BarFileName.clear();
 }
 
 CMapInfo::~CMapInfo()
 {
-	m_Mapid = 0;
-	m_Width = 0;
-	m_Height = 0;
-	m_BirthPoint_X = 0;
-	m_BirthPoint_Y = 0;
-	m_BirthPoint_Z = 0;
+	Destroy();
+}
+
+bool CMapInfo::Init(int mapid, const char *bar_filename)
+{
+	if (!bar_filename)
+	{
+		log_error("地图配置阻挡点文件路径不存在！");
+		return false;
+	}
+
+	// 设置读取的路径
+	m_Mapid = mapid;
+
+	XMLDocument doc;
+	if (doc.LoadFile(bar_filename) != XML_SUCCESS)
+	{
+		log_error("加载 %s 失败!", bar_filename);
+		return false;
+	}
+
+	// 添加地图阻挡点信息
+
+	XMLElement *pinfo = doc.FirstChildElement("bar_map");
+	if (!pinfo)
+	{
+		log_error("没有找到字段： 'bar_map'");
+		return false;
+	}
+
+	int width = 0;
+	int height = 0;
+	if (pinfo->QueryIntAttribute("width", &width) != XML_SUCCESS)
+	{
+		log_error("没有找到字段： 'width'");
+		return false;
+	}
+
+	if (width <= 0)
+	{
+		log_error("地图宽 <= 0 ,地图ID：%d ", mapid);
+		return false;
+	}
+
+	if (pinfo->QueryIntAttribute("height", &height) != XML_SUCCESS)
+	{
+		log_error("没有找到字段： 'height'");
+		return false;
+	}
+
+	if (height <= 0)
+	{
+		log_error("地图宽 <= 0 ,地图ID：%d ", mapid);
+		return false;
+	}
+
+	bool* barinfo = new bool[width * height];
+
+	if (!barinfo)
+	{
+		log_error("分配地图阻挡点内存失败！地图ID：%d", mapid);
+		return false;
+	}
+	memset(barinfo, 0, width * height * sizeof(bool));
+
+	pinfo = pinfo->FirstChildElement("bar");
+
+	while (pinfo)
+	{
+		int row = 0;
+		int col = 0;
+
+		if (pinfo->QueryIntAttribute("row", &row) != XML_SUCCESS)
+		{
+			log_error("没有找到字段： 'row'");
+			delete(barinfo);
+			return false;
+		}
+
+		if (row < 0 || row > width)
+		{
+			log_error("地图阻挡点行数 < 0 或者行数大于地图宽 ,地图ID：%d ", mapid);
+			delete(barinfo);
+			return false;
+		}
+
+		if (pinfo->QueryIntAttribute("col", &col) != XML_SUCCESS)
+		{
+			log_error("没有找到字段： 'col'");
+			delete(barinfo);
+			return false;
+		}
+
+		if (col < 0 || col > height)
+		{
+			log_error("地图阻挡点列数 < 0 或者列数大于地图高 ,地图ID：%d ", mapid);
+			delete(barinfo);
+			return false;
+		}
+
+		barinfo[row * col] = true;
+		pinfo = pinfo->NextSiblingElement("bar");
+	}
+
+	m_Width = width;
+	m_Width = height;
+	m_BarInfo = barinfo;
+	return true;
+}
+
+void CMapInfo::Destroy()
+{
 	if (m_BarInfo)
 	{
 		delete m_BarInfo;
-		m_BarInfo = nullptr;
 	}
 	m_BarInfo = nullptr;
-	s_BarFileName.clear();
-}
-
-bool CMapInfo::Init(int mapid, std::string bar_filename)
-{
-	// 设置读取的路径
-	m_Mapid = mapid;
-	s_BarFileName = bar_filename;
-	return true;
 }
 
 void CMapInfo::GetMapBirthPoint(int &x, int &y, int &z)
