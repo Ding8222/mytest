@@ -37,6 +37,8 @@ public:
 	void AddToAoiListOut(CBaseObj * p);
 	// 从AoiList中移除对象
 	void DelFromAoiListOut(uint32 id);
+	// 清理AOI
+	void LeaveAoi();
 	// AoiList清理
 	void AoiRun();
 	// 获取名称

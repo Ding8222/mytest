@@ -33,3 +33,10 @@ time、random
 logsvr，namechecksvr
 
 把普通地图和副本地图拆分开
+--已拆分
+
+game和gate断开的时候，gate需要断开所有client
+--断开了
+
+player离线的时候，要把所有引用到的指针清理
+

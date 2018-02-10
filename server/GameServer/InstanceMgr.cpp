@@ -43,7 +43,7 @@ CInstanceMgr::CInstanceMgr()
 
 CInstanceMgr::~CInstanceMgr()
 {
-
+	Destroy();
 }
 
 bool CInstanceMgr::Init()
@@ -62,22 +62,10 @@ bool CInstanceMgr::Init()
 
 void CInstanceMgr::Run()
 {
-	// 副本
-	std::list<CInstance*>::iterator iter, tempiter;
-	for (iter = m_InstanceList.begin(); iter != m_InstanceList.end();)
-	{
-		tempiter = iter;
-		++iter;
+	idmgr_run(m_IDPool);
 
-		if ((*tempiter)->IsNeedRemove())
-		{
-			m_WaitRemove.push_back(*tempiter);
-			m_InstanceList.erase(tempiter);
-			continue;
-		}
-
-		(*tempiter)->Run();
-	}
+	ProcessAllInstance();
+	CheckAndRemove();
 }
 
 void CInstanceMgr::Destroy()
@@ -131,7 +119,7 @@ int CInstanceMgr::AddInstance(int instancebaseid)
 		m_InstanceSet[id] = newinstance;
 		m_InstanceList.push_back(newinstance);
 		newinstance->SetInsranceID(id);
-		return true;
+		return id;
 	}
 
 	instance_release(newinstance);
@@ -140,6 +128,37 @@ int CInstanceMgr::AddInstance(int instancebaseid)
 		log_error("释放ID失败!, ID:%d", id);
 
 	return 0;
+}
+
+CInstance *CInstanceMgr::FindInstance(int instanceid)
+{
+	if (instanceid <= 0 || instanceid >= static_cast<int>(m_InstanceSet.size()))
+		return nullptr;
+
+	CInstance * instance = m_InstanceSet[instanceid];
+	if (!instance || instance->IsNeedRemove())
+		return nullptr;
+
+	return instance;
+}
+
+void CInstanceMgr::ProcessAllInstance()
+{
+	std::list<CInstance*>::iterator iter, tempiter;
+	for (iter = m_InstanceList.begin(); iter != m_InstanceList.end();)
+	{
+		tempiter = iter;
+		++iter;
+
+		if ((*tempiter)->IsNeedRemove())
+		{
+			m_WaitRemove.push_back(*tempiter);
+			m_InstanceList.erase(tempiter);
+			continue;
+		}
+
+		(*tempiter)->Run();
+	}
 }
 
 void CInstanceMgr::CheckAndRemove()

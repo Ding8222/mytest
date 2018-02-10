@@ -59,18 +59,7 @@ public:
 	// 获取当前场景所属的MapID
 	int GetMapID() { return m_MapID; }
 
-public:
-	// 副本相关
-	void SetInsranceID(int id) { m_InstanceID = id; }
-	int GetInsranceID() { return m_InstanceID; }
-	void SetRemoveTime(int64 currenttime) { m_RemoveTime = currenttime; }
-	bool IsNeedRemove() { return m_RemoveTime > 0; }
-	bool CanRemove(int64 currenttime) { if (!IsNeedRemove()) return false; return currenttime >= m_RemoveTime; }
 private:
-	//副本ID
-	int m_InstanceID;
-	//待移除时间
-	int64 m_RemoveTime;
 	// 所需地图ID
 	int m_MapID;
 	// 场景宽

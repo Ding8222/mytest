@@ -77,9 +77,9 @@ bool CScene::Init(CMapInfo * _mapinfo)
 	_mapinfo->GetMapBirthPoint(m_BirthPoint_X, m_BirthPoint_Y, m_BirthPoint_Z);
 	_mapinfo->GetMapWidthAndHeight(m_Width, m_Height);
 
-	if (m_Width <= 0 && m_Height <= 0)
+	if (m_MapID <= 0 || m_Width <= 0 || m_Height <= 0)
 	{
-		log_error("CScene get map width and height failed!");
+		log_error("场景[%d]获取地图宽[%d]、高[%d]失败!", m_MapID, m_Width, m_Height);
 		return false;
 	}
 
@@ -163,9 +163,9 @@ bool CScene::DelObj(CBaseObj * obj)
 	float pos[3];
 	obj->GetNowPos(pos[0], pos[1], pos[2]);
 	Update(obj->GetTempID(), mode, pos);
-
+	obj->LeaveAoi();
 	m_ObjMap.erase(obj->GetTempID());
-
+	obj->SetTempID(0);
 	return true;
 }
 

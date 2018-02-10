@@ -17,6 +17,7 @@ CBaseObj::CBaseObj()
 	m_Scene = nullptr;
 	memset(m_ObjName, 0, MAX_NAME_LEN);
 	m_AoiList.clear();
+	m_AoiListOut.clear();
 }
 
 CBaseObj::~CBaseObj()
@@ -28,6 +29,7 @@ CBaseObj::~CBaseObj()
 	m_Scene = nullptr;
 	memset(m_ObjName, 0, MAX_NAME_LEN);
 	m_AoiList.clear();
+	m_AoiListOut.clear();
 }
 
 void CBaseObj::Run()
@@ -80,7 +82,7 @@ void CBaseObj::AddToAoiList(CBaseObj * p)
 
 	float _Pos[EPP_MAX] = { 0 };
 	p->GetNowPos(_Pos[EPP_X], _Pos[EPP_Y], _Pos[EPP_Z]);
-	//log_error("[%d]进入[%d]视野%d", p->GetTempID(), GetTempID(), (int)DIST2(_Pos, m_NowPos));
+	log_error("[%d]进入[%d]视野%d", p->GetTempID(), GetTempID(), (int)DIST2(_Pos, m_NowPos));
 }
 
 // 从AoiList中移除对象
@@ -91,7 +93,7 @@ void CBaseObj::DelFromAoiList(uint32 id)
 	assert(iter != m_AoiList.end());
 #endif
 	m_AoiList.erase(id);
-	//log_error("[%d]离开[%d]视野%d", id, GetTempID());
+	log_error("[%d]离开[%d]视野%d", id, GetTempID());
 }
 
 // 添加对象至AoiList
@@ -106,7 +108,7 @@ void CBaseObj::AddToAoiListOut(CBaseObj * p)
 
 	float _Pos[EPP_MAX] = { 0 };
 	p->GetNowPos(_Pos[EPP_X], _Pos[EPP_Y], _Pos[EPP_Z]);
-	//log_error("[%d]离开[%d]视野%d", p->GetTempID(), GetTempID(), (int)DIST2(_Pos, m_NowPos));
+	log_error("[%d]离开[%d]视野%d", p->GetTempID(), GetTempID(), (int)DIST2(_Pos, m_NowPos));
 }
 
 // 从AoiList中移除对象
@@ -117,6 +119,33 @@ void CBaseObj::DelFromAoiListOut(uint32 id)
 	assert(iter != m_AoiListOut.end());
 #endif
 	m_AoiListOut.erase(id);
+}
+
+void CBaseObj::LeaveAoi()
+{
+	auto iterB = m_AoiList.begin();
+	for (; iterB != m_AoiList.end();)
+	{
+		CBaseObj* _Obj = iterB->second;
+		if (_Obj)
+		{
+			_Obj->DelFromAoiList(GetTempID());
+		}
+		++iterB;
+	}
+	m_AoiList.clear();
+
+	auto iterOutB = m_AoiListOut.begin();
+	for (; iterOutB != m_AoiListOut.end();)
+	{
+		CBaseObj* _Obj = iterOutB->second;
+		if (_Obj)
+		{
+			_Obj->DelFromAoiListOut(GetTempID());
+		}
+		++iterOutB;
+	}
+	m_AoiListOut.clear();
 }
 
 // AoiList清理
@@ -135,6 +164,8 @@ void CBaseObj::AoiRun()
 			{
 				// 离开视野，移动到m_AoiListOut
 				iterB = m_AoiList.erase(iterB);
+				_Obj->DelFromAoiList(GetTempID());
+				_Obj->AddToAoiListOut(this);
 				AddToAoiListOut(_Obj);
 				continue;
 			}
@@ -142,6 +173,7 @@ void CBaseObj::AoiRun()
 			{
 				// 需要移除
 				iterB = m_AoiList.erase(iterB);
+				_Obj->DelFromAoiList(GetTempID());
 				continue;
 			}
 		}
@@ -161,6 +193,8 @@ void CBaseObj::AoiRun()
 			{
 				// 进入视野，移动到m_AoiList
 				iterOutB = m_AoiListOut.erase(iterOutB);
+				_Obj->DelFromAoiListOut(GetTempID());
+				_Obj->AddToAoiList(this);
 				AddToAoiList(_Obj);
 				continue;
 			}
@@ -168,6 +202,7 @@ void CBaseObj::AoiRun()
 			{
 				// 需要移除
 				iterOutB = m_AoiListOut.erase(iterOutB);
+				_Obj->DelFromAoiListOut(GetTempID());
 				continue;
 			}
 		}

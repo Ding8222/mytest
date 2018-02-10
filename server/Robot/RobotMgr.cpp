@@ -97,6 +97,7 @@ void CRobotMgr::Run()
 					netData::HandShake Msg;
 					Msg.set_sclientkey(reinterpret_cast<const char*>(key.data()), key.size());
 					(*tempitr)->SendMsg(Msg, LOGIN_TYPE_MAIN, LOGIN_SUB_HANDSHAKE);
+					(*tempitr)->SetHandShake(false);
 				}
 			}
 			return;
@@ -108,13 +109,13 @@ void CRobotMgr::Run()
 		}
 		if ((*tempitr)->IsOverTime(g_currenttime, m_OverTime))
 		{
-			log_error("连接远程服务器:[%d] 超时，准备断开重连!", m_LoginServerID);
+			log_error("连接远程服务器:[%d] 超时，准备断开重连!", (*tempitr)->GetConnectID());
 			(*tempitr)->OnConnectDisconnect();
 			return;
 		}
 		if ((*tempitr)->IsClose())
 		{
-			log_error("远程服务器断开连接，准备断开重连!", m_LoginServerID);
+			log_error("远程服务器断开连接，准备断开重连!", (*tempitr)->GetConnectID());
 			(*tempitr)->OnConnectDisconnect();
 			return;
 		}
@@ -238,9 +239,9 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				int y = msg.y();
 				int nRand = rand() % 10000;
 				if (nRand > 5000)
-					x += 1;
+					x += 10;
 				else
-					x -= 1;
+					x -= 10;
 
 				if (x > 1000)
 					x = 1000;
@@ -249,9 +250,9 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 
 				nRand = rand() % 10000;
 				if (nRand > 5000)
-					y += 1;
+					y += 10;
 				else
-					y -= 1;
+					y -= 10;
 
 				if (y > 1000)
 					y = 1000;
@@ -296,7 +297,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 
 				if (msg.port() > 0)
 				{
-					_con->ChangeConnect(msg.ip().c_str(), msg.port(), msg.nserverid());
+					_con->ChangeConnect(msg.ip().c_str(), msg.port(), msg.nserverid(), true);
 				}
 				else
 				{
@@ -318,6 +319,10 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				{
 					netData::PlayerList sendMsg;
 					_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_PLAYER_LIST);
+				}
+				else
+				{
+					_con->ChangeConnect(s_LoginServerIP.c_str(), m_LoginServerPort, m_LoginServerID, false);
 				}
 				break;
 			}

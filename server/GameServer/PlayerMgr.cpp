@@ -92,10 +92,20 @@ void CPlayerMgr::Run()
 
 void CPlayerMgr::ProcessAllPlayer()
 {
-	for (std::list<stPlayerInfo *>::iterator itr = m_PlayerList.begin(); itr != m_PlayerList.end(); ++itr)
+	std::list<stPlayerInfo*>::iterator iter, tempiter;
+	for (iter = m_PlayerList.begin(); iter != m_PlayerList.end();)
 	{
-		if ((*itr)->pPlayer)
-			(*itr)->pPlayer->Run();
+		tempiter = iter;
+		++iter;
+
+		if ((*tempiter)->pPlayer && (*tempiter)->pPlayer->IsWaitRemove())
+		{
+			m_WaitRemove.push_back(*tempiter);
+			m_PlayerList.erase(tempiter);
+			continue;
+		}
+
+		(*tempiter)->pPlayer->Run();
 	}
 }
 
@@ -127,6 +137,7 @@ bool CPlayerMgr::AddPlayer(int clientid, int gateid)
 		newInfo->nGameServerID = CConfig::Instance().GetServerID();
 		newInfo->pPlayer = newplayer;
 
+		m_PlayerList.push_back(newInfo);
 		m_PlayerInfoSet[clientid] = newInfo;
 		return true;
 	}
@@ -147,7 +158,6 @@ void CPlayerMgr::DelPlayer(int clientid)
 			{
 				pPlayer->SetWaitRemove();
 				pPlayer->OffLine();
-				m_WaitRemove.push_back(m_PlayerInfoSet[clientid]);
 			}
 		}
 	}
@@ -166,7 +176,6 @@ void CPlayerMgr::DelAllPlayer()
 	for (std::list<stPlayerInfo*>::iterator itr = m_WaitRemove.begin(); itr != m_WaitRemove.end(); ++itr)
 	{
 		if((*itr) && (*itr)->pPlayer)
-			(*itr)->pPlayer->OffLine();
 		ReleasePlayerAndID(*itr);
 	}
 	m_WaitRemove.clear();
@@ -215,7 +224,7 @@ CPlayer *CPlayerMgr::FindPlayerByClientID(int clientid)
 {
 	assert(m_PlayerInfoSet[clientid]);
 	if (m_PlayerInfoSet[clientid])
-		m_PlayerInfoSet[clientid]->pPlayer;
+		return m_PlayerInfoSet[clientid]->pPlayer;
 
 	return nullptr;
 }

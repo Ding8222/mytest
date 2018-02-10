@@ -2,10 +2,11 @@
 #include "GameServer.h"
 #include "GameGatewayMgr.h"
 #include "GameCenterConnect.h"
-#include "Playermgr.h"
-#include "scenemgr.h"
-#include "mapconfig.h"
-#include "config.h"
+#include "PlayerMgr.h"
+#include "SceneMgr.h"
+#include "InstanceMgr.h"
+#include "MapConfig.h"
+#include "Config.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -77,6 +78,12 @@ bool CGameServer::Init()
 			return false;
 		}
 
+		if (!CInstanceMgr::Instance().Init())
+		{
+			log_error("初始化InstanceMgr失败!");
+			return false;
+		}
+
 		if (!CPlayerMgr::Instance().init())
 		{
 			log_error("初始化PlayerMgr失败!");
@@ -90,8 +97,9 @@ bool CGameServer::Init()
 	CGameGatewayMgr::Instance().Destroy();
 	CGameCenterConnect::Instance().Destroy();
 	CMapConfig::Instance().Destroy();
-	CScenemgr::Instance().Destroy();
 	CPlayerMgr::Instance().Destroy();
+	CScenemgr::Instance().Destroy();
+	CInstanceMgr::Instance().Destroy();
 	Destroy();
 
 	return false;
@@ -131,8 +139,9 @@ void CGameServer::Run()
 	CGameGatewayMgr::Instance().Destroy();
 	CGameCenterConnect::Instance().Destroy();
 	CMapConfig::Instance().Destroy();
-	CScenemgr::Instance().Destroy();
 	CPlayerMgr::Instance().Destroy();
+	CScenemgr::Instance().Destroy();
+	CInstanceMgr::Instance().Destroy();
 
 	Destroy();
 }
@@ -150,6 +159,7 @@ void CGameServer::RunOnce()
 
 		CPlayerMgr::Instance().Run();
 		CScenemgr::Instance().Run();
+		CInstanceMgr::Instance().Run();
 
 		CGameGatewayMgr::Instance().EndRun();
 		CGameCenterConnect::Instance().EndRun();

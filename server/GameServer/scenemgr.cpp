@@ -64,7 +64,7 @@ void CScenemgr::Destroy()
 	std::unordered_map<int, CScene *>::iterator iter = m_SceneMap.begin();
 	for (; iter != m_SceneMap.end(); ++iter)
 	{
-		iter->second->Destroy();
+		scene_release(iter->second);
 	}
 	m_SceneMap.clear();
 }

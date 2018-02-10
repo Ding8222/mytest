@@ -6,7 +6,6 @@
 #pragma once
 #include<unordered_map>
 
-struct idmgr;
 class CScene;
 class CMapInfo;
 

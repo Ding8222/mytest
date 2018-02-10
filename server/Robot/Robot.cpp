@@ -35,9 +35,9 @@ void CRobot::OnConnectDisconnect()
 	SetAlreadyRegister(false);
 }
 
-void CRobot::ChangeConnect(const char *ip, int port, int id)
+void CRobot::ChangeConnect(const char *ip, int port, int id, bool bauth)
 {
-	m_isAuth = true;
+	m_isAuth = bauth;
 	SetConnectInfo(ip,port,id);
 	OnConnectDisconnect();
 }

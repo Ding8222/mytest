@@ -21,7 +21,7 @@ public:
 
 	void OnConnectDisconnect();
 
-	void ChangeConnect(const char *ip, int port, int id);
+	void ChangeConnect(const char *ip, int port, int id, bool bauth);
 
 	void Destroy();
 private:

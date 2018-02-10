@@ -247,9 +247,21 @@ void CGameGatewayMgr::ProcessClientMsg(int gateid, int64 clientid, Msg *pMsg)
 			CPlayer *player = CPlayerMgr::Instance().FindPlayerByClientID(clientid);
 			if (player)
 			{
-				player->MoveTo(msg.x(), msg.y(), msg.z());
-
 				netData::PlayerMoveRet sendMsg;
+				if (player->MoveTo(msg.x(), msg.y(), msg.z()))
+				{
+					sendMsg.set_x(msg.x());
+					sendMsg.set_y(msg.y());
+					sendMsg.set_z(msg.z());
+				}
+				else
+				{
+					float _Pos[EPP_MAX] = { 0 };
+					player->GetNowPos(_Pos[EPP_X], _Pos[EPP_Y], _Pos[EPP_Z]);
+					sendMsg.set_x(_Pos[EPP_X]);
+					sendMsg.set_y(_Pos[EPP_Y]);
+					sendMsg.set_z(_Pos[EPP_Z]);
+				}
 				SendMsgToClient(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE_RET, clientid);
 			}
 			break;

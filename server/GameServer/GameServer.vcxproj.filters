@@ -19,9 +19,6 @@
     <Filter Include="玩家对象">
       <UniqueIdentifier>{63467607-1ae3-4e85-abb0-8de900023564}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Client信息">
-      <UniqueIdentifier>{675ef8b2-683a-4c2a-a8cd-a63e8d650cfa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="登陆">
       <UniqueIdentifier>{d907b953-055b-4adc-868e-b1df147f9d1f}</UniqueIdentifier>
     </Filter>
@@ -54,9 +51,6 @@
     <ClCompile Include="LoginMsg.cpp">
       <Filter>登陆</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerMgr.cpp">
-      <Filter>Client信息</Filter>
-    </ClCompile>
     <ClCompile Include="Utilities.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -77,6 +71,9 @@
     </ClCompile>
     <ClCompile Include="Instance.cpp">
       <Filter>地图场景</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerMgr.cpp">
+      <Filter>玩家对象</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,9 +101,6 @@
     <ClInclude Include="LoginMsg.h">
       <Filter>登陆</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerMgr.h">
-      <Filter>Client信息</Filter>
-    </ClInclude>
     <ClInclude Include="Utilities.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -127,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="Instance.h">
       <Filter>地图场景</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMgr.h">
+      <Filter>玩家对象</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

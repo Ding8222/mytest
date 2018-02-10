@@ -47,7 +47,7 @@ void CGameConnect::ServerRegisterSucc(int id, const char *ip, int port)
 
 void CGameConnect::ConnectDisconnect(connector *)
 {
-
+	CGateClientMgr::Instance().ReleaseAllClient();
 }
 
 void CGameConnect::ProcessMsg(connector *_con)

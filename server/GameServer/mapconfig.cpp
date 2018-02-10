@@ -35,18 +35,13 @@ static void map_release(CMapInfo *self)
 
 CMapConfig::CMapConfig()
 {
-	Destroy();
+	m_MapList.clear();
+	m_MapSet.clear();
 }
 
 CMapConfig::~CMapConfig()
 {
-	auto iterB = m_MapList.begin();
-	for (; iterB != m_MapList.end(); iterB++)
-	{
-		delete (*iterB);
-	}
-
-	m_MapList.clear();
+	Destroy();
 }
 
 bool CMapConfig::Init()
@@ -134,11 +129,12 @@ void CMapConfig::Destroy()
 	{
 		map_release(*iter);
 	}
+	m_MapList.clear();
 }
 
 CMapInfo *CMapConfig::FindMapInfo(int mapid)
 {
-	if (mapid <= 0 || mapid > m_MapSet.size())
+	if (mapid <= 0 || mapid > static_cast<int>(m_MapSet.size()))
 		return nullptr;
 
 	return m_MapSet[mapid];

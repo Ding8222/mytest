@@ -47,40 +47,38 @@ bool CMapInfo::Init(int mapid, const char *bar_filename)
 		return false;
 	}
 
-	int width = 0;
-	int height = 0;
-	if (pinfo->QueryIntAttribute("width", &width) != XML_SUCCESS)
+	if (pinfo->QueryIntAttribute("width", &m_Width) != XML_SUCCESS)
 	{
 		log_error("没有找到字段： 'width'");
 		return false;
 	}
 
-	if (width <= 0)
+	if (m_Width <= 0)
 	{
 		log_error("地图宽 <= 0 ,地图ID：%d ", mapid);
 		return false;
 	}
 
-	if (pinfo->QueryIntAttribute("height", &height) != XML_SUCCESS)
+	if (pinfo->QueryIntAttribute("height", &m_Height) != XML_SUCCESS)
 	{
 		log_error("没有找到字段： 'height'");
 		return false;
 	}
 
-	if (height <= 0)
+	if (m_Height <= 0)
 	{
 		log_error("地图宽 <= 0 ,地图ID：%d ", mapid);
 		return false;
 	}
 
-	bool* barinfo = new bool[width * height];
+	bool* barinfo = new bool[m_Width * m_Height];
 
 	if (!barinfo)
 	{
 		log_error("分配地图阻挡点内存失败！地图ID：%d", mapid);
 		return false;
 	}
-	memset(barinfo, 0, width * height * sizeof(bool));
+	memset(barinfo, 0, m_Width * m_Height * sizeof(bool));
 
 	pinfo = pinfo->FirstChildElement("bar");
 
@@ -96,7 +94,7 @@ bool CMapInfo::Init(int mapid, const char *bar_filename)
 			return false;
 		}
 
-		if (row < 0 || row > width)
+		if (row < 0 || row > m_Width)
 		{
 			log_error("地图阻挡点行数 < 0 或者行数大于地图宽 ,地图ID：%d ", mapid);
 			delete(barinfo);
@@ -110,7 +108,7 @@ bool CMapInfo::Init(int mapid, const char *bar_filename)
 			return false;
 		}
 
-		if (col < 0 || col > height)
+		if (col < 0 || col > m_Height)
 		{
 			log_error("地图阻挡点列数 < 0 或者列数大于地图高 ,地图ID：%d ", mapid);
 			delete(barinfo);
@@ -121,8 +119,6 @@ bool CMapInfo::Init(int mapid, const char *bar_filename)
 		pinfo = pinfo->NextSiblingElement("bar");
 	}
 
-	m_Width = width;
-	m_Width = height;
 	m_BarInfo = barinfo;
 	return true;
 }
