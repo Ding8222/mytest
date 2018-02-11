@@ -110,30 +110,33 @@ void CClientAuth::AddNewClient(Msg *pMsg, CClient *cl)
 	if (iter != m_ClientSecretInfo.end())
 	{
 		ClientAuthInfo *_pData = iter->second;
-		if (_pData->ClientID > 0)
+		if (_pData->Secret == msg.ssecret())
 		{
-			// 只有自己进的来，这边应该是上次自己的ClientID
-			// 上次断开的时候,会调用OnClientDisconnect
-			// 这边的ClientID应该始终为0
-			// KickClient(_pData->ClientID);
+			if (_pData->ClientID > 0)
+			{
+				// 只有自己进的来，这边应该是上次自己的ClientID
+				// 上次断开的时候,会调用OnClientDisconnect
+				// 这边的ClientID应该始终为0
+				// KickClient(_pData->ClientID);
+			}
+			assert(_pData->ClientID == 0);
+			_pData->ClientID = cl->GetClientID();
+			m_ClientAuthInfo.insert(std::make_pair(cl->GetClientID(), _pData));
+			log_error("新的客户端认证成功！token:%s", msg.stoken().c_str());
+
+			svrData::AddNewClient sendMsg;
+			CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT, cl->GetClientID());
+			cl->SetAlreadyAuth();
+
+			return;
 		}
-
-		_pData->ClientID = cl->GetClientID();
-		m_ClientAuthInfo.insert(std::make_pair(cl->GetClientID(), _pData));
-		log_error("新的客户端认证成功！token:%s", msg.stoken().c_str());
-
-		svrData::AddNewClient sendMsg;
-		CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT, cl->GetClientID());
-		cl->SetAlreadyAuth();
 	}
-	else
-	{
-		netData::LoginRet sendMsg;
-		sendMsg.set_ncode(netData::LoginRet::EC_FAIL);
-		CGateClientMgr::Instance().SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET);
-		// 认证失败
-		log_error("新的客户端认证失败！token:%s", msg.stoken().c_str());
-	}
+
+	netData::LoginRet sendMsg;
+	sendMsg.set_ncode(netData::LoginRet::EC_FAIL);
+	CGateClientMgr::Instance().SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET);
+	// 认证失败
+	log_error("新的客户端认证失败！token:%s", msg.stoken().c_str());
 }
 
 // 请求角色列表

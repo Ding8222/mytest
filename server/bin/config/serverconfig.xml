@@ -21,8 +21,8 @@ DataLimt_Send		发送数据发小限制，必须大于等于0，小于等于2048
 
 -->
 <Base 
-	Over_Time = "10000"
-	Ping_Time = "5000"
+	Over_Time = "1000"
+	Ping_Time = "500"
 	>
 </Base>
 

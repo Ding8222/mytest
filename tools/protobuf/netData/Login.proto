@@ -42,7 +42,7 @@ message Auth
 {
 	//token:base64encode(账号)@base64encode(要登陆的服务器ID)@base64encode(密码)
 	string sEtoken = 1;	//base64encode(desencode(secret,token))
-	string sSecret = 2; //client不用填写
+	bytes sSecret = 2; //client不用填写
 }
 
 // 2-6 认证返回
@@ -70,6 +70,7 @@ message Login
 	// handshake = base64encode(token.user)@base64encode(token.server)#base64encode(subid):index)
 	// hmac = hmac64(hashkey(handshake), secret)
 	string sToken = 1;	// handshake:base64encode(hmac)
+	bytes sSecret = 2;
 }
 
 // 2-8 登录返回

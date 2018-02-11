@@ -65,34 +65,19 @@ void CRobotMgr::Run()
 					// 逻辑服
 					netData::Login sendMsg;
 					sendMsg.set_stoken((*tempitr)->GetAccount());
+					sendMsg.set_ssecret((*tempitr)->GetSecret());
 
 					(*tempitr)->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN);
 				}
 				else
 				{
 					// 登录服
-					std::string s1("hello world");
-					CryptoPP::SecByteBlock b1((const unsigned char*)s1.data(), s1.size());
 
 					// 生成client key
 					CryptoPP::AutoSeededRandomPool prng;
 					CryptoPP::SecByteBlock key(0x00, CryptoPP::DES::DEFAULT_KEYLENGTH);
 					prng.GenerateBlock(key, key.size());
 					(*tempitr)->SetClientKey(key);
-
-					std::string test(reinterpret_cast<const char*>(key.data()), key.size());
-
-					unsigned char input[CryptoPP::DES::BLOCKSIZE] = "12345";
-					unsigned char output[CryptoPP::DES::BLOCKSIZE];
-					unsigned char txt[CryptoPP::DES::BLOCKSIZE];
-
-					CryptoPP::DESEncryption encryption_DES;
-					encryption_DES.SetKey(key, CryptoPP::DES::KEYLENGTH);
-					encryption_DES.ProcessBlock(input, output);
-
-					CryptoPP::DESDecryption decryption_DES;
-					decryption_DES.SetKey(key, CryptoPP::DES::KEYLENGTH);
-					decryption_DES.ProcessBlock(output, txt);
 
 					netData::HandShake Msg;
 					Msg.set_sclientkey(reinterpret_cast<const char*>(key.data()), key.size());
@@ -179,8 +164,9 @@ void CRobotMgr::ProcessRegister(CRobot *con)
 				netData::HandShakeRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				log_error("ServerKey:%s", msg.sserverkey().c_str());
-				log_error("ChallengeKey:%s", msg.schallenge().c_str());
+// 				log_error("ServerKey:%s", msg.sserverkey().c_str());
+// 				log_error("ChallengeKey:%s", msg.schallenge().c_str());
+				con->SetSecret(msg.schallenge());
 
 				netData::Auth sendMsg;
 				sendMsg.set_setoken(con->GetAccount());

@@ -39,22 +39,17 @@ void CClientAuth::HandShake(CClient *cl, Msg *pMsg)
 
 	netData::HandShake msg;
 	_CHECK_PARSE_(pMsg, msg);
-
-	CryptoPP::SecByteBlock ClientKey((const unsigned char*)msg.sclientkey().data(), msg.sclientkey().size());
-
+	
 	CryptoPP::AutoSeededRandomPool prng;
 	CryptoPP::SecByteBlock Challenge(0x00, CryptoPP::DES::DEFAULT_KEYLENGTH);
-	CryptoPP::SecByteBlock ServerKey(0x00, CryptoPP::DES::DEFAULT_KEYLENGTH);
 
 	prng.GenerateBlock(Challenge, Challenge.size());
-	prng.GenerateBlock(ServerKey, ServerKey.size());
 
 	netData::HandShakeRet sendMsg;
 	sendMsg.set_schallenge(reinterpret_cast<const char*>(Challenge.data()), Challenge.size());
-	sendMsg.set_sserverkey(reinterpret_cast<const char*>(ServerKey.data()), ServerKey.size());
-
+	
 	// 算出hmac
-	AddSecret(cl->GetClientID(), "123");
+	AddSecret(cl->GetClientID(), sendMsg.schallenge());
 	CLoginClientMgr::Instance().SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_HANDSHAKE_RET);
 }
 
@@ -67,10 +62,12 @@ void CClientAuth::Challenge(CClient *cl, Msg *pMsg)
 	netData::Challenge msg;
 	_CHECK_PARSE_(pMsg, msg);
 
-	// 验证hmac
-
 	netData::ChallengeRet sendMsg;
-	sendMsg.set_ncode(netData::ChallengeRet::EC_SUCC);
+	if (msg.shmac() == GetSecret(cl->GetClientID()))
+		sendMsg.set_ncode(netData::ChallengeRet::EC_SUCC);
+	else
+		sendMsg.set_ncode(netData::ChallengeRet::EC_FAIL);
+
 	CLoginClientMgr::Instance().SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_CHALLENGE_RET);
 }
 

@@ -465,6 +465,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::Login, stoken_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::Login, ssecret_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::LoginRet, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -529,14 +530,14 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 25, -1, sizeof(::netData::Auth)},
   { 32, -1, sizeof(::netData::AuthRet)},
   { 41, -1, sizeof(::netData::Login)},
-  { 47, -1, sizeof(::netData::LoginRet)},
-  { 53, -1, sizeof(::netData::PlayerLite)},
-  { 62, -1, sizeof(::netData::PlayerList)},
-  { 68, -1, sizeof(::netData::PlayerListRet)},
-  { 74, -1, sizeof(::netData::CreatePlayer)},
-  { 83, -1, sizeof(::netData::CreatePlayerRet)},
-  { 90, -1, sizeof(::netData::SelectPlayer)},
-  { 96, -1, sizeof(::netData::SelectPlayerRet)},
+  { 48, -1, sizeof(::netData::LoginRet)},
+  { 54, -1, sizeof(::netData::PlayerLite)},
+  { 63, -1, sizeof(::netData::PlayerList)},
+  { 69, -1, sizeof(::netData::PlayerListRet)},
+  { 75, -1, sizeof(::netData::CreatePlayer)},
+  { 84, -1, sizeof(::netData::CreatePlayerRet)},
+  { 91, -1, sizeof(::netData::SelectPlayer)},
+  { 97, -1, sizeof(::netData::SelectPlayerRet)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -585,28 +586,29 @@ void AddDescriptorsImpl() {
       "enge\022\r\n\005sHmac\030\001 \001(\t\"K\n\014ChallengeRet\022\r\n\005n"
       "Code\030\001 \001(\005\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUC"
       "C\020\001\022\013\n\007EC_FAIL\020\002\"(\n\004Auth\022\017\n\007sEtoken\030\001 \001("
-      "\t\022\017\n\007sSecret\030\002 \001(\t\"\260\001\n\007AuthRet\022\r\n\005nCode\030"
+      "\t\022\017\n\007sSecret\030\002 \001(\014\"\260\001\n\007AuthRet\022\r\n\005nCode\030"
       "\001 \001(\005\022\021\n\tnServerID\030\002 \001(\005\022\n\n\002ip\030\003 \001(\t\022\014\n\004"
       "port\030\004 \001(\005\"i\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUC"
       "C\020\001\022\013\n\007EC_FAIL\020\002\022\020\n\014EC_HANDSHAKE\020\003\022\r\n\tEC"
-      "_SERVER\020\004\022\t\n\005EC_DB\020\005\022\017\n\013EC_AUTHINFO\020\006\"\027\n"
-      "\005Login\022\016\n\006sToken\030\001 \001(\t\"G\n\010LoginRet\022\r\n\005nC"
-      "ode\030\001 \001(\005\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC"
-      "\020\001\022\013\n\007EC_FAIL\020\002\"E\n\nPlayerLite\022\014\n\004guid\030\001 "
-      "\001(\003\022\r\n\005sName\030\002 \001(\t\022\014\n\004nJob\030\003 \001(\005\022\014\n\004nSex"
-      "\030\004 \001(\005\"\035\n\nPlayerList\022\017\n\007account\030\001 \001(\t\"2\n"
-      "\rPlayerListRet\022!\n\004list\030\001 \003(\0132\023.netData.P"
-      "layerLite\"J\n\014CreatePlayer\022\r\n\005sName\030\001 \001(\t"
-      "\022\014\n\004nJob\030\002 \001(\005\022\014\n\004nSex\030\003 \001(\005\022\017\n\007account\030"
-      "\004 \001(\t\"q\n\017CreatePlayerRet\022\r\n\005nCode\030\001 \001(\005\022"
-      "!\n\004info\030\002 \001(\0132\023.netData.PlayerLite\",\n\002EC"
-      "\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002"
-      "\"\034\n\014SelectPlayer\022\014\n\004guid\030\001 \001(\003\"N\n\017Select"
-      "PlayerRet\022\r\n\005nCode\030\001 \001(\005\",\n\002EC\022\014\n\010EC_OTH"
-      "ER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002b\006proto3"
+      "_SERVER\020\004\022\t\n\005EC_DB\020\005\022\017\n\013EC_AUTHINFO\020\006\"(\n"
+      "\005Login\022\016\n\006sToken\030\001 \001(\t\022\017\n\007sSecret\030\002 \001(\014\""
+      "G\n\010LoginRet\022\r\n\005nCode\030\001 \001(\005\",\n\002EC\022\014\n\010EC_O"
+      "THER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002\"E\n\nPlay"
+      "erLite\022\014\n\004guid\030\001 \001(\003\022\r\n\005sName\030\002 \001(\t\022\014\n\004n"
+      "Job\030\003 \001(\005\022\014\n\004nSex\030\004 \001(\005\"\035\n\nPlayerList\022\017\n"
+      "\007account\030\001 \001(\t\"2\n\rPlayerListRet\022!\n\004list\030"
+      "\001 \003(\0132\023.netData.PlayerLite\"J\n\014CreatePlay"
+      "er\022\r\n\005sName\030\001 \001(\t\022\014\n\004nJob\030\002 \001(\005\022\014\n\004nSex\030"
+      "\003 \001(\005\022\017\n\007account\030\004 \001(\t\"q\n\017CreatePlayerRe"
+      "t\022\r\n\005nCode\030\001 \001(\005\022!\n\004info\030\002 \001(\0132\023.netData"
+      ".PlayerLite\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SU"
+      "CC\020\001\022\013\n\007EC_FAIL\020\002\"\034\n\014SelectPlayer\022\014\n\004gui"
+      "d\030\001 \001(\003\"N\n\017SelectPlayerRet\022\r\n\005nCode\030\001 \001("
+      "\005\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC"
+      "_FAIL\020\002b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 998);
+      descriptor, 1015);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Login.proto", &protobuf_RegisterTypes);
 }
@@ -1848,16 +1850,12 @@ bool Auth::MergePartialFromCodedStream(
         break;
       }
 
-      // string sSecret = 2;
+      // bytes sSecret = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_ssecret()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->ssecret().data(), static_cast<int>(this->ssecret().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "netData.Auth.sSecret"));
         } else {
           goto handle_unusual;
         }
@@ -1900,13 +1898,9 @@ void Auth::SerializeWithCachedSizes(
       1, this->setoken(), output);
   }
 
-  // string sSecret = 2;
+  // bytes sSecret = 2;
   if (this->ssecret().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->ssecret().data(), static_cast<int>(this->ssecret().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "netData.Auth.sSecret");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
       2, this->ssecret(), output);
   }
 
@@ -1935,14 +1929,10 @@ void Auth::SerializeWithCachedSizes(
         1, this->setoken(), target);
   }
 
-  // string sSecret = 2;
+  // bytes sSecret = 2;
   if (this->ssecret().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->ssecret().data(), static_cast<int>(this->ssecret().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "netData.Auth.sSecret");
     target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         2, this->ssecret(), target);
   }
 
@@ -1970,10 +1960,10 @@ size_t Auth::ByteSizeLong() const {
         this->setoken());
   }
 
-  // string sSecret = 2;
+  // bytes sSecret = 2;
   if (this->ssecret().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
+      ::google::protobuf::internal::WireFormatLite::BytesSize(
         this->ssecret());
   }
 
@@ -2424,6 +2414,7 @@ void Login::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int Login::kSTokenFieldNumber;
+const int Login::kSSecretFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 Login::Login()
@@ -2443,11 +2434,16 @@ Login::Login(const Login& from)
   if (from.stoken().size() > 0) {
     stoken_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.stoken_);
   }
+  ssecret_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.ssecret().size() > 0) {
+    ssecret_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ssecret_);
+  }
   // @@protoc_insertion_point(copy_constructor:netData.Login)
 }
 
 void Login::SharedCtor() {
   stoken_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ssecret_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _cached_size_ = 0;
 }
 
@@ -2458,6 +2454,7 @@ Login::~Login() {
 
 void Login::SharedDtor() {
   stoken_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ssecret_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void Login::SetCachedSize(int size) const {
@@ -2483,6 +2480,7 @@ void Login::Clear() {
   (void) cached_has_bits;
 
   stoken_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ssecret_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   _internal_metadata_.Clear();
 }
 
@@ -2506,6 +2504,18 @@ bool Login::MergePartialFromCodedStream(
             this->stoken().data(), static_cast<int>(this->stoken().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "netData.Login.sToken"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bytes sSecret = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_ssecret()));
         } else {
           goto handle_unusual;
         }
@@ -2548,6 +2558,12 @@ void Login::SerializeWithCachedSizes(
       1, this->stoken(), output);
   }
 
+  // bytes sSecret = 2;
+  if (this->ssecret().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
+      2, this->ssecret(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -2573,6 +2589,13 @@ void Login::SerializeWithCachedSizes(
         1, this->stoken(), target);
   }
 
+  // bytes sSecret = 2;
+  if (this->ssecret().size() > 0) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        2, this->ssecret(), target);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -2595,6 +2618,13 @@ size_t Login::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->stoken());
+  }
+
+  // bytes sSecret = 2;
+  if (this->ssecret().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::BytesSize(
+        this->ssecret());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2630,6 +2660,10 @@ void Login::MergeFrom(const Login& from) {
 
     stoken_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.stoken_);
   }
+  if (from.ssecret().size() > 0) {
+
+    ssecret_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ssecret_);
+  }
 }
 
 void Login::CopyFrom(const ::google::protobuf::Message& from) {
@@ -2657,6 +2691,7 @@ void Login::Swap(Login* other) {
 void Login::InternalSwap(Login* other) {
   using std::swap;
   stoken_.Swap(&other->stoken_);
+  ssecret_.Swap(&other->ssecret_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
