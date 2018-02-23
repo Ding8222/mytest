@@ -156,6 +156,7 @@
     <ClInclude Include="RandomPool.h" />
     <ClInclude Include="SendMail.h" />
     <ClInclude Include="serverinfo.h" />
+    <ClInclude Include="ServerLog.h" />
     <ClInclude Include="ServerMgr.h" />
     <ClInclude Include="ServerType.h" />
     <ClInclude Include="sqlinterface.h" />

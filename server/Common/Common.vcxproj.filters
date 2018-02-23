@@ -75,5 +75,8 @@
     <ClCompile Include="RandomPool.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ServerLog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

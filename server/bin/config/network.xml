@@ -28,6 +28,6 @@ ThreadNum		线程数目
 	SmallBufNum="32"
 	ListenerNum="4"
 	SocketerNum="32"
-	ThreadNum="2"
+	ThreadNum="0"
 	>
 </Network>

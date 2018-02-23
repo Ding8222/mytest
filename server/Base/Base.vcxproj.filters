@@ -152,5 +152,8 @@
     <ClInclude Include="RandomPool.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="ServerLog.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

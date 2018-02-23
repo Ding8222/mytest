@@ -138,6 +138,7 @@
     <ClCompile Include="RandomPool.cpp" />
     <ClCompile Include="SendMail.cpp" />
     <ClCompile Include="serverinfo.cpp" />
+    <ClCompile Include="ServerLog.cpp" />
     <ClCompile Include="ServerMgr.cpp" />
     <ClCompile Include="sqlinterface.cpp" />
     <ClCompile Include="Timer.cpp" />

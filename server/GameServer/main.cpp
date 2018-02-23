@@ -8,6 +8,7 @@
 #include "config.h"
 #include "GameServer.h"
 #include "NetConfig.h"
+#include "ServerLog.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -23,6 +24,12 @@
 
 bool init()
 {
+	if (!init_log("GameServer_Log"))
+	{
+		log_error("初始化Log失败!");
+		return false;
+	}
+	
 	log_error("逻辑服务器开始启动!");
 
 #ifdef _WIN32
@@ -71,7 +78,7 @@ bool init()
 	//循环结束后的资源释放
 	CGameServer::Instance().Release();
 	lxnet::net_release();
-
+	release_log();
 #ifdef _WIN32
 	CMiniDump::End();
 #endif
