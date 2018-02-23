@@ -7,6 +7,7 @@
 #include "InstanceMgr.h"
 #include "MapConfig.h"
 #include "Config.h"
+#include "Timer.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -119,6 +120,7 @@ void CGameServer::Run()
 	{
 		CGameGatewayMgr::Instance().ResetMsgNum();
 		CGameCenterConnect::Instance().ResetMsgNum();
+		CTimer::UpdateTime();
 
 		g_currenttime = get_millisecond();
 		RunOnce();

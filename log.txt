@@ -26,6 +26,7 @@ client中的s_Secret应该要改成char类型，确认加密方式后
 gateway那边AddNewClient的时候，需要判断好秘钥
 
 time、random
+--已完成
 
 服务器内的消息发送要优化（清理）一下方式...
 

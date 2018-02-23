@@ -146,5 +146,11 @@
     <ClInclude Include="Guid.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomPool.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

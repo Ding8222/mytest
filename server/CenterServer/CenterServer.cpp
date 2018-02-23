@@ -2,6 +2,7 @@
 #include "CenterServer.h"
 #include "CentServerMgr.h"
 #include "config.h"
+#include "Timer.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -77,6 +78,7 @@ void CCenterServer::Run()
 	while (m_Run)
 	{
 		CCentServerMgr::Instance().ResetMsgNum();
+		CTimer::UpdateTime();
 
 		g_currenttime = get_millisecond();
 		RunOnce();

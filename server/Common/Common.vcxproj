@@ -135,10 +135,12 @@
     <ClCompile Include="MiniDump.cpp" />
     <ClCompile Include="NetConfig.cpp" />
     <ClCompile Include="pool.c" />
+    <ClCompile Include="RandomPool.cpp" />
     <ClCompile Include="SendMail.cpp" />
     <ClCompile Include="serverinfo.cpp" />
     <ClCompile Include="ServerMgr.cpp" />
     <ClCompile Include="sqlinterface.cpp" />
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

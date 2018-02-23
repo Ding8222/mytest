@@ -4,6 +4,7 @@
 #include "sqlinterface.h"
 #include "DBCenterConnect.h"
 #include "Guid.h"
+#include "Timer.h"
 
 #include "LoginType.h"
 #include "Login.pb.h"
@@ -57,14 +58,14 @@ void CClientLogin::ClientAuth(connector *_con, Msg *pMsg, msgtail *tl)
 	if (res && res->IsOpen() && !res->IsEnd())
 	{
 		// 存在的账号
-		res = g_dbhand.Execute(fmt::format("update account set logintime ={0} where account = '{1}'", time(nullptr), msg.setoken().c_str()).c_str());
+		res = g_dbhand.Execute(fmt::format("update account set logintime ={0} where account = '{1}'", CTimer::GetTime(), msg.setoken().c_str()).c_str());
 		if (res)
 			sendMsg.set_ncode(netData::AuthRet::EC_SUCC);
 	}
 	else
 	{
 		// 不存在的账号，创建
-		res = g_dbhand.Execute(fmt::format("insert into account (account,createtime,logintime) values ('{0}',{1},{2})", msg.setoken().c_str(), time(nullptr), time(nullptr)).c_str());
+		res = g_dbhand.Execute(fmt::format("insert into account (account,createtime,logintime) values ('{0}',{1},{2})", msg.setoken().c_str(), CTimer::GetTime(), CTimer::GetTime()).c_str());
 		if (res)
 		{
 			res = g_dbhand.Execute("select @@IDENTITY");
@@ -119,7 +120,7 @@ void CClientLogin::CreatePlayer(connector *_con, Msg *pMsg, msgtail *tl)
 	netData::CreatePlayerRet sendMsg;
 	sendMsg.set_ncode(netData::CreatePlayerRet::EC_FAIL);
 	DataBase::CRecordset *res = g_dbhand.Execute(fmt::format("insert into playerdate (account,name,guid,sex,job,level,createtime,logintime,mapid,x,y,z,data) values ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12})",
-		msg.account().c_str(), msg.sname(), guid, msg.nsex(), msg.njob(), 1, time(nullptr), time(nullptr), guid % 9 + 1, 1, 1, 1, "1").c_str());
+		msg.account().c_str(), msg.sname(), guid, msg.nsex(), msg.njob(), 1, CTimer::GetTime(), CTimer::GetTime(), guid % 9 + 1, 1, 1, 1, "1").c_str());
 	if (res)
 	{
 		res = g_dbhand.Execute("select @@IDENTITY");
@@ -166,7 +167,7 @@ void CClientLogin::SelectPlayer(connector *_con, Msg *pMsg, msgtail *tl)
 		sendMsgToGame.set_z(res->GetFloat("z"));
 		sendMsgToGame.set_data(res->GetChar("data"));
 
-		res = g_dbhand.Execute(fmt::format("update playerdate set logintime ={0} where guid = '{1}'", time(nullptr), msg.guid()).c_str());
+		res = g_dbhand.Execute(fmt::format("update playerdate set logintime ={0} where guid = '{1}'", CTimer::GetTime(), msg.guid()).c_str());
 		if (res)
 		{
 			sendMsg.set_ncode(netData::SelectPlayerRet::EC_SUCC);

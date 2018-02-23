@@ -4,6 +4,7 @@
 #include"GameConnect.h"
 #include"GateClientMgr.h"
 #include"GateCenterConnect.h"
+#include "Timer.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -93,6 +94,7 @@ void CGameGateway::Run()
 	{
 		CGameConnect::Instance().ResetMsgNum();
 		CGateCenterConnect::Instance().ResetMsgNum();
+		CTimer::UpdateTime();
 
 		g_currenttime = get_millisecond();
 		RunOnce();

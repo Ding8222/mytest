@@ -3,6 +3,7 @@
 #include"LoginClientMgr.h"
 #include"LoginCenterConnect.h"
 #include"config.h"
+#include "Timer.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -84,6 +85,7 @@ void CLoginServer::Run()
 	while (m_Run)
 	{
 		CLoginCenterConnect::Instance().ResetMsgNum();
+		CTimer::UpdateTime();
 
 		g_currenttime = get_millisecond();
 		RunOnce();

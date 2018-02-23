@@ -2,6 +2,7 @@
 #include"RobotSvr.h"
 #include"RobotMgr.h"
 #include"Config.h"
+#include "Timer.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -76,6 +77,8 @@ void CRobotSvr::Run()
 	int delay;
 	while (m_Run)
 	{
+		CTimer::UpdateTime();
+
 		g_currenttime = get_millisecond();
 		RunOnce();
 		delay = (int)(get_millisecond() - g_currenttime);

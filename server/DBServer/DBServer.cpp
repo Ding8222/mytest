@@ -1,7 +1,8 @@
-﻿#include"stdfx.h"
-#include"DBServer.h"
-#include"DBCenterConnect.h"
-#include"config.h"
+﻿#include "stdfx.h"
+#include "DBServer.h"
+#include "DBCenterConnect.h"
+#include "config.h"
+#include "Timer.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -74,6 +75,7 @@ void CDBServer::Run()
 	while (m_Run)
 	{
 		CDBCenterConnect::Instance().ResetMsgNum();
+		CTimer::UpdateTime();
 
 		g_currenttime = get_millisecond();
 		RunOnce();
