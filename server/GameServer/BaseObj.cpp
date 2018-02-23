@@ -82,7 +82,7 @@ void CBaseObj::AddToAoiList(CBaseObj * p)
 
 	float _Pos[EPP_MAX] = { 0 };
 	p->GetNowPos(_Pos[EPP_X], _Pos[EPP_Y], _Pos[EPP_Z]);
-	log_error("[%d]进入[%d]视野%d", p->GetTempID(), GetTempID(), (int)DIST2(_Pos, m_NowPos));
+	//log_error("[%d]进入[%d]视野%d", p->GetTempID(), GetTempID(), (int)DIST2(_Pos, m_NowPos));
 }
 
 // 从AoiList中移除对象
@@ -93,7 +93,7 @@ void CBaseObj::DelFromAoiList(uint32 id)
 	assert(iter != m_AoiList.end());
 #endif
 	m_AoiList.erase(id);
-	log_error("[%d]离开[%d]视野%d", id, GetTempID());
+	//log_error("[%d]离开[%d]视野%d", id, GetTempID());
 }
 
 // 添加对象至AoiList
@@ -108,7 +108,7 @@ void CBaseObj::AddToAoiListOut(CBaseObj * p)
 
 	float _Pos[EPP_MAX] = { 0 };
 	p->GetNowPos(_Pos[EPP_X], _Pos[EPP_Y], _Pos[EPP_Z]);
-	log_error("[%d]离开[%d]视野%d", p->GetTempID(), GetTempID(), (int)DIST2(_Pos, m_NowPos));
+	//log_error("[%d]离开[%d]视野%d", p->GetTempID(), GetTempID(), (int)DIST2(_Pos, m_NowPos));
 }
 
 // 从AoiList中移除对象

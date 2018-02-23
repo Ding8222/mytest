@@ -137,7 +137,6 @@
     <ClCompile Include="GameCenterConnect.cpp" />
     <ClCompile Include="GameGatewayMgr.cpp" />
     <ClCompile Include="GameServer.cpp" />
-    <ClCompile Include="LoginMsg.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapConfig.cpp" />
     <ClCompile Include="MapInfo.cpp" />
@@ -156,7 +155,6 @@
     <ClInclude Include="GameCenterConnect.h" />
     <ClInclude Include="GameGatewayMgr.h" />
     <ClInclude Include="GameServer.h" />
-    <ClInclude Include="LoginMsg.h" />
     <ClInclude Include="MapConfig.h" />
     <ClInclude Include="MapInfo.h" />
     <ClInclude Include="Player.h" />

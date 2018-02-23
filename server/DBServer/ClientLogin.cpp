@@ -119,7 +119,7 @@ void CClientLogin::CreatePlayer(connector *_con, Msg *pMsg, msgtail *tl)
 	netData::CreatePlayerRet sendMsg;
 	sendMsg.set_ncode(netData::CreatePlayerRet::EC_FAIL);
 	DataBase::CRecordset *res = g_dbhand.Execute(fmt::format("insert into playerdate (account,name,guid,sex,job,level,createtime,logintime,mapid,x,y,z,data) values ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12})",
-		msg.account().c_str(), msg.sname(), guid, msg.nsex(), msg.njob(), 1, time(nullptr), time(nullptr), 1, 1, 1, 1, "1").c_str());
+		msg.account().c_str(), msg.sname(), guid, msg.nsex(), msg.njob(), 1, time(nullptr), time(nullptr), guid % 9 + 1, 1, 1, 1, "1").c_str());
 	if (res)
 	{
 		res = g_dbhand.Execute("select @@IDENTITY");

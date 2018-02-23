@@ -19,9 +19,6 @@
     <Filter Include="玩家对象">
       <UniqueIdentifier>{63467607-1ae3-4e85-abb0-8de900023564}</UniqueIdentifier>
     </Filter>
-    <Filter Include="登陆">
-      <UniqueIdentifier>{d907b953-055b-4adc-868e-b1df147f9d1f}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="config.cpp">
@@ -47,9 +44,6 @@
     </ClCompile>
     <ClCompile Include="GameCenterConnect.cpp">
       <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="LoginMsg.cpp">
-      <Filter>登陆</Filter>
     </ClCompile>
     <ClCompile Include="Utilities.cpp">
       <Filter>源文件</Filter>
@@ -97,9 +91,6 @@
     </ClInclude>
     <ClInclude Include="GameCenterConnect.h">
       <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="LoginMsg.h">
-      <Filter>登陆</Filter>
     </ClInclude>
     <ClInclude Include="Utilities.h">
       <Filter>头文件</Filter>

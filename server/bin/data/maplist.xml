@@ -2,4 +2,13 @@
 
 <maplist>
 	<maps mapid = "1" bar_filename = "./data/bar/bar_map001.xml" birth_point_x = "2" birth_point_Y = "2"/>
+	<maps mapid = "2" bar_filename = "./data/bar/bar_map002.xml" birth_point_x = "2" birth_point_Y = "2"/>
+	<maps mapid = "3" bar_filename = "./data/bar/bar_map003.xml" birth_point_x = "2" birth_point_Y = "2"/>
+	<maps mapid = "4" bar_filename = "./data/bar/bar_map004.xml" birth_point_x = "2" birth_point_Y = "2"/>
+	<maps mapid = "5" bar_filename = "./data/bar/bar_map005.xml" birth_point_x = "2" birth_point_Y = "2"/>
+	<maps mapid = "6" bar_filename = "./data/bar/bar_map006.xml" birth_point_x = "2" birth_point_Y = "2"/>
+	<maps mapid = "7" bar_filename = "./data/bar/bar_map007.xml" birth_point_x = "2" birth_point_Y = "2"/>
+	<maps mapid = "8" bar_filename = "./data/bar/bar_map008.xml" birth_point_x = "2" birth_point_Y = "2"/>
+	<maps mapid = "9" bar_filename = "./data/bar/bar_map009.xml" birth_point_x = "2" birth_point_Y = "2"/>
+	<maps mapid = "10" bar_filename = "./data/bar/bar_map0010.xml" birth_point_x = "2" birth_point_Y = "2"/>
 </maplist>

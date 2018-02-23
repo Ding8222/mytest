@@ -13,6 +13,7 @@ client的login处理
 --完成了从loginsvr到gatewaysvr的切换
 
 完成client选角流程，最后到可以在地图中移动即可。
+--已完成
 
 断开gate，踢下所有在其他server中的client
 --在game这边处理
@@ -39,4 +40,8 @@ game和gate断开的时候，gate需要断开所有client
 --断开了
 
 player离线的时候，要把所有引用到的指针清理
+
+log_error管理一下
+
+最大client的管理
 
