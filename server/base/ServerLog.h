@@ -12,43 +12,43 @@ extern bool g_client_connectlog_flag;
 extern bool g_elapsed_log_flag;
 
 // client连接log
-#define ClientConnectLog(...) \
+#define ClientConnectLog(fmt, ...) \
 do{if(g_client_connectlog && g_client_connectlog_flag)\
-{filelog_write_log(g_client_connectlog, __VA_ARGS__);}\
+{filelog_write_log(g_client_connectlog, fmt, ##__VA_ARGS__);}\
 }while(0)
 
 // client连接出错log
-#define ClientConnectError(...) \
+#define ClientConnectError(fmt, ...) \
 do{if(g_client_connectlog && g_client_connectlog_flag)\
-{filelog_write_error(g_client_connectlog, __VA_ARGS__);}\
+{filelog_write_error(g_client_connectlog, fmt, ##__VA_ARGS__);}\
 }while(0)
 
 // 运行时log
-#define RunStateLog(...) \
-do{log_writelog(__VA_ARGS__);\
+#define RunStateLog(fmt, ...) \
+do{log_writelog(fmt, ##__VA_ARGS__);\
 }while(0)
 
 // 运行时错误log
-#define RunStateError(...) \
-do{log_error(__VA_ARGS__);\
+#define RunStateError(fmt, ...) \
+do{log_error(fmt, ##__VA_ARGS__);\
 }while(0)
 
 // 超时log
-#define ElapsedLog(...) \
+#define ElapsedLog(fmt, ...) \
 do{if(g_elapsed_log && g_elapsed_log_flag)\
-{filelog_write_log(g_elapsed_log, __VA_ARGS__);}\
+{filelog_write_log(g_elapsed_log, fmt, ##__VA_ARGS__);}\
 }while(0)
 
 // 超时错误log
-#define ElapsedError(...) \
+#define ElapsedError(fmt, ...) \
 do{if(g_elapsed_log && g_elapsed_log_flag)\
-{filelog_write_error(g_elapsed_log, __VA_ARGS__);}\
+{filelog_write_error(g_elapsed_log, fmt, ##__VA_ARGS__);}\
 }while(0)
 
 // 后台命令log
-#define BackCommandLog(...) \
+#define BackCommandLog(fmt, ...) \
 do{if(g_backcommand_log)\
-{filelog_write_log(g_backcommand_log, __VA_ARGS__);}\
+{filelog_write_log(g_backcommand_log, fmt, ##__VA_ARGS__);}\
 }while(0)
 
 bool init_log(const char *rootdirname);

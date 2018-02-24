@@ -3,6 +3,7 @@
 #include"RobotMgr.h"
 #include"Config.h"
 #include "Timer.h"
+#include "serverlog.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -40,7 +41,7 @@ bool CRobotSvr::Init()
 #ifdef _WIN32
 		if (!CCtrlHandler::Instance().Init(&cb))
 		{
-			log_error("初始化CtrlHandler失败!");
+			RunStateError("初始化CtrlHandler失败!");
 			return false;
 		}
 #endif
@@ -51,7 +52,7 @@ bool CRobotSvr::Init()
 			CConfig::Instance().GetPingTime(),
 			CConfig::Instance().GetOverTime()))
 		{
-			log_error("初始化client mgr 失败!");
+			RunStateError("初始化client mgr 失败!");
 			return 0;
 		}
 		

@@ -4,6 +4,7 @@
 #include "serverinfo.h"
 #include "Config.h"
 #include "PlayerMgr.h"
+#include "serverlog.h"
 
 #include "ClientType.h"
 #include "LoginType.h"
@@ -75,7 +76,7 @@ void CGameGatewayMgr::SendMsgToServer(Msg &pMsg, int nType, int64 nClientID, int
 			SendMsg(info, pMsg, &tail, sizeof(tail));
 		}
 		else
-			log_error("请求发送消息到未知的网关,网关ID:[%d]", nServerID);
+			RunStateError("请求发送消息到未知的网关,网关ID:[%d]", nServerID);
 	}
 	else
 	{
@@ -100,7 +101,7 @@ void CGameGatewayMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maint
 			SendMsg(info, pMsg, maintype, subtype, &tail, sizeof(tail));
 		}
 		else
-			log_error("请求发送消息到未知的网关,网关ID:[%d]", nServerID);
+			RunStateError("请求发送消息到未知的网关,网关ID:[%d]", nServerID);
 	}
 	else
 	{
@@ -141,17 +142,17 @@ void CGameGatewayMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 		CPlayerMgr::Instance().DelAllPlayer();
 		m_GateList.erase(info->GetServerID());
 		if (overtime)
-			log_error("网关服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("网关服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		else
-			log_error("网关服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("网关服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		break;
 	}
 	default:
 	{
 		if (overtime)
-			log_error("未注册的服务器超时移除, ip:[%s]", info->GetIP());
+			RunStateError("未注册的服务器超时移除, ip:[%s]", info->GetIP());
 		else
-			log_error("未注册的服务器关闭移除, ip:[%s]", info->GetIP());
+			RunStateError("未注册的服务器关闭移除, ip:[%s]", info->GetIP());
 	}
 	}
 }
@@ -281,7 +282,7 @@ bool CGameGatewayMgr::AddNewServer(serverinfo *info, int nServerID, int nType)
 {
 	if (FindServer(nServerID, nType))
 	{
-		log_error("添加服务器失败！已经存在的服务器，远程服务器ID：[%d] IP:[%s]", nServerID, info->GetIP());
+		RunStateError("添加服务器失败！已经存在的服务器，远程服务器ID：[%d] IP:[%s]", nServerID, info->GetIP());
 		return false;
 	}
 
@@ -295,7 +296,7 @@ bool CGameGatewayMgr::AddNewServer(serverinfo *info, int nServerID, int nType)
 	}
 	default:
 	{
-		log_error("添加服务器失败！不存在的服务器类型，远程服务器ID：[%d] 类型：[%d] IP:[%s]", nServerID, nType, info->GetIP());
+		RunStateError("添加服务器失败！不存在的服务器类型，远程服务器ID：[%d] 类型：[%d] IP:[%s]", nServerID, nType, info->GetIP());
 		return false;
 	}
 	}

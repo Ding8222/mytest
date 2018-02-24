@@ -4,6 +4,7 @@
 #include "MapInfo.h"
 #include "Scene.h"
 #include "idmgr.c"
+#include "serverlog.h"
 
 extern int64 g_currenttime;
 
@@ -18,7 +19,7 @@ static CScene *scene_create()
 	CScene *self = ScenePool().GetObject();
 	if (!self)
 	{
-		log_error("创建 CScene 失败!");
+		RunStateError("创建 CScene 失败!");
 		return NULL;
 	}
 	new(self) CScene();
@@ -51,7 +52,7 @@ bool CScenemgr::Init()
 	{
 		if (!AddScene(iter))
 		{
-			log_error("加载普通场景失败，地图ID： %d", (*iter).GetMapID());
+			RunStateError("加载普通场景失败，地图ID： %d", (*iter).GetMapID());
 			return false;
 		}
 	}
@@ -86,7 +87,7 @@ bool CScenemgr::AddScene(CMapInfo* mapconfig)
 	CScene * newscene = scene_create();
 	if (!newscene)
 	{
-		log_error("创建CScene失败!");
+		RunStateError("创建CScene失败!");
 		return false;
 	}
 

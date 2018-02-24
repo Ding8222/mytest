@@ -3,6 +3,7 @@
 #include "BaseObj.h"
 #include "MapInfo.h"
 #include "idmgr.c"
+#include "serverlog.h"
 
 CScene::CScene()
 {
@@ -79,14 +80,14 @@ bool CScene::Init(CMapInfo * _mapinfo)
 
 	if (m_MapID <= 0 || m_Width <= 0 || m_Height <= 0)
 	{
-		log_error("场景[%d]获取地图宽[%d]、高[%d]失败!", m_MapID, m_Width, m_Height);
+		RunStateError("场景[%d]获取地图宽[%d]、高[%d]失败!", m_MapID, m_Width, m_Height);
 		return false;
 	}
 
 	m_IDPool = idmgr_create(SCENE_ID_MAX + 1, CLIENT_ID_DELAY_TIME);
 	if (!m_IDPool)
 	{
-		log_error("创建IDMgr失败!");
+		RunStateError("创建IDMgr失败!");
 		return false;
 	}
 
@@ -122,7 +123,7 @@ bool CScene::AddObj(CBaseObj * obj)
 	int id = idmgr_allocid(m_IDPool);
 	if (id <= 0)
 	{
-		log_error("为新对象分配ID失败!, id:%d", id);
+		RunStateError("为新对象分配ID失败!, id:%d", id);
 		return false;
 	}
 	obj->SetTempID(id);
@@ -148,7 +149,7 @@ bool CScene::DelObj(CBaseObj * obj)
 	int id = obj->GetTempID();
 	if (id <= 0 || id >= static_cast<int> (m_ObjSet.size()))
 	{
-		log_error("要释放的CBaseObj的ID错误!");
+		RunStateError("要释放的CBaseObj的ID错误!");
 		return false;
 	}
 
@@ -156,7 +157,7 @@ bool CScene::DelObj(CBaseObj * obj)
 
 	if (!idmgr_freeid(m_IDPool, obj->GetTempID()))
 	{
-		log_error("释放ID错误, ID:%d", obj->GetTempID());
+		RunStateError("释放ID错误, ID:%d", obj->GetTempID());
 	}
 
 	char *mode = "d";

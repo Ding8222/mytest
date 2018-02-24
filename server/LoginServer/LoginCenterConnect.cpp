@@ -3,6 +3,7 @@
 #include "LoginClientMgr.h"
 #include "connector.h"
 #include "config.h"
+#include "ServerLog.h"
 
 #include "DBSvrType.h"
 #include "LoginType.h"
@@ -29,7 +30,7 @@ bool CLoginCenterConnect::Init()
 		CConfig::Instance().GetCenterServerID()
 	))
 	{
-		log_error("添加中心服务器失败!");
+		RunStateError("添加中心服务器失败!");
 		return false;
 	}
 

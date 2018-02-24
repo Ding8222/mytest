@@ -3,6 +3,7 @@
 #include "GameCenterConnect.h"
 #include "Config.h"
 #include "idmgr.c"
+#include "serverlog.h"
 
 extern int64 g_currenttime;
 
@@ -17,7 +18,7 @@ static CPlayer *player_create()
 	CPlayer *self = PlayerPool().GetObject();
 	if (!self)
 	{
-		log_error("创建 CPlayer 失败!");
+		RunStateError("创建 CPlayer 失败!");
 		return NULL;
 	}
 	new(self) CPlayer();
@@ -43,7 +44,7 @@ static stPlayerInfo *playerinfo_create()
 	stPlayerInfo *self = PlayerInfoPool().GetObject();
 	if (!self)
 	{
-		log_error("创建 stPlayerInfo 失败!");
+		RunStateError("创建 stPlayerInfo 失败!");
 		return NULL;
 	}
 	new(self) stPlayerInfo();
@@ -120,14 +121,14 @@ bool CPlayerMgr::AddPlayer(int clientid, int gateid)
 		newInfo = playerinfo_create();
 		if (!newInfo)
 		{
-			log_error("创建stPlayerInfo失败!");
+			RunStateError("创建stPlayerInfo失败!");
 			return false;
 		}
 
 		newplayer = player_create();
 		if (!newplayer)
 		{
-			log_error("创建CPlayer失败!");
+			RunStateError("创建CPlayer失败!");
 			playerinfo_release(newInfo);
 			return false;
 		}
@@ -201,7 +202,7 @@ void CPlayerMgr::ReleasePlayerAndID(stPlayerInfo * playerinfo)
 
 	if (playerinfo->nClientID <= 0 || playerinfo->nClientID >= static_cast<int>(m_PlayerInfoSet.size()))
 	{
-		log_error("要释放的PlayerInfo的ClientID错误!");
+		RunStateError("要释放的PlayerInfo的ClientID错误!");
 		return;
 	}
 

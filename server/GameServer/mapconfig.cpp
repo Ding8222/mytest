@@ -3,6 +3,7 @@
 #include"tinyxml2.h"
 #include"log.h"
 #include "objectpool.h"
+#include "serverlog.h"
 
 using namespace tinyxml2;
 #define MAP_ID_MAX 10000
@@ -18,7 +19,7 @@ static CMapInfo *map_create()
 	CMapInfo *self = MapPool().GetObject();
 	if (!self)
 	{
-		log_error("创建 CScene 失败!");
+		RunStateError("创建 CScene 失败!");
 		return NULL;
 	}
 	new(self) CMapInfo();
@@ -52,7 +53,7 @@ bool CMapConfig::Init()
 	XMLDocument doc;
 	if (doc.LoadFile(filename) != XML_SUCCESS)
 	{
-		log_error("加载 %s 失败!", filename);
+		RunStateError("加载 %s 失败!", filename);
 		return false;
 	}
 
@@ -61,14 +62,14 @@ bool CMapConfig::Init()
 	XMLElement *pinfo = doc.FirstChildElement("maplist");
 	if (!pinfo)
 	{
-		log_error("没有找到字段： 'maplist'");
+		RunStateError("没有找到字段： 'maplist'");
 		return false;
 	}
 
 	pinfo = pinfo->FirstChildElement("maps");
 	if (!pinfo)
 	{
-		log_error("没有找到字段： 'maps'");
+		RunStateError("没有找到字段： 'maps'");
 		return false;
 	}
 
@@ -77,39 +78,39 @@ bool CMapConfig::Init()
 		int mapid = 0;
 		if (pinfo->QueryIntAttribute("mapid", &mapid) != XML_SUCCESS)
 		{
-			log_error("没有找到字段： 'mapid'");
+			RunStateError("没有找到字段： 'mapid'");
 			return false;
 		}
 
 		if (mapid <= 0 || mapid >= static_cast<int>(m_MapSet.size()))
 		{
-			log_error("地图ID错误！");
+			RunStateError("地图ID错误！");
 			return false;
 		}
 
 		std::string filename = pinfo->Attribute("bar_filename");
 		if (filename.empty())
 		{
-			log_error("没有找到字段： 'bar_filename'");
+			RunStateError("没有找到字段： 'bar_filename'");
 			return false;
 		}
 
 		if (m_MapSet[mapid] != nullptr)
 		{
-			log_error("添加地图失败!地图ID已存在：%d", mapid);
+			RunStateError("添加地图失败!地图ID已存在：%d", mapid);
 			return false;
 		}
 
 		CMapInfo* newmap = map_create();
 		if (!newmap)
 		{
-			log_error("创建CMapInfo失败!");
+			RunStateError("创建CMapInfo失败!");
 			return false;
 		}
 
 		if (!newmap->Init(mapid, filename.c_str()))
 		{
-			log_error("初始化加载地图配置失败!地图ID：%d", mapid);
+			RunStateError("初始化加载地图配置失败!地图ID：%d", mapid);
 			return false;
 		}
 

@@ -180,10 +180,18 @@ void filelog_release(struct filelog *self);
 #define log_every_flush(flag)											\
 	_filelog_set_every_flush_(g_filelog_obj_, enum_log_type_log, flag)
 
-#define log_writelog(fmt, ...)											\
-	filelog_write_log(g_filelog_obj_, fmt, ##__VA_ARGS__)
-
 #ifdef _DEBUG
+
+#define log_writelog(fmt, ...)											\
+	do {																\
+		char temp_buf[32] = {0};										\
+		_format_prefix_string_(0, -1, temp_buf, sizeof(temp_buf),		\
+				0, 0, 0);												\
+		_log_printf_(enum_debug_print_time,								\
+				fmt, temp_buf, ##__VA_ARGS__, __END__ARG__FLAG__);		\
+		filelog_write_log(g_filelog_obj_, fmt, ##__VA_ARGS__);			\
+	} while (0)
+
 #define log_error(fmt, ...)												\
 	do {																\
 		char temp_buf[32] = {0};										\
@@ -191,8 +199,13 @@ void filelog_release(struct filelog *self);
 				0, 0, 0);												\
 		_log_printf_(enum_debug_print_time,								\
 				fmt, temp_buf, ##__VA_ARGS__, __END__ARG__FLAG__);		\
+		filelog_write_error(g_filelog_obj_, fmt, ##__VA_ARGS__);		\
 	} while (0)
 #else
+
+#define log_writelog(fmt, ...)											\
+	filelog_write_log(g_filelog_obj_, fmt, ##__VA_ARGS__)
+
 #define log_error(fmt, ...)												\
 	filelog_write_error(g_filelog_obj_, fmt, ##__VA_ARGS__)
 #endif

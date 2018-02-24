@@ -1,6 +1,7 @@
 ﻿#include"stdfx.h"
 #include "ConnectMgr.h"
 #include "Connector.h"
+#include "log.h"
 
 extern int64 g_currenttime;
 
@@ -210,7 +211,7 @@ bool CConnectMgr::AddNewConnect(const char *ip, int port, int id)
 	}
 	newcon->SetConnectInfo(ip, port, id);
 	m_List.insert(std::make_pair(id,newcon));
-	log_error("创建新的连接成功, ip:%s port:%d id:%d", ip, port, id);
+	log_writelog("创建新的连接成功, ip:%s port:%d id:%d", ip, port, id);
 	return true;
 }
 
@@ -235,7 +236,7 @@ void CConnectMgr::TryConnect(connector *con)
 		sendMsg.set_nport(m_ListenPort);
 
 		if(SendMsg(con, sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_REGISTER))
-			log_error("连接服务器成功!发送注册信息成功！服务器ID：[%d] IP:[%s]", con->GetConnectID(), con->GetConnectIP());
+			log_writelog("连接服务器成功!发送注册信息成功！服务器ID：[%d] IP:[%s]", con->GetConnectID(), con->GetConnectIP());
 		else
 			log_error("连接服务器成功!发送注册信息失败！服务器ID：[%d] IP:[%s]", con->GetConnectID(), con->GetConnectIP());
 	}
@@ -281,7 +282,7 @@ void CConnectMgr::ProcessRegister(connector *con)
 					// 认证成功
 					con->SetAlreadyRegister(true);
 					ServerRegisterSucc(con->GetConnectID(), msg.sip().c_str(), msg.nport());
-					log_error("注册到远程服务器成功！");
+					log_writelog("注册到远程服务器成功！");
 					break;
 				}
 				case svrData::ServerRegisterRet::EC_SERVER_ID_EXIST:

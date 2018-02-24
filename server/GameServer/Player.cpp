@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "scene.h"
 #include "scenemgr.h"
+#include "serverlog.h"
 #include <iostream>
 
 CPlayer::CPlayer()
@@ -31,7 +32,7 @@ bool CPlayer::LoadData(Msg *pMsg)
 		return false;
 	_pScene->AddObj(this);
 
-	log_error("加载玩家数据成功！%s", msg.account().c_str());
+	ClientConnectLog("加载玩家数据成功！%s", msg.account().c_str());
 
 	return true;
 }

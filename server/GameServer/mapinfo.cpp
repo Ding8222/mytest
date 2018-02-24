@@ -1,6 +1,7 @@
 ﻿#include"MapInfo.h"
 #include"tinyxml2.h"
 #include"log.h"
+#include "serverlog.h"
 
 using namespace tinyxml2;
 
@@ -24,7 +25,7 @@ bool CMapInfo::Init(int mapid, const char *bar_filename)
 {
 	if (!bar_filename)
 	{
-		log_error("地图配置阻挡点文件路径不存在！");
+		RunStateError("地图配置阻挡点文件路径不存在！");
 		return false;
 	}
 
@@ -34,7 +35,7 @@ bool CMapInfo::Init(int mapid, const char *bar_filename)
 	XMLDocument doc;
 	if (doc.LoadFile(bar_filename) != XML_SUCCESS)
 	{
-		log_error("加载 %s 失败!", bar_filename);
+		RunStateError("加载 %s 失败!", bar_filename);
 		return false;
 	}
 
@@ -43,31 +44,31 @@ bool CMapInfo::Init(int mapid, const char *bar_filename)
 	XMLElement *pinfo = doc.FirstChildElement("bar_map");
 	if (!pinfo)
 	{
-		log_error("没有找到字段： 'bar_map'");
+		RunStateError("没有找到字段： 'bar_map'");
 		return false;
 	}
 
 	if (pinfo->QueryIntAttribute("width", &m_Width) != XML_SUCCESS)
 	{
-		log_error("没有找到字段： 'width'");
+		RunStateError("没有找到字段： 'width'");
 		return false;
 	}
 
 	if (m_Width <= 0)
 	{
-		log_error("地图宽 <= 0 ,地图ID：%d ", mapid);
+		RunStateError("地图宽 <= 0 ,地图ID：%d ", mapid);
 		return false;
 	}
 
 	if (pinfo->QueryIntAttribute("height", &m_Height) != XML_SUCCESS)
 	{
-		log_error("没有找到字段： 'height'");
+		RunStateError("没有找到字段： 'height'");
 		return false;
 	}
 
 	if (m_Height <= 0)
 	{
-		log_error("地图宽 <= 0 ,地图ID：%d ", mapid);
+		RunStateError("地图宽 <= 0 ,地图ID：%d ", mapid);
 		return false;
 	}
 
@@ -75,7 +76,7 @@ bool CMapInfo::Init(int mapid, const char *bar_filename)
 
 	if (!barinfo)
 	{
-		log_error("分配地图阻挡点内存失败！地图ID：%d", mapid);
+		RunStateError("分配地图阻挡点内存失败！地图ID：%d", mapid);
 		return false;
 	}
 	memset(barinfo, 0, m_Width * m_Height * sizeof(bool));
@@ -89,28 +90,28 @@ bool CMapInfo::Init(int mapid, const char *bar_filename)
 
 		if (pinfo->QueryIntAttribute("row", &row) != XML_SUCCESS)
 		{
-			log_error("没有找到字段： 'row'");
+			RunStateError("没有找到字段： 'row'");
 			delete(barinfo);
 			return false;
 		}
 
 		if (row < 0 || row > m_Width)
 		{
-			log_error("地图阻挡点行数 < 0 或者行数大于地图宽 ,地图ID：%d ", mapid);
+			RunStateError("地图阻挡点行数 < 0 或者行数大于地图宽 ,地图ID：%d ", mapid);
 			delete(barinfo);
 			return false;
 		}
 
 		if (pinfo->QueryIntAttribute("col", &col) != XML_SUCCESS)
 		{
-			log_error("没有找到字段： 'col'");
+			RunStateError("没有找到字段： 'col'");
 			delete(barinfo);
 			return false;
 		}
 
 		if (col < 0 || col > m_Height)
 		{
-			log_error("地图阻挡点列数 < 0 或者列数大于地图高 ,地图ID：%d ", mapid);
+			RunStateError("地图阻挡点列数 < 0 或者列数大于地图高 ,地图ID：%d ", mapid);
 			delete(barinfo);
 			return false;
 		}

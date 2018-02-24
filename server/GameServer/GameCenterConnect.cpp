@@ -6,6 +6,7 @@
 #include "config.h"
 #include "PlayerMgr.h"
 #include "Utilities.h"
+#include "serverlog.h"
 
 #include "ClientMsg.pb.h"
 #include "ClientType.h"
@@ -30,7 +31,7 @@ bool CGameCenterConnect::Init()
 		CConfig::Instance().GetCenterServerID()
 	))
 	{
-		log_error("添加中心服务器失败!");
+		RunStateError("添加中心服务器失败!");
 		return false;
 	}
 

@@ -1,7 +1,6 @@
 ﻿#include "baseobj.h"
 #include "assert.h"
 #include "scene.h"
-#include "log.h"
 
 #define AOI_RADIS 200.0f
 #define AOI_RADIS2 (AOI_RADIS * AOI_RADIS)
@@ -82,7 +81,7 @@ void CBaseObj::AddToAoiList(CBaseObj * p)
 
 	float _Pos[EPP_MAX] = { 0 };
 	p->GetNowPos(_Pos[EPP_X], _Pos[EPP_Y], _Pos[EPP_Z]);
-	//log_error("[%d]进入[%d]视野%d", p->GetTempID(), GetTempID(), (int)DIST2(_Pos, m_NowPos));
+	//RunStateLog("[%d]进入[%d]视野%d", p->GetTempID(), GetTempID(), (int)DIST2(_Pos, m_NowPos));
 }
 
 // 从AoiList中移除对象
@@ -93,7 +92,7 @@ void CBaseObj::DelFromAoiList(uint32 id)
 	assert(iter != m_AoiList.end());
 #endif
 	m_AoiList.erase(id);
-	//log_error("[%d]离开[%d]视野%d", id, GetTempID());
+	//RunStateLog("[%d]离开[%d]视野%d", id, GetTempID());
 }
 
 // 添加对象至AoiList
@@ -108,7 +107,7 @@ void CBaseObj::AddToAoiListOut(CBaseObj * p)
 
 	float _Pos[EPP_MAX] = { 0 };
 	p->GetNowPos(_Pos[EPP_X], _Pos[EPP_Y], _Pos[EPP_Z]);
-	//log_error("[%d]离开[%d]视野%d", p->GetTempID(), GetTempID(), (int)DIST2(_Pos, m_NowPos));
+	//RunStateLog("[%d]离开[%d]视野%d", p->GetTempID(), GetTempID(), (int)DIST2(_Pos, m_NowPos));
 }
 
 // 从AoiList中移除对象

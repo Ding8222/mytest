@@ -1,6 +1,7 @@
 ﻿#include "stdfx.h"
 #include "serverinfo.h"
 #include "ServerStatusMgr.h"
+#include "serverlog.h"
 
 #define SERVERSTATUSINFO_ID_MAX 100
 
@@ -15,7 +16,7 @@ static ServerStatusInfo *serverstatusinfo_create()
 	ServerStatusInfo *self = ServerStatusInfoPool().GetObject();
 	if (!self)
 	{
-		log_error("创建 ServerStatusInfo 失败!");
+		RunStateError("创建 ServerStatusInfo 失败!");
 		return NULL;
 	}
 	new(self) ServerStatusInfo();
@@ -67,7 +68,7 @@ void CServerStatusMgr::AddNewServer(serverinfo *info, Msg *pMsg)
 			_pInfo->nSubServerID = msg.nsubserverid();
 
 			m_ServerInfo[_pInfo->nServerID] = _pInfo;
-			log_error("新的服务器注册到服务器状态管理器：ID[%d]，类型：[%d]", _pInfo->nServerID, _pInfo->nServerType);
+			RunStateLog("新的服务器注册到服务器状态管理器：ID[%d]，类型：[%d]", _pInfo->nServerID, _pInfo->nServerType);
 			if (_pInfo->nSubServerID > 0)
 			{
 				auto iterF = m_GateServerInfo.find(_pInfo->nSubServerID);

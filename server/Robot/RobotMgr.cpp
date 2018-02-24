@@ -9,6 +9,7 @@
 #include "osrng.h"
 #include "base64.h"
 #include <string>
+#include "serverlog.h"
 
 extern int64 g_currenttime;
 
@@ -94,13 +95,13 @@ void CRobotMgr::Run()
 		}
 		if ((*tempitr)->IsOverTime(g_currenttime, m_OverTime))
 		{
-			log_error("连接远程服务器:[%d] 超时，准备断开重连!", (*tempitr)->GetConnectID());
+			RunStateError("连接远程服务器:[%d] 超时，准备断开重连!", (*tempitr)->GetConnectID());
 			(*tempitr)->OnConnectDisconnect();
 			return;
 		}
 		if ((*tempitr)->IsClose())
 		{
-			log_error("远程服务器断开连接，准备断开重连!", (*tempitr)->GetConnectID());
+			RunStateError("远程服务器断开连接，准备断开重连!", (*tempitr)->GetConnectID());
 			(*tempitr)->OnConnectDisconnect();
 			return;
 		}
@@ -164,8 +165,8 @@ void CRobotMgr::ProcessRegister(CRobot *con)
 				netData::HandShakeRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-// 				log_error("ServerKey:%s", msg.sserverkey().c_str());
-// 				log_error("ChallengeKey:%s", msg.schallenge().c_str());
+// 				RunStateLog("ServerKey:%s", msg.sserverkey().c_str());
+// 				RunStateLog("ChallengeKey:%s", msg.schallenge().c_str());
 				con->SetSecret(msg.schallenge());
 
 				netData::Auth sendMsg;
@@ -206,7 +207,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 			}
 			case CLIENT_SUB_LOAD_PLAYERDATA:
 			{
-				log_error("逻辑服加载数据成功!");
+				RunStateLog("逻辑服加载数据成功!");
 				netData::PlayerMove sendMsg;
 				sendMsg.set_x(1);
 				sendMsg.set_y(1);
@@ -219,7 +220,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				netData::PlayerMoveRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				//log_error("收到移动返回！");
+				//RunStateLog("收到移动返回！");
 				netData::PlayerMove sendMsg;
 				int x = msg.x();
 				int y = msg.y();
@@ -291,7 +292,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 					sendMsg.set_setoken(_con->GetAccount());
 					_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH);
 				}
-				log_error("AuthRet:%d,ip:%s,port:%d", msg.ncode(), msg.ip().c_str(), msg.port());
+				RunStateLog("AuthRet:%d,ip:%s,port:%d", msg.ncode(), msg.ip().c_str(), msg.port());
 				break;
 			}
 			case LOGIN_SUB_LOGIN_RET:
@@ -299,7 +300,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				netData::LoginRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				log_error("LoginRet:%d", msg.ncode());
+				RunStateLog("LoginRet:%d", msg.ncode());
 
 				if (msg.ncode() == netData::LoginRet::EC_SUCC)
 				{
@@ -316,7 +317,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 			{
 				netData::PlayerListRet msg;
 				_CHECK_PARSE_(pMsg, msg);
-				log_error("PlayerListRet:%d", msg.list_size());
+				RunStateLog("PlayerListRet:%d", msg.list_size());
 
 				if (msg.list_size() == 0)
 				{
@@ -342,7 +343,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 			{
 				netData::CreatePlayerRet msg;
 				_CHECK_PARSE_(pMsg, msg);
-				log_error("CreatePlayerRet:%d", msg.ncode());
+				RunStateLog("CreatePlayerRet:%d", msg.ncode());
 				if (msg.ncode() == netData::CreatePlayerRet::EC_SUCC)
 				{
 					netData::SelectPlayer sendMsg;
@@ -357,7 +358,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				netData::SelectPlayerRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				log_error("SelectPlayerRet:%d", msg.ncode());
+				RunStateLog("SelectPlayerRet:%d", msg.ncode());
 				break;
 			}
 			default:

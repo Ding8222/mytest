@@ -189,7 +189,7 @@ void CClientMgr::StopListen()
 	if (!m_Listen->IsClose())
 	{
 		m_Listen->Close();
-		log_error("停止监听端口 %d", m_ListenPort);
+		log_writelog("停止监听端口 %d", m_ListenPort);
 	}
 }
 
@@ -201,7 +201,7 @@ bool CClientMgr::TestAndListen()
 
 	if (m_Listen->Listen(m_ListenPort, s_backlog))
 	{
-		log_error("监听端口 %d 成功!", m_ListenPort);
+		log_writelog("监听端口 %d 成功!", m_ListenPort);
 		return true;
 	}
 
@@ -384,7 +384,7 @@ void CClientMgr::ProcessAllClient()
 
 		if ((*tempitr)->GetCon()->IsClose())
 		{
-			log_error("与Client的连接断开, id:%d, 剩余Client数量:%d", (*tempitr)->GetClientID(), (int)m_ClientList.size() - 1);
+			log_writelog("与Client的连接断开, id:%d, 剩余Client数量:%d", (*tempitr)->GetClientID(), (int)m_ClientList.size() - 1);
 			OnClientDisconnect(*tempitr);
 			m_ClientList.erase(tempitr);
 			continue;
@@ -392,7 +392,7 @@ void CClientMgr::ProcessAllClient()
 
 		if ((*tempitr)->IsOverTime(g_currenttime, m_OverTime))
 		{
-			log_error("与Client的连接超时关闭, id:%d, 剩余Client数量:%d", (*tempitr)->GetClientID(), (int)m_ClientList.size() - 1);
+			log_writelog("与Client的连接超时关闭, id:%d, 剩余Client数量:%d", (*tempitr)->GetClientID(), (int)m_ClientList.size() - 1);
 			(*tempitr)->GetCon()->Close();
 			OnClientDisconnect(*tempitr);
 			m_ClientList.erase(tempitr);

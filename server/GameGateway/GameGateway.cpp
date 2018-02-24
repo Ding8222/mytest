@@ -43,7 +43,7 @@ bool CGameGateway::Init()
 #ifdef _WIN32
 		if (!CCtrlHandler::Instance().Init(&cb))
 		{
-			log_error("初始化CtrlHandler失败!");
+			RunStateError("初始化CtrlHandler失败!");
 			return false;
 		}
 #endif
@@ -54,19 +54,19 @@ bool CGameGateway::Init()
 			CConfig::Instance().GetRecvDataLimt(),
 			CConfig::Instance().GetSendDataLimt()))
 		{
-			log_error("初始化GateClientMgr失败!");
+			RunStateError("初始化GateClientMgr失败!");
 			break;
 		}
 
 		if (!CGateCenterConnect::Instance().Init())
 		{
-			log_error("初始化中心服务器连接失败!");
+			RunStateError("初始化中心服务器连接失败!");
 			break;
 		}
 
 		if (!CGameConnect::Instance().Init())
 		{
-			log_error("初始化逻辑服务器连接失败!");
+			RunStateError("初始化逻辑服务器连接失败!");
 			break;
 		}
 

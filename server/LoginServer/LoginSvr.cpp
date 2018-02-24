@@ -42,7 +42,7 @@ bool CLoginServer::Init()
 #ifdef _WIN32
 		if (!CCtrlHandler::Instance().Init(&cb))
 		{
-			log_error("初始化CtrlHandler失败!");
+			RunStateError("初始化CtrlHandler失败!");
 			return false;
 		}
 #endif
@@ -52,13 +52,13 @@ bool CLoginServer::Init()
 			CConfig::Instance().GetRecvDataLimt(),
 			CConfig::Instance().GetSendDataLimt()))
 		{
-			log_error("初始化client mgr 失败!");
+			RunStateError("初始化client mgr 失败!");
 			return 0;
 		}
 
 		if (!CLoginCenterConnect::Instance().Init())
 		{
-			log_error("初始化中心服务器连接失败!");
+			RunStateError("初始化中心服务器连接失败!");
 			return 0;
 		}
 

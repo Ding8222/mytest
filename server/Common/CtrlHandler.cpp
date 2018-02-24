@@ -52,16 +52,12 @@ BOOL CtrlHandler(DWORD fdwCtrlType)
 bool CCtrlHandler::Init(Callback *cb)
 {
 	f_Fun = cb;
-	if (SetConsoleCtrlHandler((PHANDLER_ROUTINE)CtrlHandler, TRUE))
-	{
-		log_error("初始化CtrlHandler成功！");
-		return true;
-	}
-	else
+	if (!SetConsoleCtrlHandler((PHANDLER_ROUTINE)CtrlHandler, TRUE))
 	{
 		log_error("初始化CtrlHandler失败！");
 		return false;
 	}
+	return true;
 }
 
 void CCtrlHandler::Destroy()

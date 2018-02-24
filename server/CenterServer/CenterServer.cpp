@@ -41,7 +41,7 @@ bool CCenterServer::Init()
 #ifdef _WIN32
 		if (!CCtrlHandler::Instance().Init(&cb))
 		{
-			log_error("初始化CtrlHandler失败!");
+			RunStateError("初始化CtrlHandler失败!");
 			return false;
 		}
 #endif
@@ -51,7 +51,7 @@ bool CCenterServer::Init()
 			CConfig::Instance().GetListenPort(),
 			CConfig::Instance().GetOverTime()))
 		{
-			log_error("初始化 ServerMgr 失败!");
+			RunStateError("初始化 ServerMgr 失败!");
 			break;
 		}
 

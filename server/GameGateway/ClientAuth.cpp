@@ -5,7 +5,7 @@
 #include "GateClientMgr.h"
 #include "Config.h"
 #include "GateCenterConnect.h"
-
+#include "serverlog.h"
 
 #include "Login.pb.h"
 #include "LoginType.h"
@@ -23,7 +23,7 @@ static ClientAuthInfo *clientauthinfo_create()
 	ClientAuthInfo *self = ClientAuthInfoPool().GetObject();
 	if (!self)
 	{
-		log_error("创建 ClientAuthInfo 失败!");
+		RunStateError("创建 ClientAuthInfo 失败!");
 		return NULL;
 	}
 	new(self) ClientAuthInfo();
@@ -153,7 +153,7 @@ void CClientAuth::AddNewClient(Msg *pMsg, CClient *cl)
 			assert(_pData->ClientID == 0);
 			_pData->ClientID = cl->GetClientID();
 			m_ClientAuthInfo.insert(std::make_pair(cl->GetClientID(), _pData));
-			log_error("新的客户端认证成功！token:%s", msg.stoken().c_str());
+			ClientConnectLog("新的客户端认证成功！token:%s", msg.stoken().c_str());
 
 			svrData::AddNewClient sendMsg;
 			CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT, cl->GetClientID());
@@ -167,7 +167,7 @@ void CClientAuth::AddNewClient(Msg *pMsg, CClient *cl)
 	sendMsg.set_ncode(netData::LoginRet::EC_FAIL);
 	CGateClientMgr::Instance().SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET);
 	// 认证失败
-	log_error("新的客户端认证失败！token:%s", msg.stoken().c_str());
+	ClientConnectError("新的客户端认证失败！token:%s", msg.stoken().c_str());
 }
 
 // 请求角色列表

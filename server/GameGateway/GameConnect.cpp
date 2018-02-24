@@ -4,6 +4,7 @@
 #include "ClientAuth.h"
 #include "connector.h"
 #include "config.h"
+#include "serverlog.h"
 
 #include "ClientType.h"
 
@@ -27,7 +28,7 @@ bool CGameConnect::Init()
 		CConfig::Instance().GetGameServerID()
 	))
 	{
-		log_error("添加逻辑服务器失败!");
+		RunStateError("添加逻辑服务器失败!");
 		return false;
 	}
 

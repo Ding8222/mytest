@@ -4,6 +4,7 @@
 #include "config.h"
 #include "sqlinterface.h"
 #include "ClientLogin.h"
+#include "serverlog.h"
 
 #include "DBSvrType.h"
 
@@ -28,13 +29,13 @@ bool CDBCenterConnect::Init()
 		CConfig::Instance().GetDBPass().c_str(),
 		CConfig::Instance().GetDBIP().c_str()))
 	{
-		log_error("连接Mysql失败!");
+		RunStateError("连接Mysql失败!");
 		return false;
 	}
 
 	if (!g_dbhand.SetCharacterSet("utf8"))
 	{
-		log_error("设置UTF-8失败!");
+		RunStateError("设置UTF-8失败!");
 		return false;
 	}
 
@@ -44,7 +45,7 @@ bool CDBCenterConnect::Init()
 		CConfig::Instance().GetCenterServerID()
 		))
 	{
-		log_error("添加中心服务器失败!");
+		RunStateError("添加中心服务器失败!");
 		return false;
 	}
 

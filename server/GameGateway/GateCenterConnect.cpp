@@ -4,6 +4,7 @@
 #include "serverinfo.h"
 #include "connector.h"
 #include "config.h"
+#include "serverlog.h"
 
 #include "ClientAuth.h"
 #include "LoginType.h"
@@ -28,7 +29,7 @@ bool CGateCenterConnect::Init()
 		CConfig::Instance().GetCenterServerID()
 	))
 	{
-		log_error("添加中心服务器失败!");
+		RunStateError("添加中心服务器失败!");
 		return false;
 	}
 

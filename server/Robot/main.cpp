@@ -1,5 +1,5 @@
 ﻿/*
-* 登陆服务器
+* 机器人服务器
 * Copyright (C) ddl
 * 2018
 */
@@ -8,6 +8,7 @@
 #include "RobotSvr.h"
 #include "config.h"
 #include "NetConfig.h"
+#include "ServerLog.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -24,23 +25,25 @@
 
 bool init()
 {
-	log_error("登陆服务器开始启动!");
-
 #ifdef _WIN32
 	if (!CMiniDump::Begin())
 	{
-		log_error("初始化MiniDump失败!");
+		RunStateError("初始化MiniDump失败!");
 		system("pause");
 		return false;
 	}
-
-	setlocale(LC_ALL, "zh_CN.UTF-8");
 #endif
+
+	if (!init_log("Robot_Log"))
+	{
+		RunStateError("初始化Log失败!");
+		return false;
+	}
 
 	// 读取网络配置文件
 	if (!CNetConfig::Instance().Init())
 	{
-		log_error("初始化NetConfig失败!");
+		RunStateError("初始化NetConfig失败!");
 		system("pause");
 		return 0;
 	}
@@ -48,24 +51,28 @@ bool init()
 	// 读取配置文件
 	if (!CConfig::Instance().Init("Robot"))
 	{
-		log_error("初始化Config失败!");
+		RunStateError("初始化Config失败!");
 		system("pause");
 		return 0;
 	}
+
+	sPoolInfo.SetMeminfoFileName("Robot_Log/mempoolinfo.txt");
+	log_writelog("机器人开始启动!");
+
 	// 初始化网络库
 	if (!lxnet::net_init(CNetConfig::Instance().GetBigBufSize(), CNetConfig::Instance().GetBigBufNum(),
 		CNetConfig::Instance().GetSmallBufSize(), CNetConfig::Instance().GetSmallBufNum(),
 		CNetConfig::Instance().GetListenerNum(), CNetConfig::Instance().GetSocketerNum(),
 		CNetConfig::Instance().GetThreadNum()))
 	{
-		log_error("初始化网络库失败!");
+		RunStateError("初始化网络库失败!");
 		system("pause");
 		return 0;
 	}
 	// 初始化
 	if (!CRobotSvr::Instance().Init())
 	{
-		log_error("初始化LoginServer失败!");
+		RunStateError("初始化LoginServer失败!");
 		system("pause");
 		return 0;
 	}

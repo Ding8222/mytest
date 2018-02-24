@@ -3,6 +3,7 @@
 #include "Instance.h"
 #include "InstanceMgr.h"
 #include "MapConfig.h"
+#include "serverlog.h"
 
 extern int64 g_currenttime;
 #define INSTANCE_ID_MAX 2000
@@ -18,7 +19,7 @@ static CInstance *instance_create()
 	CInstance *self = InstancePool().GetObject();
 	if (!self)
 	{
-		log_error("创建 CInstance 失败!");
+		RunStateError("创建 CInstance 失败!");
 		return NULL;
 	}
 	new(self) CInstance();
@@ -51,7 +52,7 @@ bool CInstanceMgr::Init()
 	m_IDPool = idmgr_create(INSTANCE_ID_MAX + 1, INSTANCE_ID_DELAY_TIME);
 	if (!m_IDPool)
 	{
-		log_error("创建IDMgr失败!");
+		RunStateError("创建IDMgr失败!");
 		return false;
 	}
 
@@ -103,14 +104,14 @@ int CInstanceMgr::AddInstance(int instancebaseid)
 	int id = idmgr_allocid(m_IDPool);
 	if (id <= 0)
 	{
-		log_error("为新Instance分配ID失败!, id:%d", id);
+		RunStateError("为新Instance分配ID失败!, id:%d", id);
 		return 0;
 	}
 
 	CInstance * newinstance = instance_create();
 	if (!newinstance)
 	{
-		log_error("创建CInstance失败!");
+		RunStateError("创建CInstance失败!");
 		return 0;
 	}
 
@@ -125,7 +126,7 @@ int CInstanceMgr::AddInstance(int instancebaseid)
 	instance_release(newinstance);
 
 	if (!idmgr_freeid(m_IDPool, id))
-		log_error("释放ID失败!, ID:%d", id);
+		RunStateError("释放ID失败!, ID:%d", id);
 
 	return 0;
 }
@@ -181,14 +182,14 @@ void CInstanceMgr::ReleaseInstanceAndID(CInstance *instance)
 	int id = instance->GetInsranceID();
 	if (id <= 0 || id >= (int)m_InstanceSet.size())
 	{
-		log_error("要释放的Instance的ID错误!");
+		RunStateError("要释放的Instance的ID错误!");
 		return;
 	}
 	m_InstanceSet[id] = NULL;
 
 	if (!idmgr_freeid(m_IDPool, id))
 	{
-		log_error("释放ID错误, ID:%d", id);
+		RunStateError("释放ID错误, ID:%d", id);
 	}
 
 	instance->SetInsranceID(0);

@@ -46,7 +46,7 @@ bool CGameServer::Init()
 #ifdef _WIN32
 		if (!CCtrlHandler::Instance().Init(&cb))
 		{
-			log_error("初始化CtrlHandler失败!");
+			RunStateError("初始化CtrlHandler失败!");
 			return false;
 		}
 #endif
@@ -57,38 +57,38 @@ bool CGameServer::Init()
 			CConfig::Instance().GetListenPort(),
 			CConfig::Instance().GetOverTime()))
 		{
-			log_error("初始化GameGatewayMgr失败!");
+			RunStateError("初始化GameGatewayMgr失败!");
 			return false;
 		}
 
 		if (!CGameCenterConnect::Instance().Init())
 		{
-			log_error("初始化中心服务器连接失败!");
+			RunStateError("初始化中心服务器连接失败!");
 			return 0;
 		}
 
 		// 需要在场景初始化之前初始化MapConfig
 		if (!CMapConfig::Instance().Init())
 		{
-			log_error("初始化MapConfig失败!");
+			RunStateError("初始化MapConfig失败!");
 			return false;
 		}
 
 		if (!CScenemgr::Instance().Init())
 		{
-			log_error("初始化Scenemgr失败!");
+			RunStateError("初始化Scenemgr失败!");
 			return false;
 		}
 
 		if (!CInstanceMgr::Instance().Init())
 		{
-			log_error("初始化InstanceMgr失败!");
+			RunStateError("初始化InstanceMgr失败!");
 			return false;
 		}
 
 		if (!CPlayerMgr::Instance().init())
 		{
-			log_error("初始化PlayerMgr失败!");
+			RunStateError("初始化PlayerMgr失败!");
 			return false;
 		}
 

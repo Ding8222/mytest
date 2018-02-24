@@ -5,6 +5,7 @@
 #include "ClientAuthMgr.h"
 #include "ServerStatusMgr.h"
 #include "ClientSvrMgr.h"
+#include "serverlog.h"
 
 #include "LoginType.h"
 #include "ServerMsg.pb.h"
@@ -168,7 +169,7 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int64 nClientID, int 
 		break;
 	}
 	default:
-		log_error("请求发送消息到未知类型的服务器，服务器类型:[%d]", nType);
+		RunStateError("请求发送消息到未知类型的服务器，服务器类型:[%d]", nType);
 		break;
 	}
 
@@ -184,7 +185,7 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int64 nClientID, int 
 				SendMsg(iterFind->second, pMsg, &tail, sizeof(tail));
 			}
 			else
-				log_error("请求发送消息到未知的服务器,服务器ID:[%d]", nServerID);
+				RunStateError("请求发送消息到未知的服务器,服务器ID:[%d]", nServerID);
 		}
 		else
 		{
@@ -252,7 +253,7 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 		break;
 	}
 	default:
-		log_error("请求发送消息到未知类型的服务器，服务器类型:[%d]", nType);
+		RunStateError("请求发送消息到未知类型的服务器，服务器类型:[%d]", nType);
 		break;
 	}
 
@@ -268,7 +269,7 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 				SendMsg(iterFind->second, pMsg, maintype, subtype, &tail, sizeof(tail));
 			}
 			else
-				log_error("请求发送消息到未知的服务器，服务器ID:[%d]", nServerID);
+				RunStateError("请求发送消息到未知的服务器，服务器ID:[%d]", nServerID);
 		}
 		else
 		{
@@ -291,9 +292,9 @@ void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 		CServerStatusMgr::Instance().DelServerByGameID(info->GetServerID());
 		m_GateList.erase(info->GetServerID());
 		if (overtime)
-			log_error("网关服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("网关服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		else
-			log_error("网关服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("网关服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		break;
 	}
 	case ServerEnum::EST_GAME:
@@ -301,9 +302,9 @@ void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 		CServerStatusMgr::Instance().DelServerByGameID(info->GetServerID());
 		m_GameList.erase(info->GetServerID());
 		if (overtime)
-			log_error("逻辑服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("逻辑服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		else
-			log_error("逻辑服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("逻辑服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		break;
 	}
 	case ServerEnum::EST_LOGIN:
@@ -311,9 +312,9 @@ void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 		CClientAuthMgr::Instance().Destroy();
 		m_LoginList.erase(info->GetServerID());
 		if (overtime)
-			log_error("登陆服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("登陆服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		else
-			log_error("登陆服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("登陆服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 
 		break;
 	}
@@ -321,18 +322,18 @@ void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	{
 		m_DBList.erase(info->GetServerID());
 		if (overtime)
-			log_error("数据服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("数据服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		else
-			log_error("数据服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("数据服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 
 		break;
 	}
 	default:
 	{
 		if (overtime)
-			log_error("未注册的服务器超时移除, ip:[%s]", info->GetIP());
+			RunStateError("未注册的服务器超时移除, ip:[%s]", info->GetIP());
 		else
-			log_error("未注册的服务器关闭移除, ip:[%s]", info->GetIP());
+			RunStateError("未注册的服务器关闭移除, ip:[%s]", info->GetIP());
 	}
 	}
 }
@@ -546,7 +547,7 @@ bool CCentServerMgr::AddNewServer(serverinfo *info, int nServerID, int nType)
 {
 	if (FindServer(nServerID, nType))
 	{
-		log_error("添加服务器失败！已经存在的服务器，远程服务器ID：[%d] IP:[%s]", nServerID, info->GetIP());
+		RunStateError("添加服务器失败！已经存在的服务器，远程服务器ID：[%d] IP:[%s]", nServerID, info->GetIP());
 		return false;
 	}
 	
@@ -575,7 +576,7 @@ bool CCentServerMgr::AddNewServer(serverinfo *info, int nServerID, int nType)
 	}
 	default:
 	{
-		log_error("添加服务器失败！不存在的服务器类型，远程服务器ID：[%d] 类型：[%d] IP:[%s]", nServerID, nType, info->GetIP());
+		RunStateError("添加服务器失败！不存在的服务器类型，远程服务器ID：[%d] 类型：[%d] IP:[%s]", nServerID, nType, info->GetIP());
 		return false;
 	}
 	}

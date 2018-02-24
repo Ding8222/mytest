@@ -1,6 +1,7 @@
 ﻿#include"stdfx.h"
 #include "ServerMgr.h"
 #include "serverinfo.h"
+#include "log.h"
 
 extern int64 g_currenttime;
 
@@ -113,7 +114,7 @@ bool CServerMgr::TestAndListen()
 
 	if (m_Listen->Listen(m_ListenPort, s_backlog))
 	{
-		log_error("监听端口 %d 成功!", m_ListenPort);
+		log_writelog("监听端口 %d 成功!", m_ListenPort);
 		return true;
 	}
 
@@ -147,7 +148,7 @@ void CServerMgr::AcceptNewClient()
 		char ip[128];
 		sock->GetIP(ip, sizeof(ip) - 1);
 		newinfo->SetIP(ip);
-		log_error("有新的服务器连接, ip:%s", ip);
+		log_writelog("有新的服务器连接, ip:%s", ip);
 	}
 }
 
@@ -308,7 +309,7 @@ void CServerMgr::OnServerRegister(serverinfo *info, MessagePack *pMsg)
 		SendMsg(info, ret, SERVER_TYPE_MAIN, SVR_SUB_SERVER_REGISTER_RET);
 		info->SetPort(msg.nport());
 		ServerRegisterSucc(info->GetServerID(), info->GetServerType(), info->GetIP(), msg.nport());
-		log_error("一个新的服务器注册成功，远程服务器ID：[%d] IP:[%s]", info->GetServerID(), info->GetIP());
+		log_writelog("一个新的服务器注册成功，远程服务器ID：[%d] IP:[%s]", info->GetServerID(), info->GetIP());
 	}
 	else
 	{

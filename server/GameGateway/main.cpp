@@ -24,12 +24,10 @@
 
 bool init()
 {
-	log_error("网关服务器开始启动!");
-
 #ifdef _WIN32
 	if (!CMiniDump::Begin())
 	{
-		log_error("初始化MiniDump失败!");
+		RunStateError("初始化MiniDump失败!");
 		system("pause");
 		return false;
 	}
@@ -37,14 +35,14 @@ bool init()
 
 	if (!init_log("GameGateway_Log"))
 	{
-		log_error("初始化Log失败!");
+		RunStateError("初始化Log失败!");
 		return false;
 	}
 
 	//读取网络配置文件
 	if (!CNetConfig::Instance().Init())
 	{
-		log_error("初始化NetConfig失败!");
+		RunStateError("初始化NetConfig失败!");
 		system("pause");
 		return 0;
 	}
@@ -52,7 +50,7 @@ bool init()
 	//读取配置文件
 	if (!CConfig::Instance().Init("GameGateway"))
 	{
-		log_error("初始化Config失败!");
+		RunStateError("初始化Config失败!");
 		system("pause");
 		return 0;
 	}
@@ -61,20 +59,22 @@ bool init()
 	g_elapsed_log_flag = CConfig::Instance().IsOpenElapsedLog();
 	sPoolInfo.SetMeminfoFileName("GameGateway_Log/mempoolinfo.txt");
 
+	RunStateLog("网关服务器开始启动!");
+
 	//初始化网络库
 	if (!lxnet::net_init(CNetConfig::Instance().GetBigBufSize(), CNetConfig::Instance().GetBigBufNum(),
 		CNetConfig::Instance().GetSmallBufSize(), CNetConfig::Instance().GetSmallBufNum(),
 		CNetConfig::Instance().GetListenerNum(), CNetConfig::Instance().GetSocketerNum(),
 		CNetConfig::Instance().GetThreadNum()))
 	{
-		log_error("初始化网络库失败!");
+		RunStateError("初始化网络库失败!");
 		system("pause");
 		return 0;
 	}
 	//设置监听端口，创建listener
 	if (!CGameGateway::Instance().Init())
 	{
-		log_error("初始化失败!");
+		RunStateError("初始化失败!");
 		system("pause");
 		return 0;
 	}
@@ -83,7 +83,7 @@ bool init()
 	//循环结束后的资源释放
 	CGameGateway::Instance().Release();
 	lxnet::net_release();
-
+	release_log();
 #ifdef _WIN32
 	CMiniDump::End();
 #endif
