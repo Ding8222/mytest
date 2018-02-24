@@ -1,4 +1,4 @@
-#include "serverlog.h"
+﻿#include "serverlog.h"
 #include <string>
 
 struct filelog *g_client_connectlog = NULL;
@@ -11,11 +11,12 @@ bool g_elapsed_log_flag = false;
 bool init_log(const char *rootdirname)
 {
 	std::string tempname = rootdirname;
+	tempname = "log_log/" + tempname;
 	std::string temp;
 	if (tempname == "")
 		return false;
 
-	mymkdir_r(rootdirname);
+	mymkdir_r(tempname.c_str());
 
 	if (!g_client_connectlog)
 	{

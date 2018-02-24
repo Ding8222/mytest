@@ -3,6 +3,7 @@
 #include "CentServerMgr.h"
 #include "config.h"
 #include "Timer.h"
+#include "ServerLog.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -89,7 +90,7 @@ void CCenterServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			log_error("运行超时:%d\n%s", delay, CCentServerMgr::Instance().GetMsgNumInfo());
+			ElapsedLog("运行超时:%d\n%s", delay, CCentServerMgr::Instance().GetMsgNumInfo());
 		}
 	}
 	delaytime(300);

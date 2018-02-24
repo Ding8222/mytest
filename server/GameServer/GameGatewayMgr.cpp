@@ -228,13 +228,13 @@ void CGameGatewayMgr::ProcessClientMsg(int gateid, int64 clientid, Msg *pMsg)
 	{
 	case LOGIN_TYPE_MAIN:
 	{
-		switch (pMsg->GetSubType())
-		{
-		default:
-		{
-		}
-		}
-		break;
+// 		switch (pMsg->GetSubType())
+// 		{
+// 		default:
+// 		{
+// 		}
+// 		}
+// 		break;
 	}
 	case CLIENT_TYPE_MAIN:
 	{

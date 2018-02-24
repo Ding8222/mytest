@@ -10,6 +10,7 @@ CBaseConfig::CBaseConfig()
 	m_OverTime = 0;
 	m_PingTime = 0;
 	m_ServerID = 0;
+	m_IsOpenElapsedLog = false;
 }
 CBaseConfig::~CBaseConfig()
 {
@@ -17,6 +18,7 @@ CBaseConfig::~CBaseConfig()
 	m_OverTime = 0;
 	m_PingTime = 0;
 	m_ServerID = 0;
+	m_IsOpenElapsedLog = false;
 }
 
 bool CBaseConfig::Init(const char *servername)
@@ -57,6 +59,12 @@ bool CBaseConfig::Init(const char *servername)
 	if (m_PingTime <= 0)
 	{
 		log_error("Ping_Time小于等于0：%d", m_PingTime);
+		return false;
+	}
+
+	if (pBaseInfo->QueryBoolAttribute("Elapsed_Log", &m_IsOpenElapsedLog) != XML_SUCCESS)
+	{
+		log_error("没有找到字段： 'Elapsed_Log'");
 		return false;
 	}
 

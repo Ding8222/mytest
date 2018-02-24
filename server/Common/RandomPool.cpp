@@ -1,4 +1,4 @@
-#include "RandomPool.h"
+﻿#include "RandomPool.h"
 
 CRandomPool::CRandomPool()
 {

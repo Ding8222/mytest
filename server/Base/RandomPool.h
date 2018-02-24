@@ -1,4 +1,4 @@
-/*
+﻿/*
 * RandomPool
 * Copyright (C) ddl
 * 2018

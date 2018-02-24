@@ -8,6 +8,7 @@
 #include "LoginSvr.h"
 #include "config.h"
 #include "NetConfig.h"
+#include "ServerLog.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -34,6 +35,12 @@ bool init()
 	}
 #endif
 
+	if (!init_log("LoginServer_Log"))
+	{
+		log_error("初始化Log失败!");
+		return false;
+	}
+
 	//读取网络配置文件
 	if (!CNetConfig::Instance().Init())
 	{
@@ -49,6 +56,11 @@ bool init()
 		system("pause");
 		return 0;
 	}
+
+	g_client_connectlog_flag = CConfig::Instance().IsOpenClientConnectLog();
+	g_elapsed_log_flag = CConfig::Instance().IsOpenElapsedLog();
+	sPoolInfo.SetMeminfoFileName("LoginServer_Log/mempoolinfo.txt");
+	
 	//初始化网络库
 	if (!lxnet::net_init(CNetConfig::Instance().GetBigBufSize(), CNetConfig::Instance().GetBigBufNum(),
 		CNetConfig::Instance().GetSmallBufSize(), CNetConfig::Instance().GetSmallBufNum(),

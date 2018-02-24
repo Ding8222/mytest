@@ -24,12 +24,6 @@
 
 bool init()
 {
-	if (!init_log("GameServer_Log"))
-	{
-		log_error("初始化Log失败!");
-		return false;
-	}
-	
 	log_error("逻辑服务器开始启动!");
 
 #ifdef _WIN32
@@ -41,6 +35,12 @@ bool init()
 	}
 #endif
 
+	if (!init_log("GameServer_Log"))
+	{
+		log_error("初始化Log失败!");
+		return false;
+	}
+		
 	//读取网络配置文件
 	if (!CNetConfig::Instance().Init())
 	{
@@ -56,6 +56,10 @@ bool init()
 		system("pause");
 		return 0;
 	}
+
+	g_elapsed_log_flag = CConfig::Instance().IsOpenElapsedLog();
+	sPoolInfo.SetMeminfoFileName("GameServer_Log/mempoolinfo.txt");
+
 	//初始化网络库
 	if (!lxnet::net_init(CNetConfig::Instance().GetBigBufSize(), CNetConfig::Instance().GetBigBufNum(),
 		CNetConfig::Instance().GetSmallBufSize(), CNetConfig::Instance().GetSmallBufNum(),

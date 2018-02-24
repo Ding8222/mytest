@@ -8,6 +8,7 @@
 #include "MapConfig.h"
 #include "Config.h"
 #include "Timer.h"
+#include "ServerLog.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -131,7 +132,7 @@ void CGameServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			log_error("运行超时:%d\n%s%s", delay, 
+			ElapsedLog("运行超时:%d\n%s%s", delay,
 				CGameCenterConnect::Instance().GetMsgNumInfo(),
 				CGameGatewayMgr::Instance().GetMsgNumInfo());
 		}

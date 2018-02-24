@@ -20,7 +20,9 @@ public:
 	int GetServerType() { return m_ServerType; }
 	int SetServerType(int nType) { return m_ServerType = nType; }
 	std::string GetServerIP() { return s_ServerIP; }
+	bool IsOpenElapsedLog() { return m_IsOpenElapsedLog; }
 private:
+	bool m_IsOpenElapsedLog;
 	int m_ListenPort;
 	int m_OverTime;
 	int m_PingTime;

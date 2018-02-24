@@ -18,6 +18,7 @@ CConfig::CConfig()
 	m_MaxClientNum = 0;
 	m_RecvDataLimt = 0;
 	m_SendDataLimt = 0;
+	m_IsOpenClientConnectLog = false;
 }
 CConfig::~CConfig()
 {
@@ -32,6 +33,7 @@ CConfig::~CConfig()
 	m_MaxClientNum = 0;
 	m_RecvDataLimt = 0;
 	m_SendDataLimt = 0;
+	m_IsOpenClientConnectLog = false;
 }
 
 bool CConfig::Init(const char *servername)
@@ -111,5 +113,12 @@ bool CConfig::Init(const char *servername)
 		log_error("没有找到字段： 'DataLimt_Send'");
 		return false;
 	}
+
+	if (pinfo->QueryBoolAttribute("ClientConnect_Log", &m_IsOpenClientConnectLog) != XML_SUCCESS)
+	{
+		log_error("没有找到字段： 'ClientConnect_Log'");
+		return false;
+	}
+
 	return true;
 }

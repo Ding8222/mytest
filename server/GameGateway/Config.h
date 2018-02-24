@@ -24,6 +24,7 @@ public:
 	int GetMaxClientNum() { return m_MaxClientNum; }
 	int GetRecvDataLimt() { return m_RecvDataLimt; }
 	int GetSendDataLimt() { return m_SendDataLimt; }
+	bool IsOpenClientConnectLog() { return m_IsOpenClientConnectLog; }
 
 private:
 
@@ -38,4 +39,5 @@ private:
 	int m_MaxClientNum;
 	int m_RecvDataLimt;
 	int m_SendDataLimt;
+	bool m_IsOpenClientConnectLog;
 };

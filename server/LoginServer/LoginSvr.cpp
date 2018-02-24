@@ -4,6 +4,7 @@
 #include"LoginCenterConnect.h"
 #include"config.h"
 #include "Timer.h"
+#include "ServerLog.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -96,7 +97,7 @@ void CLoginServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			log_error("运行超时:%d\n%s", delay, CLoginCenterConnect::Instance().GetMsgNumInfo());
+			ElapsedLog("运行超时:%d\n%s", delay, CLoginCenterConnect::Instance().GetMsgNumInfo());
 		}
 	}
 	delaytime(300);

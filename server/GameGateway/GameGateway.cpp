@@ -5,6 +5,7 @@
 #include"GateClientMgr.h"
 #include"GateCenterConnect.h"
 #include "Timer.h"
+#include "ServerLog.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -105,7 +106,7 @@ void CGameGateway::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			log_error("运行超时:%d\n%s%s", delay,CGameConnect::Instance().GetMsgNumInfo(),CGateCenterConnect::Instance().GetMsgNumInfo());
+			ElapsedLog("运行超时:%d\n%s%s", delay,CGameConnect::Instance().GetMsgNumInfo(),CGateCenterConnect::Instance().GetMsgNumInfo());
 		}
 	}
 	delaytime(300);
