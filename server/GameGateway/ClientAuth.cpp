@@ -10,6 +10,34 @@
 #include "Login.pb.h"
 #include "LoginType.h"
 
+#define CLIENTAUTHINFO_ID_MAX 20000
+
+static objectpool<ClientAuthInfo> &ClientAuthInfoPool()
+{
+	static objectpool<ClientAuthInfo> m(CLIENTAUTHINFO_ID_MAX, "ClientAuthInfo pools");
+	return m;
+}
+
+static ClientAuthInfo *clientauthinfo_create()
+{
+	ClientAuthInfo *self = ClientAuthInfoPool().GetObject();
+	if (!self)
+	{
+		log_error("创建 ClientAuthInfo 失败!");
+		return NULL;
+	}
+	new(self) ClientAuthInfo();
+	return self;
+}
+
+static void clientauthinfo_release(ClientAuthInfo *self)
+{
+	if (!self)
+		return;
+	self->~ClientAuthInfo();
+	ClientAuthInfoPool().FreeObject(self);
+}
+
 CClientAuth::CClientAuth()
 {
 	m_ClientSecretInfo.clear();
@@ -27,7 +55,7 @@ void CClientAuth::Destroy()
 	{
 		if (i.second)
 		{
-			delete i.second;
+			clientauthinfo_release(i.second);
 			i.second = nullptr;
 		}
 	}
@@ -47,11 +75,14 @@ void CClientAuth::AddAuthInfo(Msg *pMsg)
 	auto iter = m_ClientSecretInfo.find(msg.setoken());
 	if (iter == m_ClientSecretInfo.end())
 	{
-		ClientAuthInfo *_pData = new ClientAuthInfo;
-		_pData->ClientID = 0;
-		_pData->Token = msg.setoken();
-		_pData->Secret = msg.ssecret();
-		m_ClientSecretInfo.insert(std::make_pair(msg.setoken(), _pData));
+		ClientAuthInfo *_pData = clientauthinfo_create();
+		if (_pData)
+		{
+			_pData->ClientID = 0;
+			_pData->Token = msg.setoken();
+			_pData->Secret = msg.ssecret();
+			m_ClientSecretInfo.insert(std::make_pair(msg.setoken(), _pData));
+		}
 	}
 	else
 	{
@@ -183,7 +214,7 @@ void CClientAuth::Offline(int64 clientid)
 	if (iter != m_ClientAuthInfo.end())
 	{
 		m_ClientSecretInfo.erase(iter->second->Token);
-		delete iter->second;
+		clientauthinfo_release(iter->second);
 	}
 	KickClient(clientid);
 }
