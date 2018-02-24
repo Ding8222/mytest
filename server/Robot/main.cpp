@@ -4,11 +4,12 @@
 * 2018
 */
 
-#include "stdfx.h"
 #include "RobotSvr.h"
 #include "config.h"
 #include "NetConfig.h"
 #include "ServerLog.h"
+#include "lxnet.h"
+#include "objectpool.h"
 
 #ifdef _WIN32
 #include <windows.h>

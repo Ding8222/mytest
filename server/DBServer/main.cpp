@@ -4,11 +4,14 @@
 * 2018
 */
 
-#include "stdfx.h"
 #include "config.h"
 #include "DBServer.h"
 #include "NetConfig.h"
 #include "ServerLog.h"
+#include "lxnet.h"
+#include "objectpool.h"
+
+#pragma comment(lib,"fmt.lib") 
 
 #ifdef _WIN32
 #include <windows.h>

@@ -1,4 +1,4 @@
-﻿#include "stdfx.h"
+﻿#include "platform_config.h"
 #include "Scene.h"
 #include "BaseObj.h"
 #include "MapInfo.h"

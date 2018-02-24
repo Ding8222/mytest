@@ -1,13 +1,16 @@
-﻿#include "stdfx.h"
-#include "Client.h"
+﻿#include "Client.h"
 #include "GateClientMgr.h"
 #include "GameConnect.h"
 #include "GateCenterConnect.h"
 #include "Config.h"
 #include "ClientAuth.h"
+#include "msgbase.h"
 
+#include "MainType.h"
+#include "ServerType.h"
 #include "LoginType.h"
 #include "ClientType.h"
+#include "ServerMsg.pb.h"
 
 extern int64 g_currenttime;
 

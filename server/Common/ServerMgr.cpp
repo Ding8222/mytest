@@ -1,7 +1,11 @@
-﻿#include"stdfx.h"
-#include "ServerMgr.h"
+﻿#include "ServerMgr.h"
 #include "serverinfo.h"
 #include "log.h"
+#include "GlobalDefine.h"
+
+#include "MainType.h"
+#include "ServerType.h"
+#include "ServerMsg.pb.h"
 
 extern int64 g_currenttime;
 

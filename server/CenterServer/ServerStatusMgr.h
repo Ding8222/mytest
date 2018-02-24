@@ -5,6 +5,7 @@
 */
 #pragma once
 #include <unordered_map>
+#include "GlobalDefine.h"
 
 struct ServerStatusInfo
 {

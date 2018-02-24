@@ -1,5 +1,4 @@
-﻿#include "stdfx.h"
-#include "GameServer.h"
+﻿#include "GameServer.h"
 #include "GameGatewayMgr.h"
 #include "GameCenterConnect.h"
 #include "PlayerMgr.h"

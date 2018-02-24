@@ -44,9 +44,6 @@
     <ClInclude Include="PB\ServerMsg.pb.h">
       <Filter>PB</Filter>
     </ClInclude>
-    <ClInclude Include="stdfx.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="BaseConfig.h">
       <Filter>Common</Filter>
     </ClInclude>

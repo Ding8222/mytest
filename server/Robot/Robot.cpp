@@ -1,7 +1,13 @@
-﻿#include "stdfx.h"
-#include "Connector.h"
-#include "Robot.h"
+﻿#include "Connector.h"
 #include "serverlog.h"
+#include "msgbase.h"
+#include "GlobalDefine.h"
+#include "google/protobuf/message.h"
+#include "Robot.h"
+
+#include "MainType.h"
+#include "ServerType.h"
+#include "ServerMsg.pb.h"
 
 extern int64 g_currenttime;
 

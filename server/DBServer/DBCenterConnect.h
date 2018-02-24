@@ -6,6 +6,7 @@
 #pragma once
 #include "ConnectMgr.h"
 #include "sqlinterface.h"
+#include "msgbase.h"
 
 class CDBCenterConnect : public CConnectMgr
 {

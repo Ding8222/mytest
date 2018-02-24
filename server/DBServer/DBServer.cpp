@@ -1,5 +1,4 @@
-﻿#include "stdfx.h"
-#include "DBServer.h"
+﻿#include "DBServer.h"
 #include "DBCenterConnect.h"
 #include "config.h"
 #include "Timer.h"

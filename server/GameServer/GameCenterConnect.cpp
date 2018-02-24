@@ -1,5 +1,4 @@
-﻿#include "stdfx.h"
-#include "GameCenterConnect.h"
+﻿#include "GameCenterConnect.h"
 #include "GameGatewayMgr.h"
 #include "serverinfo.h"
 #include "connector.h"
@@ -8,8 +7,11 @@
 #include "Utilities.h"
 #include "serverlog.h"
 
-#include "ClientMsg.pb.h"
+#include "MainType.h"
+#include "ServerType.h"
 #include "ClientType.h"
+#include "ClientMsg.pb.h"
+#include "ServerMsg.pb.h"
 
 extern int64 g_currenttime;
 

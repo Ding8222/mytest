@@ -7,6 +7,9 @@
 #pragma once
 #include <unordered_map>
 #include "lxnet.h"
+#include <google/protobuf/message.h>
+#include "platform_config.h"
+#include "crosslib.h"
 
 class connector;
 class CConnectMgr

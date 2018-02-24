@@ -1,7 +1,9 @@
-﻿#include"stdfx.h"
-#include "ClientMgr.h"
+﻿#include "ClientMgr.h"
 #include "Client.h"
 #include "idmgr.c"
+#include "objectpool.h"
+#include "GlobalDefine.h"
+#include "msgbase.h"
 
 static const int s_backlog = 128;
 extern int64 g_currenttime;

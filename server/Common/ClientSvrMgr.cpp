@@ -1,5 +1,8 @@
-﻿#include "stdfx.h"
+﻿
+#include <unordered_map>
+#include "msgbase.h"
 #include "ClientSvrMgr.h"
+#include "GlobalDefine.h"
 
 CClientSvrMgr::CClientSvrMgr()
 {

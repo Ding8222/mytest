@@ -1,14 +1,19 @@
-﻿#include "stdfx.h"
-#include "Client.h"
+﻿#include "Client.h"
 #include "ClientAuth.h"
 #include "GameConnect.h"
 #include "GateClientMgr.h"
 #include "Config.h"
 #include "GateCenterConnect.h"
 #include "serverlog.h"
+#include "objectpool.h"
+#include "GlobalDefine.h"
+#include "msgbase.h"
 
-#include "Login.pb.h"
+#include "MainType.h"
+#include "ServerType.h"
 #include "LoginType.h"
+#include "Login.pb.h"
+#include "ServerMsg.pb.h"
 
 #define CLIENTAUTHINFO_ID_MAX 20000
 

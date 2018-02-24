@@ -1,8 +1,8 @@
-﻿#include"stdfx.h"
-#include"loginsvr.h"
-#include"LoginClientMgr.h"
-#include"LoginCenterConnect.h"
-#include"config.h"
+﻿#include "crosslib.h"
+#include "loginsvr.h"
+#include "LoginClientMgr.h"
+#include "LoginCenterConnect.h"
+#include "config.h"
 #include "Timer.h"
 #include "ServerLog.h"
 

@@ -1,10 +1,12 @@
-﻿#include "stdfx.h"
-#include "ClientAuthMgr.h"
+﻿#include "ClientAuthMgr.h"
 #include "CentServerMgr.h"
 #include "ServerStatusMgr.h"
 
+#include "MainType.h"
+#include "ServerType.h"
 #include "LoginType.h"
 #include "Login.pb.h"
+#include "ServerMsg.pb.h"
 
 CClientAuthMgr::CClientAuthMgr()
 {

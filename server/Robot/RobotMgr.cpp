@@ -1,4 +1,4 @@
-﻿#include "stdfx.h"
+﻿#include "google/protobuf/message.h"
 #include "Robot.h"
 #include "RobotMgr.h"
 #include "Login.pb.h"
@@ -10,6 +10,14 @@
 #include "base64.h"
 #include <string>
 #include "serverlog.h"
+#include "msgbase.h"
+#include "GlobalDefine.h"
+#include "fmt/ostream.h"
+
+#include "MainType.h"
+#include "ServerType.h"
+
+#pragma comment(lib,"fmt.lib") 
 
 extern int64 g_currenttime;
 

@@ -1,15 +1,17 @@
-﻿#include "stdfx.h"
-#include "LoginCenterConnect.h"
+﻿#include "LoginCenterConnect.h"
 #include "LoginClientMgr.h"
 #include "ClientAuth.h"
 #include "Client.h"
 #include "Config.h"
+#include "GlobalDefine.h"
+#include "msgbase.h"
 
 #include "osrng.h"
 #include "des.h"
 #include "dh.h"
 #include <string>
 
+#include "MainType.h"
 #include "LoginType.h"
 #include "DBSvrType.h"
 #include "ClientMsg.pb.h"

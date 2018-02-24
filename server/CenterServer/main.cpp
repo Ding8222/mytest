@@ -4,11 +4,12 @@
 * 2018
 */
 
-#include "stdfx.h"
 #include "config.h"
 #include "centerserver.h"
 #include "NetConfig.h"
 #include "ServerLog.h"
+#include "objectpool.h"
+#include "lxnet.h"
 
 #ifdef _WIN32
 #include <windows.h>

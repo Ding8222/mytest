@@ -1,7 +1,12 @@
-﻿#include"stdfx.h"
-#include "ConnectMgr.h"
+﻿#include "ConnectMgr.h"
 #include "Connector.h"
 #include "log.h"
+#include "msgbase.h"
+#include "GlobalDefine.h"
+
+#include "MainType.h"
+#include "ServerType.h"
+#include "ServerMsg.pb.h"
 
 extern int64 g_currenttime;
 

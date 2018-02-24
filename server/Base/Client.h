@@ -7,6 +7,7 @@
 
 #include "lxnet.h"
 #include "crosslib.h"
+#include <string>
 struct Msg;
 class CClient
 {

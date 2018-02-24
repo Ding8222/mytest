@@ -43,9 +43,13 @@ game和gate断开的时候，gate需要断开所有client
 player离线的时候，要把所有引用到的指针清理
 
 log_error管理一下
+--已处理
 
 最大client的管理
 
 头文件的包含需要理一下
 
 Sql语句执行后，返回返回是否成功执行，就不需要手动检测"@"
+
+protobuf好像可以做到自动解析，不需要1-1这种...有空可以研究研究
+http://blog.csdn.net/solstice/article/details/6300108

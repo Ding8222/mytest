@@ -160,7 +160,6 @@
     <ClInclude Include="ServerMgr.h" />
     <ClInclude Include="ServerType.h" />
     <ClInclude Include="sqlinterface.h" />
-    <ClInclude Include="stdfx.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="tinyxml2.h" />
   </ItemGroup>

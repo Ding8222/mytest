@@ -1,13 +1,15 @@
-﻿#include"stdfx.h"
-#include "GameCenterConnect.h"
+﻿#include "GameCenterConnect.h"
 #include "GameGatewayMgr.h"
 #include "serverinfo.h"
 #include "Config.h"
 #include "PlayerMgr.h"
 #include "serverlog.h"
 
+#include "MainType.h"
+#include "ServerType.h"
 #include "ClientType.h"
 #include "LoginType.h"
+#include "ServerMsg.pb.h"
 #include "Login.pb.h"
 #include "ClientMsg.pb.h"
 

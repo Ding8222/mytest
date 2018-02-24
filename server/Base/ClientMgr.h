@@ -7,6 +7,8 @@
 #include <list>
 #include <vector>
 #include "lxnet.h"
+#include <google/protobuf/message.h>
+#include "platform_config.h"
 
 class CClient;
 struct idmgr;

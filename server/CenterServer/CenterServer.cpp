@@ -1,9 +1,9 @@
-﻿#include "stdfx.h"
-#include "CenterServer.h"
+﻿#include "CenterServer.h"
 #include "CentServerMgr.h"
 #include "config.h"
 #include "Timer.h"
 #include "ServerLog.h"
+#include "crosslib.h"
 
 #ifdef _WIN32
 #include <windows.h>

@@ -1,9 +1,9 @@
-﻿#include"stdfx.h"
-#include "PlayerMgr.h"
+﻿#include "PlayerMgr.h"
 #include "GameCenterConnect.h"
 #include "Config.h"
 #include "idmgr.c"
 #include "serverlog.h"
+#include "objectpool.h"
 
 extern int64 g_currenttime;
 

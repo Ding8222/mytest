@@ -1,13 +1,16 @@
-﻿#include "stdfx.h"
-#include "GateCenterConnect.h"
+﻿#include "GateCenterConnect.h"
 #include "GateClientMgr.h"
 #include "serverinfo.h"
 #include "connector.h"
 #include "config.h"
 #include "serverlog.h"
+#include "msgbase.h"
 
+#include "MainType.h"
+#include "ServerType.h"
 #include "ClientAuth.h"
 #include "LoginType.h"
+#include "ServerMsg.pb.h"
 
 extern int64 g_currenttime;
 

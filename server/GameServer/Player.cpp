@@ -1,10 +1,10 @@
-﻿#include "stdfx.h"
-#include "Player.h"
+﻿#include "Player.h"
 #include "scene.h"
 #include "scenemgr.h"
 #include "serverlog.h"
-#include <iostream>
+#include "msgbase.h"
 
+#include "ServerMsg.pb.h"
 CPlayer::CPlayer()
 {
 

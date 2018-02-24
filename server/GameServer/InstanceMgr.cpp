@@ -1,9 +1,10 @@
-﻿#include "stdfx.h"
-#include "idmgr.c"
+﻿#include "idmgr.c"
 #include "Instance.h"
 #include "InstanceMgr.h"
 #include "MapConfig.h"
 #include "serverlog.h"
+#include "objectpool.h"
+#include "GlobalDefine.h"
 
 extern int64 g_currenttime;
 #define INSTANCE_ID_MAX 2000

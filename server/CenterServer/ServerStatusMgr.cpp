@@ -1,7 +1,10 @@
-﻿#include "stdfx.h"
-#include "serverinfo.h"
+﻿#include "serverinfo.h"
 #include "ServerStatusMgr.h"
 #include "serverlog.h"
+#include "objectpool.h"
+#include "msgbase.h"
+
+#include "ServerMsg.pb.h"
 
 #define SERVERSTATUSINFO_ID_MAX 100
 

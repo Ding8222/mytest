@@ -1,11 +1,13 @@
-﻿#include "stdfx.h"
-#include "DBCenterConnect.h"
-#include "connector.h"
+﻿#include "connector.h"
 #include "config.h"
 #include "sqlinterface.h"
-#include "ClientLogin.h"
 #include "serverlog.h"
+#include "msgbase.h"
+#include "ClientLogin.h"
+#include "DBCenterConnect.h"
 
+#include "MainType.h"
+#include "ServerType.h"
 #include "DBSvrType.h"
 
 DataBase::CConnection g_dbhand;

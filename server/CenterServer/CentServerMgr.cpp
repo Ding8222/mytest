@@ -1,5 +1,4 @@
-﻿#include"stdfx.h"
-#include "CentServerMgr.h"
+﻿#include "CentServerMgr.h"
 #include "serverinfo.h"
 #include "Config.h"
 #include "ClientAuthMgr.h"
@@ -7,7 +6,9 @@
 #include "ClientSvrMgr.h"
 #include "serverlog.h"
 
+#include "MainType.h"
 #include "LoginType.h"
+#include "ServerType.h"
 #include "ServerMsg.pb.h"
 #include "Login.pb.h"
 

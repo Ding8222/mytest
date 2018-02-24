@@ -1,13 +1,17 @@
-﻿#include "stdfx.h"
-#include "Client.h"
+﻿#include "Client.h"
 #include "Config.h"
 #include "LoginClientMgr.h"
 #include "LoginCenterConnect.h"
 
+#include "ClientAuth.h"
+
+#include "msgbase.h"
+#include "MainType.h"
+#include "ServerType.h"
 #include "ClientType.h"
 #include "LoginType.h"
 #include "DBSvrType.h"
-#include "ClientAuth.h"
+#include "ServerMsg.pb.h"
 
 extern int64 g_currenttime;
 

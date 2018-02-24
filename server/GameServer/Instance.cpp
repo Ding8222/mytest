@@ -1,4 +1,4 @@
-﻿#include "stdfx.h"
+﻿#include "platform_config.h"
 #include "Instance.h"
 
 CInstance::CInstance()
