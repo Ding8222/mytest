@@ -40,6 +40,8 @@ public:
 		return m;
 	}
 
+	void Destroy();
+
 	void AddNewServer(serverinfo *info, Msg *pMsg);
 	void UpdateServerLoad(int id, int clientcountnow, int clientcountmax);
 	void DelServerByGameID(int id);

@@ -4,6 +4,7 @@
 #include "Timer.h"
 #include "ServerLog.h"
 #include "crosslib.h"
+#include "ServerStatusMgr.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -96,6 +97,7 @@ void CCenterServer::Run()
 	delaytime(300);
 
 	CCentServerMgr::Instance().Destroy();
+	CServerStatusMgr::Instance().Destroy();
 
 	Destroy();
 }

@@ -5,6 +5,7 @@
 #include "GateCenterConnect.h"
 #include "Timer.h"
 #include "ServerLog.h"
+#include "ClientAuth.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -113,6 +114,7 @@ void CGameGateway::Run()
 	CGateClientMgr::Instance().Destroy();
 	CGameConnect::Instance().Destroy();
 	CGateCenterConnect::Instance().Destroy();
+	CClientAuth::Instance().Destroy();
 
 	Destroy();
 }

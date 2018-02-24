@@ -42,7 +42,12 @@ CServerStatusMgr::CServerStatusMgr()
 
 CServerStatusMgr::~CServerStatusMgr()
 {
-	for (auto &i: m_ServerInfo)
+	Destroy();
+}
+
+void CServerStatusMgr::Destroy()
+{
+	for (auto &i : m_ServerInfo)
 	{
 		serverstatusinfo_release(i.second);
 	}
