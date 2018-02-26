@@ -44,6 +44,11 @@ bool CGameConnect::Init()
 	);
 }
 
+void CGameConnect::Destroy()
+{
+	CConnectMgr::Destroy();
+}
+
 void CGameConnect::ServerRegisterSucc(int id, const char *ip, int port)
 {
 

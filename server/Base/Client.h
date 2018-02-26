@@ -6,7 +6,7 @@
 #pragma once
 
 #include "lxnet.h"
-#include "crosslib.h"
+#include "platform_config.h"
 #include <string>
 struct Msg;
 class CClient

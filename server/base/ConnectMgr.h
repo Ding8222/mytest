@@ -21,7 +21,7 @@ public:
 	bool Init(int serverid, int servertype, int pingtime, int overtime, int listenport = 0);
 	void Run();
 	void EndRun();
-	void Destroy();
+	virtual void Destroy();
 
 	bool IsAlreadyRegister(int id);
 

@@ -22,6 +22,11 @@ CClientLogin::~CClientLogin()
 {
 }
 
+void CClientLogin::Destroy()
+{
+
+}
+
 void CClientLogin::ProcessLoginMsg(connector *_con, Msg *pMsg, msgtail *tl)
 {
 	switch (pMsg->GetSubType())

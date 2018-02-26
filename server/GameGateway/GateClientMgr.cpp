@@ -21,7 +21,12 @@ CGateClientMgr::CGateClientMgr()
 
 CGateClientMgr::~CGateClientMgr()
 {
+	Destroy();
+}
 
+void CGateClientMgr::Destroy()
+{
+	CClientMgr::Destroy();
 }
 
 int64 CGateClientMgr::OnNewClient()

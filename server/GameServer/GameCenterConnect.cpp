@@ -45,6 +45,11 @@ bool CGameCenterConnect::Init()
 	);
 }
 
+void CGameCenterConnect::Destroy()
+{
+	CConnectMgr::Destroy();
+}
+
 void CGameCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
 {
 	// 如果Gate准备好了，发送一次负载信息给Center

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <string>
 #include"BaseConfig.h"
 
 class CConfig:public CBaseConfig

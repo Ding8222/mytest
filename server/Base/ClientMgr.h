@@ -22,7 +22,7 @@ public:
 	bool Init(int maxclientnum, int listenport, int clientovertime, int recvdatalimit, int senddatalimit);
 	void Run();
 	void EndRun();
-	void Destroy();
+	virtual void Destroy();
 
 	void GetCurrentInfo(char *buf, size_t buflen);
 	CClient *FindClient(int clientid);

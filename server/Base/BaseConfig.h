@@ -4,7 +4,6 @@
 * 2018
 */
 #pragma once
-#include <string>
 
 class CBaseConfig
 {

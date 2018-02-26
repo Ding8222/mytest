@@ -25,6 +25,11 @@ CLoginClientMgr::~CLoginClientMgr()
 
 }
 
+void CLoginClientMgr::Destroy()
+{
+	CClientMgr::Destroy();
+}
+
 int64 CLoginClientMgr::OnNewClient()
 {
 	if (!CLoginCenterConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetCenterServerID()))

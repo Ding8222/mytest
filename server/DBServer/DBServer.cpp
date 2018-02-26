@@ -1,5 +1,6 @@
 ﻿#include "DBServer.h"
 #include "DBCenterConnect.h"
+#include "ClientLogin.h"
 #include "config.h"
 #include "Timer.h"
 #include "ServerLog.h"
@@ -57,6 +58,7 @@ bool CDBServer::Init()
 	} while (true);
 
 	CDBCenterConnect::Instance().Destroy();
+	CClientLogin::Instance().Destroy();
 	Destroy();
 
 	return false;
@@ -92,6 +94,7 @@ void CDBServer::Run()
 	delaytime(300);
 
 	CDBCenterConnect::Instance().Destroy();
+	CClientLogin::Instance().Destroy();
 
 	Destroy();
 }

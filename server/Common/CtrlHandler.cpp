@@ -7,11 +7,11 @@
 
 CCtrlHandler::CCtrlHandler()
 {
-
+	f_Fun = nullptr;
 }
 CCtrlHandler::~CCtrlHandler()
 {
-
+	f_Fun = nullptr;
 }
 
 BOOL CtrlHandler(DWORD fdwCtrlType)

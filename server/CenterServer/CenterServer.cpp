@@ -5,6 +5,7 @@
 #include "ServerLog.h"
 #include "crosslib.h"
 #include "ServerStatusMgr.h"
+#include "ClientAuthMgr.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -62,6 +63,8 @@ bool CCenterServer::Init()
 	} while (true);
 
 	CCentServerMgr::Instance().Destroy();
+	CClientAuthMgr::Instance().Destroy();
+	CServerStatusMgr::Instance().Destroy();
 	Destroy();
 
 	return false;
@@ -97,6 +100,7 @@ void CCenterServer::Run()
 	delaytime(300);
 
 	CCentServerMgr::Instance().Destroy();
+	CClientAuthMgr::Instance().Destroy();
 	CServerStatusMgr::Instance().Destroy();
 
 	Destroy();

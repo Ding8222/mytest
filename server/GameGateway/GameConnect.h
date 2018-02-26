@@ -19,6 +19,7 @@ public:
 	}
 
 	bool Init();
+	void Destroy();
 
 	void ServerRegisterSucc(int id, const char *ip, int port);
 	// 连接断开的处理

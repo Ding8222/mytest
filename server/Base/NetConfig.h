@@ -10,7 +10,7 @@ public:
 	CNetConfig ();
 	~CNetConfig ();
 
-	static CNetConfig &Instance ()
+	static CNetConfig &Instance()
 	{
 		static CNetConfig m;
 		return m;

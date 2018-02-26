@@ -44,6 +44,11 @@ bool CGateCenterConnect::Init()
 	);
 }
 
+void CGateCenterConnect::Destroy()
+{
+	CConnectMgr::Destroy();
+}
+
 void CGateCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
 {
 	// 发送负载信息给Center

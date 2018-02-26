@@ -5,6 +5,7 @@
 #include "config.h"
 #include "Timer.h"
 #include "ServerLog.h"
+#include "ClientAuth.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -68,6 +69,7 @@ bool CLoginServer::Init()
 
 	CLoginClientMgr::Instance().Destroy();
 	CLoginCenterConnect::Instance().Destroy();
+	CClientAuth::Instance().Destroy();
 	Destroy();
 
 	return false;
@@ -104,6 +106,7 @@ void CLoginServer::Run()
 
 	CLoginCenterConnect::Instance().Destroy();
 	CLoginClientMgr::Instance().Destroy();
+	CClientAuth::Instance().Destroy();
 
 	Destroy();
 }

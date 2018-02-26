@@ -17,6 +17,8 @@ public:
 		return m;
 	}
 
+	void Destroy();
+
 	void ProcessLoginMsg(connector *_con, Msg *pMsg, msgtail *tl);
 
 	void ClientAuth(connector *_con, Msg *pMsg, msgtail *tl);

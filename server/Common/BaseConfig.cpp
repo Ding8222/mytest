@@ -1,4 +1,5 @@
-﻿#include"baseconfig.h"
+﻿#include <string>
+#include"baseconfig.h"
 #include"tinyxml2.h"
 #include"log.h"
 

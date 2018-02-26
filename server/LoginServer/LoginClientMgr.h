@@ -18,6 +18,8 @@ public:
 		return m;
 	}
 
+	void Destroy();
+
 	int64 OnNewClient();
 	void OnClientDisconnect(CClient *cl);
 	void ProcessClientMsg(CClient *cl);
