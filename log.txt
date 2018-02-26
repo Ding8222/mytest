@@ -1,3 +1,8 @@
+
+尝试将代码做成跨平台的，以便于使用redis等工具
+可以自己写makefile或者使用vs2017生成linux项目
+
+
 发消息的时候隐藏clientid、serverid
 --clientid需要作为发送方向，serverid被隐藏
 
