@@ -6,6 +6,7 @@
 #include "crosslib.h"
 #include "ServerStatusMgr.h"
 #include "ClientAuthMgr.h"
+#include "LogConnecter.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -57,12 +58,26 @@ bool CCenterServer::Init()
 			break;
 		}
 
+		if (!CLogConnecter::Instance().Init(
+			CConfig::Instance().GetLogServerIP().c_str(),
+			CConfig::Instance().GetLogServerPort(),
+			CConfig::Instance().GetLogServerID(),
+			CConfig::Instance().GetServerID(),
+			CConfig::Instance().GetServerType(),
+			CConfig::Instance().GetPingTime(),
+			CConfig::Instance().GetOverTime()))
+		{
+			RunStateError("初始化 LogConnecter 失败!");
+			break;
+		}
+
 		m_Run = true;
 		return true;
 
 	} while (true);
 
 	CCentServerMgr::Instance().Destroy();
+	CLogConnecter::Instance().Destroy();
 	CClientAuthMgr::Instance().Destroy();
 	CServerStatusMgr::Instance().Destroy();
 	Destroy();
@@ -83,6 +98,7 @@ void CCenterServer::Run()
 	while (m_Run)
 	{
 		CCentServerMgr::Instance().ResetMsgNum();
+		CLogConnecter::Instance().ResetMsgNum();
 		CTimer::UpdateTime();
 
 		g_currenttime = get_millisecond();
@@ -94,12 +110,14 @@ void CCenterServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			ElapsedLog("运行超时:%d\n%s", delay, CCentServerMgr::Instance().GetMsgNumInfo());
+			ElapsedLog("运行超时:%d\n%s%s", delay, CCentServerMgr::Instance().GetMsgNumInfo(), 
+				CLogConnecter::Instance().GetMsgNumInfo());
 		}
 	}
 	delaytime(300);
 
 	CCentServerMgr::Instance().Destroy();
+	CLogConnecter::Instance().Destroy();
 	CClientAuthMgr::Instance().Destroy();
 	CServerStatusMgr::Instance().Destroy();
 
@@ -116,8 +134,10 @@ void CCenterServer::RunOnce()
 	lxnet::net_run();
 
 	CCentServerMgr::Instance().Run();
+	CLogConnecter::Instance().Run();
 
 	CCentServerMgr::Instance().EndRun();
+	CLogConnecter::Instance().EndRun();
 }
 
 void CCenterServer::Destroy()

@@ -8,6 +8,7 @@
 #include "Config.h"
 #include "Timer.h"
 #include "ServerLog.h"
+#include "LogConnecter.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -66,6 +67,19 @@ bool CGameServer::Init()
 			return 0;
 		}
 
+		if (!CLogConnecter::Instance().Init(
+			CConfig::Instance().GetLogServerIP().c_str(),
+			CConfig::Instance().GetLogServerPort(),
+			CConfig::Instance().GetLogServerID(),
+			CConfig::Instance().GetServerID(),
+			CConfig::Instance().GetServerType(),
+			CConfig::Instance().GetPingTime(),
+			CConfig::Instance().GetOverTime()))
+		{
+			RunStateError("初始化 LogConnecter 失败!");
+			break;
+		}
+
 		// 需要在场景初始化之前初始化MapConfig
 		if (!CMapConfig::Instance().Init())
 		{
@@ -97,6 +111,7 @@ bool CGameServer::Init()
 
 	CGameGatewayMgr::Instance().Destroy();
 	CGameCenterConnect::Instance().Destroy();
+	CLogConnecter::Instance().Destroy();
 	CMapConfig::Instance().Destroy();
 	CPlayerMgr::Instance().Destroy();
 	CScenemgr::Instance().Destroy();
@@ -120,6 +135,7 @@ void CGameServer::Run()
 	{
 		CGameGatewayMgr::Instance().ResetMsgNum();
 		CGameCenterConnect::Instance().ResetMsgNum();
+		CLogConnecter::Instance().ResetMsgNum();
 		CTimer::UpdateTime();
 
 		g_currenttime = get_millisecond();
@@ -131,15 +147,17 @@ void CGameServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			ElapsedLog("运行超时:%d\n%s%s", delay,
+			ElapsedLog("运行超时:%d\n%s%s%s", delay,
 				CGameCenterConnect::Instance().GetMsgNumInfo(),
-				CGameGatewayMgr::Instance().GetMsgNumInfo());
+				CGameGatewayMgr::Instance().GetMsgNumInfo(),
+				CLogConnecter::Instance().GetMsgNumInfo());
 		}
 	}
 	delaytime(300);
 
 	CGameGatewayMgr::Instance().Destroy();
 	CGameCenterConnect::Instance().Destroy();
+	CLogConnecter::Instance().Destroy();
 	CMapConfig::Instance().Destroy();
 	CPlayerMgr::Instance().Destroy();
 	CScenemgr::Instance().Destroy();
@@ -155,16 +173,18 @@ void CGameServer::Exit()
 
 void CGameServer::RunOnce()
 {
-		lxnet::net_run();
-		CGameGatewayMgr::Instance().Run();
-		CGameCenterConnect::Instance().Run();
+	lxnet::net_run();
+	CGameGatewayMgr::Instance().Run();
+	CGameCenterConnect::Instance().Run();
+	CLogConnecter::Instance().Run();
 
-		CPlayerMgr::Instance().Run();
-		CScenemgr::Instance().Run();
-		CInstanceMgr::Instance().Run();
+	CPlayerMgr::Instance().Run();
+	CScenemgr::Instance().Run();
+	CInstanceMgr::Instance().Run();
 
-		CGameGatewayMgr::Instance().EndRun();
-		CGameCenterConnect::Instance().EndRun();
+	CGameGatewayMgr::Instance().EndRun();
+	CGameCenterConnect::Instance().EndRun();
+	CLogConnecter::Instance().EndRun();
 }
 
 void CGameServer::Destroy()

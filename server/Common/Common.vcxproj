@@ -132,6 +132,7 @@
     <ClCompile Include="Guid.cpp" />
     <ClCompile Include="idmgr.c" />
     <ClCompile Include="log.c" />
+    <ClCompile Include="LogConnecter.cpp" />
     <ClCompile Include="MiniDump.cpp" />
     <ClCompile Include="NetConfig.cpp" />
     <ClCompile Include="pool.c" />

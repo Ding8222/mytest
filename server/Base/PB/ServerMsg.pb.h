@@ -37,7 +37,7 @@ namespace protobuf_ServerMsg_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[9];
+  static const ::google::protobuf::internal::ParseTable schema[11];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -61,6 +61,10 @@ void InitDefaultsClientTokenImpl();
 void InitDefaultsClientToken();
 void InitDefaultsLoadPlayerDataImpl();
 void InitDefaultsLoadPlayerData();
+void InitDefaultsLoadPlayerDataRetImpl();
+void InitDefaultsLoadPlayerDataRet();
+void InitDefaultsServerLogImpl();
+void InitDefaultsServerLog();
 inline void InitDefaults() {
   InitDefaultsPing();
   InitDefaultsServerRegister();
@@ -71,6 +75,8 @@ inline void InitDefaults() {
   InitDefaultsDelClient();
   InitDefaultsClientToken();
   InitDefaultsLoadPlayerData();
+  InitDefaultsLoadPlayerDataRet();
+  InitDefaultsServerLog();
 }
 }  // namespace protobuf_ServerMsg_2eproto
 namespace svrData {
@@ -86,12 +92,18 @@ extern DelClientDefaultTypeInternal _DelClient_default_instance_;
 class LoadPlayerData;
 class LoadPlayerDataDefaultTypeInternal;
 extern LoadPlayerDataDefaultTypeInternal _LoadPlayerData_default_instance_;
+class LoadPlayerDataRet;
+class LoadPlayerDataRetDefaultTypeInternal;
+extern LoadPlayerDataRetDefaultTypeInternal _LoadPlayerDataRet_default_instance_;
 class Ping;
 class PingDefaultTypeInternal;
 extern PingDefaultTypeInternal _Ping_default_instance_;
 class ServerLoadInfo;
 class ServerLoadInfoDefaultTypeInternal;
 extern ServerLoadInfoDefaultTypeInternal _ServerLoadInfo_default_instance_;
+class ServerLog;
+class ServerLogDefaultTypeInternal;
+extern ServerLogDefaultTypeInternal _ServerLog_default_instance_;
 class ServerRegister;
 class ServerRegisterDefaultTypeInternal;
 extern ServerRegisterDefaultTypeInternal _ServerRegister_default_instance_;
@@ -108,8 +120,10 @@ template<> ::svrData::AddNewClient* Arena::Create< ::svrData::AddNewClient>(Aren
 template<> ::svrData::ClientToken* Arena::Create< ::svrData::ClientToken>(Arena*);
 template<> ::svrData::DelClient* Arena::Create< ::svrData::DelClient>(Arena*);
 template<> ::svrData::LoadPlayerData* Arena::Create< ::svrData::LoadPlayerData>(Arena*);
+template<> ::svrData::LoadPlayerDataRet* Arena::Create< ::svrData::LoadPlayerDataRet>(Arena*);
 template<> ::svrData::Ping* Arena::Create< ::svrData::Ping>(Arena*);
 template<> ::svrData::ServerLoadInfo* Arena::Create< ::svrData::ServerLoadInfo>(Arena*);
+template<> ::svrData::ServerLog* Arena::Create< ::svrData::ServerLog>(Arena*);
 template<> ::svrData::ServerRegister* Arena::Create< ::svrData::ServerRegister>(Arena*);
 template<> ::svrData::ServerRegisterRet* Arena::Create< ::svrData::ServerRegisterRet>(Arena*);
 template<> ::svrData::UpdateServerLoad* Arena::Create< ::svrData::UpdateServerLoad>(Arena*);
@@ -139,6 +153,27 @@ inline bool ServerRegisterRet_EC_Parse(
     const ::std::string& name, ServerRegisterRet_EC* value) {
   return ::google::protobuf::internal::ParseNamedEnum<ServerRegisterRet_EC>(
     ServerRegisterRet_EC_descriptor(), name, value);
+}
+enum LoadPlayerDataRet_EC {
+  LoadPlayerDataRet_EC_EC_OTHER = 0,
+  LoadPlayerDataRet_EC_EC_SUCC = 1,
+  LoadPlayerDataRet_EC_LoadPlayerDataRet_EC_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  LoadPlayerDataRet_EC_LoadPlayerDataRet_EC_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool LoadPlayerDataRet_EC_IsValid(int value);
+const LoadPlayerDataRet_EC LoadPlayerDataRet_EC_EC_MIN = LoadPlayerDataRet_EC_EC_OTHER;
+const LoadPlayerDataRet_EC LoadPlayerDataRet_EC_EC_MAX = LoadPlayerDataRet_EC_EC_SUCC;
+const int LoadPlayerDataRet_EC_EC_ARRAYSIZE = LoadPlayerDataRet_EC_EC_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* LoadPlayerDataRet_EC_descriptor();
+inline const ::std::string& LoadPlayerDataRet_EC_Name(LoadPlayerDataRet_EC value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    LoadPlayerDataRet_EC_descriptor(), value);
+}
+inline bool LoadPlayerDataRet_EC_Parse(
+    const ::std::string& name, LoadPlayerDataRet_EC* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<LoadPlayerDataRet_EC>(
+    LoadPlayerDataRet_EC_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -1307,6 +1342,231 @@ class LoadPlayerData : public ::google::protobuf::Message /* @@protoc_insertion_
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsLoadPlayerDataImpl();
 };
+// -------------------------------------------------------------------
+
+class LoadPlayerDataRet : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:svrData.LoadPlayerDataRet) */ {
+ public:
+  LoadPlayerDataRet();
+  virtual ~LoadPlayerDataRet();
+
+  LoadPlayerDataRet(const LoadPlayerDataRet& from);
+
+  inline LoadPlayerDataRet& operator=(const LoadPlayerDataRet& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  LoadPlayerDataRet(LoadPlayerDataRet&& from) noexcept
+    : LoadPlayerDataRet() {
+    *this = ::std::move(from);
+  }
+
+  inline LoadPlayerDataRet& operator=(LoadPlayerDataRet&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const LoadPlayerDataRet& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const LoadPlayerDataRet* internal_default_instance() {
+    return reinterpret_cast<const LoadPlayerDataRet*>(
+               &_LoadPlayerDataRet_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    9;
+
+  void Swap(LoadPlayerDataRet* other);
+  friend void swap(LoadPlayerDataRet& a, LoadPlayerDataRet& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline LoadPlayerDataRet* New() const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<LoadPlayerDataRet>(NULL);
+  }
+
+  LoadPlayerDataRet* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<LoadPlayerDataRet>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const LoadPlayerDataRet& from);
+  void MergeFrom(const LoadPlayerDataRet& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(LoadPlayerDataRet* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef LoadPlayerDataRet_EC EC;
+  static const EC EC_OTHER =
+    LoadPlayerDataRet_EC_EC_OTHER;
+  static const EC EC_SUCC =
+    LoadPlayerDataRet_EC_EC_SUCC;
+  static inline bool EC_IsValid(int value) {
+    return LoadPlayerDataRet_EC_IsValid(value);
+  }
+  static const EC EC_MIN =
+    LoadPlayerDataRet_EC_EC_MIN;
+  static const EC EC_MAX =
+    LoadPlayerDataRet_EC_EC_MAX;
+  static const int EC_ARRAYSIZE =
+    LoadPlayerDataRet_EC_EC_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  EC_descriptor() {
+    return LoadPlayerDataRet_EC_descriptor();
+  }
+  static inline const ::std::string& EC_Name(EC value) {
+    return LoadPlayerDataRet_EC_Name(value);
+  }
+  static inline bool EC_Parse(const ::std::string& name,
+      EC* value) {
+    return LoadPlayerDataRet_EC_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // int32 nRetCode = 1;
+  void clear_nretcode();
+  static const int kNRetCodeFieldNumber = 1;
+  ::google::protobuf::int32 nretcode() const;
+  void set_nretcode(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:svrData.LoadPlayerDataRet)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int32 nretcode_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
+  friend void ::protobuf_ServerMsg_2eproto::InitDefaultsLoadPlayerDataRetImpl();
+};
+// -------------------------------------------------------------------
+
+class ServerLog : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:svrData.ServerLog) */ {
+ public:
+  ServerLog();
+  virtual ~ServerLog();
+
+  ServerLog(const ServerLog& from);
+
+  inline ServerLog& operator=(const ServerLog& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ServerLog(ServerLog&& from) noexcept
+    : ServerLog() {
+    *this = ::std::move(from);
+  }
+
+  inline ServerLog& operator=(ServerLog&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ServerLog& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ServerLog* internal_default_instance() {
+    return reinterpret_cast<const ServerLog*>(
+               &_ServerLog_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    10;
+
+  void Swap(ServerLog* other);
+  friend void swap(ServerLog& a, ServerLog& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ServerLog* New() const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<ServerLog>(NULL);
+  }
+
+  ServerLog* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<ServerLog>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ServerLog& from);
+  void MergeFrom(const ServerLog& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ServerLog* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:svrData.ServerLog)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
+  friend void ::protobuf_ServerMsg_2eproto::InitDefaultsServerLogImpl();
+};
 // ===================================================================
 
 
@@ -2057,9 +2317,35 @@ inline void LoadPlayerData::set_allocated_data(::std::string* data) {
   // @@protoc_insertion_point(field_set_allocated:svrData.LoadPlayerData.data)
 }
 
+// -------------------------------------------------------------------
+
+// LoadPlayerDataRet
+
+// int32 nRetCode = 1;
+inline void LoadPlayerDataRet::clear_nretcode() {
+  nretcode_ = 0;
+}
+inline ::google::protobuf::int32 LoadPlayerDataRet::nretcode() const {
+  // @@protoc_insertion_point(field_get:svrData.LoadPlayerDataRet.nRetCode)
+  return nretcode_;
+}
+inline void LoadPlayerDataRet::set_nretcode(::google::protobuf::int32 value) {
+  
+  nretcode_ = value;
+  // @@protoc_insertion_point(field_set:svrData.LoadPlayerDataRet.nRetCode)
+}
+
+// -------------------------------------------------------------------
+
+// ServerLog
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -2088,6 +2374,11 @@ template <> struct is_proto_enum< ::svrData::ServerRegisterRet_EC> : ::google::p
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::svrData::ServerRegisterRet_EC>() {
   return ::svrData::ServerRegisterRet_EC_descriptor();
+}
+template <> struct is_proto_enum< ::svrData::LoadPlayerDataRet_EC> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::svrData::LoadPlayerDataRet_EC>() {
+  return ::svrData::LoadPlayerDataRet_EC_descriptor();
 }
 
 }  // namespace protobuf

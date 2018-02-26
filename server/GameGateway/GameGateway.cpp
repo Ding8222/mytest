@@ -6,6 +6,7 @@
 #include "Timer.h"
 #include "ServerLog.h"
 #include "ClientAuth.h"
+#include "LogConnecter.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -70,12 +71,28 @@ bool CGameGateway::Init()
 			break;
 		}
 
+		if (!CLogConnecter::Instance().Init(
+			CConfig::Instance().GetLogServerIP().c_str(),
+			CConfig::Instance().GetLogServerPort(),
+			CConfig::Instance().GetLogServerID(),
+			CConfig::Instance().GetServerID(),
+			CConfig::Instance().GetServerType(),
+			CConfig::Instance().GetPingTime(),
+			CConfig::Instance().GetOverTime()))
+		{
+			RunStateError("初始化 LogConnecter 失败!");
+			break;
+		}
+
 		m_Run = true;
 		return true;
 	} while (true);
 
 	CGateClientMgr::Instance().Destroy();
+	CGateCenterConnect::Instance().Destroy();
 	CGameConnect::Instance().Destroy();
+	CLogConnecter::Instance().Destroy();
+	CClientAuth::Instance().Destroy();
 	Destroy();
 
 	return false;
@@ -93,8 +110,9 @@ void CGameGateway::Run()
 	int delay;
 	while (m_Run)
 	{
-		CGameConnect::Instance().ResetMsgNum();
 		CGateCenterConnect::Instance().ResetMsgNum();
+		CGameConnect::Instance().ResetMsgNum();
+		CLogConnecter::Instance().ResetMsgNum();
 		CTimer::UpdateTime();
 
 		g_currenttime = get_millisecond();
@@ -106,14 +124,17 @@ void CGameGateway::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			ElapsedLog("运行超时:%d\n%s%s", delay,CGameConnect::Instance().GetMsgNumInfo(),CGateCenterConnect::Instance().GetMsgNumInfo());
+			ElapsedLog("运行超时:%d\n%s%s", delay,CGameConnect::Instance().GetMsgNumInfo(),
+				CGateCenterConnect::Instance().GetMsgNumInfo(),
+				CLogConnecter::Instance().GetMsgNumInfo());
 		}
 	}
 	delaytime(300);
 
 	CGateClientMgr::Instance().Destroy();
-	CGameConnect::Instance().Destroy();
 	CGateCenterConnect::Instance().Destroy();
+	CGameConnect::Instance().Destroy();
+	CLogConnecter::Instance().Destroy();
 	CClientAuth::Instance().Destroy();
 
 	Destroy();
@@ -131,10 +152,12 @@ void CGameGateway::RunOnce()
 	CGameConnect::Instance().Run();
 	CGateClientMgr::Instance().Run();
 	CGateCenterConnect::Instance().Run();
+	CLogConnecter::Instance().Run();
 
 	CGameConnect::Instance().EndRun();
 	CGateClientMgr::Instance().EndRun();
 	CGateCenterConnect::Instance().EndRun();
+	CLogConnecter::Instance().EndRun();
 }
 
 void CGameGateway::Destroy()

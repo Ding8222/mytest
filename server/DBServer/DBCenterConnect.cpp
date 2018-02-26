@@ -25,7 +25,7 @@ CDBCenterConnect::~CDBCenterConnect()
 
 bool CDBCenterConnect::Init()
 {
-	g_dbhand.SetLogDirectory("dbserver_log/dbhand_log");
+	g_dbhand.SetLogDirectory("DBServer_log/dbhand_log");
 	if (!g_dbhand.Open(CConfig::Instance().GetDBName().c_str(),
 		CConfig::Instance().GetDBUser().c_str(),
 		CConfig::Instance().GetDBPass().c_str(),

@@ -152,5 +152,8 @@
     <ClInclude Include="ServerLog.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="LogConnecter.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

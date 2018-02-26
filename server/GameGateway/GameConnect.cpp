@@ -20,7 +20,7 @@ CGameConnect::CGameConnect()
 
 CGameConnect::~CGameConnect()
 {
-
+	Destroy();
 }
 
 bool CGameConnect::Init()

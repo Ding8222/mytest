@@ -140,6 +140,7 @@
     <ClInclude Include="Guid.h" />
     <ClInclude Include="idmgr.h" />
     <ClInclude Include="log.h" />
+    <ClInclude Include="LogConnecter.h" />
     <ClInclude Include="LoginType.h" />
     <ClInclude Include="lxnet.h" />
     <ClInclude Include="MainType.h" />

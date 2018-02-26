@@ -18,6 +18,10 @@ GameServer_IP		逻辑服务器IP
 GameServer_Port		逻辑服务器端口
 GameServer_ID		逻辑服务器ID
 
+LogServer_IP		日志服务器IP
+LogServer_Port		日志服务器端口
+LogServer_ID		日志服务器ID
+
 ClientNum_Max		最大Client连接数
 DataLimt_Recv		接收数据大小限制，必须大于等于0，小于等于204857600，若为0则不限制
 DataLimt_Send		发送数据发小限制，必须大于等于0，小于等于204857600，若为0则不限制
@@ -27,6 +31,10 @@ DataLimt_Send		发送数据发小限制，必须大于等于0，小于等于2048
 	Over_Time = "1000"
 	Ping_Time = "500"
 	Elapsed_Log = "true"
+	
+	LogServer_IP = "127.0.0.1"
+	LogServer_Port = "30015"
+	LogServer_ID = "6000"
 	>
 </Base>
 
@@ -101,3 +109,15 @@ DataLimt_Send		发送数据发小限制，必须大于等于0，小于等于2048
 	ClientConnect_Log = "true"
 	>
 </LoginServer>
+
+<LogServer 
+	Server_ID = "6000"
+	Listen_Port = "30015"
+	Server_IP = "127.0.0.1"
+	
+	DBName = "test"
+	DBUser = "root"
+	DBPass = "root"
+	DBIP = "127.0.0.1:3306"
+	>
+</LogServer>

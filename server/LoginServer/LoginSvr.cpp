@@ -6,6 +6,7 @@
 #include "Timer.h"
 #include "ServerLog.h"
 #include "ClientAuth.h"
+#include "LogConnecter.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -63,12 +64,26 @@ bool CLoginServer::Init()
 			return 0;
 		}
 
+		if (!CLogConnecter::Instance().Init(
+			CConfig::Instance().GetLogServerIP().c_str(),
+			CConfig::Instance().GetLogServerPort(),
+			CConfig::Instance().GetLogServerID(),
+			CConfig::Instance().GetServerID(),
+			CConfig::Instance().GetServerType(),
+			CConfig::Instance().GetPingTime(),
+			CConfig::Instance().GetOverTime()))
+		{
+			RunStateError("初始化 LogConnecter 失败!");
+			break;
+		}
+
 		m_Run = true;
 		return true;
 	} while (true);
 
 	CLoginClientMgr::Instance().Destroy();
 	CLoginCenterConnect::Instance().Destroy();
+	CLogConnecter::Instance().Destroy();
 	CClientAuth::Instance().Destroy();
 	Destroy();
 
@@ -88,6 +103,7 @@ void CLoginServer::Run()
 	while (m_Run)
 	{
 		CLoginCenterConnect::Instance().ResetMsgNum();
+		CLogConnecter::Instance().ResetMsgNum();
 		CTimer::UpdateTime();
 
 		g_currenttime = get_millisecond();
@@ -99,12 +115,14 @@ void CLoginServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			ElapsedLog("运行超时:%d\n%s", delay, CLoginCenterConnect::Instance().GetMsgNumInfo());
+			ElapsedLog("运行超时:%d\n%s%s", delay, CLoginCenterConnect::Instance().GetMsgNumInfo(),
+				CLogConnecter::Instance().GetMsgNumInfo());
 		}
 	}
 	delaytime(300);
 
 	CLoginCenterConnect::Instance().Destroy();
+	CLogConnecter::Instance().Destroy();
 	CLoginClientMgr::Instance().Destroy();
 	CClientAuth::Instance().Destroy();
 
@@ -121,9 +139,11 @@ void CLoginServer::RunOnce()
 	lxnet::net_run();
 	CLoginCenterConnect::Instance().Run();
 	CLoginClientMgr::Instance().Run();
+	CLogConnecter::Instance().Run();
 
 	CLoginCenterConnect::Instance().EndRun();
 	CLoginClientMgr::Instance().EndRun();
+	CLogConnecter::Instance().EndRun();
 }
 
 void CLoginServer::Destroy()

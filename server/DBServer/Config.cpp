@@ -70,28 +70,28 @@ bool CConfig::Init(const char *servername)
 	}
 
 	s_DBName = pinfo->Attribute("DBName");
-	if (s_CenterServerIP.empty())
+	if (s_DBName.empty())
 	{
 		log_error("没有找到字段： 'DBName'");
 		return false;
 	}
 
 	s_DBUser = pinfo->Attribute("DBUser");
-	if (s_CenterServerIP.empty())
+	if (s_DBUser.empty())
 	{
 		log_error("没有找到字段： 'DBUser'");
 		return false;
 	}
 
 	s_DBPass = pinfo->Attribute("DBPass");
-	if (s_CenterServerIP.empty())
+	if (s_DBPass.empty())
 	{
 		log_error("没有找到字段： 'DBPass'");
 		return false;
 	}
 
 	s_DBIP = pinfo->Attribute("DBIP");
-	if (s_CenterServerIP.empty())
+	if (s_DBIP.empty())
 	{
 		log_error("没有找到字段： 'DBIP'");
 		return false;

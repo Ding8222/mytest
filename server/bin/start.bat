@@ -1,5 +1,6 @@
 @echo off
 
+start "[Game]LogServer"		"LogServer.exe" 
 start "[Game]CenterServer"	"CenterServer.exe" 
 start "[Game]DBServer"		"DBServer.exe" 
 start "[Game]LoginServer"	"LoginServer.exe" 

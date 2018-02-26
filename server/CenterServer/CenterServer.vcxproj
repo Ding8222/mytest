@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>..\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;..\Common\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;$(IncludePath)</IncludePath>
     <OutDir>..\bin\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

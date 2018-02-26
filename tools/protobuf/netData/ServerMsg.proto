@@ -85,3 +85,20 @@ message LoadPlayerData
 	float z = 13;
 	bytes data = 14;
 }
+
+// 0-10 加载玩家数据返回
+message LoadPlayerDataRet
+{
+	enum EC
+	{
+		EC_OTHER = 0;
+		EC_SUCC = 1;
+	};
+	int32 nRetCode = 1;		// 返回的信息
+}
+
+// 0-11
+message ServerLog
+{
+	
+}

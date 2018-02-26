@@ -31,3 +31,6 @@
 
 // 返回加载数据结果
 #define SVR_SUB_LOAD_PLAYERDATA_RET 10
+
+// log信息
+#define  SVR_SUB_SERVERLOG 11

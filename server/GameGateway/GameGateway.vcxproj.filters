@@ -30,11 +30,11 @@
     <ClInclude Include="GameConnect.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ClientAuth.h">
-      <Filter>认证</Filter>
-    </ClInclude>
     <ClInclude Include="GateCenterConnect.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientAuth.h">
+      <Filter>认证</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -53,11 +53,11 @@
     <ClCompile Include="GameConnect.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ClientAuth.cpp">
-      <Filter>认证</Filter>
-    </ClCompile>
     <ClCompile Include="GateCenterConnect.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientAuth.cpp">
+      <Filter>认证</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

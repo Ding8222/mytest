@@ -7,19 +7,31 @@ using namespace tinyxml2;
 
 CBaseConfig::CBaseConfig()
 {
+	m_IsOpenElapsedLog = false;
 	m_ListenPort = 0;
 	m_OverTime = 0;
 	m_PingTime = 0;
 	m_ServerID = 0;
-	m_IsOpenElapsedLog = false;
+	m_ServerType = 0;
+	s_ServerIP.clear();
+
+	m_LogServerID = 0;
+	m_LogServerPort = 0;
+	s_LogServerIP.clear();
 }
 CBaseConfig::~CBaseConfig()
 {
+	m_IsOpenElapsedLog = false;
 	m_ListenPort = 0;
 	m_OverTime = 0;
 	m_PingTime = 0;
 	m_ServerID = 0;
-	m_IsOpenElapsedLog = false;
+	m_ServerType = 0;
+	s_ServerIP.clear();
+
+	m_LogServerID = 0;
+	m_LogServerPort = 0;
+	s_LogServerIP.clear();
 }
 
 bool CBaseConfig::Init(const char *servername)
@@ -66,6 +78,25 @@ bool CBaseConfig::Init(const char *servername)
 	if (pBaseInfo->QueryBoolAttribute("Elapsed_Log", &m_IsOpenElapsedLog) != XML_SUCCESS)
 	{
 		log_error("没有找到字段： 'Elapsed_Log'");
+		return false;
+	}
+
+	if (pBaseInfo->QueryIntAttribute("LogServer_ID", &m_LogServerID) != XML_SUCCESS)
+	{
+		log_error("没有找到字段： 'LogServer_ID'");
+		return false;
+	}
+
+	if (pBaseInfo->QueryIntAttribute("LogServer_Port", &m_LogServerPort) != XML_SUCCESS)
+	{
+		log_error("没有找到字段： 'LogServer_Port'");
+		return false;
+	}
+
+	s_LogServerIP = pBaseInfo->Attribute("LogServer_IP");
+	if (s_LogServerIP.empty())
+	{
+		log_error("没有找到字段： 'LogServer_IP'");
 		return false;
 	}
 

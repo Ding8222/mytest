@@ -4,6 +4,7 @@
 #include "config.h"
 #include "Timer.h"
 #include "ServerLog.h"
+#include "LogConnecter.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -52,12 +53,26 @@ bool CDBServer::Init()
 			break;
 		}
 
+		if (!CLogConnecter::Instance().Init(
+			CConfig::Instance().GetLogServerIP().c_str(),
+			CConfig::Instance().GetLogServerPort(),
+			CConfig::Instance().GetLogServerID(),
+			CConfig::Instance().GetServerID(),
+			CConfig::Instance().GetServerType(),
+			CConfig::Instance().GetPingTime(),
+			CConfig::Instance().GetOverTime()))
+		{
+			RunStateError("初始化 LogConnecter 失败!");
+			break;
+		}
+
 		m_Run = true;
 		return true;
 
 	} while (true);
 
 	CDBCenterConnect::Instance().Destroy();
+	CLogConnecter::Instance().Destroy();
 	CClientLogin::Instance().Destroy();
 	Destroy();
 
@@ -77,6 +92,7 @@ void CDBServer::Run()
 	while (m_Run)
 	{
 		CDBCenterConnect::Instance().ResetMsgNum();
+		CLogConnecter::Instance().ResetMsgNum();
 		CTimer::UpdateTime();
 
 		g_currenttime = get_millisecond();
@@ -88,12 +104,14 @@ void CDBServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			ElapsedLog("运行超时:%d\n%s", delay, CDBCenterConnect::Instance().GetMsgNumInfo());
+			ElapsedLog("运行超时:%d\n%s%s", delay, CDBCenterConnect::Instance().GetMsgNumInfo(),
+				CLogConnecter::Instance().GetMsgNumInfo());
 		}
 	}
 	delaytime(300);
 
 	CDBCenterConnect::Instance().Destroy();
+	CLogConnecter::Instance().Destroy();
 	CClientLogin::Instance().Destroy();
 
 	Destroy();
@@ -109,8 +127,10 @@ void CDBServer::RunOnce()
 	lxnet::net_run();
 
 	CDBCenterConnect::Instance().Run();
+	CLogConnecter::Instance().Run();
 
 	CDBCenterConnect::Instance().EndRun();
+	CLogConnecter::Instance().EndRun();
 }
 
 void CDBServer::Destroy()
