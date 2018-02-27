@@ -32,7 +32,7 @@ public:
 
 	//延时关闭某个客户端
 	void DelayCloseClient(int clientid);
-	void ReleaseAllClient();
+	virtual void ReleaseAllClient();
 	void AsLogicServerDisconnect(int logicserverid);
 
 	//获取当前连接的客户端数量

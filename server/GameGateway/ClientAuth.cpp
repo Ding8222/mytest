@@ -146,7 +146,7 @@ void CClientAuth::AddNewClient(Msg *pMsg, CClient *cl)
 	if (iter != m_ClientSecretInfo.end())
 	{
 		ClientAuthInfo *_pData = iter->second;
-		if (_pData->Secret == msg.ssecret())
+		if (!_pData->Secret.empty() &&_pData->Secret == msg.ssecret())
 		{
 			if (_pData->ClientID > 0)
 			{

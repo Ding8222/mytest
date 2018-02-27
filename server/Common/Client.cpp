@@ -10,6 +10,8 @@ CClient::CClient()
 	m_AlreadyLogin = false;
 	m_AlreadyAuth = false;
 	m_ConnectTime = 0;
+	memset(s_Secret, 0, MAX_SECRET_LEN);
+
 	m_InlistState = enum_inlist_state_unknow;
 	m_ClientID = 0;
 	m_PingTime = 0;

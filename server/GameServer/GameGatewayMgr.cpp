@@ -4,6 +4,8 @@
 #include "Config.h"
 #include "PlayerMgr.h"
 #include "serverlog.h"
+#include "Utilities.h"
+#include "PlayerOperate.h"
 
 #include "MainType.h"
 #include "ServerType.h"
@@ -227,56 +229,11 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 
 void CGameGatewayMgr::ProcessClientMsg(int gateid, int64 clientid, Msg *pMsg)
 {
-	switch (pMsg->GetMainType())
+	CPlayer *player = CPlayerMgr::Instance().FindPlayerByClientID(clientid);
+	if (FuncUti::isValidCret(player))
 	{
-	case LOGIN_TYPE_MAIN:
-	{
-// 		switch (pMsg->GetSubType())
-// 		{
-// 		default:
-// 		{
-// 		}
-// 		}
-// 		break;
-	}
-	case CLIENT_TYPE_MAIN:
-	{
-		switch (pMsg->GetSubType())
-		{
-		case CLIENT_SUB_MOVE:
-		{
-			netData::PlayerMove msg;
-			_CHECK_PARSE_(pMsg, msg);
-			CPlayer *player = CPlayerMgr::Instance().FindPlayerByClientID(clientid);
-			if (player)
-			{
-				netData::PlayerMoveRet sendMsg;
-				if (player->MoveTo(msg.x(), msg.y(), msg.z()))
-				{
-					sendMsg.set_x(msg.x());
-					sendMsg.set_y(msg.y());
-					sendMsg.set_z(msg.z());
-				}
-				else
-				{
-					float _Pos[EPP_MAX] = { 0 };
-					player->GetNowPos(_Pos[EPP_X], _Pos[EPP_Y], _Pos[EPP_Z]);
-					sendMsg.set_x(_Pos[EPP_X]);
-					sendMsg.set_y(_Pos[EPP_Y]);
-					sendMsg.set_z(_Pos[EPP_Z]);
-				}
-				SendMsgToClient(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE_RET, clientid);
-			}
-			break;
-		}
-		default:
-		{
-		}
-		}
-		break;
-	}
-	default:
-		break;
+		CPlayerOperate::SetPlayer(player);
+		CPlayerOperate::Operate(pMsg, clientid);
 	}
 }
 

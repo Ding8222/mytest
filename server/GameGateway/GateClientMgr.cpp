@@ -67,6 +67,12 @@ void CGateClientMgr::OnClientDisconnect(CClient *cl)
 	CClientMgr::OnClientDisconnect(cl);
 }
 
+void CGateClientMgr::ReleaseAllClient()
+{
+	CClientMgr::ReleaseAllClient();
+	CClientAuth::Instance().Destroy();
+}
+
 void CGateClientMgr::ProcessClientMsg(CClient *cl)
 {
 	Msg *pMsg = NULL;

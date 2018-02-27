@@ -19,6 +19,9 @@
     <Filter Include="玩家对象">
       <UniqueIdentifier>{63467607-1ae3-4e85-abb0-8de900023564}</UniqueIdentifier>
     </Filter>
+    <Filter Include="玩家操作">
+      <UniqueIdentifier>{eb345bdc-9e0a-4a8d-8af3-1336f86ce3a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="config.cpp">
@@ -69,6 +72,9 @@
     <ClCompile Include="PlayerMgr.cpp">
       <Filter>玩家对象</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerOperate.cpp">
+      <Filter>玩家操作</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -115,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="PlayerMgr.h">
       <Filter>玩家对象</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerOperate.h">
+      <Filter>玩家操作</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -22,6 +22,7 @@ public:
 
 	int64 OnNewClient();
 	void OnClientDisconnect(CClient *cl);
+	void ReleaseAllClient();
 	void ProcessClientMsg(CClient *cl);
 	void ProcessClientAuth(CClient *cl, Msg *pMsg);
 	void SetClientAlreadyLogin(int64 clientid, bool bLogin);

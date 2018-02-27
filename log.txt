@@ -27,6 +27,7 @@ client的login处理
 --将gate连接到Center了，在断开的时候处理过该消息了
 
 client中的s_Secret应该要改成char类型，确认加密方式后
+已修改
 
 gateway那边AddNewClient的时候，需要判断好秘钥
 --已经判断
@@ -51,7 +52,7 @@ player离线的时候，要把所有引用到的指针清理
 log_error管理一下
 --已处理
 
-最大client的管理
+最大client的管理，主要是几个内存池的大小需要控制
 
 Sql语句执行后，返回返回是否成功执行，就不需要手动检测"@"
 
@@ -65,3 +66,9 @@ http://blog.csdn.net/solstice/article/details/6300108
 这边也需要检查所有的Destroy函数
 
 服务器的config看需不需要拆分一下，现在太多了，集中在一起看起来挺乱的
+
+目前测试每秒能认证成功的client数量在10个左右，看一下为什么，是不是网络库这边的限制
+
+增加多个gameserver，实现单个gameserver中的地图切换和跨gameserver的地图切换
+
+player这边消息处理调整一下，简化、避免多余的查询操作
