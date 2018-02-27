@@ -47,6 +47,8 @@ public:
 	void SendMsg(CClient *cl, Msg *pMsg);
 	void SendMsg(int64 clientid, google::protobuf::Message &pMsg, int maintype, int subtype);
 	void SendMsg(int64 clientid, Msg *pMsg);
+
+	CClient *FindClientByClientID(int32 clientid);
 private:
 	void StopListen();
 	bool TestAndListen();

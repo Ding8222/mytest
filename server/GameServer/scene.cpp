@@ -157,9 +157,8 @@ bool CScene::DelObj(CBaseObj * obj)
 
 	if (!idmgr_freeid(m_IDPool, obj->GetTempID()))
 	{
-		RunStateError("释放ID错误, ID:%d", obj->GetTempID());
+		RunStateError("释放ID错误, ID:%d", id);
 	}
-
 	char *mode = "d";
 	float pos[3];
 	obj->GetNowPos(pos[0], pos[1], pos[2]);

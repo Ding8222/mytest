@@ -317,13 +317,12 @@ void CClientMgr::SendMsg(int64 clientid, google::protobuf::Message &pMsg, int ma
 {
 	if (clientid > 0)
 	{
-		std::list<CClient*>::iterator _Iter
-			= std::find_if(m_ClientList.begin(), m_ClientList.end(), [clientid](CClient* cl)->bool { return cl->GetClientID() == clientid; });
-		if (_Iter != m_ClientList.end())
+		CClient *cl = FindClientByClientID(clientid);
+		if (cl)
 		{
 			MessagePack pk;
 			pk.Pack(&pMsg, maintype, subtype);
-			(*_Iter)->SendMsg(&pk);
+			cl->SendMsg(&pk);
 		}
 	}
 	else
@@ -343,11 +342,10 @@ void CClientMgr::SendMsg(int64 clientid, Msg *pMsg)
 {
 	if (clientid > 0)
 	{
-		std::list<CClient*>::iterator _Iter
-			= std::find_if(m_ClientList.begin(), m_ClientList.end(), [clientid](CClient* cl)->bool { return cl->GetClientID() == clientid; });
-		if (_Iter != m_ClientList.end())
+		CClient *cl = FindClientByClientID(clientid);
+		if (cl)
 		{
-			(*_Iter)->SendMsg(pMsg);
+			cl->SendMsg(pMsg);
 		}
 	}
 	else
@@ -356,6 +354,15 @@ void CClientMgr::SendMsg(int64 clientid, Msg *pMsg)
 		for (; _Iter != m_ClientList.end(); ++_Iter)
 			(*_Iter)->SendMsg(pMsg);
 	}
+}
+
+CClient *CClientMgr::FindClientByClientID(int32 clientid)
+{
+	assert(m_ClientSet[clientid]);
+	if (m_ClientSet[clientid])
+		return m_ClientSet[clientid];
+
+	return nullptr;
 }
 
 void CClientMgr::ProcessAllClient()
