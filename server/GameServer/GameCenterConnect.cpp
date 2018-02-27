@@ -99,15 +99,18 @@ void CGameCenterConnect::ProcessMsg(connector *_con)
 				netData::LoadPlayerDataFinish sendMsg;
 				if (FuncUti::isValidCret(player))
 				{
-					if(player->LoadData(pMsg))
+					if (player->LoadData(pMsg))
+					{
+						sendMsg.set_ntempid(player->GetTempID());
 						sendMsg.set_ncode(netData::LoadPlayerDataFinish::EC_SUCC);
+					}
 					else
 						sendMsg.set_ncode(netData::LoadPlayerDataFinish::EC_FAIL);
 				}
 				else
 					sendMsg.set_ncode(netData::LoadPlayerDataFinish::EC_FAIL);
 
-				CGameGatewayMgr::Instance().SendMsgToClient(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_LOAD_PLAYERDATA, tl->id);
+				FuncUti::SendPBNoLoop(player, sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_LOAD_PLAYERDATA);
 			}
 			default:
 			{

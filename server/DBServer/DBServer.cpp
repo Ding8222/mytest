@@ -104,8 +104,9 @@ void CDBServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			ElapsedLog("运行超时:%d\n%s%s", delay, CDBCenterConnect::Instance().GetMsgNumInfo(),
-				CLogConnecter::Instance().GetMsgNumInfo());
+			ElapsedLog("运行超时:%d", delay);
+			ElapsedLog("中心服务器连接：%s", CDBCenterConnect::Instance().GetMsgNumInfo());
+			ElapsedLog("日志服务器连接：%s", CLogConnecter::Instance().GetMsgNumInfo());
 		}
 	}
 	delaytime(300);

@@ -329,11 +329,18 @@ class LoadPlayerDataFinish : public ::google::protobuf::Message /* @@protoc_inse
   ::google::protobuf::int32 ncode() const;
   void set_ncode(::google::protobuf::int32 value);
 
+  // uint32 nTempID = 2;
+  void clear_ntempid();
+  static const int kNTempIDFieldNumber = 2;
+  ::google::protobuf::uint32 ntempid() const;
+  void set_ntempid(::google::protobuf::uint32 value);
+
   // @@protoc_insertion_point(class_scope:netData.LoadPlayerDataFinish)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::int32 ncode_;
+  ::google::protobuf::uint32 ntempid_;
   mutable int _cached_size_;
   friend struct ::protobuf_ClientMsg_2eproto::TableStruct;
   friend void ::protobuf_ClientMsg_2eproto::InitDefaultsLoadPlayerDataFinishImpl();
@@ -657,9 +664,15 @@ class PlayerMoveRet : public ::google::protobuf::Message /* @@protoc_insertion_p
   float z() const;
   void set_z(float value);
 
-  // int32 nCode = 4;
+  // uint32 nTempID = 4;
+  void clear_ntempid();
+  static const int kNTempIDFieldNumber = 4;
+  ::google::protobuf::uint32 ntempid() const;
+  void set_ntempid(::google::protobuf::uint32 value);
+
+  // int32 nCode = 5;
   void clear_ncode();
-  static const int kNCodeFieldNumber = 4;
+  static const int kNCodeFieldNumber = 5;
   ::google::protobuf::int32 ncode() const;
   void set_ncode(::google::protobuf::int32 value);
 
@@ -670,6 +683,7 @@ class PlayerMoveRet : public ::google::protobuf::Message /* @@protoc_insertion_p
   float x_;
   float y_;
   float z_;
+  ::google::protobuf::uint32 ntempid_;
   ::google::protobuf::int32 ncode_;
   mutable int _cached_size_;
   friend struct ::protobuf_ClientMsg_2eproto::TableStruct;
@@ -702,6 +716,20 @@ inline void LoadPlayerDataFinish::set_ncode(::google::protobuf::int32 value) {
   
   ncode_ = value;
   // @@protoc_insertion_point(field_set:netData.LoadPlayerDataFinish.nCode)
+}
+
+// uint32 nTempID = 2;
+inline void LoadPlayerDataFinish::clear_ntempid() {
+  ntempid_ = 0u;
+}
+inline ::google::protobuf::uint32 LoadPlayerDataFinish::ntempid() const {
+  // @@protoc_insertion_point(field_get:netData.LoadPlayerDataFinish.nTempID)
+  return ntempid_;
+}
+inline void LoadPlayerDataFinish::set_ntempid(::google::protobuf::uint32 value) {
+  
+  ntempid_ = value;
+  // @@protoc_insertion_point(field_set:netData.LoadPlayerDataFinish.nTempID)
 }
 
 // -------------------------------------------------------------------
@@ -800,7 +828,21 @@ inline void PlayerMoveRet::set_z(float value) {
   // @@protoc_insertion_point(field_set:netData.PlayerMoveRet.z)
 }
 
-// int32 nCode = 4;
+// uint32 nTempID = 4;
+inline void PlayerMoveRet::clear_ntempid() {
+  ntempid_ = 0u;
+}
+inline ::google::protobuf::uint32 PlayerMoveRet::ntempid() const {
+  // @@protoc_insertion_point(field_get:netData.PlayerMoveRet.nTempID)
+  return ntempid_;
+}
+inline void PlayerMoveRet::set_ntempid(::google::protobuf::uint32 value) {
+  
+  ntempid_ = value;
+  // @@protoc_insertion_point(field_set:netData.PlayerMoveRet.nTempID)
+}
+
+// int32 nCode = 5;
 inline void PlayerMoveRet::clear_ncode() {
   ncode_ = 0;
 }

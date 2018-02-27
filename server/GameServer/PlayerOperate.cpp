@@ -51,6 +51,7 @@ void CPlayerOperate::Operate(Msg *pMsg, int64 clientid)
 			_CHECK_PARSE_(pMsg, msg);
 
 			netData::PlayerMoveRet sendMsg;
+			sendMsg.set_ntempid(m_pPlayer->GetTempID());
 			if (m_pPlayer->MoveTo(msg.x(), msg.y(), msg.z()))
 			{
 				sendMsg.set_x(msg.x());
@@ -65,7 +66,7 @@ void CPlayerOperate::Operate(Msg *pMsg, int64 clientid)
 				sendMsg.set_y(_Pos[EPP_Y]);
 				sendMsg.set_z(_Pos[EPP_Z]);
 			}
-			CGameGatewayMgr::Instance().SendMsgToClient(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE_RET, clientid);
+			FuncUti::SendPBNoLoop(m_pPlayer,sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE_RET,true);
 			break;
 		}
 		default:

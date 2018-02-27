@@ -1,6 +1,7 @@
-#include <string>
+﻿#include <string>
 #include <windows.h>
 #include "Utilities.h"
+#include "GameGatewayMgr.h"
 
 namespace FuncUti
 {
@@ -27,5 +28,77 @@ namespace FuncUti
 		if (player && !player->IsWaitRemove())
 			return true;
 		return false;
+	}
+
+	void SendPBNoLoop(CPlayer *player, google::protobuf::Message &pMsg, int maintype, int subtype, bool bRef)
+	{
+		msgtail tail;
+		serverinfo *gate = player->GetGateInfo();
+		assert(gate);
+		if (gate)
+		{
+			tail.id = player->GetClientID();
+			CGameGatewayMgr::Instance().SendMsg(player->GetGateInfo(), pMsg, maintype, subtype, &tail, sizeof(tail));
+		}
+
+		if(bRef)
+		{
+			MessagePack pk;
+#if _DEBUG
+			assert(pk.Pack(&pMsg, maintype, subtype));
+#else
+			if (pk.Pack(&pMsg, maintype, subtype))
+#endif
+			{
+				std::unordered_map<uint32, CBaseObj *> *playerlist = player->GetAoiList();
+				std::unordered_map<uint32, CBaseObj *>::iterator iter = playerlist->begin();
+				for (; iter != playerlist->end(); ++iter)
+				{
+					CPlayer * p = (CPlayer *)iter->second;
+					if (isValidCret(p))
+					{
+						gate = p->GetGateInfo();
+						assert(gate);
+						if (gate)
+						{
+							tail.id = p->GetClientID();
+							CGameGatewayMgr::Instance().SendMsg(gate, pk, &tail, sizeof(tail));
+						}
+					}
+				}
+			}
+		}
+	}
+
+	void SendMsg(CPlayer *player, Msg &pMsg, bool bRef)
+	{
+		msgtail tail;
+		serverinfo *gate = player->GetGateInfo();
+		assert(gate);
+		if (gate)
+		{
+			tail.id = player->GetClientID();
+			CGameGatewayMgr::Instance().SendMsg(gate, pMsg, &tail, sizeof(tail));
+		}
+
+		if (bRef)
+		{
+			std::unordered_map<uint32, CBaseObj *> *playerlist = player->GetAoiList();
+			std::unordered_map<uint32, CBaseObj *>::iterator iter = playerlist->begin();
+			for (; iter != playerlist->end(); ++iter)
+			{
+				CPlayer * p = (CPlayer *)iter->second;
+				if (isValidCret(p))
+				{
+					gate = p->GetGateInfo();
+					assert(gate);
+					if (gate)
+					{
+						tail.id = p->GetClientID();
+						CGameGatewayMgr::Instance().SendMsg(gate, pMsg, &tail, sizeof(tail));
+					}
+				}
+			}
+		}
 	}
 }

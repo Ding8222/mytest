@@ -37,6 +37,8 @@ public:
 	std::string GetSecret() { return sSecret; }
 	void SetAccount(std::string name) { sAccount = name; }
 	std::string GetAccount() { return sAccount; }
+	void SetTempID(int32 id) { m_TempID = id; }
+	int32 GetTempID() { return m_TempID; }
 private:
 	bool m_isHandShake;
 	bool m_isAuth;
@@ -45,4 +47,5 @@ private:
 	CryptoPP::SecByteBlock sServerKey;
 	std::string sSecret;
 	std::string sAccount;
+	int32 m_TempID;
 };

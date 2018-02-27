@@ -110,7 +110,8 @@ void CCenterServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			ElapsedLog("运行超时:%d\n%s%s", delay, CCentServerMgr::Instance().GetMsgNumInfo(), 
+			ElapsedLog("运行超时:%d\n%s日志服务器连接：%s", delay, 
+				CCentServerMgr::Instance().GetMsgNumInfo(), 
 				CLogConnecter::Instance().GetMsgNumInfo());
 		}
 	}

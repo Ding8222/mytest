@@ -41,6 +41,7 @@ public:
 	void LeaveAoi();
 	// AoiList清理
 	void AoiRun();
+	std::unordered_map<uint32, CBaseObj *> *GetAoiList() { return &m_AoiList; };
 	// 获取名称
 	char *GetName() { return m_ObjName; }
 	// 设置名称

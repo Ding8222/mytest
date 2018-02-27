@@ -7,11 +7,14 @@
 #include "ServerMsg.pb.h"
 CPlayer::CPlayer()
 {
-
+	m_GateInfo = nullptr;
+	m_ClientID = 0;
 }
 
 CPlayer::~CPlayer()
 {
+	m_GateInfo = nullptr;
+	m_ClientID = 0;
 }
 
 void CPlayer::Run()

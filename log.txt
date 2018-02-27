@@ -72,3 +72,7 @@ http://blog.csdn.net/solstice/article/details/6300108
 增加多个gameserver，实现单个gameserver中的地图切换和跨gameserver的地图切换
 
 player这边消息处理调整一下，简化、避免多余的查询操作
+
+为所有服务器添加后台命令
+
+广播移动消息后，client过一段时间可能会断线，查一下原因

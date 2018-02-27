@@ -118,20 +118,6 @@ void CGameGatewayMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maint
 	}
 }
 
-void CGameGatewayMgr::SendMsgToClient(Msg &pMsg, int64 nClientID)
-{
-	int serverid = CPlayerMgr::Instance().FindPlayerGateID(nClientID);
-	if(serverid > 0)
-		SendMsgToServer(pMsg, ServerEnum::EST_GATE,  nClientID, serverid);
-}
-
-void CGameGatewayMgr::SendMsgToClient(google::protobuf::Message &pMsg, int maintype, int subtype, int64 nClientID)
-{
-	int serverid = CPlayerMgr::Instance().FindPlayerGateID(nClientID);
-	if (serverid > 0)
-		SendMsgToServer(pMsg, maintype, subtype, ServerEnum::EST_GATE, nClientID, serverid);
-}
-
 void CGameGatewayMgr::ServerRegisterSucc(int id, int type, const char *ip, int port)
 {
 
@@ -187,13 +173,12 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 			}
 			case SVR_SUB_NEW_CLIENT:
 			{
-				CPlayerMgr::Instance().AddPlayer(tl->id, info->GetServerID());
+				CPlayerMgr::Instance().AddPlayer(info, tl->id);
 
 				//通知CLient登录成功
 				netData::LoginRet sendMsg;
 				sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
-
-				SendMsgToClient(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, tl->id);
+				CServerMgr::SendMsgToServer(info,sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, tl->id);
 				CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), *pMsg, tl->id);
 				break;
 			}

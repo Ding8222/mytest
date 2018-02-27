@@ -147,10 +147,10 @@ void CGameServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			ElapsedLog("运行超时:%d\n%s%s%s", delay,
-				CGameCenterConnect::Instance().GetMsgNumInfo(),
-				CGameGatewayMgr::Instance().GetMsgNumInfo(),
-				CLogConnecter::Instance().GetMsgNumInfo());
+			ElapsedLog("运行超时:%d", delay);
+			ElapsedLog("%s", CGameGatewayMgr::Instance().GetMsgNumInfo());
+			ElapsedLog("中心服务器连接：%s", CGameCenterConnect::Instance().GetMsgNumInfo());
+			ElapsedLog("日志服务器连接：%s", CLogConnecter::Instance().GetMsgNumInfo());
 		}
 	}
 	delaytime(300);
