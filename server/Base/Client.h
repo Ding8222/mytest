@@ -7,7 +7,7 @@
 
 #include "lxnet.h"
 #include "platform_config.h"
-#include <string>
+#include "GlobalDefine.h"
 struct Msg;
 class CClient
 {
@@ -49,13 +49,13 @@ public:
 	int64 GetInLogicServerID() { return m_PlayerOnlyID; }
 	void SetLogicServerID(int serverid) { m_GameServerID = serverid; }
 	int GetLogicServer() { return m_GameServerID; }
-	void SetSecret(const char * str) { s_Secret = str; }
-	std::string GetSecret() { return s_Secret ; }
+	void SetSecret(const char * str);
+	char *GetSecret() { return s_Secret ; }
 private:
 	bool m_AlreadyLogin;	//登录成功标记
 	bool m_AlreadyAuth;		//认证成功标记
 	int64 m_ConnectTime;	//何时连接上来
-	std::string s_Secret;	//秘钥
+	char s_Secret[MAX_SECRET_LEN];	//秘钥
 
 	short m_InlistState;
 	int m_ClientID;

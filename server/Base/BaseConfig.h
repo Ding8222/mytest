@@ -5,6 +5,7 @@
 */
 #pragma once
 
+#include "GlobalDefine.h"
 class CBaseConfig
 {
 public:
@@ -20,11 +21,11 @@ public:
 	int GetServerID() { return m_ServerID; }
 	int GetServerType() { return m_ServerType; }
 	int SetServerType(int nType) { return m_ServerType = nType; }
-	std::string GetServerIP() { return s_ServerIP; }
+	char *GetServerIP() { return s_ServerIP; }
 
 	int GetLogServerID() { return m_LogServerID; }
 	int GetLogServerPort() { return m_LogServerPort; }
-	std::string GetLogServerIP() { return s_LogServerIP; }
+	char *GetLogServerIP() { return s_LogServerIP; }
 private:
 	bool m_IsOpenElapsedLog;
 	int m_ListenPort;
@@ -32,9 +33,9 @@ private:
 	int m_PingTime;
 	int m_ServerID;
 	int m_ServerType;
-	std::string s_ServerIP;
+	char s_ServerIP[MAX_IP_LEN];
 
 	int m_LogServerID;
 	int m_LogServerPort;
-	std::string s_LogServerIP;
+	char s_LogServerIP[MAX_IP_LEN];
 };

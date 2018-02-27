@@ -54,7 +54,7 @@ bool CDBServer::Init()
 		}
 
 		if (!CLogConnecter::Instance().Init(
-			CConfig::Instance().GetLogServerIP().c_str(),
+			CConfig::Instance().GetLogServerIP(),
 			CConfig::Instance().GetLogServerPort(),
 			CConfig::Instance().GetLogServerID(),
 			CConfig::Instance().GetServerID(),

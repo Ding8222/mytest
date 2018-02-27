@@ -3,10 +3,9 @@
 * 
 */
 #pragma once
-#include "platform_config.h"
-#include <string>
 #define MAX_IP_LEN 128
 #define MAX_NAME_LEN 64
+#define MAX_SECRET_LEN 16
 
 #define CLIENT_ID_MAX 800000			//客户端最大id
 #define CLIENT_ID_DELAY_TIME 300000		//释放延时时间

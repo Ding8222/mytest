@@ -90,4 +90,8 @@ bool CClient::IsEnoughXMNotAlreadyAuth(int64 currenttime)
 		return false;
 	return currenttime >= m_ConnectTime;
 }
-
+void CClient::SetSecret(const char * str)
+{ 
+	strncpy_s(s_Secret, str, MAX_SECRET_LEN - 1);
+	s_Secret[MAX_SECRET_LEN - 1] = '\0';
+}

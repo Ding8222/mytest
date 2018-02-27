@@ -1,7 +1,7 @@
-﻿#include <string>
-#include"baseconfig.h"
-#include"tinyxml2.h"
-#include"log.h"
+﻿#include "baseconfig.h"
+#include "tinyxml2.h"
+#include "log.h"
+#include <string>
 
 using namespace tinyxml2;
 
@@ -13,11 +13,11 @@ CBaseConfig::CBaseConfig()
 	m_PingTime = 0;
 	m_ServerID = 0;
 	m_ServerType = 0;
-	s_ServerIP.clear();
+	memset(s_ServerIP, 0, MAX_SECRET_LEN);
 
 	m_LogServerID = 0;
 	m_LogServerPort = 0;
-	s_LogServerIP.clear();
+	memset(s_LogServerIP, 0, MAX_SECRET_LEN);
 }
 CBaseConfig::~CBaseConfig()
 {
@@ -27,11 +27,11 @@ CBaseConfig::~CBaseConfig()
 	m_PingTime = 0;
 	m_ServerID = 0;
 	m_ServerType = 0;
-	s_ServerIP.clear();
+	memset(s_ServerIP, 0, MAX_SECRET_LEN);
 
 	m_LogServerID = 0;
 	m_LogServerPort = 0;
-	s_LogServerIP.clear();
+	memset(s_LogServerIP, 0, MAX_SECRET_LEN);
 }
 
 bool CBaseConfig::Init(const char *servername)
@@ -93,10 +93,18 @@ bool CBaseConfig::Init(const char *servername)
 		return false;
 	}
 
-	s_LogServerIP = pBaseInfo->Attribute("LogServer_IP");
-	if (s_LogServerIP.empty())
+	const char *LogServerIP = pBaseInfo->Attribute("LogServer_IP");
+	if (!LogServerIP)
 	{
 		log_error("没有找到字段： 'LogServer_IP'");
+		return false;
+	}
+
+	strncpy_s(s_LogServerIP, LogServerIP, MAX_SECRET_LEN - 1);
+	s_LogServerIP[MAX_SECRET_LEN - 1] = '\0';
+	if (strlen(s_LogServerIP) <= 1)
+	{
+		log_error("LogServer_IP 填写错误：%s", s_LogServerIP);
 		return false;
 	}
 
@@ -119,10 +127,18 @@ bool CBaseConfig::Init(const char *servername)
 		return false;
 	}
 
-	s_ServerIP = pServerInfo->Attribute("Server_IP");
-	if (s_ServerIP.empty())
+	const char *ServerIP = pServerInfo->Attribute("Server_IP");
+	if (!ServerIP)
 	{
 		log_error("没有找到字段： 'Server_IP'");
+		return false;
+	}
+
+	strncpy_s(s_ServerIP, ServerIP, MAX_SECRET_LEN - 1);
+	s_ServerIP[MAX_SECRET_LEN - 1] = '\0';
+	if (strlen(s_ServerIP) <= 1)
+	{
+		log_error("Server_IP 填写错误：%s", ServerIP);
 		return false;
 	}
 

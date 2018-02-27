@@ -13,7 +13,7 @@ static const int s_backlog = 16;
 
 CServerMgr::CServerMgr()
 {
-	s_ServerIP.clear();
+	memset(s_ServerIP, 0, MAX_SECRET_LEN);
 	m_ListenPort = 0;
 	m_OverTime = 0;
 	m_ServerID = 0;
@@ -29,9 +29,10 @@ CServerMgr::~CServerMgr()
 	Destroy();
 }
 
-bool CServerMgr::Init(std::string ip, int serverid, int port, int overtime)
+bool CServerMgr::Init(const char * ip, int serverid, int port, int overtime)
 {
-	s_ServerIP = ip;
+	strncpy_s(s_ServerIP, ip, MAX_SECRET_LEN - 1);
+	s_ServerIP[MAX_SECRET_LEN - 1] = '\0';
 	m_ListenPort = port;
 	m_OverTime = overtime;
 	m_ServerID = serverid;

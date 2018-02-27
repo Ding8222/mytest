@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include<string>
-#include<unordered_map>
+#include <unordered_map>
 #include "GlobalDefine.h"
+#include "platform_config.h"
 
 extern int player_delay_time;
 extern int64 g_currenttime;
