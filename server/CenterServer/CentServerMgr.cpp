@@ -385,6 +385,13 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 				_CHECK_PARSE_(pMsg, msg);
 
 				CClientSvrMgr::Instance().AddClientSvr(tl->id, info->GetServerID(), info->GetServerType());
+				if (info->GetServerType() == ServerEnum::EST_GAME)
+				{
+					//通知CLient登录成功
+					netData::LoginRet sendMsg;
+					sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
+					CCentServerMgr::Instance().SendMsgToServer(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, ServerEnum::EST_GATE, tl->id);
+				}
 				break;
 			}
 

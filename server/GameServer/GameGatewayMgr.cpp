@@ -174,11 +174,6 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 			case SVR_SUB_NEW_CLIENT:
 			{
 				CPlayerMgr::Instance().AddPlayer(info, tl->id);
-
-				//通知CLient登录成功
-				netData::LoginRet sendMsg;
-				sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
-				CServerMgr::SendMsgToServer(info,sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, tl->id);
 				CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), *pMsg, tl->id);
 				break;
 			}

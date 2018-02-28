@@ -107,6 +107,7 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 			case LOGIN_SUB_PLAYER_LIST_RET:
 			case LOGIN_SUB_CREATE_PLAYER_RET:
 			case LOGIN_SUB_SELECT_PLAYER_RET:
+			case LOGIN_SUB_LOGIN_RET:
 			{
 				CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
 				break;

@@ -15,7 +15,7 @@ Robot_Max			机器人数量
 	LoginServer_ID = "5"
 	Robot_Max = "100"
 	
-	Over_Time = "1000"
+	Over_Time = "2000"
 	Ping_Time = "500"
 	>
 </Robot>
