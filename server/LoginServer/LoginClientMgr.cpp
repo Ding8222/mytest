@@ -2,7 +2,6 @@
 #include "Config.h"
 #include "LoginClientMgr.h"
 #include "LoginCenterConnect.h"
-
 #include "ClientAuth.h"
 
 #include "msgbase.h"
@@ -38,7 +37,7 @@ int64 CLoginClientMgr::OnNewClient()
 	int64 nClientID = CClientMgr::OnNewClient();
 	if (nClientID == 0)
 		return 0;
-
+	
 	svrData::AddNewClient sendMsg;
 	CLoginCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT, nClientID);
 

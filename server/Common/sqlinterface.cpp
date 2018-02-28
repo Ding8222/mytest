@@ -200,7 +200,7 @@ CConnection::CConnection()
 
 	m_charset = "";
 
-	m_enablelog = true;
+	m_enablelog = false;
 
 	m_errorfunc = NULL;
 	m_logfunc = NULL;

@@ -48,7 +48,7 @@ void CConnectMgr::Run()
 		if (!con->IsAlreadyConnect())
 		{
 			TryConnect(con);
-			return;
+			continue;
 		}
 		if (con->NeedSendPing(g_currenttime, m_PingTime))
 		{
@@ -61,13 +61,13 @@ void CConnectMgr::Run()
 		{
 			log_error("连接远程服务器:[%d] 超时，准备断开重连!", con->GetConnectID());
 			OnConnectDisconnect(con);
-			return;
+			continue;
 		}
 		if (con->IsClose())
 		{
 			log_error("远程服务器断开连接，准备断开重连!", con->GetConnectID());
 			OnConnectDisconnect(con);
-			return;
+			continue;
 		}
 
 		if (con->IsAlreadyRegister())

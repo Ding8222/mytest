@@ -67,17 +67,19 @@ http://blog.csdn.net/solstice/article/details/6300108
 
 服务器的config看需不需要拆分一下，现在太多了，集中在一起看起来挺乱的
 
-***目前测试每秒能认证成功的client数量在10个左右，看一下为什么，是不是网络库这边的限制***
-
 增加多个gameserver，实现单个gameserver中的地图切换和跨gameserver的地图切换
 
 player这边消息处理调整一下，简化、避免多余的查询操作
 
 为所有服务器添加后台命令
 
+***目前测试每秒能认证成功的client数量在10个左右，看一下为什么，是不是网络库这边的限制***
+--robot里的run中的continue写成了return，导致每帧只连接一个client
+
 ***广播移动消息后，client过一段时间可能会断线，查一下原因***
 --可能是ping的问题，之前一直超时，ping可能没收到
 --ping超时，配置文件里面ping的时间和超时时间设置太相近了
+--上面的return貌似对这个也有影响
 
 广播消息合并一下，game->gate的时候合并一下，在gate这边分发
 
@@ -86,3 +88,5 @@ player这边消息处理调整一下，简化、避免多余的查询操作
 client只需要int32即可，将int64的全部改为int32
 
 CClientSvrMgr::GetClientSvr,优化一下，不使用find
+
+sql查询的log日志

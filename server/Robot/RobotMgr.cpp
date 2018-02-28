@@ -94,7 +94,7 @@ void CRobotMgr::Run()
 					(*tempitr)->SetHandShake(false);
 				}
 			}
-			return;
+			continue;
 		}
 		if ((*tempitr)->NeedSendPing(g_currenttime, m_PingTime))
 		{
@@ -105,13 +105,13 @@ void CRobotMgr::Run()
 		{
 			RunStateError("连接远程服务器:[%d] 超时，准备断开重连!", (*tempitr)->GetConnectID());
 			(*tempitr)->OnConnectDisconnect();
-			return;
+			continue;
 		}
 		if ((*tempitr)->IsClose())
 		{
 			RunStateError("远程服务器断开连接，准备断开重连!", (*tempitr)->GetConnectID());
 			(*tempitr)->OnConnectDisconnect();
-			return;
+			continue;
 		}
 
 		if ((*tempitr)->IsHandShake())
