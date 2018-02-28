@@ -358,6 +358,9 @@ void CClientMgr::SendMsg(int64 clientid, Msg *pMsg)
 
 CClient *CClientMgr::FindClientByClientID(int32 clientid)
 {
+	if (clientid <= 0 || clientid >= static_cast<int>(m_ClientSet.size()))
+		return;
+
 	assert(m_ClientSet[clientid]);
 	if (m_ClientSet[clientid])
 		return m_ClientSet[clientid];

@@ -17,6 +17,7 @@ public:
 		static CCentServerMgr m;
 		return m;
 	}
+	bool Init(const char *ip, int serverid, int port, int overtime);
 	void Destroy();
 
 	void GetCurrentInfo(char *buf, size_t buflen);

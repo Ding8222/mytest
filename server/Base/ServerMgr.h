@@ -18,7 +18,7 @@ public:
 	CServerMgr();
 	~CServerMgr();
 
-	bool Init(const char *ip, int serverid, int port, int overtime);
+	virtual bool Init(const char *ip, int serverid, int port, int overtime);
 	void Run();
 	void EndRun();
 	virtual void Destroy();

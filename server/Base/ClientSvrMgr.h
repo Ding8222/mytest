@@ -5,6 +5,7 @@
 */
 #pragma once
 
+#include <list>
 struct ClientSvr
 {
 	ClientSvr()
@@ -32,11 +33,13 @@ public:
 		static CClientSvrMgr m;
 		return m;
 	}
+	bool Init();
+	void Destroy();
 
-	void AddClientSvr(int64 clientid, int serverid, int servertype);
-	void DelClientSvr(int64 id);
-	ClientSvr *GetClientSvr(int64 id);
+	void AddClientSvr(int32 clientid, int serverid, int servertype);
+	void DelClientSvr(int32 id);
+	ClientSvr *GetClientSvr(int32 id);
 private:
 
-	std::unordered_map<int64, ClientSvr> m_ClientSvr;
+	std::vector<ClientSvr *> m_ClientSvrSet;
 };

@@ -27,6 +27,17 @@ CCentServerMgr::~CCentServerMgr()
 
 }
 
+bool CCentServerMgr::Init(const char *ip, int serverid, int port, int overtime)
+{
+	if (!CClientSvrMgr::Instance().Init())
+	{
+		RunStateError("初始化 ClientSvrMgr 失败!");
+		return false;
+	}
+
+	return CServerMgr::Init(ip, serverid, port, overtime);
+}
+
 void CCentServerMgr::Destroy()
 {
 	CServerMgr::Destroy();
@@ -34,6 +45,7 @@ void CCentServerMgr::Destroy()
 	m_LoginList.clear();
 	m_DBList.clear();
 	m_GateList.clear();
+	CClientSvrMgr::Instance().Destroy();
 }
 
 void CCentServerMgr::GetCurrentInfo(char *buf, size_t buflen)
