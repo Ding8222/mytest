@@ -7,11 +7,19 @@ using namespace tinyxml2;
 
 CConfig::CConfig()
 {
-
+	s_DBName.clear();
+	s_DBUser.clear();
+	s_DBPass.clear();
+	s_DBIP.clear();
+	m_SQLLog = false;
 }
 CConfig::~CConfig()
 {
-
+	s_DBName.clear();
+	s_DBUser.clear();
+	s_DBPass.clear();
+	s_DBIP.clear();
+	m_SQLLog = false;
 }
 
 bool CConfig::Init(const char *servername)
@@ -61,6 +69,12 @@ bool CConfig::Init(const char *servername)
 	if (s_DBIP.empty())
 	{
 		log_error("没有找到字段： 'DBIP'");
+		return false;
+	}
+
+	if (pinfo->QueryBoolAttribute("SQL_Log", &m_SQLLog) != XML_SUCCESS)
+	{
+		log_error("没有找到字段： 'SQL_Log'");
 		return false;
 	}
 

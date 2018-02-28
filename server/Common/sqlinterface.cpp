@@ -7,6 +7,7 @@
 #include "platform_config.h"
 #include "sqlinterface.h"
 #include "errmsg.h"
+#include "log.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -200,7 +201,7 @@ CConnection::CConnection()
 
 	m_charset = "";
 
-	m_enablelog = false;
+	m_enablelog = true;
 
 	m_errorfunc = NULL;
 	m_logfunc = NULL;
@@ -365,8 +366,8 @@ void CConnection::DefaultLogFunc (const char* text)
 	snprintf(szTime, sizeof(szTime)-1, "%02d:%02d:%02d", currTM->tm_hour, currTM->tm_min, currTM->tm_sec);
 
 	snprintf(szPath, sizeof(szPath)-1, "%s/%s", m_directoryname.c_str(), szDate);
-	my_mkdir(m_directoryname.c_str());
-	my_mkdir(szPath);
+	mymkdir_r(m_directoryname.c_str());
+	mymkdir_r(szPath);
 
 	snprintf(szFile, sizeof(szFile)-1, "%s/%02d_DB.log", szPath, currTM->tm_hour);
 
@@ -396,7 +397,7 @@ void CConnection::DefaultErrorFunc (const char *text)
 	time(&tval);
 	currTM = localtime(&tval);
 
-	my_mkdir(m_directoryname.c_str());
+	mymkdir_r(m_directoryname.c_str());
 	snprintf(szFile, sizeof(szFile)-1, "%s/_db_error_.log", m_directoryname.c_str());
 
 	if (strcmp(m_lastfilename.c_str(), szFile) != 0)

@@ -31,7 +31,8 @@ CLogServerMgr::~CLogServerMgr()
 
 bool CLogServerMgr::Init()
 {
-	g_dbhand.SetLogDirectory("LogServer_log/dbhand_log");
+	g_dbhand.SetLogDirectory("log_log/LogServer_Log/dbhand_log");
+	g_dbhand.SetEnableLog(CConfig::Instance().GetIsOpenSQLLog());
 	if (!g_dbhand.Open(CConfig::Instance().GetDBName().c_str(),
 		CConfig::Instance().GetDBUser().c_str(),
 		CConfig::Instance().GetDBPass().c_str(),

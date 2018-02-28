@@ -26,6 +26,8 @@ ClientNum_Max		最大Client连接数
 DataLimt_Recv		接收数据大小限制，必须大于等于0，小于等于204857600，若为0则不限制
 DataLimt_Send		发送数据发小限制，必须大于等于0，小于等于204857600，若为0则不限制
 
+SQL_Log				是否开启SQL查询日志
+
 -->
 <Base 
 	Over_Time = "500000"
@@ -58,6 +60,8 @@ DataLimt_Send		发送数据发小限制，必须大于等于0，小于等于2048
 	DBUser = "root"
 	DBPass = "root"
 	DBIP = "127.0.0.1:3306"
+	
+	SQL_Log = "true"
 	>
 </DBServer>
 
@@ -119,5 +123,7 @@ DataLimt_Send		发送数据发小限制，必须大于等于0，小于等于2048
 	DBUser = "root"
 	DBPass = "root"
 	DBIP = "127.0.0.1:3306"
+	
+	SQL_Log = "true"
 	>
 </LogServer>
