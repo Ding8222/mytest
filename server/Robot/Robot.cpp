@@ -25,7 +25,7 @@ CRobot::~CRobot()
 	Destroy();
 }
 
-void CRobot::SendMsg(google::protobuf::Message &pMsg, int maintype, int subtype, void *adddata, size_t addsize)
+void CRobot::SendMsg(google::protobuf::Message &pMsg, int8 maintype, int8 subtype, void *adddata, size_t addsize)
 {
 	MessagePack pk;
 	pk.Pack(&pMsg, maintype, subtype);

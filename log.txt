@@ -88,6 +88,9 @@ player这边消息处理调整一下，简化、避免多余的查询操作
 client只需要int32即可，将int64的全部改为int32,并把所有的client查找改为随机访问，server的查找看要不要也改为随机访问
 
 CClientSvrMgr::GetClientSvr,优化一下，不使用find
+--已修改
+
+CClientAuthMgr这边应该也可以不使用find
 
 DB这边在大量玩家同时登陆的时候，耗时非常严重，需要看怎么优化优化。
 

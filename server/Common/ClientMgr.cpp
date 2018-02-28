@@ -211,7 +211,7 @@ bool CClientMgr::TestAndListen()
 	return false;
 }
 
-int64 CClientMgr::OnNewClient()
+int32 CClientMgr::OnNewClient()
 {
 	if ((int)m_ClientList.size() >= m_MaxClientNum)
 		return 0;
@@ -313,7 +313,7 @@ void CClientMgr::SendMsg(CClient *cl, Msg *pMsg)
 	cl->SendMsg(pMsg);
 }
 
-void CClientMgr::SendMsg(int64 clientid, google::protobuf::Message &pMsg, int maintype, int subtype)
+void CClientMgr::SendMsg(int32 clientid, google::protobuf::Message &pMsg, int maintype, int subtype)
 {
 	if (clientid > 0)
 	{
@@ -338,7 +338,7 @@ void CClientMgr::SendMsg(int64 clientid, google::protobuf::Message &pMsg, int ma
 }
 
 
-void CClientMgr::SendMsg(int64 clientid, Msg *pMsg)
+void CClientMgr::SendMsg(int32 clientid, Msg *pMsg)
 {
 	if (clientid > 0)
 	{
@@ -359,7 +359,7 @@ void CClientMgr::SendMsg(int64 clientid, Msg *pMsg)
 CClient *CClientMgr::FindClientByClientID(int32 clientid)
 {
 	if (clientid <= 0 || clientid >= static_cast<int>(m_ClientSet.size()))
-		return;
+		return nullptr;
 
 	assert(m_ClientSet[clientid]);
 	if (m_ClientSet[clientid])

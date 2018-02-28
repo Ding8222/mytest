@@ -140,7 +140,7 @@ const char *CConnectMgr::GetMsgNumInfo()
 	return tempbuf;
 }
 
-bool CConnectMgr::SendMsgToServer(int nServerID, google::protobuf::Message &pMsg, int maintype, int subtype, int64 nClientID)
+bool CConnectMgr::SendMsgToServer(int nServerID, google::protobuf::Message &pMsg, int maintype, int subtype, int32 nClientID)
 {
 	connector *con = FindConnect(nServerID);
 	if (con)
@@ -150,7 +150,7 @@ bool CConnectMgr::SendMsgToServer(int nServerID, google::protobuf::Message &pMsg
 	return false;
 }
 
-bool CConnectMgr::SendMsgToServer(int nServerID, Msg &pMsg, int64 nClientID)
+bool CConnectMgr::SendMsgToServer(int nServerID, Msg &pMsg, int32 nClientID)
 {
 	connector *con = FindConnect(nServerID);
 	if (con)
@@ -160,7 +160,7 @@ bool CConnectMgr::SendMsgToServer(int nServerID, Msg &pMsg, int64 nClientID)
 	return false;
 }
 
-bool CConnectMgr::SendMsgToServer(connector *con, google::protobuf::Message &pMsg, int maintype, int subtype, int64 clientid)
+bool CConnectMgr::SendMsgToServer(connector *con, google::protobuf::Message &pMsg, int maintype, int subtype, int32 clientid)
 {
 	assert(con);
 	assert(clientid >= 0);
@@ -172,7 +172,7 @@ bool CConnectMgr::SendMsgToServer(connector *con, google::protobuf::Message &pMs
 	return SendMsg(con, pMsg, maintype, subtype, &tail, sizeof(tail));
 }
 
-bool CConnectMgr::SendMsgToServer(connector *con, Msg &pMsg, int64 clientid)
+bool CConnectMgr::SendMsgToServer(connector *con, Msg &pMsg, int32 clientid)
 {
 	assert(con);
 	assert(clientid >= 0);

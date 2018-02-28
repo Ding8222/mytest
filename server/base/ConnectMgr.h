@@ -34,11 +34,11 @@ public:
 
 public:
 	// 发送消息
-	bool SendMsgToServer(int nServerID, google::protobuf::Message &pMsg, int maintype, int subtype, int64 nClientID = 0);
-	bool SendMsgToServer(int nServerID, Msg &pMsg, int64 nClientID = 0);
+	bool SendMsgToServer(int nServerID, google::protobuf::Message &pMsg, int maintype, int subtype, int32 nClientID = 0);
+	bool SendMsgToServer(int nServerID, Msg &pMsg, int32 nClientID = 0);
 
-	bool SendMsgToServer(connector *con, google::protobuf::Message &pMsg, int maintype, int subtype, int64 nClientID = 0);
-	bool SendMsgToServer(connector *con, Msg &pMsg, int64 nClientID = 0);
+	bool SendMsgToServer(connector *con, google::protobuf::Message &pMsg, int maintype, int subtype, int32 nClientID = 0);
+	bool SendMsgToServer(connector *con, Msg &pMsg, int32 nClientID = 0);
 
 	bool SendMsg(connector *info, google::protobuf::Message &pMsg, int maintype, int subtype, void *adddata = nullptr, size_t addsize = 0);
 	bool SendMsg(connector *info, Msg &pMsg, void *adddata = nullptr, size_t addsize = 0);

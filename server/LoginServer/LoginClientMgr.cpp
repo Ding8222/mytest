@@ -29,12 +29,12 @@ void CLoginClientMgr::Destroy()
 	CClientMgr::Destroy();
 }
 
-int64 CLoginClientMgr::OnNewClient()
+int32 CLoginClientMgr::OnNewClient()
 {
 	if (!CLoginCenterConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetCenterServerID()))
 		return 0;
 
-	int64 nClientID = CClientMgr::OnNewClient();
+	int32 nClientID = CClientMgr::OnNewClient();
 	if (nClientID == 0)
 		return 0;
 	

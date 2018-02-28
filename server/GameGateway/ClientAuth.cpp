@@ -105,7 +105,7 @@ void CClientAuth::AddAuthInfo(Msg *pMsg)
 }
 
 // 移除ClientID所属信息,并重置该Token中的ClientID
-void CClientAuth::DelClient(int64 clientid)
+void CClientAuth::DelClient(int32 clientid)
 {
 	auto iter = m_ClientAuthInfo.find(clientid);
 	assert(iter != m_ClientAuthInfo.end());
@@ -121,7 +121,7 @@ void CClientAuth::DelClient(int64 clientid)
 	}
 }
 
-void CClientAuth::KickClient(int64 clientid)
+void CClientAuth::KickClient(int32 clientid)
 {
 	m_ClientAuthInfo.erase(clientid);
 	
@@ -213,7 +213,7 @@ void CClientAuth::SelectPlayer(Msg *pMsg, CClient *cl)
 	}
 }
 
-void CClientAuth::Offline(int64 clientid)
+void CClientAuth::Offline(int32 clientid)
 {
 	auto iter = m_ClientAuthInfo.find(clientid);
 	if (iter != m_ClientAuthInfo.end())
@@ -224,7 +224,7 @@ void CClientAuth::Offline(int64 clientid)
 	KickClient(clientid);
 }
 
-ClientAuthInfo *CClientAuth::FindAuthInfo(int64 clientid)
+ClientAuthInfo *CClientAuth::FindAuthInfo(int32 clientid)
 {
 	auto iter = m_ClientAuthInfo.find(clientid);
 	assert(iter != m_ClientAuthInfo.end());

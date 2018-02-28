@@ -38,15 +38,15 @@ public:
 	//获取当前连接的客户端数量
 	int GetClientConnectNum() { return (int)m_ClientList.size(); }
 
-	virtual int64 OnNewClient();
+	virtual int32 OnNewClient();
 	virtual void OnClientDisconnect(CClient *cl);
 	virtual void ProcessClientMsg(CClient *cl) = 0;
 
 	// 发送消息
 	void SendMsg(CClient *cl, google::protobuf::Message &pMsg, int maintype, int subtype);
 	void SendMsg(CClient *cl, Msg *pMsg);
-	void SendMsg(int64 clientid, google::protobuf::Message &pMsg, int maintype, int subtype);
-	void SendMsg(int64 clientid, Msg *pMsg);
+	void SendMsg(int32 clientid, google::protobuf::Message &pMsg, int maintype, int subtype);
+	void SendMsg(int32 clientid, Msg *pMsg);
 
 	CClient *FindClientByClientID(int32 clientid);
 private:

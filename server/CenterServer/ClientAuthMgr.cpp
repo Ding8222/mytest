@@ -24,7 +24,7 @@ void CClientAuthMgr::Destroy()
 }
 
 // 添加认证信息
-void CClientAuthMgr::AddClientAuthInfo(Msg *pMsg, int64 clientid)
+void CClientAuthMgr::AddClientAuthInfo(Msg *pMsg, int32 clientid)
 {
 	netData::Auth msg;
 	_CHECK_PARSE_(pMsg, msg);
@@ -39,7 +39,7 @@ void CClientAuthMgr::AddClientAuthInfo(Msg *pMsg, int64 clientid)
 }
 
 // 移除认证信息
-void CClientAuthMgr::DelClientAuthInfo(int64 clientid)
+void CClientAuthMgr::DelClientAuthInfo(int32 clientid)
 {
 	auto iter = m_ClientInfo.find(clientid);
 	assert(iter != m_ClientInfo.end());
@@ -48,7 +48,7 @@ void CClientAuthMgr::DelClientAuthInfo(int64 clientid)
 }
 
 // 发送认证信息到逻辑服
-void CClientAuthMgr::SendAuthInfoToLogic(Msg *pMsg, int64 clientid)
+void CClientAuthMgr::SendAuthInfoToLogic(Msg *pMsg, int32 clientid)
 {
 	netData::AuthRet msg;
 	_CHECK_PARSE_(pMsg, msg);
@@ -81,7 +81,7 @@ void CClientAuthMgr::SendAuthInfoToLogic(Msg *pMsg, int64 clientid)
 	CCentServerMgr::Instance().SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, clientid);
 }
 
-void CClientAuthMgr::SendLoadPlayerDataToLogic(Msg *pMsg, int64 clientid)
+void CClientAuthMgr::SendLoadPlayerDataToLogic(Msg *pMsg, int32 clientid)
 {
 	CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_GAME, clientid);
 }

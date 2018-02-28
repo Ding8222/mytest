@@ -68,7 +68,7 @@ const char *CGameGatewayMgr::GetMsgNumInfo()
 	return tempbuf;
 }
 
-void CGameGatewayMgr::SendMsgToServer(Msg &pMsg, int nType, int64 nClientID, int nServerID, bool bBroad)
+void CGameGatewayMgr::SendMsgToServer(Msg &pMsg, int nType, int32 nClientID, int nServerID, bool bBroad)
 {
 	if (!bBroad)
 	{
@@ -93,7 +93,7 @@ void CGameGatewayMgr::SendMsgToServer(Msg &pMsg, int nType, int64 nClientID, int
 	}
 }
 
-void CGameGatewayMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int64 nClientID, int nServerID, bool bBroad)
+void CGameGatewayMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int32 nClientID, int nServerID, bool bBroad)
 {
 	if (!bBroad)
 	{
@@ -207,7 +207,7 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 	}
 }
 
-void CGameGatewayMgr::ProcessClientMsg(int gateid, int64 clientid, Msg *pMsg)
+void CGameGatewayMgr::ProcessClientMsg(int gateid, int32 clientid, Msg *pMsg)
 {
 	CPlayer *player = CPlayerMgr::Instance().FindPlayerByClientID(clientid);
 	if (FuncUti::isValidCret(player))

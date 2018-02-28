@@ -29,7 +29,7 @@ void CGateClientMgr::Destroy()
 	CClientMgr::Destroy();
 }
 
-int64 CGateClientMgr::OnNewClient()
+int32 CGateClientMgr::OnNewClient()
 {
 	if (!CGameConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetGameServerID()))
 		return 0;
@@ -37,7 +37,7 @@ int64 CGateClientMgr::OnNewClient()
 	if (!CGateCenterConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetCenterServerID()))
 		return 0;
 
-	int64 nClientID = CClientMgr::OnNewClient();
+	int32 nClientID = CClientMgr::OnNewClient();
 	if (nClientID == 0)
 		return 0;
 
@@ -178,7 +178,7 @@ void CGateClientMgr::ProcessClientAuth(CClient *cl, Msg *pMsg)
 	}
 }
 
-void CGateClientMgr::SetClientAlreadyLogin(int64 clientid, bool bLogin)
+void CGateClientMgr::SetClientAlreadyLogin(int32 clientid, bool bLogin)
 {
 	CClient *cl = FindClient(clientid);
 	assert(cl);

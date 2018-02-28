@@ -20,7 +20,7 @@ public:
 
 	void Destroy();
 
-	int64 OnNewClient();
+	int32 OnNewClient();
 	void OnClientDisconnect(CClient *cl);
 	void ProcessClientMsg(CClient *cl);
 private:

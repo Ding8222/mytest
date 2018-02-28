@@ -70,7 +70,7 @@ message ClientToken
 // 0-9 通知game加载玩家数据
 message LoadPlayerData
 {
-	int64 clientid = 1;
+	int32 clientid = 1;
 	string account = 2;
 	string name = 3;
 	int64 guid = 4;

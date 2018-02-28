@@ -564,7 +564,7 @@ struct msgtail
 	{
 		id = 0;
 	}
-	int64 id;	//此id根据情况，含义不同，可能是gate的客户端id，也可能是逻辑服的id
+	int32 id;	//此id根据情况，含义不同，可能是gate的客户端id，也可能是逻辑服的id
 };
 
 #pragma pack(pop)

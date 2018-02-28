@@ -91,28 +91,28 @@ bool CMapInfo::Init(int mapid, const char *bar_filename)
 		if (pinfo->QueryIntAttribute("row", &row) != XML_SUCCESS)
 		{
 			RunStateError("没有找到字段： 'row'");
-			delete(barinfo);
+			delete []barinfo;
 			return false;
 		}
 
 		if (row < 0 || row > m_Width)
 		{
 			RunStateError("地图阻挡点行数 < 0 或者行数大于地图宽 ,地图ID：%d ", mapid);
-			delete(barinfo);
+			delete []barinfo;
 			return false;
 		}
 
 		if (pinfo->QueryIntAttribute("col", &col) != XML_SUCCESS)
 		{
 			RunStateError("没有找到字段： 'col'");
-			delete(barinfo);
+			delete []barinfo;
 			return false;
 		}
 
 		if (col < 0 || col > m_Height)
 		{
 			RunStateError("地图阻挡点列数 < 0 或者列数大于地图高 ,地图ID：%d ", mapid);
-			delete(barinfo);
+			delete []barinfo;
 			return false;
 		}
 
@@ -128,7 +128,7 @@ void CMapInfo::Destroy()
 {
 	if (m_BarInfo)
 	{
-		delete m_BarInfo;
+		delete []m_BarInfo;
 	}
 	m_BarInfo = nullptr;
 }

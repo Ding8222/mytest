@@ -34,14 +34,14 @@ public:
 	void Destroy();
 
 	// Client请求认证,loginSvr调用
-	void AddClientAuthInfo(Msg *pMsg, int64 clientid);
+	void AddClientAuthInfo(Msg *pMsg, int32 clientid);
 	// 移除认证信息
-	void DelClientAuthInfo(int64 clientid);
+	void DelClientAuthInfo(int32 clientid);
 	// 发送认证信息到逻辑服
-	void SendAuthInfoToLogic(Msg *pMsg, int64 clientid);
+	void SendAuthInfoToLogic(Msg *pMsg, int32 clientid);
 	// 发送加载玩家数据到逻辑服
-	void SendLoadPlayerDataToLogic(Msg *pMsg, int64 clientid);
+	void SendLoadPlayerDataToLogic(Msg *pMsg, int32 clientid);
 private:
 	// id,info
-	std::unordered_map<int64, ClientAuthInfo > m_ClientInfo;
+	std::unordered_map<int32, ClientAuthInfo > m_ClientInfo;
 };

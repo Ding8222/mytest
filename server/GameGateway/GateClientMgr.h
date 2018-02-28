@@ -20,12 +20,12 @@ public:
 
 	void Destroy();
 
-	int64 OnNewClient();
+	int32 OnNewClient();
 	void OnClientDisconnect(CClient *cl);
 	void ReleaseAllClient();
 	void ProcessClientMsg(CClient *cl);
 	void ProcessClientAuth(CClient *cl, Msg *pMsg);
-	void SetClientAlreadyLogin(int64 clientid, bool bLogin);
+	void SetClientAlreadyLogin(int32 clientid, bool bLogin);
 private:
 
 };

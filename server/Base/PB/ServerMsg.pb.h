@@ -1254,23 +1254,23 @@ class LoadPlayerData : public ::google::protobuf::Message /* @@protoc_insertion_
   ::std::string* release_data();
   void set_allocated_data(::std::string* data);
 
-  // int64 clientid = 1;
+  // int32 clientid = 1;
   void clear_clientid();
   static const int kClientidFieldNumber = 1;
-  ::google::protobuf::int64 clientid() const;
-  void set_clientid(::google::protobuf::int64 value);
-
-  // int64 guid = 4;
-  void clear_guid();
-  static const int kGuidFieldNumber = 4;
-  ::google::protobuf::int64 guid() const;
-  void set_guid(::google::protobuf::int64 value);
+  ::google::protobuf::int32 clientid() const;
+  void set_clientid(::google::protobuf::int32 value);
 
   // int32 sex = 5;
   void clear_sex();
   static const int kSexFieldNumber = 5;
   ::google::protobuf::int32 sex() const;
   void set_sex(::google::protobuf::int32 value);
+
+  // int64 guid = 4;
+  void clear_guid();
+  static const int kGuidFieldNumber = 4;
+  ::google::protobuf::int64 guid() const;
+  void set_guid(::google::protobuf::int64 value);
 
   // int32 job = 6;
   void clear_job();
@@ -1327,9 +1327,9 @@ class LoadPlayerData : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::internal::ArenaStringPtr account_;
   ::google::protobuf::internal::ArenaStringPtr name_;
   ::google::protobuf::internal::ArenaStringPtr data_;
-  ::google::protobuf::int64 clientid_;
-  ::google::protobuf::int64 guid_;
+  ::google::protobuf::int32 clientid_;
   ::google::protobuf::int32 sex_;
+  ::google::protobuf::int64 guid_;
   ::google::protobuf::int32 job_;
   ::google::protobuf::int32 level_;
   ::google::protobuf::int32 createtime_;
@@ -2004,15 +2004,15 @@ inline void ClientToken::set_allocated_ssecret(::std::string* ssecret) {
 
 // LoadPlayerData
 
-// int64 clientid = 1;
+// int32 clientid = 1;
 inline void LoadPlayerData::clear_clientid() {
-  clientid_ = GOOGLE_LONGLONG(0);
+  clientid_ = 0;
 }
-inline ::google::protobuf::int64 LoadPlayerData::clientid() const {
+inline ::google::protobuf::int32 LoadPlayerData::clientid() const {
   // @@protoc_insertion_point(field_get:svrData.LoadPlayerData.clientid)
   return clientid_;
 }
-inline void LoadPlayerData::set_clientid(::google::protobuf::int64 value) {
+inline void LoadPlayerData::set_clientid(::google::protobuf::int32 value) {
   
   clientid_ = value;
   // @@protoc_insertion_point(field_set:svrData.LoadPlayerData.clientid)

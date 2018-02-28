@@ -23,8 +23,8 @@ public:
 	void ResetMsgNum();
 	const char *GetMsgNumInfo();
 
-	void SendMsgToServer(Msg &pMsg, int nType, int64 nClientID = 0, int nServerID = 0, bool bBroad = false);
-	void SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int64 nClientID = 0, int nServerID = 0, bool bBroad = false);
+	void SendMsgToServer(Msg &pMsg, int nType, int32 nClientID = 0, int nServerID = 0, bool bBroad = false);
+	void SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int32 nClientID = 0, int nServerID = 0, bool bBroad = false);
 
 	void ServerRegisterSucc(int id, int type, const char *ip, int port);
 	void OnConnectDisconnect(serverinfo *info, bool overtime = false);
@@ -32,7 +32,7 @@ public:
 	// 处理服务器发来的消息
 	void ProcessMsg(serverinfo *info);
 	// 处理Client发来的消息，此时Client已经验证成功了
-	void ProcessClientMsg(int gateid, int64 clientid, Msg *pMsg);
+	void ProcessClientMsg(int gateid, int32 clientid, Msg *pMsg);
 
 private:
 	// 添加新的Server

@@ -464,7 +464,7 @@ void AddDescriptorsImpl() {
       "\017nClientCountMax\030\002 \001(\005\"\016\n\014AddNewClient\"\036"
       "\n\tDelClient\022\021\n\tnClientID\030\001 \001(\005\"/\n\013Client"
       "Token\022\017\n\007sEtoken\030\001 \001(\t\022\017\n\007sSecret\030\002 \001(\014\""
-      "\335\001\n\016LoadPlayerData\022\020\n\010clientid\030\001 \001(\003\022\017\n\007"
+      "\335\001\n\016LoadPlayerData\022\020\n\010clientid\030\001 \001(\005\022\017\n\007"
       "account\030\002 \001(\t\022\014\n\004name\030\003 \001(\t\022\014\n\004guid\030\004 \001("
       "\003\022\013\n\003sex\030\005 \001(\005\022\013\n\003job\030\006 \001(\005\022\r\n\005level\030\007 \001"
       "(\005\022\022\n\ncreatetime\030\010 \001(\005\022\021\n\tlogintime\030\t \001("
@@ -2901,13 +2901,13 @@ bool LoadPlayerData::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // int64 clientid = 1;
+      // int32 clientid = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &clientid_)));
         } else {
           goto handle_unusual;
@@ -3125,9 +3125,9 @@ void LoadPlayerData::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int64 clientid = 1;
+  // int32 clientid = 1;
   if (this->clientid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->clientid(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->clientid(), output);
   }
 
   // string account = 2;
@@ -3220,9 +3220,9 @@ void LoadPlayerData::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int64 clientid = 1;
+  // int32 clientid = 1;
   if (this->clientid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->clientid(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->clientid(), target);
   }
 
   // string account = 2;
@@ -3342,18 +3342,11 @@ size_t LoadPlayerData::ByteSizeLong() const {
         this->data());
   }
 
-  // int64 clientid = 1;
+  // int32 clientid = 1;
   if (this->clientid() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->clientid());
-  }
-
-  // int64 guid = 4;
-  if (this->guid() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->guid());
   }
 
   // int32 sex = 5;
@@ -3361,6 +3354,13 @@ size_t LoadPlayerData::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->sex());
+  }
+
+  // int64 guid = 4;
+  if (this->guid() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->guid());
   }
 
   // int32 job = 6;
@@ -3457,11 +3457,11 @@ void LoadPlayerData::MergeFrom(const LoadPlayerData& from) {
   if (from.clientid() != 0) {
     set_clientid(from.clientid());
   }
-  if (from.guid() != 0) {
-    set_guid(from.guid());
-  }
   if (from.sex() != 0) {
     set_sex(from.sex());
+  }
+  if (from.guid() != 0) {
+    set_guid(from.guid());
   }
   if (from.job() != 0) {
     set_job(from.job());
@@ -3517,8 +3517,8 @@ void LoadPlayerData::InternalSwap(LoadPlayerData* other) {
   name_.Swap(&other->name_);
   data_.Swap(&other->data_);
   swap(clientid_, other->clientid_);
-  swap(guid_, other->guid_);
   swap(sex_, other->sex_);
+  swap(guid_, other->guid_);
   swap(job_, other->job_);
   swap(level_, other->level_);
   swap(createtime_, other->createtime_);

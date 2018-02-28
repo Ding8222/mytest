@@ -10,7 +10,7 @@ struct ClientAuthInfo
 		Secret.clear();
 	}
 	
-	int64 ClientID;
+	int32 ClientID;
 	std::string Token;	// 账号
 	std::string Secret;	// 秘钥
 };
@@ -33,9 +33,9 @@ public:
 	// 中心服务器通知添加token
 	void AddAuthInfo(Msg *pMsg);
 	// 移除Client
-	void DelClient(int64 clientid);
+	void DelClient(int32 clientid);
 	// 尝试踢下Client
-	void KickClient(int64 clientid);
+	void KickClient(int32 clientid);
 	// client请求认证
 	void AddNewClient(Msg *pMsg, CClient *cl);
 	// 请求角色列表
@@ -45,15 +45,15 @@ public:
 	// 请求选择角色
 	void SelectPlayer(Msg *pMsg, CClient *cl);
 	// client主动退出
-	void Offline(int64 clientid);
+	void Offline(int32 clientid);
 	// 返回当前Client数量
 	int GetClientSize() { return m_ClientSecretInfo.size(); }
 private:
-	ClientAuthInfo * FindAuthInfo(int64 clientid);
+	ClientAuthInfo * FindAuthInfo(int32 clientid);
 	ClientAuthInfo * FindAuthInfo(std::string token);
 private:
 	// Token,authinfo
 	std::unordered_map<std::string, ClientAuthInfo *> m_ClientSecretInfo;
 	// clientid,authinfo
-	std::unordered_map<int64, ClientAuthInfo *> m_ClientAuthInfo;
+	std::unordered_map<int32, ClientAuthInfo *> m_ClientAuthInfo;
 };

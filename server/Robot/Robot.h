@@ -17,7 +17,7 @@ public:
 	bool IsHandShake() { return m_isHandShake; }
 	void SetHandShake(bool handshake) { m_isHandShake = handshake; }
 
-	void SendMsg(google::protobuf::Message &pMsg, int maintype, int subtype, void *adddata = nullptr, size_t addsize = 0);
+	void SendMsg(google::protobuf::Message &pMsg, int8 maintype, int8 subtype, void *adddata = nullptr, size_t addsize = 0);
 
 	void OnConnectDisconnect();
 

@@ -128,7 +128,7 @@ const char *CCentServerMgr::GetMsgNumInfo()
 	return tempbuf;
 }
 
-void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int64 nClientID, int nServerID, bool bBroad)
+void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int32 nClientID, int nServerID, bool bBroad)
 {
 	std::map<int, serverinfo *> *iterList = nullptr;
 	switch (nType)
@@ -212,7 +212,7 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int64 nClientID, int 
 	}
 }
 
-void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int64 nClientID, int nServerID, bool bBroad)
+void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int32 nClientID, int nServerID, bool bBroad)
 {
 	std::map<int, serverinfo *> *iterList = nullptr;
 	switch (nType)
