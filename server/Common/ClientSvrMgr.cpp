@@ -125,9 +125,8 @@ void CClientSvrMgr::DelClientSvr(int32 id)
 		log_error("要释放的ClientSvr的ID错误!");
 		return;
 	}
-	ClientSvr *cl = m_ClientSvrSet[id];
-	m_ClientSvrSet[id] = NULL;
 	clientsvr_release(m_ClientSvrSet[id]);
+	m_ClientSvrSet[id] = NULL;
 }
 
 ClientSvr *CClientSvrMgr::GetClientSvr(int32 id)
