@@ -35,6 +35,12 @@ bool CCentServerMgr::Init(const char *ip, int serverid, int port, int overtime)
 		return false;
 	}
 
+	if (!CClientAuthMgr::Instance().Init())
+	{
+		RunStateError("初始化 ClientAuthMgr 失败!");
+		return false;
+	}
+
 	return CServerMgr::Init(ip, serverid, port, overtime);
 }
 
@@ -165,7 +171,7 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int32 nClientID, int 
 	{
 		if (!bBroad && nServerID == 0)
 		{
-			nServerID = CClientSvrMgr::Instance().GetClientLoginSvr(nClientID);
+			nServerID = CClientAuthMgr::Instance().GetClientLoginSvr(nClientID);
 			assert(nServerID);
 		}
 		iterList = &m_LoginList;
@@ -245,7 +251,7 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 	{
 		if (!bBroad && nServerID == 0)
 		{
-			nServerID = CClientSvrMgr::Instance().GetClientLoginSvr(nClientID);
+			nServerID = CClientAuthMgr::Instance().GetClientLoginSvr(nClientID);
 			assert(nServerID);
 		}
 		iterList = &m_LoginList;
@@ -405,10 +411,6 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 					CCentServerMgr::Instance().SendMsgToServer(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, ServerEnum::EST_GATE, tl->id);
 					break;
 				}
-				case ServerEnum::EST_LOGIN:
-				{
-					CClientSvrMgr::Instance().AddClientLoginSvr(tl->id, info->GetServerID());
-				}
 				default:
 					break;
 				}
@@ -430,7 +432,6 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 				}
 				case ServerEnum::EST_LOGIN:
 				{
-					CClientSvrMgr::Instance().DelClientLoginSvr(tl->id);
 					CClientAuthMgr::Instance().DelClientAuthInfo(msg.nclientid());
 				}
 				default:
@@ -510,7 +511,7 @@ void CCentServerMgr::ProcessLoginMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		{
 		case LOGIN_SUB_AUTH:
 		{
-			CClientAuthMgr::Instance().AddClientAuthInfo(pMsg,tl->id);
+			CClientAuthMgr::Instance().AddClientAuthInfo(pMsg,tl->id, info->GetServerID());
 			break;
 		}
 		default:

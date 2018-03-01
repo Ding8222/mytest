@@ -37,9 +37,6 @@ int32 CLoginClientMgr::OnNewClient()
 	int32 nClientID = CClientMgr::OnNewClient();
 	if (nClientID == 0)
 		return 0;
-	
-	svrData::AddNewClient sendMsg;
-	CLoginCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT, nClientID);
 
 	return nClientID;
 }

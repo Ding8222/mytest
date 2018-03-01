@@ -1,14 +1,13 @@
 ﻿#include "LoginCenterConnect.h"
 #include "LoginClientMgr.h"
-#include "ClientAuth.h"
 #include "Client.h"
 #include "Config.h"
 #include "GlobalDefine.h"
 #include "msgbase.h"
+#include "ClientAuth.h"
 
 #include "osrng.h"
 #include "des.h"
-#include "dh.h"
 #include <string>
 
 #include "MainType.h"
@@ -17,6 +16,8 @@
 #include "ClientMsg.pb.h"
 #include "Login.pb.h"
 #include "DBServer.pb.h"
+
+CryptoPP::AutoSeededRandomPool CClientAuth::prng;
 
 CClientAuth::CClientAuth()
 {
@@ -42,7 +43,6 @@ void CClientAuth::HandShake(CClient *cl, Msg *pMsg)
 	netData::HandShake msg;
 	_CHECK_PARSE_(pMsg, msg);
 	
-	CryptoPP::AutoSeededRandomPool prng;
 	CryptoPP::SecByteBlock Challenge(0x00, CryptoPP::DES::DEFAULT_KEYLENGTH);
 
 	prng.GenerateBlock(Challenge, Challenge.size());

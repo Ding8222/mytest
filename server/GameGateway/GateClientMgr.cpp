@@ -182,7 +182,6 @@ void CGateClientMgr::ProcessClientAuth(CClient *cl, Msg *pMsg)
 void CGateClientMgr::SetClientAlreadyLogin(int32 clientid, bool bLogin)
 {
 	CClient *cl = FindClient(clientid);
-	assert(cl);
 	if (cl)
 	{
 		if (bLogin)

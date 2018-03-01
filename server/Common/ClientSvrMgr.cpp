@@ -35,7 +35,6 @@ static void clientsvr_release(ClientSvr *self)
 CClientSvrMgr::CClientSvrMgr()
 {
 	m_ClientSvrSet.clear();
-	m_ClientLoginSvrSet.clear();
 }
 
 CClientSvrMgr::~CClientSvrMgr()
@@ -45,8 +44,7 @@ CClientSvrMgr::~CClientSvrMgr()
 
 bool CClientSvrMgr::Init()
 {
-	m_ClientSvrSet.resize(CLIENT_ID_MAX + 1, NULL);
-	m_ClientLoginSvrSet.resize(CLIENT_ID_MAX + 1, 0);
+	m_ClientSvrSet.resize(CLIENT_ID_MAX + 1, nullptr);
 	return true;
 }
 
@@ -58,7 +56,6 @@ void CClientSvrMgr::Destroy()
 		i = nullptr;
 	}
 	m_ClientSvrSet.clear();
-	m_ClientLoginSvrSet.clear();
 }
 
 void CClientSvrMgr::AddClientSvr(int32 clientid, int serverid, int servertype)
@@ -105,7 +102,7 @@ void CClientSvrMgr::AddClientSvr(int32 clientid, int serverid, int servertype)
 			break;
 		}
 		}
-		assert(NULL == m_ClientSvrSet[clientid]);
+		assert(nullptr == m_ClientSvrSet[clientid]);
 		m_ClientSvrSet[clientid] = newclientsvr;
 	}
 }
@@ -118,7 +115,7 @@ void CClientSvrMgr::DelClientSvr(int32 clientid)
 		return;
 	}
 	clientsvr_release(m_ClientSvrSet[clientid]);
-	m_ClientSvrSet[clientid] = NULL;
+	m_ClientSvrSet[clientid] = nullptr;
 }
 
 ClientSvr *CClientSvrMgr::GetClientSvr(int32 id)
@@ -127,36 +124,5 @@ ClientSvr *CClientSvrMgr::GetClientSvr(int32 id)
 		return nullptr;
 
 	assert(m_ClientSvrSet[id]);
-	if (m_ClientSvrSet[id])
-		return m_ClientSvrSet[id];
-
-	return nullptr;
-}
-
-
-void CClientSvrMgr::AddClientLoginSvr(int32 clientid, int serverid)
-{
-	if (clientid <= 0 || clientid >= static_cast<int>(m_ClientLoginSvrSet.size()))
-		return;
-
-	assert(m_ClientLoginSvrSet[clientid] == 0);
-	m_ClientLoginSvrSet[clientid] = serverid;
-}
-
-void CClientSvrMgr::DelClientLoginSvr(int32 clientid)
-{
-	if (clientid <= 0 || clientid >= static_cast<int>(m_ClientLoginSvrSet.size()))
-		return;
-
-	assert(m_ClientLoginSvrSet[clientid]);
-	m_ClientLoginSvrSet[clientid] = 0;
-}
-
-int32 CClientSvrMgr::GetClientLoginSvr(int32 clientid)
-{
-	if (clientid <= 0 || clientid >= static_cast<int>(m_ClientLoginSvrSet.size()))
-		return 0;
-
-	assert(m_ClientLoginSvrSet[clientid]);
-	return m_ClientLoginSvrSet[clientid];
+	return m_ClientSvrSet[id];
 }

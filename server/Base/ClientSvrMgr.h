@@ -35,11 +35,7 @@ public:
 	void AddClientSvr(int32 clientid, int serverid, int servertype);
 	void DelClientSvr(int32 clientid);
 	ClientSvr *GetClientSvr(int32 id);
-	void AddClientLoginSvr(int32 clientid, int serverid);
-	void DelClientLoginSvr(int32 clientid);
-	int32 GetClientLoginSvr(int32 clientid);
 private:
 
 	std::vector<ClientSvr *> m_ClientSvrSet;
-	std::vector<int32> m_ClientLoginSvrSet;
 };

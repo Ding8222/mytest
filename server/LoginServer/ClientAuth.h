@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <unordered_map>
+#include "osrng.h"
 
 class CClientAuth
 {
@@ -36,4 +37,6 @@ private:
 
 	// clientid,Secret
 	std::unordered_map<int64, std::string > m_Secret;
+	
+	static CryptoPP::AutoSeededRandomPool prng;
 };
