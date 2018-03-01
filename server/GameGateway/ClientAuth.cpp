@@ -129,6 +129,7 @@ void CClientAuth::KickClient(int32 clientid)
 	svrData::DelClient sendMsg;
 	sendMsg.set_nclientid(clientid);
 	CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, clientid);
+	CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, clientid);
 
 	// 通知延迟关闭Client
 	CGateClientMgr::Instance().DelayCloseClient(clientid);

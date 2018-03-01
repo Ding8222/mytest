@@ -35,6 +35,7 @@ static void clientsvr_release(ClientSvr *self)
 CClientSvrMgr::CClientSvrMgr()
 {
 	m_ClientSvrSet.clear();
+	m_ClientLoginSvrSet.clear();
 }
 
 CClientSvrMgr::~CClientSvrMgr()
@@ -45,6 +46,7 @@ CClientSvrMgr::~CClientSvrMgr()
 bool CClientSvrMgr::Init()
 {
 	m_ClientSvrSet.resize(CLIENT_ID_MAX + 1, NULL);
+	m_ClientLoginSvrSet.resize(CLIENT_ID_MAX + 1, 0);
 	return true;
 }
 
@@ -55,6 +57,8 @@ void CClientSvrMgr::Destroy()
 		clientsvr_release(i);
 		i = nullptr;
 	}
+	m_ClientSvrSet.clear();
+	m_ClientLoginSvrSet.clear();
 }
 
 void CClientSvrMgr::AddClientSvr(int32 clientid, int serverid, int servertype)
@@ -65,14 +69,8 @@ void CClientSvrMgr::AddClientSvr(int32 clientid, int serverid, int servertype)
 	ClientSvr *cl = m_ClientSvrSet[clientid];
 	if (cl)
 	{
-		cl->nClientID = clientid;
 		switch (servertype)
 		{
-		case ServerEnum::EST_LOGIN:
-		{
-			cl->nLoginServerID = serverid;
-			break;
-		}
 		case ServerEnum::EST_GAME:
 		{
 			cl->nGameServerID = serverid;
@@ -94,14 +92,8 @@ void CClientSvrMgr::AddClientSvr(int32 clientid, int serverid, int servertype)
 			return;
 		}
 
-		newclientsvr->nClientID = clientid;
 		switch (servertype)
 		{
-		case ServerEnum::EST_LOGIN:
-		{
-			newclientsvr->nLoginServerID = serverid;
-			break;
-		}
 		case ServerEnum::EST_GAME:
 		{
 			newclientsvr->nGameServerID = serverid;
@@ -118,15 +110,15 @@ void CClientSvrMgr::AddClientSvr(int32 clientid, int serverid, int servertype)
 	}
 }
 
-void CClientSvrMgr::DelClientSvr(int32 id)
+void CClientSvrMgr::DelClientSvr(int32 clientid)
 {
-	if (id <= 0 || id >= static_cast<int>(m_ClientSvrSet.size()))
+	if (clientid <= 0 || clientid >= static_cast<int>(m_ClientSvrSet.size()))
 	{
 		log_error("要释放的ClientSvr的ID错误!");
 		return;
 	}
-	clientsvr_release(m_ClientSvrSet[id]);
-	m_ClientSvrSet[id] = NULL;
+	clientsvr_release(m_ClientSvrSet[clientid]);
+	m_ClientSvrSet[clientid] = NULL;
 }
 
 ClientSvr *CClientSvrMgr::GetClientSvr(int32 id)
@@ -139,4 +131,32 @@ ClientSvr *CClientSvrMgr::GetClientSvr(int32 id)
 		return m_ClientSvrSet[id];
 
 	return nullptr;
+}
+
+
+void CClientSvrMgr::AddClientLoginSvr(int32 clientid, int serverid)
+{
+	if (clientid <= 0 || clientid >= static_cast<int>(m_ClientLoginSvrSet.size()))
+		return;
+
+	assert(m_ClientLoginSvrSet[clientid] == 0);
+	m_ClientLoginSvrSet[clientid] = serverid;
+}
+
+void CClientSvrMgr::DelClientLoginSvr(int32 clientid)
+{
+	if (clientid <= 0 || clientid >= static_cast<int>(m_ClientLoginSvrSet.size()))
+		return;
+
+	assert(m_ClientLoginSvrSet[clientid]);
+	m_ClientLoginSvrSet[clientid] = 0;
+}
+
+int32 CClientSvrMgr::GetClientLoginSvr(int32 clientid)
+{
+	if (clientid <= 0 || clientid >= static_cast<int>(m_ClientLoginSvrSet.size()))
+		return 0;
+
+	assert(m_ClientLoginSvrSet[clientid]);
+	return m_ClientLoginSvrSet[clientid];
 }

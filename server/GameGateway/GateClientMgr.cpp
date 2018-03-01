@@ -56,14 +56,15 @@ int32 CGateClientMgr::OnNewClient()
 
 void CGateClientMgr::OnClientDisconnect(CClient *cl)
 {
+	svrData::DelClient sendMsg;
+	sendMsg.set_nclientid(cl->GetClientID());
+	CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, cl->GetClientID());
+
 	if (cl->IsAlreadyAuth())
 	{
-		svrData::DelClient sendMsg;
-		sendMsg.set_nclientid(cl->GetClientID());
-		CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, cl->GetClientID());
 		CClientAuth::Instance().DelClient(cl->GetClientID());
+		CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, cl->GetClientID());
 	}
-
 	CClientMgr::OnClientDisconnect(cl);
 }
 

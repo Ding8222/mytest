@@ -183,7 +183,6 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				_CHECK_PARSE_(pMsg, msg);
 
 				CPlayerMgr::Instance().DelPlayer(msg.nclientid());
-				CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), *pMsg, tl->id);
 				break;
 			}
 			default:

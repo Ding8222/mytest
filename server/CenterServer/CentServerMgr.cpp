@@ -165,12 +165,8 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int32 nClientID, int 
 	{
 		if (!bBroad && nServerID == 0)
 		{
-			ClientSvr *_pData = CClientSvrMgr::Instance().GetClientSvr(nClientID);
-			if (_pData)
-			{
-				nServerID = _pData->nLoginServerID;
-				assert(nServerID);
-			}
+			nServerID = CClientSvrMgr::Instance().GetClientLoginSvr(nClientID);
+			assert(nServerID);
 		}
 		iterList = &m_LoginList;
 		break;
@@ -249,12 +245,8 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 	{
 		if (!bBroad && nServerID == 0)
 		{
-			ClientSvr *_pData = CClientSvrMgr::Instance().GetClientSvr(nClientID);
-			if (_pData)
-			{
-				nServerID = _pData->nLoginServerID;
-				assert(nServerID);
-			}
+			nServerID = CClientSvrMgr::Instance().GetClientLoginSvr(nClientID);
+			assert(nServerID);
 		}
 		iterList = &m_LoginList;
 		break;
@@ -396,13 +388,29 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 				svrData::AddNewClient msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				CClientSvrMgr::Instance().AddClientSvr(tl->id, info->GetServerID(), info->GetServerType());
-				if (info->GetServerType() == ServerEnum::EST_GAME)
+				switch (info->GetServerType())
 				{
+				case ServerEnum::EST_GATE:
+				{
+					CClientSvrMgr::Instance().AddClientSvr(tl->id, info->GetServerID(), info->GetServerType());
+					break;
+				}
+				case ServerEnum::EST_GAME:
+				{
+					CClientSvrMgr::Instance().AddClientSvr(tl->id, info->GetServerID(), info->GetServerType());
+
 					//通知CLient登录成功
 					netData::LoginRet sendMsg;
 					sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
 					CCentServerMgr::Instance().SendMsgToServer(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, ServerEnum::EST_GATE, tl->id);
+					break;
+				}
+				case ServerEnum::EST_LOGIN:
+				{
+					CClientSvrMgr::Instance().AddClientLoginSvr(tl->id, info->GetServerID());
+				}
+				default:
+					break;
 				}
 				break;
 			}
@@ -413,13 +421,20 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 				svrData::DelClient msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				if (info->GetServerType() == ServerEnum::EST_LOGIN)
+				switch (info->GetServerType())
 				{
-					CClientAuthMgr::Instance().DelClientAuthInfo(msg.nclientid());
-				}
-				else
+				case ServerEnum::EST_GATE:
 				{
 					CClientSvrMgr::Instance().DelClientSvr(tl->id);
+					break;
+				}
+				case ServerEnum::EST_LOGIN:
+				{
+					CClientSvrMgr::Instance().DelClientLoginSvr(tl->id);
+					CClientAuthMgr::Instance().DelClientAuthInfo(msg.nclientid());
+				}
+				default:
+					break;
 				}
 				break;
 			}
