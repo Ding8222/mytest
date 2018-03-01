@@ -125,10 +125,12 @@ const char *CConnectMgr::GetMsgNumInfo()
 	char *buf = tempbuf;
 	size_t len = sizeof(tempbuf);
 	int res = 0;
+	connector *co = nullptr;
 	for (std::unordered_map<int, connector *>::iterator itr = m_List.begin(); itr != m_List.end(); ++itr)
 	{
+		co = itr->second;
 		snprintf(buf, len - 1, "连接服务器: %d, 收到消息数量:%d, 发送消息数量:%d\n", \
-			itr->second->GetConnectID(), itr->second->GetRecvMsgNum(), itr->second->GetSendMsgNum());
+			co->GetConnectID(), co->GetRecvMsgNum(), co->GetSendMsgNum());
 
 		res = strlen(buf);
 		buf += res;

@@ -91,6 +91,7 @@ CClientSvrMgr::GetClientSvr,优化一下，不使用find
 --已修改
 
 CClientAuthMgr这边应该也可以不使用find
+--已处理
 
 DB这边在大量玩家同时登陆的时候，耗时非常严重，需要看怎么优化优化。
 

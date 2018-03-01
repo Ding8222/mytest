@@ -72,7 +72,14 @@ bool CMapInfo::Init(int mapid, const char *bar_filename)
 		return false;
 	}
 
-	bool* barinfo = new bool[m_Width * m_Height];
+	bool* barinfo = nullptr;
+
+	try {
+		barinfo = new bool[m_Width * m_Height];
+	}
+	catch (std::bad_alloc &) {
+		barinfo = nullptr;
+	}
 
 	if (!barinfo)
 	{
@@ -128,9 +135,9 @@ void CMapInfo::Destroy()
 {
 	if (m_BarInfo)
 	{
-		delete []m_BarInfo;
+		delete[]m_BarInfo;
+		m_BarInfo = nullptr;
 	}
-	m_BarInfo = nullptr;
 }
 
 void CMapInfo::GetMapBirthPoint(int &x, int &y, int &z)

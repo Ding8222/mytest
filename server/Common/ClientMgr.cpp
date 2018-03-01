@@ -44,6 +44,8 @@ CClientMgr::CClientMgr()
 	m_WaitRemove.clear();
 	m_ClientSet.clear();
 	m_IDPool = NULL;
+	m_RecvDataLimit = 0;
+	m_SendDataLimit = 0;
 }
 
 CClientMgr::~CClientMgr()
@@ -98,6 +100,12 @@ void CClientMgr::EndRun()
 
 void CClientMgr::Destroy()
 {
+	m_MaxClientNum = 0;
+	m_ListenPort = 0;
+	m_OverTime = 0;
+	m_RecvDataLimit = 0;
+	m_SendDataLimit = 0;
+
 	if (m_Listen)
 	{
 		StopListen();
@@ -269,10 +277,7 @@ do_error:
 		if (!idmgr_freeid(m_IDPool, id))
 			log_error("释放ID失败!, ID:%d", id);
 	}
-	if (sock)
-		lxnet::Socketer::Release(sock);
-	if (newclient)
-		client_release(newclient);
+	lxnet::Socketer::Release(sock);
 	return 0;
 }
 

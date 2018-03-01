@@ -52,19 +52,18 @@ public:
 	void SetSecret(const char * str);
 	char *GetSecret() { return s_Secret ; }
 private:
-	bool m_AlreadyLogin;	//登录成功标记
-	bool m_AlreadyAuth;		//认证成功标记
-	int64 m_ConnectTime;	//何时连接上来
-	char s_Secret[MAX_SECRET_LEN];	//秘钥
-
-	short m_InlistState;
-	int m_ClientID;
+	int64 m_PlayerOnlyID;//在逻辑服中的角色id
 	int64 m_PingTime;
 	int64 m_RemoveTime;
-	lxnet::Socketer *m_con;
+	int64 m_ConnectTime;	//何时连接上来
 
-	int64 m_PlayerOnlyID;//在逻辑服中的角色id
+	char s_Secret[MAX_SECRET_LEN];	//秘钥
 	int m_GameServerID;	//逻辑服的服务器id
+	int m_ClientID;
+	lxnet::Socketer *m_con;
+	short m_InlistState;
+	bool m_AlreadyLogin;	//登录成功标记
+	bool m_AlreadyAuth;		//认证成功标记
 };
 
 extern int g_SendToClientNum;

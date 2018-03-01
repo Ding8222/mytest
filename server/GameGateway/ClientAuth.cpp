@@ -234,12 +234,3 @@ ClientAuthInfo *CClientAuth::FindAuthInfo(int32 clientid)
 
 	return nullptr;
 }
-ClientAuthInfo *CClientAuth::FindAuthInfo(std::string token)
-{
-	auto iter = m_ClientSecretInfo.find(token);
-	assert(iter != m_ClientSecretInfo.end());
-	if (iter != m_ClientSecretInfo.end())
-		return iter->second;
-
-	return nullptr;
-}

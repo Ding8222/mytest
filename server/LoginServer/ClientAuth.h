@@ -26,17 +26,17 @@ public:
 	void OnClientDisconnect(CClient *cl);
 private:
 	// 添加Secret
-	void AddSecret(int64 clientid, std::string secret);
+	void AddSecret(int32 clientid, std::string secret);
 	// 删除Secret
-	void DelSecret(int64 clientid);
+	void DelSecret(int32 clientid);
 	// 验证Secret是否正确
-	bool CheckSecret(int64 clientid, std::string &secret);
+	bool CheckSecret(int32 clientid, std::string &secret);
 	// 获取Secret
-	std::string GetSecret(int64 clientid);
+	std::string GetSecret(int32 clientid);
 private:
 
 	// clientid,Secret
-	std::unordered_map<int64, std::string > m_Secret;
+	std::unordered_map<int32, std::string > m_Secret;
 	
 	static CryptoPP::AutoSeededRandomPool prng;
 };

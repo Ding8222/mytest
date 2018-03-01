@@ -44,7 +44,7 @@ public:
 
 	void AddNewServer(serverinfo *info, Msg *pMsg);
 	void UpdateServerLoad(int id, int clientcountnow, int clientcountmax);
-	void DelServerByGameID(int id);
+	void DelServerID(int serverid);
 
 	// 根据负载返回玩家应该进去的服务器
 	// 传入的为申请的ServerID

@@ -52,17 +52,13 @@ void CGameCenterConnect::Destroy()
 
 void CGameCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
 {
-	// 如果Gate准备好了，发送一次负载信息给Center
-	serverinfo *svr = CGameGatewayMgr::Instance().FindServer(CGameGatewayMgr::Instance().GetGateID(), ServerEnum::EST_GATE);
-	if (svr->GetIP())
-	{
-		svrData::ServerLoadInfo sendMsg;
-		sendMsg.set_nmaxclient(0);
-		sendMsg.set_nnowclient(CPlayerMgr::Instance().GetPlayerSize());
-		sendMsg.set_nport(CConfig::Instance().GetListenPort());
-		sendMsg.set_sip(CConfig::Instance().GetServerIP());
-		SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_LOADINFO);
-	}
+	// 发送负载信息给Center
+	svrData::ServerLoadInfo sendMsg;
+	sendMsg.set_nmaxclient(0);
+	sendMsg.set_nnowclient(CPlayerMgr::Instance().GetPlayerSize());
+	sendMsg.set_nport(CConfig::Instance().GetListenPort());
+	sendMsg.set_sip(CConfig::Instance().GetServerIP());
+	SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_LOADINFO);
 }
 
 void CGameCenterConnect::ConnectDisconnect(connector *)
@@ -111,6 +107,7 @@ void CGameCenterConnect::ProcessMsg(connector *_con)
 					sendMsg.set_ncode(netData::LoadPlayerDataFinish::EC_FAIL);
 
 				FuncUti::SendPBNoLoop(player, sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_LOAD_PLAYERDATA);
+				break;
 			}
 			default:
 			{

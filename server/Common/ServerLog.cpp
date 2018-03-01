@@ -13,7 +13,7 @@ bool init_log(const char *rootdirname)
 	std::string tempname = rootdirname;
 	tempname = "log_log/" + tempname;
 	std::string temp;
-	if (tempname == "")
+	if (tempname.empty())
 		return false;
 
 	mymkdir_r(tempname.c_str());

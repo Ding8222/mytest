@@ -475,7 +475,7 @@ void _filelog_write_(struct filelog *self, int type, const char *fmt, ...) {
 		va_copy(temp, args);
 		if (va_arg(args, void *) == __END__ARG__FLAG__) {
 			fprintf(info->fp, "%s%s\n", prefix, fmt);
-			printf(fmt);
+			printf("%s\n",fmt);
 		} else {
 			snprintf(temp_buf, sizeof(temp_buf) - 1, "%s%s\n", prefix, fmt);
 			fmt = temp_buf;

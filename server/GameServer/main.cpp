@@ -19,7 +19,7 @@
 #else
 #include <unistd.h>
 
-#define delaytime(v)	usleep(v * 1000)
+#define delaytime(v)	usleep((v) * 1000)
 #define system(a)
 #endif
 

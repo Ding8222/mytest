@@ -13,7 +13,7 @@ static const int s_backlog = 16;
 
 CServerMgr::CServerMgr()
 {
-	memset(s_ServerIP, 0, MAX_SECRET_LEN);
+	memset(s_ServerIP, 0, sizeof(s_ServerIP));
 	m_ListenPort = 0;
 	m_OverTime = 0;
 	m_ServerID = 0;
@@ -86,6 +86,7 @@ void CServerMgr::Destroy()
 		serverinfo_release(*itr);
 	}
 	m_WaitRemove.clear();
+	memset(s_ServerIP, 0, sizeof(s_ServerIP));
 }
 
 bool CServerMgr::IsAlreadyRegister(int id)

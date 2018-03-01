@@ -89,10 +89,12 @@ const char *CCentServerMgr::GetMsgNumInfo()
 	char *buf = tempbuf;
 	size_t len = sizeof(tempbuf);
 	int res = 0;
+	serverinfo* info = nullptr;
 	for (std::map<int, serverinfo*>::iterator itr = m_GateList.begin(); itr != m_GateList.end(); ++itr)
 	{
+		info = itr->second;
 		snprintf(buf, len - 1, "网关服务器: %d, 收到消息数量:%d, 发送消息数量:%d\n", \
-			itr->second->GetServerID(), itr->second->GetRecvMsgNum(), itr->second->GetSendMsgNum());
+			info->GetServerID(), info->GetRecvMsgNum(), info->GetSendMsgNum());
 
 		res = strlen(buf);
 		buf += res;
@@ -101,8 +103,9 @@ const char *CCentServerMgr::GetMsgNumInfo()
 
 	for (std::map<int, serverinfo*>::iterator itr = m_GameList.begin(); itr != m_GameList.end(); ++itr)
 	{
+		info = itr->second;
 		snprintf(buf, len - 1, "逻辑服务器: %d, 收到消息数量:%d, 发送消息数量:%d\n", \
-			itr->second->GetServerID(), itr->second->GetRecvMsgNum(), itr->second->GetSendMsgNum());
+			info->GetServerID(), info->GetRecvMsgNum(), info->GetSendMsgNum());
 
 		res = strlen(buf);
 		buf += res;
@@ -111,8 +114,9 @@ const char *CCentServerMgr::GetMsgNumInfo()
 
 	for (std::map<int, serverinfo*>::iterator itr = m_LoginList.begin(); itr != m_LoginList.end(); ++itr)
 	{
+		info = itr->second;
 		snprintf(buf, len - 1, "登陆服务器: %d, 收到消息数量:%d, 发送消息数量:%d\n", \
-			itr->second->GetServerID(), itr->second->GetRecvMsgNum(), itr->second->GetSendMsgNum());
+			info->GetServerID(), info->GetRecvMsgNum(), info->GetSendMsgNum());
 
 		res = strlen(buf);
 		buf += res;
@@ -121,8 +125,9 @@ const char *CCentServerMgr::GetMsgNumInfo()
 
 	for (std::map<int, serverinfo*>::iterator itr = m_DBList.begin(); itr != m_DBList.end(); ++itr)
 	{
+		info = itr->second;
 		snprintf(buf, len - 1, "数据服务器: %d, 收到消息数量:%d, 发送消息数量:%d\n", \
-			itr->second->GetServerID(), itr->second->GetRecvMsgNum(), itr->second->GetSendMsgNum());
+			info->GetServerID(), info->GetRecvMsgNum(), info->GetSendMsgNum());
 
 		res = strlen(buf);
 		buf += res;
@@ -300,7 +305,7 @@ void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	{
 	case ServerEnum::EST_GATE:
 	{
-		CServerStatusMgr::Instance().DelServerByGameID(info->GetServerID());
+		CServerStatusMgr::Instance().DelServerID(info->GetServerID());
 		m_GateList.erase(info->GetServerID());
 		if (overtime)
 			RunStateError("网关服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
@@ -310,7 +315,7 @@ void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	}
 	case ServerEnum::EST_GAME:
 	{
-		CServerStatusMgr::Instance().DelServerByGameID(info->GetServerID());
+		CServerStatusMgr::Instance().DelServerID(info->GetServerID());
 		m_GameList.erase(info->GetServerID());
 		if (overtime)
 			RunStateError("逻辑服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());

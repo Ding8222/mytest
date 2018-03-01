@@ -79,11 +79,7 @@ void CServerStatusMgr::AddNewServer(serverinfo *info, Msg *pMsg)
 			RunStateLog("新的服务器注册到服务器状态管理器：ID[%d]，类型：[%d]", _pInfo->nServerID, _pInfo->nServerType);
 			if (_pInfo->nSubServerID > 0)
 			{
-				auto iterF = m_GateServerInfo.find(_pInfo->nSubServerID);
-				if (iterF == m_GateServerInfo.end())
-				{
-					m_GateServerInfo[_pInfo->nSubServerID] = _pInfo->nServerID;
-				}
+				m_GateServerInfo[_pInfo->nSubServerID] = _pInfo->nServerID;
 			}
 		}
 	}
@@ -99,20 +95,21 @@ void CServerStatusMgr::UpdateServerLoad(int id, int clientcountnow, int clientco
 	}
 }
 
-void CServerStatusMgr::DelServerByGameID(int id)
+void CServerStatusMgr::DelServerID(int serverid)
 {
-	auto iter = m_ServerInfo.find(id);
+	auto iter = m_ServerInfo.find(serverid);
 	if (iter != m_ServerInfo.end())
 	{
-		if (iter->second->nSubServerID > 0)
+		ServerStatusInfo *info = iter->second;
+		if (info->nSubServerID > 0)
 		{
 #ifdef _DEBUG
-			auto iterF = m_GateServerInfo.find(iter->second->nSubServerID);
+			auto iterF = m_GateServerInfo.find(info->nSubServerID);
 			assert(iterF != m_GateServerInfo.end());
 #endif // _DEBUG
-			m_GateServerInfo.erase(iter->second->nSubServerID);
+			m_GateServerInfo.erase(info->nSubServerID);
 		}
-		serverstatusinfo_release(iter->second);
+		serverstatusinfo_release(info);
 		m_ServerInfo.erase(iter);
 	}
 }

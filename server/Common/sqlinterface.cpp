@@ -189,17 +189,17 @@ bool CRecordset::IsOpen()
 
 CConnection::CConnection()
 {
-	m_dbname = "";
-	m_username = "";
-	m_password = "";
-	m_ip = "";
+	m_dbname.clear();
+	m_username.clear();
+	m_password.clear();
+	m_ip.clear();
 	m_overtime = 0;
 	m_port = 0;
 
 	m_isopen = false;
 	m_conn = NULL;
 
-	m_charset = "";
+	m_charset.clear();
 
 	m_enablelog = true;
 
@@ -207,7 +207,7 @@ CConnection::CConnection()
 	m_logfunc = NULL;
 	
 	m_directoryname = "Log";
-	m_lastfilename = "";
+	m_lastfilename.clear();
 	m_fp = NULL;
 }
 

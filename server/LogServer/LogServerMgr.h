@@ -18,7 +18,7 @@ public:
 		static CLogServerMgr m;
 		return m;
 	}
-	bool Init();
+	bool Init(const char *ip, int serverid, int port, int overtime);
 	void Destroy();
 
 	void GetCurrentInfo(char *buf, size_t buflen);
@@ -30,12 +30,6 @@ public:
 	void OnConnectDisconnect(serverinfo *info, bool overtime = false);
 
 	void ProcessMsg(serverinfo *info);
-
-	void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl);
-	void ProcessLoginMsg(serverinfo *info, Msg *pMsg, msgtail *tl);
-	void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl);
-	void ProcessGateMsg(serverinfo *info, Msg *pMsg, msgtail *tl);
-	void ProcessCenterMsg(serverinfo *info, Msg *pMsg, msgtail *tl);
 private:
 	bool AddNewServer(serverinfo *info, int nServerID, int nType);
 	serverinfo *FindServer(int nServerID, int nType);

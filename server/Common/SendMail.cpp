@@ -179,7 +179,7 @@ bool CSendMail::CReateSocket(SOCKET &sock)
 	memset(&servaddr, 0, sizeof(sockaddr_in));
 	servaddr.sin_family = AF_INET;
 	servaddr.sin_port = htons(25);//发邮件一般都是25端口  
-	if (m_sMailInfo.m_pcIPName == "")
+	if (m_sMailInfo.m_pcIPName == NULL)
 	{
 		//直接使用IP地址 
 		inet_pton(AF_INET, m_sMailInfo.m_pcIPAddr, reinterpret_cast<LPVOID>(servaddr.sin_addr.S_un.S_addr));
@@ -437,11 +437,11 @@ bool CSendMail::SendMail(sMailInfo &smailInfo)
 
 #define BODY_MAX_LEN 4096
 
-void SendEMailToInternet(std::string str, char* addr)
+void SendEMailToInternet(const char *str, char *addr)
 {
 	char body[BODY_MAX_LEN] = { 0 };
 
-	strncpy_s(body, BODY_MAX_LEN, str.c_str(), BODY_MAX_LEN - 1);
+	strncpy_s(body, BODY_MAX_LEN, str, BODY_MAX_LEN - 1);
 
 	strncat_s(body, BODY_MAX_LEN, "宕机啦", BODY_MAX_LEN - 1);
 

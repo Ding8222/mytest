@@ -13,7 +13,7 @@
 #else
 #include <unistd.h>
 
-#define delaytime(v)	usleep(v * 1000)
+#define delaytime(v)	usleep((v) * 1000)
 #define system(a)
 #endif
 
@@ -45,7 +45,11 @@ bool CLogServer::Init()
 			return false;
 		}
 #endif
-		if (!CLogServerMgr::Instance().Init())
+		if (!CLogServerMgr::Instance().Init(
+			CConfig::Instance().GetServerIP(),
+			CConfig::Instance().GetServerID(),
+			CConfig::Instance().GetListenPort(),
+			CConfig::Instance().GetOverTime()))
 		{
 			RunStateError("≥ı ºªØ LogServerMgr  ß∞‹!");
 			break;

@@ -13,11 +13,11 @@ CBaseConfig::CBaseConfig()
 	m_PingTime = 0;
 	m_ServerID = 0;
 	m_ServerType = 0;
-	memset(s_ServerIP, 0, MAX_SECRET_LEN);
+	memset(s_ServerIP, 0, sizeof(s_ServerIP));
 
 	m_LogServerID = 0;
 	m_LogServerPort = 0;
-	memset(s_LogServerIP, 0, MAX_SECRET_LEN);
+	memset(s_LogServerIP, 0, sizeof(s_ServerIP));
 }
 CBaseConfig::~CBaseConfig()
 {
@@ -27,11 +27,11 @@ CBaseConfig::~CBaseConfig()
 	m_PingTime = 0;
 	m_ServerID = 0;
 	m_ServerType = 0;
-	memset(s_ServerIP, 0, MAX_SECRET_LEN);
+	memset(s_ServerIP, 0, sizeof(s_ServerIP));
 
 	m_LogServerID = 0;
 	m_LogServerPort = 0;
-	memset(s_LogServerIP, 0, MAX_SECRET_LEN);
+	memset(s_LogServerIP, 0, sizeof(s_ServerIP));
 }
 
 bool CBaseConfig::Init(const char *servername)

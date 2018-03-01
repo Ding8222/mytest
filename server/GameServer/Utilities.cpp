@@ -5,7 +5,7 @@
 
 namespace FuncUti
 {
-	char *UnicodeToUTF_8(std::wstring str)
+	char *UnicodeToUTF_8(const std::wstring &str)
 	{
 		int u8Len = WideCharToMultiByte(CP_UTF8, NULL, str.c_str(), str.length(), NULL, 0, NULL, NULL);
 		char* szU8 = new  char[u8Len + 1];

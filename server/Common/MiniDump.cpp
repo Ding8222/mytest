@@ -10,7 +10,7 @@
 
 #define _CRT_STDIO_ISO_WIDE_SPECIFIERS
 
-extern void SendEMailToInternet(std::string str, char* addr = "ding8222@vip.qq.com");
+extern void SendEMailToInternet(const char *str, char *addr = "ding8222@vip.qq.com");
 
 typedef bool(WINAPI *MINIDUMPWRITEDUMP)( // Callback 
 	HANDLE hProcess,
@@ -44,7 +44,7 @@ LONG WINAPI UnHandledExceptionFilter(struct _EXCEPTION_POINTERS *exceptionInfo)
 			TCHAR szFileFullPath[256];
 			::GetModuleFileName(NULL, static_cast<TCHAR *>(szFileFullPath), 256);
 			std::wstring str(szFileFullPath);
-			int pos = str.find_last_of(_T("\\"));
+			int pos = str.find_last_of(_T('\\'));
 			std::wstring str2 = &str[pos + 1];
 			_snwprintf_s(DumpPath, MAX_PATH, MAX_PATH, _T("CrashDumps\\%ws %d-%d-%d %d_%d_%d_%d.dmp"),
 				str2.c_str(),

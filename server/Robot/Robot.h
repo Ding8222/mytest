@@ -31,11 +31,11 @@ private:
 	void ProcessMsg(connector *);
 
 public:
-	void SetClientKey(CryptoPP::SecByteBlock key) { sClientKey = key; }
-	void SetServerKey(CryptoPP::SecByteBlock key) { sServerKey = key; }
-	void SetSecret(std::string key) { sSecret = key; }
+	void SetClientKey(CryptoPP::SecByteBlock key) { sClientKey = std::move(key); }
+	void SetServerKey(CryptoPP::SecByteBlock key) { sServerKey = std::move(key); }
+	void SetSecret(std::string key) { sSecret = std::move(key); }
 	std::string GetSecret() { return sSecret; }
-	void SetAccount(std::string name) { sAccount = name; }
+	void SetAccount(std::string name) { sAccount = std::move(name); }
 	std::string GetAccount() { return sAccount; }
 	void SetTempID(int32 id) { m_TempID = id; }
 	int32 GetTempID() { return m_TempID; }

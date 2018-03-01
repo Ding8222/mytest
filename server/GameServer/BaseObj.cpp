@@ -3,8 +3,8 @@
 #include "scene.h"
 
 #define AOI_RADIS 200.0f
-#define AOI_RADIS2 (AOI_RADIS * AOI_RADIS)
-#define LEAVE_AOI_RADIS2 AOI_RADIS2 * 4
+#define AOI_RADIS2 ((AOI_RADIS) * (AOI_RADIS))
+#define LEAVE_AOI_RADIS2 ((AOI_RADIS2) * 4)
 #define DIST2(p1,p2) ((p1[EPP_X] - p2[EPP_X]) * (p1[EPP_X] - p2[EPP_X]) + (p1[EPP_Y] - p2[EPP_Y]) * (p1[EPP_Y] - p2[EPP_Y]) + (p1[EPP_Z] - p2[EPP_Z]) * (p1[EPP_Z] - p2[EPP_Z]))
 
 CBaseObj::CBaseObj()

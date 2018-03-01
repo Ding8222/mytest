@@ -21,16 +21,19 @@ static const int s_backlog = 16;
 
 CGameGatewayMgr::CGameGatewayMgr()
 {
+	m_GateID = 0;
 	m_GateList.clear();
 }
 
 CGameGatewayMgr::~CGameGatewayMgr()
 {
-	m_GateList.clear();
+	Destroy();
 }
 
 void CGameGatewayMgr::Destroy()
 {
+	m_GateID = 0;
+	m_GateList.clear();
 	CServerMgr::Destroy();
 }
 
@@ -53,10 +56,12 @@ const char *CGameGatewayMgr::GetMsgNumInfo()
 	char *buf = tempbuf;
 	size_t len = sizeof(tempbuf);
 	int res = 0;
+	serverinfo *info = nullptr;
 	for (std::map<int, serverinfo*>::iterator itr = m_GateList.begin(); itr != m_GateList.end(); ++itr)
 	{
+		info = itr->second;
 		snprintf(buf, len - 1, "网关服务器: %d, 收到消息数量:%d, 发送消息数量:%d\n", \
-			itr->second->GetServerID(), itr->second->GetRecvMsgNum(), itr->second->GetSendMsgNum());
+			info->GetServerID(), info->GetRecvMsgNum(), info->GetSendMsgNum());
 
 		res = strlen(buf);
 		buf += res;

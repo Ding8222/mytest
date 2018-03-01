@@ -29,7 +29,7 @@ CLogServerMgr::~CLogServerMgr()
 
 }
 
-bool CLogServerMgr::Init()
+bool CLogServerMgr::Init(const char *ip, int serverid, int port, int overtime)
 {
 	g_dbhand.SetLogDirectory("log_log/LogServer_Log/dbhand_log");
 	g_dbhand.SetEnableLog(CConfig::Instance().GetIsOpenSQLLog());
@@ -48,11 +48,7 @@ bool CLogServerMgr::Init()
 		return false;
 	}
 
-	return CServerMgr::Init(
-		CConfig::Instance().GetServerIP(),
-		CConfig::Instance().GetServerID(),
-		CConfig::Instance().GetListenPort(),
-		CConfig::Instance().GetOverTime());
+	return CServerMgr::Init(ip, serverid, port, overtime);
 }
 
 void CLogServerMgr::Destroy()
@@ -105,10 +101,12 @@ const char *CLogServerMgr::GetMsgNumInfo()
 	char *buf = tempbuf;
 	size_t len = sizeof(tempbuf);
 	int res = 0;
+	serverinfo *info = nullptr;
 	for (std::map<int, serverinfo*>::iterator itr = m_GateList.begin(); itr != m_GateList.end(); ++itr)
 	{
+		info = itr->second;
 		snprintf(buf, len - 1, "网关服务器: %d, 收到消息数量:%d, 发送消息数量:%d\n", \
-			itr->second->GetServerID(), itr->second->GetRecvMsgNum(), itr->second->GetSendMsgNum());
+			info->GetServerID(), info->GetRecvMsgNum(), info->GetSendMsgNum());
 
 		res = strlen(buf);
 		buf += res;
@@ -117,8 +115,9 @@ const char *CLogServerMgr::GetMsgNumInfo()
 
 	for (std::map<int, serverinfo*>::iterator itr = m_GameList.begin(); itr != m_GameList.end(); ++itr)
 	{
+		info = itr->second;
 		snprintf(buf, len - 1, "逻辑服务器: %d, 收到消息数量:%d, 发送消息数量:%d\n", \
-			itr->second->GetServerID(), itr->second->GetRecvMsgNum(), itr->second->GetSendMsgNum());
+			info->GetServerID(), info->GetRecvMsgNum(), info->GetSendMsgNum());
 
 		res = strlen(buf);
 		buf += res;
@@ -127,8 +126,9 @@ const char *CLogServerMgr::GetMsgNumInfo()
 
 	for (std::map<int, serverinfo*>::iterator itr = m_LoginList.begin(); itr != m_LoginList.end(); ++itr)
 	{
+		info = itr->second;
 		snprintf(buf, len - 1, "登陆服务器: %d, 收到消息数量:%d, 发送消息数量:%d\n", \
-			itr->second->GetServerID(), itr->second->GetRecvMsgNum(), itr->second->GetSendMsgNum());
+			info->GetServerID(), info->GetRecvMsgNum(), info->GetSendMsgNum());
 
 		res = strlen(buf);
 		buf += res;
@@ -137,8 +137,9 @@ const char *CLogServerMgr::GetMsgNumInfo()
 
 	for (std::map<int, serverinfo*>::iterator itr = m_DBList.begin(); itr != m_DBList.end(); ++itr)
 	{
+		info = itr->second;
 		snprintf(buf, len - 1, "数据服务器: %d, 收到消息数量:%d, 发送消息数量:%d\n", \
-			itr->second->GetServerID(), itr->second->GetRecvMsgNum(), itr->second->GetSendMsgNum());
+			info->GetServerID(), info->GetRecvMsgNum(), info->GetSendMsgNum());
 
 		res = strlen(buf);
 		buf += res;
@@ -147,8 +148,9 @@ const char *CLogServerMgr::GetMsgNumInfo()
 
 	for (std::map<int, serverinfo*>::iterator itr = m_CenterList.begin(); itr != m_CenterList.end(); ++itr)
 	{
+		info = itr->second;
 		snprintf(buf, len - 1, "中心服务器: %d, 收到消息数量:%d, 发送消息数量:%d\n", \
-			itr->second->GetServerID(), itr->second->GetRecvMsgNum(), itr->second->GetSendMsgNum());
+			info->GetServerID(), info->GetRecvMsgNum(), info->GetSendMsgNum());
 
 		res = strlen(buf);
 		buf += res;
@@ -261,160 +263,8 @@ void CLogServerMgr::ProcessMsg(serverinfo *info)
 		}
 		default:
 		{
-			switch (info->GetServerType())
-			{
-			case ServerEnum::EST_GAME:
-			{
-				// 来自GameSvr的消息
-				ProcessGameMsg(info, pMsg, tl);
-				break;
-			}
-			case ServerEnum::EST_LOGIN:
-			{
-				// 来自LoginSvr的消息
-				ProcessLoginMsg(info, pMsg, tl);
-				break;
-			}
-			case ServerEnum::EST_DB:
-			{
-				// 来自DBSvr的消息
-				ProcessDBMsg(info, pMsg, tl);
-				break;
-			}
-			case ServerEnum::EST_GATE:
-			{
-				// 来自GateSvr的消息
-				ProcessGateMsg(info, pMsg, tl);
-				break;
-			}
-			case ServerEnum::EST_CENTER:
-			{
-				// 来自CenterSvr的消息
-				ProcessCenterMsg(info, pMsg, tl);
-				break;
-			}
-			default:
-			{
-				break;
-			}
-			}
-			break;
 		}
 		}
-	}
-}
-
-void CLogServerMgr::ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
-{
-	switch (pMsg->GetMainType())
-	{
-	case 1:
-	{
-		break;
-	}
-	default:
-		break;
-	}
-}
-
-void CLogServerMgr::ProcessLoginMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
-{
-	switch (pMsg->GetMainType())
-	{
-	case LOGIN_TYPE_MAIN:
-	{
-		switch (pMsg->GetSubType())
-		{
-		case LOGIN_SUB_AUTH:
-		{
-			break;
-		}
-		default:
-			break;
-		}
-		break;
-	}
-	default:
-		break;
-	}
-}
-
-void CLogServerMgr::ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
-{
-	switch (pMsg->GetMainType())
-	{
-	case LOGIN_TYPE_MAIN:
-	{
-		switch (pMsg->GetSubType())
-		{
-		case LOGIN_SUB_AUTH_RET:
-		{
-			break;
-		}
-		case LOGIN_SUB_PLAYER_LIST_RET:
-		case LOGIN_SUB_CREATE_PLAYER_RET:
-		case LOGIN_SUB_SELECT_PLAYER_RET:
-		{
-			CLogServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_GATE, tl->id);
-			break;
-		}
-		default:
-			break;
-		}
-		break;
-	}
-	default:
-		break;
-	}
-}
-
-void CLogServerMgr::ProcessGateMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
-{
-	switch (pMsg->GetMainType())
-	{
-	case LOGIN_TYPE_MAIN:
-	{
-		switch (pMsg->GetSubType())
-		{
-		case LOGIN_SUB_PLAYER_LIST:
-		case LOGIN_SUB_CREATE_PLAYER:
-		case LOGIN_SUB_SELECT_PLAYER:
-		{
-			CLogServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_DB, tl->id);
-			break;
-		}
-		default:
-			break;
-		}
-		break;
-	}
-	default:
-		break;
-	}
-}
-
-void CLogServerMgr::ProcessCenterMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
-{
-	switch (pMsg->GetMainType())
-	{
-	case LOGIN_TYPE_MAIN:
-	{
-		switch (pMsg->GetSubType())
-		{
-		case LOGIN_SUB_PLAYER_LIST:
-		case LOGIN_SUB_CREATE_PLAYER:
-		case LOGIN_SUB_SELECT_PLAYER:
-		{
-			CLogServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_DB, tl->id);
-			break;
-		}
-		default:
-			break;
-		}
-		break;
-	}
-	default:
-		break;
 	}
 }
 

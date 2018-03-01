@@ -100,17 +100,17 @@ void CClientAuth::OnClientDisconnect(CClient *cl)
 	DelSecret(cl->GetClientID());
 }
 
-void CClientAuth::AddSecret(int64 clientid,std::string secret)
+void CClientAuth::AddSecret(int32 clientid,std::string secret)
 {
 	m_Secret.insert(std::make_pair(clientid, secret));
 }
 
-void CClientAuth::DelSecret(int64 clientid)
+void CClientAuth::DelSecret(int32 clientid)
 {
 	m_Secret.erase(clientid);
 }
 
-bool CClientAuth::CheckSecret(int64 clientid, std::string &secret)
+bool CClientAuth::CheckSecret(int32 clientid, std::string &secret)
 {
 	auto iter = m_Secret.find(clientid);
 	if (iter != m_Secret.end())
@@ -121,7 +121,7 @@ bool CClientAuth::CheckSecret(int64 clientid, std::string &secret)
 }
 
 // 获取Secret
-std::string CClientAuth::GetSecret(int64 clientid)
+std::string CClientAuth::GetSecret(int32 clientid)
 {
 	auto iter = m_Secret.find(clientid);
 	if (iter != m_Secret.end())

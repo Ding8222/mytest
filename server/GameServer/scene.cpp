@@ -34,9 +34,10 @@ void CScene::Destroy()
 		aoi_release(m_Space);
 		m_Space = nullptr;
 	}
+
 	if (m_Cookie)
 	{
-		free(m_Cookie);
+		delete m_Cookie;
 		m_Cookie = nullptr;
 	}
 
@@ -53,7 +54,13 @@ void CScene::Destroy()
 static void *my_alloc(void * ud, void *ptr, size_t sz) {
 	struct alloc_cookie * cookie = (struct alloc_cookie *)ud;
 	if (ptr == NULL) {
-		void *p = malloc(sz);
+		void *p = nullptr;
+		try {
+			p = malloc(sz);
+		}
+		catch (std::bad_alloc &) {
+			p = nullptr;
+		}
 		++cookie->count;
 		cookie->current += sz;
 		if (cookie->max < cookie->current) {
@@ -91,7 +98,13 @@ bool CScene::Init(CMapInfo * _mapinfo)
 		return false;
 	}
 
-	alloc_cookie* cookie = (struct alloc_cookie *)malloc(sizeof(struct alloc_cookie));
+	alloc_cookie* cookie = nullptr;
+	try {
+		cookie = new alloc_cookie;
+	}
+	catch (std::bad_alloc &) {
+		cookie = nullptr;
+	}
 	if (cookie)
 	{
 		memset(cookie, 0, sizeof(alloc_cookie));
@@ -103,7 +116,8 @@ bool CScene::Init(CMapInfo * _mapinfo)
 		}
 		else
 		{
-			free(cookie);
+			delete cookie;
+			cookie = nullptr;
 			idmgr_release(m_IDPool);
 		}
 	}

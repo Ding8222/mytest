@@ -50,7 +50,6 @@ public:
 	int GetClientSize() { return m_ClientSecretInfo.size(); }
 private:
 	ClientAuthInfo * FindAuthInfo(int32 clientid);
-	ClientAuthInfo * FindAuthInfo(std::string token);
 private:
 	// Token,authinfo
 	std::unordered_map<std::string, ClientAuthInfo *> m_ClientSecretInfo;

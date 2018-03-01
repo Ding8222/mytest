@@ -110,6 +110,7 @@ struct idmgr *idmgr_create (int maxid, int delaytime)
 	{
 		assert(false && "idmgr_create malloc memory failed!");
 		log_error("idmgr_create malloc memory failed!");
+		free(self);
 		return NULL;
 	}
 	

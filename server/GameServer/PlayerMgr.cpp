@@ -90,9 +90,7 @@ bool CPlayerMgr::AddPlayer(serverinfo * info, int clientid)
 	assert(m_PlayerSet[clientid] == nullptr);
 	if (m_PlayerSet[clientid] == nullptr)
 	{
-		CPlayer *newplayer = nullptr;
-		
-		newplayer = player_create();
+		CPlayer *newplayer = player_create();
 		if (!newplayer)
 		{
 			RunStateError("创建CPlayer失败!");

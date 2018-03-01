@@ -27,11 +27,22 @@ CRobotMgr::CRobotMgr()
 	m_LoginServerPort = 0;
 	m_LoginServerID = 0;
 	m_RobotList.clear();
+	m_OverTime = 0;
+	m_PingTime = 0;
 }
 
 CRobotMgr::~CRobotMgr()
 {
+	s_LoginServerIP.clear();
+	m_LoginServerPort = 0;
+	m_LoginServerID = 0;
+	for (auto &i : m_RobotList)
+	{
+		delete i;
+	}
 	m_RobotList.clear();
+	m_OverTime = 0;
+	m_PingTime = 0;
 }
 
 bool CRobotMgr::Init(const char *ip, int port, int id, int maxrobot, int pingtime, int overtime)
@@ -63,10 +74,14 @@ void CRobotMgr::Run()
 		{
 			if ((*tempitr)->TryConnect(g_currenttime))
 			{
-				(*tempitr)->GetCon()->UseUncompress();
-				(*tempitr)->GetCon()->UseEncrypt();
-				(*tempitr)->GetCon()->UseDecrypt();
-				//(*tempitr)->GetCon()->SendTGWInfo(s_LoginServerIP.c_str(), m_LoginServerPort);
+				lxnet::Socketer *co = (*tempitr)->GetCon();
+				if (co)
+				{
+					co->UseUncompress();
+					co->UseEncrypt();
+					co->UseDecrypt();
+					//co->SendTGWInfo(s_LoginServerIP.c_str(), m_LoginServerPort);
+				}
 				// 请求登陆
 
 				if ((*tempitr)->IsAuth())

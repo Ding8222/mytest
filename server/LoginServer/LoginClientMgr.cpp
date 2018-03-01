@@ -115,6 +115,7 @@ void CLoginClientMgr::ProcessClientMsg(CClient *cl)
 				}
 				break;
 			}
+			break;
 		}
 		default:
 		{
