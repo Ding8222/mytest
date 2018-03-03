@@ -1,105 +1,104 @@
 
-尝试将代码做成跨平台的，以便于使用redis等工具
-可以自己写makefile或者使用vs2017生成linux项目
+����Ϣ��ʱ������clientid��serverid
+--clientid��Ҫ��Ϊ���ͷ���serverid������
 
+��connect�ĳɶ�����֧�ֵ�
+--������ConnectMgr,�����Ѿ�ȫ������ConnectMgr
 
-发消息的时候隐藏clientid、serverid
---clientid需要作为发送方向，serverid被隐藏
+client��login����
+--����˴�loginsvr��gatewaysvr���л�
 
-将connect改成多连接支持的
---创建了ConnectMgr,并且已经全部换成ConnectMgr
+���clientѡ�����̣���󵽿����ڵ�ͼ���ƶ����ɡ�
+--�����
 
-服务器启动后的连接顺序、状态同步，在所有服务器启动完成后才允许client连接
-服务器的关闭处理（可以待client登录创角这块完成后处理）
+�Ͽ�gate����������������server�е�client
+--��game��ߴ���
 
-client连接消息顺序，不同情况下重连的处理
+�Ͽ�gate��ʱ��û��ȥ����center�е�serverstatusmgr������gate������ʱ��game�����¸�center����serverstatus
+--��gate���ӵ�Center�ˣ��ڶϿ���ʱ����������Ϣ��
 
-client的login处理
---完成了从loginsvr到gatewaysvr的切换
+client�е�s_SecretӦ��Ҫ�ĳ�char���ͣ�ȷ�ϼ��ܷ�ʽ��
+���޸�
 
-完成client选角流程，最后到可以在地图中移动即可。
---已完成
+gateway�Ǳ�AddNewClient��ʱ����Ҫ�жϺ���Կ
+--�Ѿ��ж�
 
-断开gate，踢下所有在其他server中的client
---在game这边处理
+time��random
+--�����
 
-断开gate的时候，没有去清理center中的serverstatusmgr，导致gate重连的时候，game会重新给center发送serverstatus
---将gate连接到Center了，在断开的时候处理过该消息了
+����ͨ��ͼ�͸�����ͼ��ֿ�
+--�Ѳ��
 
-client中的s_Secret应该要改成char类型，确认加密方式后
-已修改
+game��gate�Ͽ���ʱ��gate��Ҫ�Ͽ�����client
+--�Ͽ���
 
-gateway那边AddNewClient的时候，需要判断好秘钥
---已经判断
+log_error����һ��
+--�Ѵ���
 
-time、random
---已完成
+ͷ�ļ��İ�����Ҫ��һ��
+--ȥ����stdfx�����ƵĴ���һ��ͷ�ļ���������Ҫ��ͷ�ļ��ð�������ͷ�ļ�
 
-服务器内的消息发送要优化（清理）一下方式...
+***Ŀǰ����ÿ������֤�ɹ���client������10�����ң���һ��Ϊʲô���ǲ����������ߵ�����***
+--robot���run�е�continueд����return������ÿֻ֡����һ��client
 
-加密处理
+***�㲥�ƶ���Ϣ��client��һ��ʱ����ܻ���ߣ���һ��ԭ��***
+--������ping�����⣬֮ǰһֱ��ʱ��ping����û�յ�
+--ping��ʱ�������ļ�����ping��ʱ��ͳ�ʱʱ������̫�����
+--�����returnò�ƶ����Ҳ��Ӱ��
 
-logsvr，namechecksvr
+CClientSvrMgr::GetClientSvr,�Ż�һ�£���ʹ��find
+--���޸�
 
-把普通地图和副本地图拆分开
---已拆分
+CClientAuthMgr���Ӧ��Ҳ���Բ�ʹ��find
+--�Ѵ���
 
-game和gate断开的时候，gate需要断开所有client
---断开了
+sql��ѯ��־�Ŀ���
+--�Ѵ���
 
-player离线的时候，要把所有引用到的指针清理
+���login�ĳ�ʱ����
+--�ȵ㻹�����Ǽ�����֤����
 
-log_error管理一下
---已处理
+�µĿͻ�����֤ʧ��
+--��ȷlog�������ߵ�ʱ��ԭ��client�����������ӣ���ʱ��Կ�Ѿ��ı䡣
 
-最大client的管理，主要是几个内存池的大小需要控制
+���Խ��������ɿ�ƽ̨�ģ��Ա���ʹ��redis�ȹ���
+�����Լ�дmakefile����ʹ��vs2017����linux��Ŀ
 
-Sql语句执行后，返回返回是否成功执行，就不需要手动检测"@"
+����û�б�Ҫ����Ŀ��������64λ��������64λ���ɵ�ʱ�򲻱���
 
-protobuf好像可以做到自动解析，不需要1-1这种...有空可以研究研究
+DB����ڴ������ͬʱ��½��ʱ�򣬺�ʱ�ǳ����أ���Ҫ����ô�Ż��Ż���
+
+�㲥��Ϣ�ϲ�һ�£�game->gate��ʱ��ϲ�һ�£���gate��߷ַ�
+
+clientֻ��Ҫint32���ɣ���int64��ȫ����Ϊint32,�������е�client���Ҹ�Ϊ������ʣ�server�Ĳ��ҿ�Ҫ��ҪҲ��Ϊ�������
+
+����ĵ���ģʽ�������������ڳ����˳�����ã������ڴ�ؼ���ͷ�������֮ǰ��������Ҫ��ʾ�ĵ���һ��Destroy�������ڴ�й¶��ʾ
+���Ҳ��Ҫ������е�Destroy����
+
+��������config���費��Ҫ���һ�£�����̫���ˣ�������һ������ͦ�ҵ�
+
+���Ӷ��gameserver��ʵ�ֵ���gameserver�еĵ�ͼ�л��Ϳ�gameserver�ĵ�ͼ�л�
+
+player�����Ϣ��������һ�£��򻯡��������Ĳ�ѯ����
+
+Ϊ���з��������Ӻ�̨����
+
+���client�Ĺ�������Ҫ�Ǽ����ڴ�صĴ�С��Ҫ����
+
+Sql���ִ�к󣬷��ط����Ƿ�ɹ�ִ�У��Ͳ���Ҫ�ֶ����"@"
+
+protobuf������������Զ�����������Ҫ1-1����...�пտ����о��о�
 http://blog.csdn.net/solstice/article/details/6300108
 
-头文件的包含需要理一下
---去掉了stdfx，类似的处理一下头文件，尽量不要在头文件用包含其他头文件
+player���ߵ�ʱ��Ҫ���������õ���ָ������
 
-这里的单例模式的析构函数会在程序退出后调用，但是内存池检测释放是在这之前，所以需要显示的调用一下Destroy，避免内存泄露提示
-这边也需要检查所有的Destroy函数
+�����������������˳��״̬ͬ���������з�����������ɺ������client����
+�������Ĺرմ��������Դ�client��¼���������ɺ�����
 
-服务器的config看需不需要拆分一下，现在太多了，集中在一起看起来挺乱的
+client������Ϣ˳�򣬲�ͬ����������Ĵ���
 
-增加多个gameserver，实现单个gameserver中的地图切换和跨gameserver的地图切换
+�������ڵ���Ϣ����Ҫ�Ż���������һ�·�ʽ...
 
-player这边消息处理调整一下，简化、避免多余的查询操作
+���ܴ���
 
-为所有服务器添加后台命令
-
-***目前测试每秒能认证成功的client数量在10个左右，看一下为什么，是不是网络库这边的限制***
---robot里的run中的continue写成了return，导致每帧只连接一个client
-
-***广播移动消息后，client过一段时间可能会断线，查一下原因***
---可能是ping的问题，之前一直超时，ping可能没收到
---ping超时，配置文件里面ping的时间和超时时间设置太相近了
---上面的return貌似对这个也有影响
-
-广播消息合并一下，game->gate的时候合并一下，在gate这边分发
-
-看有没有必要将项目编译生成64位程序，至少64位生成的时候不报错
-
-client只需要int32即可，将int64的全部改为int32,并把所有的client查找改为随机访问，server的查找看要不要也改为随机访问
-
-CClientSvrMgr::GetClientSvr,优化一下，不使用find
---已修改
-
-CClientAuthMgr这边应该也可以不使用find
---已处理
-
-DB这边在大量玩家同时登陆的时候，耗时非常严重，需要看怎么优化优化。
-
-sql查询日志的控制
---已处理
-
-检查login的超时在哪
---热点还是在那几个认证步骤
-
-新的客户端认证失败
---正确log，踢下线的时候，原有client尝试重新连接，此时秘钥已经改变。
+logsvr��namechecksvr

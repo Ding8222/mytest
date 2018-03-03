@@ -8,7 +8,7 @@ public:
 	~CPlayerOperate();
 
 	static void SetPlayer(CPlayer *player) { m_pPlayer = player; }
-	static void Operate(Msg *pMsg, int64 clientid);
+	static void Operate(Msg *pMsg, int32 clientid);
 private:
 	static CPlayer * m_pPlayer;
 };

@@ -21,7 +21,7 @@ CPlayerOperate::~CPlayerOperate()
 
 }
 
-void CPlayerOperate::Operate(Msg *pMsg, int64 clientid)
+void CPlayerOperate::Operate(Msg *pMsg, int32 clientid)
 {
 	if (!pMsg)
 		return;
