@@ -32,7 +32,7 @@ public:
 	bool Init();
 	void Destroy();
 
-	void AddClientSvr(int32 clientid, int serverid, int servertype);
+	void AddClientSvr(int32 clientid, int32 serverid, int32 gateid);
 	void DelClientSvr(int32 clientid);
 	ClientSvr *GetClientSvr(int32 id);
 private:

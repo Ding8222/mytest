@@ -53,14 +53,15 @@ bool CClientAuthMgr::Init()
 	return true;
 }
 
-void CClientAuthMgr::Destroy()
+void CClientAuthMgr::Destroy(bool bLoginDisconnect)
 {
 	for (auto &i : m_ClientInfoSet)
 	{
 		clientauthinfo_release(i);
 		i = nullptr;
 	}
-	m_ClientInfoSet.clear();
+	if(!bLoginDisconnect)
+		m_ClientInfoSet.clear();
 }
 
 // 添加认证信息

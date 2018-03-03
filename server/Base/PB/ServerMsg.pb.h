@@ -887,10 +887,17 @@ class AddNewClient : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // accessors -------------------------------------------------------
 
+  // int32 nGateID = 1;
+  void clear_ngateid();
+  static const int kNGateIDFieldNumber = 1;
+  ::google::protobuf::int32 ngateid() const;
+  void set_ngateid(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:svrData.AddNewClient)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int32 ngateid_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsAddNewClientImpl();
@@ -1871,6 +1878,20 @@ inline void UpdateServerLoad::set_nclientcountmax(::google::protobuf::int32 valu
 // -------------------------------------------------------------------
 
 // AddNewClient
+
+// int32 nGateID = 1;
+inline void AddNewClient::clear_ngateid() {
+  ngateid_ = 0;
+}
+inline ::google::protobuf::int32 AddNewClient::ngateid() const {
+  // @@protoc_insertion_point(field_get:svrData.AddNewClient.nGateID)
+  return ngateid_;
+}
+inline void AddNewClient::set_ngateid(::google::protobuf::int32 value) {
+  
+  ngateid_ = value;
+  // @@protoc_insertion_point(field_set:svrData.AddNewClient.nGateID)
+}
 
 // -------------------------------------------------------------------
 

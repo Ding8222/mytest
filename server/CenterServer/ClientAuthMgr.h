@@ -34,7 +34,7 @@ public:
 	}
 
 	bool Init();
-	void Destroy();
+	void Destroy(bool bLoginDisconnect = false);
 
 	// Client请求认证,loginSvr调用
 	void AddClientAuthInfo(Msg *pMsg, int32 clientid, int32 serverid);

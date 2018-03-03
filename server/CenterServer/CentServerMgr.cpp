@@ -325,7 +325,7 @@ void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	}
 	case ServerEnum::EST_LOGIN:
 	{
-		CClientAuthMgr::Instance().Destroy();
+		CClientAuthMgr::Instance().Destroy(true);
 		m_LoginList.erase(info->GetServerID());
 		if (overtime)
 			RunStateError("登陆服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
@@ -399,26 +399,12 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 				svrData::AddNewClient msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				switch (info->GetServerType())
-				{
-				case ServerEnum::EST_GATE:
-				{
-					CClientSvrMgr::Instance().AddClientSvr(tl->id, info->GetServerID(), info->GetServerType());
-					break;
-				}
-				case ServerEnum::EST_GAME:
-				{
-					CClientSvrMgr::Instance().AddClientSvr(tl->id, info->GetServerID(), info->GetServerType());
+				CClientSvrMgr::Instance().AddClientSvr(tl->id, info->GetServerID(), msg.ngateid());
 
-					//通知CLient登录成功
-					netData::LoginRet sendMsg;
-					sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
-					CCentServerMgr::Instance().SendMsgToServer(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, ServerEnum::EST_GATE, tl->id);
-					break;
-				}
-				default:
-					break;
-				}
+				//通知CLient登录成功
+				netData::LoginRet sendMsg;
+				sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
+				CCentServerMgr::Instance().SendMsgToServer(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, ServerEnum::EST_GATE, tl->id);
 				break;
 			}
 

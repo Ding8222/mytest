@@ -41,11 +41,6 @@ int32 CGateClientMgr::OnNewClient()
 	if (nClientID == 0)
 		return 0;
 
-	{
-		svrData::AddNewClient sendMsg;
-		CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT, nClientID);
-	}
-
 	svrData::UpdateServerLoad sendMsg;
 	sendMsg.set_nclientcountmax(CConfig::Instance().GetMaxClientNum());
 	sendMsg.set_nclientcountnow(GetClientConnectNum());

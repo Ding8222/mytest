@@ -51,7 +51,7 @@ message UpdateServerLoad
 // 0-6 新的client连接上来了
 message AddNewClient
 {
-
+	int32 nGateID = 1;
 }
 
 // 0-7 client断开

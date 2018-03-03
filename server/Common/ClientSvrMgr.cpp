@@ -58,29 +58,14 @@ void CClientSvrMgr::Destroy()
 	m_ClientSvrSet.clear();
 }
 
-void CClientSvrMgr::AddClientSvr(int32 clientid, int serverid, int servertype)
+void CClientSvrMgr::AddClientSvr(int32 clientid, int32 serverid, int32 gateid)
 {
 	if (clientid <= 0 || clientid >= static_cast<int>(m_ClientSvrSet.size()))
 		return;
 
 	ClientSvr *cl = m_ClientSvrSet[clientid];
-	if (cl)
-	{
-		switch (servertype)
-		{
-		case ServerEnum::EST_GAME:
-		{
-			cl->nGameServerID = serverid;
-			break;
-		}
-		case ServerEnum::EST_GATE:
-		{
-			cl->nGateID = serverid;
-			break;
-		}
-		}
-	}
-	else
+	assert(!cl);
+	if(!cl)
 	{
 		ClientSvr *newclientsvr = clientsvr_create();
 		if (!newclientsvr)
@@ -89,20 +74,9 @@ void CClientSvrMgr::AddClientSvr(int32 clientid, int serverid, int servertype)
 			return;
 		}
 
-		switch (servertype)
-		{
-		case ServerEnum::EST_GAME:
-		{
-			newclientsvr->nGameServerID = serverid;
-			break;
-		}
-		case ServerEnum::EST_GATE:
-		{
-			newclientsvr->nGateID = serverid;
-			break;
-		}
-		}
-		assert(nullptr == m_ClientSvrSet[clientid]);
+		newclientsvr->nGameServerID = serverid;
+		newclientsvr->nGateID = gateid;
+
 		m_ClientSvrSet[clientid] = newclientsvr;
 	}
 }

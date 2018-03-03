@@ -356,6 +356,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::AddNewClient, ngateid_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::DelClient, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -407,11 +408,11 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 22, -1, sizeof(::svrData::ServerLoadInfo)},
   { 32, -1, sizeof(::svrData::UpdateServerLoad)},
   { 39, -1, sizeof(::svrData::AddNewClient)},
-  { 44, -1, sizeof(::svrData::DelClient)},
-  { 50, -1, sizeof(::svrData::ClientToken)},
-  { 57, -1, sizeof(::svrData::LoadPlayerData)},
-  { 76, -1, sizeof(::svrData::LoadPlayerDataRet)},
-  { 82, -1, sizeof(::svrData::ServerLog)},
+  { 45, -1, sizeof(::svrData::DelClient)},
+  { 51, -1, sizeof(::svrData::ClientToken)},
+  { 58, -1, sizeof(::svrData::LoadPlayerData)},
+  { 77, -1, sizeof(::svrData::LoadPlayerDataRet)},
+  { 83, -1, sizeof(::svrData::ServerLog)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -461,20 +462,21 @@ void AddDescriptorsImpl() {
       "(\005\022\022\n\nnNowClient\030\002 \001(\005\022\r\n\005nPort\030\003 \001(\005\022\013\n"
       "\003sIP\030\004 \001(\t\022\024\n\014nSubServerID\030\005 \001(\005\"D\n\020Upda"
       "teServerLoad\022\027\n\017nClientCountNow\030\001 \001(\005\022\027\n"
-      "\017nClientCountMax\030\002 \001(\005\"\016\n\014AddNewClient\"\036"
-      "\n\tDelClient\022\021\n\tnClientID\030\001 \001(\005\"/\n\013Client"
-      "Token\022\017\n\007sEtoken\030\001 \001(\t\022\017\n\007sSecret\030\002 \001(\014\""
-      "\335\001\n\016LoadPlayerData\022\020\n\010clientid\030\001 \001(\005\022\017\n\007"
-      "account\030\002 \001(\t\022\014\n\004name\030\003 \001(\t\022\014\n\004guid\030\004 \001("
-      "\003\022\013\n\003sex\030\005 \001(\005\022\013\n\003job\030\006 \001(\005\022\r\n\005level\030\007 \001"
-      "(\005\022\022\n\ncreatetime\030\010 \001(\005\022\021\n\tlogintime\030\t \001("
-      "\005\022\r\n\005mapid\030\n \001(\005\022\t\n\001x\030\013 \001(\002\022\t\n\001y\030\014 \001(\002\022\t"
-      "\n\001z\030\r \001(\002\022\014\n\004data\030\016 \001(\014\"F\n\021LoadPlayerDat"
-      "aRet\022\020\n\010nRetCode\030\001 \001(\005\"\037\n\002EC\022\014\n\010EC_OTHER"
-      "\020\000\022\013\n\007EC_SUCC\020\001\"\013\n\tServerLogb\006proto3"
+      "\017nClientCountMax\030\002 \001(\005\"\037\n\014AddNewClient\022\017"
+      "\n\007nGateID\030\001 \001(\005\"\036\n\tDelClient\022\021\n\tnClientI"
+      "D\030\001 \001(\005\"/\n\013ClientToken\022\017\n\007sEtoken\030\001 \001(\t\022"
+      "\017\n\007sSecret\030\002 \001(\014\"\335\001\n\016LoadPlayerData\022\020\n\010c"
+      "lientid\030\001 \001(\005\022\017\n\007account\030\002 \001(\t\022\014\n\004name\030\003"
+      " \001(\t\022\014\n\004guid\030\004 \001(\003\022\013\n\003sex\030\005 \001(\005\022\013\n\003job\030\006"
+      " \001(\005\022\r\n\005level\030\007 \001(\005\022\022\n\ncreatetime\030\010 \001(\005\022"
+      "\021\n\tlogintime\030\t \001(\005\022\r\n\005mapid\030\n \001(\005\022\t\n\001x\030\013"
+      " \001(\002\022\t\n\001y\030\014 \001(\002\022\t\n\001z\030\r \001(\002\022\014\n\004data\030\016 \001(\014"
+      "\"F\n\021LoadPlayerDataRet\022\020\n\010nRetCode\030\001 \001(\005\""
+      "\037\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\"\013\n\tServ"
+      "erLogb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 876);
+      descriptor, 893);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "ServerMsg.proto", &protobuf_RegisterTypes);
 }
@@ -2080,6 +2082,7 @@ void UpdateServerLoad::InternalSwap(UpdateServerLoad* other) {
 void AddNewClient::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int AddNewClient::kNGateIDFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 AddNewClient::AddNewClient()
@@ -2095,10 +2098,12 @@ AddNewClient::AddNewClient(const AddNewClient& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ngateid_ = from.ngateid_;
   // @@protoc_insertion_point(copy_constructor:svrData.AddNewClient)
 }
 
 void AddNewClient::SharedCtor() {
+  ngateid_ = 0;
   _cached_size_ = 0;
 }
 
@@ -2132,6 +2137,7 @@ void AddNewClient::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  ngateid_ = 0;
   _internal_metadata_.Clear();
 }
 
@@ -2144,12 +2150,31 @@ bool AddNewClient::MergePartialFromCodedStream(
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // int32 nGateID = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &ngateid_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
   // @@protoc_insertion_point(parse_success:svrData.AddNewClient)
@@ -2166,6 +2191,11 @@ void AddNewClient::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  // int32 nGateID = 1;
+  if (this->ngateid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->ngateid(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -2179,6 +2209,11 @@ void AddNewClient::SerializeWithCachedSizes(
   // @@protoc_insertion_point(serialize_to_array_start:svrData.AddNewClient)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
+
+  // int32 nGateID = 1;
+  if (this->ngateid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->ngateid(), target);
+  }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
@@ -2197,6 +2232,13 @@ size_t AddNewClient::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
+  // int32 nGateID = 1;
+  if (this->ngateid() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->ngateid());
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -2226,6 +2268,9 @@ void AddNewClient::MergeFrom(const AddNewClient& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (from.ngateid() != 0) {
+    set_ngateid(from.ngateid());
+  }
 }
 
 void AddNewClient::CopyFrom(const ::google::protobuf::Message& from) {
@@ -2252,6 +2297,7 @@ void AddNewClient::Swap(AddNewClient* other) {
 }
 void AddNewClient::InternalSwap(AddNewClient* other) {
   using std::swap;
+  swap(ngateid_, other->ngateid_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }

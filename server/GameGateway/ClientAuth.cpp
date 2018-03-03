@@ -162,6 +162,7 @@ void CClientAuth::AddNewClient(Msg *pMsg, CClient *cl)
 			ClientConnectLog("新的客户端认证成功！token:%s", msg.stoken().c_str());
 
 			svrData::AddNewClient sendMsg;
+			sendMsg.set_ngateid(CConfig::Instance().GetServerID());
 			CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT, cl->GetClientID());
 			cl->SetAlreadyAuth();
 
