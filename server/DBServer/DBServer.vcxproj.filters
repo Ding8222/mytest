@@ -30,6 +30,9 @@
     <ClInclude Include="ClientLogin.h">
       <Filter>登陆</Filter>
     </ClInclude>
+    <ClInclude Include="dotask.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Config.cpp">
@@ -46,6 +49,9 @@
     </ClCompile>
     <ClCompile Include="ClientLogin.cpp">
       <Filter>登陆</Filter>
+    </ClCompile>
+    <ClCompile Include="dotask.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

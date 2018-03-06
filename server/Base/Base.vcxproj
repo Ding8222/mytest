@@ -127,6 +127,7 @@
   <ItemGroup>
     <ClInclude Include="..\3rd\json\json.hpp" />
     <ClInclude Include="BaseConfig.h" />
+    <ClInclude Include="blockbuf.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="ClientMgr.h" />
     <ClInclude Include="ClientSvrMgr.h" />
@@ -135,7 +136,9 @@
     <ClInclude Include="connector.h" />
     <ClInclude Include="crosslib.h" />
     <ClInclude Include="CtrlHandler.h" />
+    <ClInclude Include="datahand.h" />
     <ClInclude Include="DBSvrType.h" />
+    <ClInclude Include="funcdef.h" />
     <ClInclude Include="GlobalDefine.h" />
     <ClInclude Include="Guid.h" />
     <ClInclude Include="idmgr.h" />
@@ -148,6 +151,7 @@
     <ClInclude Include="msgbase.h" />
     <ClInclude Include="NetConfig.h" />
     <ClInclude Include="objectpool.h" />
+    <ClInclude Include="ossome.h" />
     <ClInclude Include="PB\ClientMsg.pb.h" />
     <ClInclude Include="PB\DBServer.pb.h" />
     <ClInclude Include="PB\Login.pb.h" />
@@ -161,6 +165,9 @@
     <ClInclude Include="ServerMgr.h" />
     <ClInclude Include="ServerType.h" />
     <ClInclude Include="sqlinterface.h" />
+    <ClInclude Include="task.h" />
+    <ClInclude Include="taskqueue.h" />
+    <ClInclude Include="threadinstance.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="tinyxml2.h" />
   </ItemGroup>

@@ -3,7 +3,9 @@
 #include "sqlinterface.h"
 #include "serverlog.h"
 #include "msgbase.h"
-#include "ClientLogin.h"
+#include "task.h"
+#include "dotask.h"
+#include "datahand.h"
 #include "DBCenterConnect.h"
 
 #include "MainType.h"
@@ -15,16 +17,83 @@ extern int64 g_currenttime;
 
 CDBCenterConnect::CDBCenterConnect()
 {
-
+	m_Hand = nullptr;
 }
 
 CDBCenterConnect::~CDBCenterConnect()
+{
+	Destroy();
+}
+
+typedef void(*freetask) (void *task);
+
+//执行逻辑任务
+static bool DoTask(void *tk)
+{
+	OnDoTask(tk);
+	return false;
+}
+
+//对执行逻辑任务的结果的处理
+static void DoTaskResult(void *taskresult, freetask ffunc)
+{
+	task *d = (task *)taskresult;
+
+	Msg *pMsg;
+
+	//需要回馈时，才发送
+	if (d->IsNeedSend())
+	{
+		if (d->IsSendToAll())
+		{
+			for (;;)
+			{
+				pMsg = d->GetMsg();
+				if (!pMsg)
+					break;
+			}
+		}
+		else
+		{
+			for (;;)
+			{
+				pMsg = d->GetMsg();
+				if (!pMsg)
+					break;
+
+				CDBCenterConnect::Instance().SendMsgToServer(d->GetServerID(), *pMsg, d->GetClientID());
+			}
+		}
+	}
+	ffunc(taskresult);
+}
+
+static void Task_Run()
 {
 
 }
 
 bool CDBCenterConnect::Init()
 {
+	if (!task::InitPools())
+	{
+		RunStateError("init pools failed!");
+		return false;
+	}
+
+	m_Hand = datahand_create();
+	if (!m_Hand)
+	{
+		RunStateError("create datahand failed!");
+		return false;
+	}
+
+	if (!m_Hand->Init(20, NULL, task_release, DoTask, DoTaskResult, Task_Run))
+	{
+		RunStateError("init datahand failed!");
+		return false;
+	}
+
 	g_dbhand.SetLogDirectory("log_log/DBServer_Log/dbhand_log");
 	g_dbhand.SetEnableLog(CConfig::Instance().GetIsOpenSQLLog());
 	if (!g_dbhand.Open(CConfig::Instance().GetDBName().c_str(),
@@ -60,9 +129,24 @@ bool CDBCenterConnect::Init()
 	);
 }
 
+void CDBCenterConnect::Run()
+{
+	m_Hand->RunOnce();
+	CConnectMgr::Run();
+}
+
 void CDBCenterConnect::Destroy()
 {
 	CConnectMgr::Destroy();
+
+	if (m_Hand)
+	{
+		m_Hand->Destroy();
+		datahand_release(m_Hand);
+		m_Hand = nullptr;
+	}
+
+	task::DestroyPools();
 }
 
 void CDBCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
@@ -83,10 +167,7 @@ void CDBCenterConnect::ProcessMsg(connector *_con)
 		pMsg = _con->GetMsg();
 		if (!pMsg)
 			break;
-
-		msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
-		pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
-
+		
 		switch (pMsg->GetMainType())
 		{
 		case SERVER_TYPE_MAIN:
@@ -107,25 +188,39 @@ void CDBCenterConnect::ProcessMsg(connector *_con)
 		}
 		default:
 		{
-			ProcessServerMsg(_con, pMsg, tl);
+			AddNewTask(pMsg, _con->GetConnectID(), task::tasktype_process);
 			break;
 		}
 		}
 	}
 }
 
-void CDBCenterConnect::ProcessServerMsg(connector *_con, Msg *pMsg, msgtail *tl)
+
+void CDBCenterConnect::AddNewTask(Msg *pMsg, int serverid, int tasktype, bool sendtoall)
 {
-	switch (pMsg->GetMainType())
+	if (!pMsg)
+		return;
+
+	msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
+	pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
+
+	task *tk = task_create();
+	if (!tk)
 	{
-	case LOGIN_TYPE_MAIN:
-	{
-		CClientLogin::Instance().ProcessLoginMsg(_con, pMsg, tl);
-		break;
+		RunStateError("创建任务失败!");
+		return;
 	}
-	default:
+
+	tk->SetInfo(&g_dbhand, serverid, tl->id);
+	tk->PushMsg(pMsg);
+
+	tk->SetSendToAll(sendtoall);
+	tk->SetTaskType(tasktype);
+
+	if (!m_Hand->PushTask(tk))
 	{
-		break;
-	}
+		RunStateError("添加任务至datahand失败!");
+		task_release(tk);
+		return;
 	}
 }

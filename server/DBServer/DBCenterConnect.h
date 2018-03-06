@@ -8,6 +8,7 @@
 #include "sqlinterface.h"
 #include "msgbase.h"
 
+class datahand;
 class CDBCenterConnect : public CConnectMgr
 {
 public:
@@ -21,6 +22,7 @@ public:
 	}
 
 	bool Init();
+	void Run();
 	void Destroy();
 
 	void ServerRegisterSucc(int id, const char *ip, int port);
@@ -28,9 +30,11 @@ public:
 	void ConnectDisconnect(connector *);
 	// 处理远程服务器发来的消息
 	void ProcessMsg(connector *_con);
-	void ProcessServerMsg(connector *_con, Msg *pMsg, msgtail *tl);
+public:
+	void AddNewTask(Msg *pMsg, int serverid, int tasktype, bool sendtoall = false);
 private:
 
+	datahand * m_Hand;
 };
 
 extern DataBase::CConnection g_dbhand;

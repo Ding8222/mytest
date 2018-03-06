@@ -44,10 +44,13 @@ void CBaseObj::SetScene(CScene *_Scene)
 // 移动到某个坐标
 bool CBaseObj::MoveTo(float x, float y, float z)
 {
-	if (m_Scene->MoveTo(this, x, y, z))
+	if (m_Scene)
 	{
-		SetNowPos(x, y, z);
-		return true;
+		if (m_Scene->MoveTo(this, x, y, z))
+		{
+			SetNowPos(x, y, z);
+			return true;
+		}
 	}
 
 	return false;

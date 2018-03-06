@@ -4,15 +4,15 @@
  * lcinx@163.com
 */
 
-#ifndef _H_SQL_INTERFACE_H_
-#define _H_SQL_INTERFACE_H_
+#pragma once
+
 #ifdef _WIN32
 #include <WinSock2.h>
 #endif
 #include "mysql.h"
 #include <string>
 #include <stdio.h>
-
+#include "platform_config.h"
 
 namespace DataBase
 {
@@ -141,6 +141,3 @@ namespace DataBase
 		FILE *m_fp;
 	};
 }
-#endif
-
-

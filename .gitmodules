@@ -13,3 +13,6 @@
 [submodule "server/3rd/fmtlib"]
 	path = server/3rd/fmtlib
 	url = https://github.com/fmtlib/fmt.git
+[submodule "server/3rd/jemalloc"]
+	path = server/3rd/jemalloc
+	url = https://github.com/jemalloc/jemalloc.git

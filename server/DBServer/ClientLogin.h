@@ -5,6 +5,7 @@
 */
 #pragma once
 
+class task;
 class CClientLogin
 {
 public:
@@ -19,12 +20,12 @@ public:
 
 	void Destroy();
 
-	void ProcessLoginMsg(connector *_con, Msg *pMsg, msgtail *tl);
+	void ProcessLoginMsg(task *tk, Msg *pMsg);
 
-	void ClientAuth(connector *_con, Msg *pMsg, msgtail *tl);
-	void GetPlayerList(connector *_con, Msg *pMsg, msgtail *tl);
-	void CreatePlayer(connector *_con, Msg *pMsg, msgtail *tl);
-	void SelectPlayer(connector *_con, Msg *pMsg, msgtail *tl);
+	void ClientAuth(task *tk, Msg *pMsg);
+	void GetPlayerList(task *tk, Msg *pMsg);
+	void CreatePlayer(task *tk, Msg *pMsg);
+	void SelectPlayer(task *tk, Msg *pMsg);
 private:
 
 };

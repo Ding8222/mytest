@@ -155,16 +155,17 @@ void CClientAuthMgr::SendAuthInfoToLogic(Msg *pMsg, int32 clientid)
 			CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GATE, 0, _pInfo->nServerID);
 		}
 		else
-		{
-			// 认证失败，移除认证信息
-			DelClientAuthInfo(clientid);
 			msg.set_ncode(netData::AuthRet::EC_SERVER);
-		}
 	}
 	else
 		msg.set_ncode(netData::AuthRet::EC_AUTHINFO);
 
 	CCentServerMgr::Instance().SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, clientid);
+	if(msg.ncode()== netData::AuthRet::EC_SERVER)
+	{
+		// 认证失败，移除认证信息
+		DelClientAuthInfo(clientid);
+	}
 }
 
 void CClientAuthMgr::SendLoadPlayerDataToLogic(Msg *pMsg, int32 clientid)

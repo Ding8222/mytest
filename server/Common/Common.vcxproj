@@ -122,6 +122,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BaseConfig.cpp" />
+    <ClCompile Include="blockbuf.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ClientMgr.cpp" />
     <ClCompile Include="ClientSvrMgr.cpp" />
@@ -129,6 +130,7 @@
     <ClCompile Include="connector.cpp" />
     <ClCompile Include="crosslib.c" />
     <ClCompile Include="CtrlHandler.cpp" />
+    <ClCompile Include="datahand.cpp" />
     <ClCompile Include="Guid.cpp" />
     <ClCompile Include="idmgr.c" />
     <ClCompile Include="log.c" />
@@ -142,6 +144,9 @@
     <ClCompile Include="ServerLog.cpp" />
     <ClCompile Include="ServerMgr.cpp" />
     <ClCompile Include="sqlinterface.cpp" />
+    <ClCompile Include="task.cpp" />
+    <ClCompile Include="taskqueue.cpp" />
+    <ClCompile Include="threadinstance.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

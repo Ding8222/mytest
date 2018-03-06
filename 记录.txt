@@ -1,1 +1,10 @@
 共享内存
+
+逻辑、数据分离？
+
+logicsvr -- datasvr
+
+jemalloc
+
+https://owent.net
+http://www.vimer.cn/

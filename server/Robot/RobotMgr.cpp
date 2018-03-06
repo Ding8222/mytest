@@ -234,13 +234,17 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				netData::LoadPlayerDataFinish msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				RunStateLog("逻辑服加载数据成功!TempID:%d", msg.ntempid());
-				_con->SetTempID(msg.ntempid());
-				netData::PlayerMove sendMsg;
-				sendMsg.set_x(1);
-				sendMsg.set_y(1);
-				sendMsg.set_z(0);
-				_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
+				if (msg.ncode() == netData::LoadPlayerDataFinish::EC_SUCC)
+				{
+					RunStateLog("逻辑服加载数据成功!TempID:%d", msg.ntempid());
+					_con->SetTempID(msg.ntempid());
+					netData::PlayerMove sendMsg;
+					sendMsg.set_x(1);
+					sendMsg.set_y(1);
+					sendMsg.set_z(0);
+					_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
+				}
+
 				break;
 			}
 			case CLIENT_SUB_MOVE_RET:

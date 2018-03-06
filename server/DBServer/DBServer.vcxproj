@@ -131,12 +131,14 @@
     <ClInclude Include="DBCenterConnect.h" />
     <ClInclude Include="DBServer.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="dotask.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientLogin.cpp" />
     <ClCompile Include="DBCenterConnect.cpp" />
     <ClCompile Include="DBServer.cpp" />
     <ClCompile Include="Config.cpp" />
+    <ClCompile Include="dotask.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

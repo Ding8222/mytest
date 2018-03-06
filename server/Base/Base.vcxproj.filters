@@ -155,5 +155,26 @@
     <ClInclude Include="LogConnecter.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="task.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="funcdef.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="datahand.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="threadinstance.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="taskqueue.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ossome.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="blockbuf.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
