@@ -25,7 +25,7 @@ public:
 	 static void DestroyPools ();
 
 	 //设置一些必须的附带信息
-	 void SetInfo (DataBase::CConnection *con, int serverid, int clientid);
+	 void SetInfo (DataBase::CConnection *con, int serverid, int clientid = 0);
 
 	 //获取数据库操作句柄
 	 DataBase::CConnection *GetDBHand () { return m_con; }

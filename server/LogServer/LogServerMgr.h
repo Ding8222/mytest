@@ -7,6 +7,7 @@
 #include "ServerMgr.h"
 #include "sqlinterface.h"
 
+class datahand;
 class CLogServerMgr :public CServerMgr
 {
 public:
@@ -42,6 +43,12 @@ private:
 	std::map<int, serverinfo *> m_DBList;
 	std::map<int, serverinfo *> m_GateList;
 	std::map<int, serverinfo *> m_CenterList;
+
+public:
+	void AddNewTask(Msg *pMsg, int serverid);
+private:
+
+	datahand * m_Hand;
 };
 
 extern DataBase::CConnection g_dbhand;

@@ -1,12 +1,15 @@
 #include <map>
 #include "ServerMsg.pb.h"
 
-#include "LogServerMgr.h"
 #include "serverinfo.h"
 #include "Config.h"
 #include "serverlog.h"
 #include "GlobalDefine.h"
 #include "sqlinterface.h"
+#include "task.h"
+#include "dotask.h"
+#include "datahand.h"
+#include "LogServerMgr.h"
 
 #include "MainType.h"
 #include "LoginType.h"
@@ -22,15 +25,48 @@ CLogServerMgr::CLogServerMgr()
 	m_DBList.clear();
 	m_GateList.clear();
 	m_CenterList.clear();
+	m_Hand = nullptr;
 }
 
 CLogServerMgr::~CLogServerMgr()
 {
+	Destroy();
+}
 
+//执行逻辑任务
+static bool DoTask(void *tk)
+{
+	OnDoTask(tk);
+	return false;
+}
+
+//对执行逻辑任务的结果的处理
+static void DoTaskResult(void *taskresult, freetask ffunc)
+{
+	ffunc(taskresult);
 }
 
 bool CLogServerMgr::Init(const char *ip, int serverid, int port, int overtime)
 {
+	if (!task::InitPools())
+	{
+		RunStateError("初始化task pool失败!");
+		return false;
+	}
+
+	m_Hand = datahand_create();
+	if (!m_Hand)
+	{
+		RunStateError("创建DataHand失败!");
+		return false;
+	}
+
+	if (!m_Hand->Init(10, nullptr, task_release, DoTask, DoTaskResult, nullptr))
+	{
+		RunStateError("初始化DataHand失败!");
+		return false;
+	}
+
 	g_dbhand.SetLogDirectory("log_log/LogServer_Log/dbhand_log");
 	g_dbhand.SetEnableLog(CConfig::Instance().GetIsOpenSQLLog());
 	if (!g_dbhand.Open(CConfig::Instance().GetDBName().c_str(),
@@ -59,6 +95,16 @@ void CLogServerMgr::Destroy()
 	m_DBList.clear();
 	m_GateList.clear();
 	m_CenterList.clear();
+
+	if (m_Hand)
+	{
+		m_Hand->Destroy();
+		datahand_release(m_Hand);
+		m_Hand = nullptr;
+	}
+
+	//切记放到最后
+	task::DestroyPools();
 }
 
 void CLogServerMgr::GetCurrentInfo(char *buf, size_t buflen)
@@ -360,4 +406,28 @@ serverinfo *CLogServerMgr::FindServer(int nServerID, int nType)
 void CLogServerMgr::ServerRegisterSucc(int id, int type, const char *ip, int port)
 {
 
+}
+
+
+void CLogServerMgr::AddNewTask(Msg *pMsg, int serverid)
+{
+	if (!pMsg)
+		return;
+	
+	task *tk = task_create();
+	if (!tk)
+	{
+		RunStateError("创建任务失败!");
+		return;
+	}
+
+	tk->SetInfo(&g_dbhand, serverid);
+	tk->PushMsg(pMsg);
+	
+	if (!m_Hand->PushTask(tk))
+	{
+		RunStateError("添加任务至datahand失败!");
+		task_release(tk);
+		return;
+	}
 }

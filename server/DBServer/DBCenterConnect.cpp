@@ -25,8 +25,6 @@ CDBCenterConnect::~CDBCenterConnect()
 	Destroy();
 }
 
-typedef void(*freetask) (void *task);
-
 //执行逻辑任务
 static bool DoTask(void *tk)
 {
@@ -68,29 +66,24 @@ static void DoTaskResult(void *taskresult, freetask ffunc)
 	ffunc(taskresult);
 }
 
-static void Task_Run()
-{
-
-}
-
 bool CDBCenterConnect::Init()
 {
 	if (!task::InitPools())
 	{
-		RunStateError("init pools failed!");
+		RunStateError("初始化task pool失败!");
 		return false;
 	}
 
 	m_Hand = datahand_create();
 	if (!m_Hand)
 	{
-		RunStateError("create datahand failed!");
+		RunStateError("创建DataHand失败!");
 		return false;
 	}
 
-	if (!m_Hand->Init(20, NULL, task_release, DoTask, DoTaskResult, Task_Run))
+	if (!m_Hand->Init(20, nullptr, task_release, DoTask, DoTaskResult, nullptr))
 	{
-		RunStateError("init datahand failed!");
+		RunStateError("初始化DataHand失败!");
 		return false;
 	}
 
@@ -194,7 +187,6 @@ void CDBCenterConnect::ProcessMsg(connector *_con)
 		}
 	}
 }
-
 
 void CDBCenterConnect::AddNewTask(Msg *pMsg, int serverid, int tasktype, bool sendtoall)
 {

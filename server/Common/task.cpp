@@ -225,6 +225,7 @@ task::task ()
 	m_needsend = true;
 	m_sendtoall = false;
 	m_serverid = 0;
+	m_clientid = 0;
 
 	m_head = NULL;
 	m_currentforpush = NULL;

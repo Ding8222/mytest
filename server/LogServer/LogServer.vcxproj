@@ -131,12 +131,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Config.cpp" />
+    <ClCompile Include="dotask.cpp" />
     <ClCompile Include="LogServer.cpp" />
     <ClCompile Include="LogServerMgr.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h" />
+    <ClInclude Include="dotask.h" />
     <ClInclude Include="LogServer.h" />
     <ClInclude Include="LogServerMgr.h" />
   </ItemGroup>
