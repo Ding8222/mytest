@@ -459,6 +459,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::AuthRet, nserverid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::AuthRet, ip_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::AuthRet, port_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::AuthRet, nmapid_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::Login, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -529,15 +530,15 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 19, -1, sizeof(::netData::ChallengeRet)},
   { 25, -1, sizeof(::netData::Auth)},
   { 32, -1, sizeof(::netData::AuthRet)},
-  { 41, -1, sizeof(::netData::Login)},
-  { 48, -1, sizeof(::netData::LoginRet)},
-  { 54, -1, sizeof(::netData::PlayerLite)},
-  { 63, -1, sizeof(::netData::PlayerList)},
-  { 69, -1, sizeof(::netData::PlayerListRet)},
-  { 75, -1, sizeof(::netData::CreatePlayer)},
-  { 84, -1, sizeof(::netData::CreatePlayerRet)},
-  { 91, -1, sizeof(::netData::SelectPlayer)},
-  { 97, -1, sizeof(::netData::SelectPlayerRet)},
+  { 42, -1, sizeof(::netData::Login)},
+  { 49, -1, sizeof(::netData::LoginRet)},
+  { 55, -1, sizeof(::netData::PlayerLite)},
+  { 64, -1, sizeof(::netData::PlayerList)},
+  { 70, -1, sizeof(::netData::PlayerListRet)},
+  { 76, -1, sizeof(::netData::CreatePlayer)},
+  { 85, -1, sizeof(::netData::CreatePlayerRet)},
+  { 92, -1, sizeof(::netData::SelectPlayer)},
+  { 98, -1, sizeof(::netData::SelectPlayerRet)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -586,29 +587,29 @@ void AddDescriptorsImpl() {
       "enge\022\r\n\005sHmac\030\001 \001(\t\"K\n\014ChallengeRet\022\r\n\005n"
       "Code\030\001 \001(\005\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUC"
       "C\020\001\022\013\n\007EC_FAIL\020\002\"(\n\004Auth\022\017\n\007sEtoken\030\001 \001("
-      "\t\022\017\n\007sSecret\030\002 \001(\014\"\260\001\n\007AuthRet\022\r\n\005nCode\030"
+      "\t\022\017\n\007sSecret\030\002 \001(\014\"\300\001\n\007AuthRet\022\r\n\005nCode\030"
       "\001 \001(\005\022\021\n\tnServerID\030\002 \001(\005\022\n\n\002ip\030\003 \001(\t\022\014\n\004"
-      "port\030\004 \001(\005\"i\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUC"
-      "C\020\001\022\013\n\007EC_FAIL\020\002\022\020\n\014EC_HANDSHAKE\020\003\022\r\n\tEC"
-      "_SERVER\020\004\022\t\n\005EC_DB\020\005\022\017\n\013EC_AUTHINFO\020\006\"(\n"
-      "\005Login\022\016\n\006sToken\030\001 \001(\t\022\017\n\007sSecret\030\002 \001(\014\""
-      "G\n\010LoginRet\022\r\n\005nCode\030\001 \001(\005\",\n\002EC\022\014\n\010EC_O"
-      "THER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002\"E\n\nPlay"
-      "erLite\022\014\n\004guid\030\001 \001(\003\022\r\n\005sName\030\002 \001(\t\022\014\n\004n"
-      "Job\030\003 \001(\005\022\014\n\004nSex\030\004 \001(\005\"\035\n\nPlayerList\022\017\n"
-      "\007account\030\001 \001(\t\"2\n\rPlayerListRet\022!\n\004list\030"
-      "\001 \003(\0132\023.netData.PlayerLite\"J\n\014CreatePlay"
-      "er\022\r\n\005sName\030\001 \001(\t\022\014\n\004nJob\030\002 \001(\005\022\014\n\004nSex\030"
-      "\003 \001(\005\022\017\n\007account\030\004 \001(\t\"q\n\017CreatePlayerRe"
-      "t\022\r\n\005nCode\030\001 \001(\005\022!\n\004info\030\002 \001(\0132\023.netData"
-      ".PlayerLite\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SU"
-      "CC\020\001\022\013\n\007EC_FAIL\020\002\"\034\n\014SelectPlayer\022\014\n\004gui"
-      "d\030\001 \001(\003\"N\n\017SelectPlayerRet\022\r\n\005nCode\030\001 \001("
-      "\005\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC"
-      "_FAIL\020\002b\006proto3"
+      "port\030\004 \001(\005\022\016\n\006nMapID\030\005 \001(\005\"i\n\002EC\022\014\n\010EC_O"
+      "THER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002\022\020\n\014EC_H"
+      "ANDSHAKE\020\003\022\r\n\tEC_SERVER\020\004\022\t\n\005EC_DB\020\005\022\017\n\013"
+      "EC_AUTHINFO\020\006\"(\n\005Login\022\016\n\006sToken\030\001 \001(\t\022\017"
+      "\n\007sSecret\030\002 \001(\014\"G\n\010LoginRet\022\r\n\005nCode\030\001 \001"
+      "(\005\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007E"
+      "C_FAIL\020\002\"E\n\nPlayerLite\022\014\n\004guid\030\001 \001(\003\022\r\n\005"
+      "sName\030\002 \001(\t\022\014\n\004nJob\030\003 \001(\005\022\014\n\004nSex\030\004 \001(\005\""
+      "\035\n\nPlayerList\022\017\n\007account\030\001 \001(\t\"2\n\rPlayer"
+      "ListRet\022!\n\004list\030\001 \003(\0132\023.netData.PlayerLi"
+      "te\"J\n\014CreatePlayer\022\r\n\005sName\030\001 \001(\t\022\014\n\004nJo"
+      "b\030\002 \001(\005\022\014\n\004nSex\030\003 \001(\005\022\017\n\007account\030\004 \001(\t\"q"
+      "\n\017CreatePlayerRet\022\r\n\005nCode\030\001 \001(\005\022!\n\004info"
+      "\030\002 \001(\0132\023.netData.PlayerLite\",\n\002EC\022\014\n\010EC_"
+      "OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002\"\034\n\014Sel"
+      "ectPlayer\022\014\n\004guid\030\001 \001(\003\"N\n\017SelectPlayerR"
+      "et\022\r\n\005nCode\030\001 \001(\005\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n"
+      "\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1015);
+      descriptor, 1031);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Login.proto", &protobuf_RegisterTypes);
 }
@@ -2051,6 +2052,7 @@ const int AuthRet::kNCodeFieldNumber;
 const int AuthRet::kNServerIDFieldNumber;
 const int AuthRet::kIpFieldNumber;
 const int AuthRet::kPortFieldNumber;
+const int AuthRet::kNMapIDFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 AuthRet::AuthRet()
@@ -2071,16 +2073,16 @@ AuthRet::AuthRet(const AuthRet& from)
     ip_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ip_);
   }
   ::memcpy(&ncode_, &from.ncode_,
-    static_cast<size_t>(reinterpret_cast<char*>(&port_) -
-    reinterpret_cast<char*>(&ncode_)) + sizeof(port_));
+    static_cast<size_t>(reinterpret_cast<char*>(&nmapid_) -
+    reinterpret_cast<char*>(&ncode_)) + sizeof(nmapid_));
   // @@protoc_insertion_point(copy_constructor:netData.AuthRet)
 }
 
 void AuthRet::SharedCtor() {
   ip_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&ncode_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&port_) -
-      reinterpret_cast<char*>(&ncode_)) + sizeof(port_));
+      reinterpret_cast<char*>(&nmapid_) -
+      reinterpret_cast<char*>(&ncode_)) + sizeof(nmapid_));
   _cached_size_ = 0;
 }
 
@@ -2117,8 +2119,8 @@ void AuthRet::Clear() {
 
   ip_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&ncode_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&port_) -
-      reinterpret_cast<char*>(&ncode_)) + sizeof(port_));
+      reinterpret_cast<char*>(&nmapid_) -
+      reinterpret_cast<char*>(&ncode_)) + sizeof(nmapid_));
   _internal_metadata_.Clear();
 }
 
@@ -2190,6 +2192,20 @@ bool AuthRet::MergePartialFromCodedStream(
         break;
       }
 
+      // int32 nMapID = 5;
+      case 5: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &nmapid_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -2241,6 +2257,11 @@ void AuthRet::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->port(), output);
   }
 
+  // int32 nMapID = 5;
+  if (this->nmapid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->nmapid(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -2279,6 +2300,11 @@ void AuthRet::SerializeWithCachedSizes(
   // int32 port = 4;
   if (this->port() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->port(), target);
+  }
+
+  // int32 nMapID = 5;
+  if (this->nmapid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->nmapid(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2326,6 +2352,13 @@ size_t AuthRet::ByteSizeLong() const {
         this->port());
   }
 
+  // int32 nMapID = 5;
+  if (this->nmapid() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->nmapid());
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -2368,6 +2401,9 @@ void AuthRet::MergeFrom(const AuthRet& from) {
   if (from.port() != 0) {
     set_port(from.port());
   }
+  if (from.nmapid() != 0) {
+    set_nmapid(from.nmapid());
+  }
 }
 
 void AuthRet::CopyFrom(const ::google::protobuf::Message& from) {
@@ -2398,6 +2434,7 @@ void AuthRet::InternalSwap(AuthRet* other) {
   swap(ncode_, other->ncode_);
   swap(nserverid_, other->nserverid_);
   swap(port_, other->port_);
+  swap(nmapid_, other->nmapid_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }

@@ -14,12 +14,15 @@ public:
 		return m;
 	}
 
-	bool Init(const char *servername = "");
+	bool Init(const char *servername = "", int lineid = 0);
+	void SetLineID(int id) { m_LineID = id; }
+	int GetLineID() { return m_LineID; }
 	std::string GetCenterServerIP() { return s_CenterServerIP; }
 	int GetCenterServerPort() { return m_CenterServerPort; }
 	int GetCenterServerID() { return m_CenterServerID; }
 
 private:
+	int m_LineID;
 
 	std::string s_CenterServerIP;
 	int m_CenterServerPort;

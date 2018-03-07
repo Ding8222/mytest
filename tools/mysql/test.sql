@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 10/02/2018 10:36:41
+ Date: 07/03/2018 17:01:26
 */
 
 SET NAMES utf8mb4;
@@ -25,6 +25,7 @@ CREATE TABLE `account`  (
   `account` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `createtime` int(11) NOT NULL,
   `logintime` int(11) NOT NULL,
+  `mapid` int(11) UNSIGNED ZEROFILL NOT NULL,
   PRIMARY KEY (`account`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 

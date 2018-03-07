@@ -15,6 +15,7 @@ public:
 	}
 
 	bool Init(const char *servername = "");
+	int GetBeginMap() { return m_BeginMapID; }
 	std::string GetCenterServerIP() { return s_CenterServerIP; }
 	int GetCenterServerPort() { return m_CenterServerPort; }
 	int GetCenterServerID() { return m_CenterServerID; }
@@ -25,6 +26,7 @@ public:
 	bool GetIsOpenSQLLog() { return m_SQLLog; }
 
 private:
+	int m_BeginMapID;
 
 	std::string s_CenterServerIP;
 	int m_CenterServerPort;

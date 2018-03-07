@@ -34,7 +34,7 @@ CBaseConfig::~CBaseConfig()
 	memset(s_LogServerIP, 0, sizeof(s_ServerIP));
 }
 
-bool CBaseConfig::Init(const char *servername)
+bool CBaseConfig::Init(const char *servername, int lineid)
 {
 	const char *filename = "./config/serverconfig.xml";
 	XMLDocument doc;
@@ -121,11 +121,15 @@ bool CBaseConfig::Init(const char *servername)
 		return false;
 	}
 
+	m_ListenPort += lineid;
+
 	if (pServerInfo->QueryIntAttribute("Server_ID", &m_ServerID) != XML_SUCCESS)
 	{
 		log_error("没有找到字段： 'Server_ID'");
 		return false;
 	}
+
+	m_ServerID += lineid;
 
 	const char *ServerIP = pServerInfo->Attribute("Server_IP");
 	if (!ServerIP)

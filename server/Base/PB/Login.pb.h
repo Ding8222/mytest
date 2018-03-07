@@ -1034,6 +1034,12 @@ class AuthRet : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::google::protobuf::int32 port() const;
   void set_port(::google::protobuf::int32 value);
 
+  // int32 nMapID = 5;
+  void clear_nmapid();
+  static const int kNMapIDFieldNumber = 5;
+  ::google::protobuf::int32 nmapid() const;
+  void set_nmapid(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:netData.AuthRet)
  private:
 
@@ -1042,6 +1048,7 @@ class AuthRet : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::google::protobuf::int32 ncode_;
   ::google::protobuf::int32 nserverid_;
   ::google::protobuf::int32 port_;
+  ::google::protobuf::int32 nmapid_;
   mutable int _cached_size_;
   friend struct ::protobuf_Login_2eproto::TableStruct;
   friend void ::protobuf_Login_2eproto::InitDefaultsAuthRetImpl();
@@ -2626,6 +2633,20 @@ inline void AuthRet::set_port(::google::protobuf::int32 value) {
   
   port_ = value;
   // @@protoc_insertion_point(field_set:netData.AuthRet.port)
+}
+
+// int32 nMapID = 5;
+inline void AuthRet::clear_nmapid() {
+  nmapid_ = 0;
+}
+inline ::google::protobuf::int32 AuthRet::nmapid() const {
+  // @@protoc_insertion_point(field_get:netData.AuthRet.nMapID)
+  return nmapid_;
+}
+inline void AuthRet::set_nmapid(::google::protobuf::int32 value) {
+  
+  nmapid_ = value;
+  // @@protoc_insertion_point(field_set:netData.AuthRet.nMapID)
 }
 
 // -------------------------------------------------------------------

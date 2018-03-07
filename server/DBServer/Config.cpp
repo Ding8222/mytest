@@ -7,6 +7,8 @@ using namespace tinyxml2;
 
 CConfig::CConfig()
 {
+	m_BeginMapID = 0;
+
 	s_CenterServerIP.clear();
 	m_CenterServerPort = 0;
 	m_CenterServerID = 0;
@@ -19,6 +21,8 @@ CConfig::CConfig()
 }
 CConfig::~CConfig()
 {
+	m_BeginMapID = 0;
+
 	s_CenterServerIP.clear();
 	m_CenterServerPort = 0;
 	m_CenterServerID = 0;
@@ -49,6 +53,18 @@ bool CConfig::Init(const char *servername)
 	if (!pinfo)
 	{
 		log_error("没有找到节点：'%s'", servername);
+		return false;
+	}
+
+	if (pinfo->QueryIntAttribute("Begin_MapID", &m_BeginMapID) != XML_SUCCESS)
+	{
+		log_error("没有找到字段： 'Begin_MapID'");
+		return false;
+	}
+
+	if (m_BeginMapID <= 0)
+	{
+		log_error("Begin_MapID小于等于0：%d", m_BeginMapID);
 		return false;
 	}
 

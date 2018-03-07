@@ -7,6 +7,7 @@ using namespace tinyxml2;
 
 CConfig::CConfig()
 {
+	m_LineID = 0;
 	s_CenterServerIP.clear();
 	m_CenterServerPort = 0;
 	m_CenterServerID = 0;
@@ -22,6 +23,7 @@ CConfig::CConfig()
 }
 CConfig::~CConfig()
 {
+	m_LineID = 0;
 	s_CenterServerIP.clear();
 	m_CenterServerPort = 0;
 	m_CenterServerID = 0;
@@ -36,12 +38,13 @@ CConfig::~CConfig()
 	m_IsOpenClientConnectLog = false;
 }
 
-bool CConfig::Init(const char *servername)
+bool CConfig::Init(const char *servername, int lineid)
 {
-	if (!CBaseConfig::Init(servername))
+	if (!CBaseConfig::Init(servername,lineid))
 		return false;
-
+	
 	SetServerType(ServerEnum::EST_GATE);
+	SetLineID(lineid);
 
 	const char *filename = "./config/serverconfig.xml";
 	XMLDocument doc;
@@ -90,11 +93,15 @@ bool CConfig::Init(const char *servername)
 		return false;
 	}
 
+	m_GameServerPort += lineid;
+
 	if (pinfo->QueryIntAttribute("GameServer_ID", &m_GameServerID) != XML_SUCCESS)
 	{
 		log_error("没有找到字段： 'GameServer_ID'");
 		return false;
 	}
+
+	m_GameServerID += lineid;
 
 	if (pinfo->QueryIntAttribute("ClientNum_Max", &m_MaxClientNum) != XML_SUCCESS)
 	{

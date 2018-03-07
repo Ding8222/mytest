@@ -35,25 +35,27 @@ SQL_Log				是否开启SQL查询日志
 	Elapsed_Log = "true"
 	
 	LogServer_IP = "127.0.0.1"
-	LogServer_Port = "30015"
+	LogServer_Port = "60001"
 	LogServer_ID = "6000"
 	>
 </Base>
 
 <CenterServer 
 	Server_ID = "1000"
-	Listen_Port = "30010"
+	Listen_Port = "10001"
 	Server_IP = "127.0.0.1"
 	>
 </CenterServer>
 
 <DBServer 
+	Begin_MapID = "1"
+	
 	Server_ID = "2000"
-	Listen_Port = "30011"
+	Listen_Port = "20001"
 	Server_IP = "127.0.0.1"
 	
 	CenterServer_IP = "127.0.0.1"
-	CenterServer_Port = "30010"
+	CenterServer_Port = "10001"
 	CenterServer_ID = "1000"
 	
 	DBName = "test"
@@ -67,15 +69,15 @@ SQL_Log				是否开启SQL查询日志
 
 <GameGateway 
 	Server_ID = "3000"
-	Listen_Port = "30012"
+	Listen_Port = "30000"
 	Server_IP = "127.0.0.1"
 	
 	CenterServer_IP = "127.0.0.1"
-	CenterServer_Port = "30010"
+	CenterServer_Port = "10001"
 	CenterServer_ID = "1000"
 	
 	GameServer_IP = "127.0.0.1"
-	GameServer_Port = "30013"
+	GameServer_Port = "40000"
 	GameServer_ID = "4000"
 	
 	ClientNum_Max = "2000"
@@ -88,22 +90,22 @@ SQL_Log				是否开启SQL查询日志
 
 <GameServer 
 	Server_ID = "4000"
-	Listen_Port = "30013"
+	Listen_Port = "40000"
 	Server_IP = "127.0.0.1"
 	
 	CenterServer_IP = "127.0.0.1"
-	CenterServer_Port = "30010"
+	CenterServer_Port = "10001"
 	CenterServer_ID = "1000"
 	>
 </GameServer>
 
 <LoginServer 
 	Server_ID = "5000"
-	Listen_Port = "30014"
+	Listen_Port = "50001"
 	Server_IP = "127.0.0.1"
 	
 	CenterServer_IP = "127.0.0.1"
-	CenterServer_Port = "30010"
+	CenterServer_Port = "10001"
 	CenterServer_ID = "1000"
 	
 	ClientNum_Max = "2000"
@@ -116,7 +118,7 @@ SQL_Log				是否开启SQL查询日志
 
 <LogServer 
 	Server_ID = "6000"
-	Listen_Port = "30015"
+	Listen_Port = "60001"
 	Server_IP = "127.0.0.1"
 	
 	DBName = "test"

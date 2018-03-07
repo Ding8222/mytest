@@ -10,7 +10,9 @@
 #include "ServerLog.h"
 #include "lxnet.h"
 #include "objectpool.h"
+#include "fmt/ostream.h"
 
+#pragma comment(lib,"fmt.lib") 
 #ifdef _WIN32
 #include <windows.h>
 #include "MiniDump.h"
@@ -23,7 +25,7 @@
 #define system(a)
 #endif
 
-bool init()
+bool init(int argc, char *argv[])
 {
 #ifdef _WIN32
 	if (!CMiniDump::Begin())
@@ -34,7 +36,19 @@ bool init()
 	}
 #endif
 
-	if (!init_log("GameServer_Log"))
+	if (argc < 2)
+	{
+		RunStateError("没有填写线路ID！");
+		return false;
+	}
+
+	int nLineID = atoi(argv[1]);
+	if (nLineID <= 0)
+	{
+		RunStateError("线路ID填写错误！");
+		return false;
+	}
+	if (!init_log(fmt::format("GameServer_Log_Line_{0}", nLineID).c_str()))
 	{
 		RunStateError("初始化Log失败!");
 		return false;
@@ -49,7 +63,7 @@ bool init()
 	}
 
 	//读取配置文件
-	if (!CConfig::Instance().Init("GameServer"))
+	if (!CConfig::Instance().Init("GameServer", nLineID))
 	{
 		RunStateError("初始化Config失败!");
 		system("pause");
@@ -59,7 +73,7 @@ bool init()
 	g_elapsed_log_flag = CConfig::Instance().IsOpenElapsedLog();
 	sPoolInfo.SetMeminfoFileName("GameServer_Log/mempoolinfo.txt");
 
-	RunStateLog("逻辑服务器开始启动!");
+	RunStateLog("[%d线]逻辑服务器开始启动!", CConfig::Instance().GetLineID());
 
 	//初始化网络库
 	if (!lxnet::net_init(CNetConfig::Instance().GetBigBufSize(), CNetConfig::Instance().GetBigBufNum(),
@@ -90,8 +104,8 @@ bool init()
 	return true;
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
-	init();
+	init(argc, argv);
 	return 0;
 }

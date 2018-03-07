@@ -8,6 +8,7 @@
 #include "ClientLogin.h"
 #include "DBCenterConnect.h"
 #include "task.h"
+#include "Config.h"
 
 #include "MainType.h"
 #include "ServerType.h"
@@ -70,18 +71,23 @@ void CClientLogin::ClientAuth(task *tk, Msg *pMsg)
 
 		netData::AuthRet sendMsg;
 		sendMsg.set_ncode(netData::AuthRet::EC_FAIL);
-		DataBase::CRecordset *res = dbhand->Execute(fmt::format("select * from account where account = '{0}' limit 1", msg.setoken().c_str()).c_str());
+		sendMsg.set_nmapid(CConfig::Instance().GetBeginMap());
+		DataBase::CRecordset *res = dbhand->Execute(fmt::format("select * from account where account = '{0}' limit 1",
+			msg.setoken().c_str()).c_str());
 		if (res && res->IsOpen() && !res->IsEnd())
 		{
+			sendMsg.set_nmapid(res->GetInt("mapid"));
 			// 存在的账号
-			res = dbhand->Execute(fmt::format("update account set logintime ={0} where account = '{1}'", CTimer::GetTime(), msg.setoken().c_str()).c_str());
+			res = dbhand->Execute(fmt::format("update account set logintime ={0} where account = '{1}'", 
+				CTimer::GetTime(), msg.setoken().c_str()).c_str());
 			if (res)
 				sendMsg.set_ncode(netData::AuthRet::EC_SUCC);
 		}
 		else
 		{
 			// 不存在的账号，创建
-			res = dbhand->Execute(fmt::format("insert into account (account,createtime,logintime) values ('{0}',{1},{2})", msg.setoken().c_str(), CTimer::GetTime(), CTimer::GetTime()).c_str());
+			res = dbhand->Execute(fmt::format("insert into account (account,createtime,logintime,mapid) values ('{0}',{1},{2},{3})", 
+				msg.setoken().c_str(), CTimer::GetTime(), CTimer::GetTime(), CConfig::Instance().GetBeginMap()).c_str());
 			if (res)
 			{
 				res = dbhand->Execute("select @@IDENTITY");
@@ -93,7 +99,6 @@ void CClientLogin::ClientAuth(task *tk, Msg *pMsg)
 					sendMsg.set_ncode(netData::AuthRet::EC_SUCC);
 			}
 		}
-		sendMsg.set_nserverid(4000);
 
 		MessagePack pk;
 		pk.Pack(&sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET);
@@ -114,7 +119,8 @@ void CClientLogin::GetPlayerList(task *tk, Msg *pMsg)
 
 		netData::PlayerListRet sendMsg;
 
-		DataBase::CRecordset *res = dbhand->Execute(fmt::format("select * from playerdate where account = '{0}'", msg.account().c_str()).c_str());
+		DataBase::CRecordset *res = dbhand->Execute(fmt::format("select * from playerdate where account = '{0}'", 
+			msg.account().c_str()).c_str());
 		if (res && res->IsOpen() && !res->IsEnd())
 		{
 			// 查询到的角色信息
@@ -153,7 +159,7 @@ void CClientLogin::CreatePlayer(task *tk, Msg *pMsg)
 		netData::CreatePlayerRet sendMsg;
 		sendMsg.set_ncode(netData::CreatePlayerRet::EC_FAIL);
 		DataBase::CRecordset *res = dbhand->Execute(fmt::format("insert into playerdate (account,name,guid,sex,job,level,createtime,logintime,mapid,x,y,z,data) values ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12})",
-			msg.account().c_str(), msg.sname(), guid, msg.nsex(), msg.njob(), 1, CTimer::GetTime(), CTimer::GetTime(), guid % 9 + 1, 1, 1, 1, "1").c_str());
+			msg.account().c_str(), msg.sname(), guid, msg.nsex(), msg.njob(), 1, CTimer::GetTime(), CTimer::GetTime(), CConfig::Instance().GetBeginMap(), 1, 1, 1, "1").c_str());
 		if (res)
 		{
 			res = dbhand->Execute("select @@IDENTITY");
@@ -191,7 +197,8 @@ void CClientLogin::SelectPlayer(task *tk, Msg *pMsg)
 
 		netData::SelectPlayerRet sendMsg;
 		sendMsg.set_ncode(netData::SelectPlayerRet::EC_FAIL);
-		DataBase::CRecordset *res = dbhand->Execute(fmt::format("select * from playerdate where guid = {0}", msg.guid()).c_str());
+		DataBase::CRecordset *res = dbhand->Execute(fmt::format("select * from playerdate where guid = {0}", 
+			msg.guid()).c_str());
 		if (res && res->IsOpen() && !res->IsEnd())
 		{
 			svrData::LoadPlayerData sendMsgToGame;
@@ -210,7 +217,8 @@ void CClientLogin::SelectPlayer(task *tk, Msg *pMsg)
 			sendMsgToGame.set_z(res->GetFloat("z"));
 			sendMsgToGame.set_data(res->GetChar("data"));
 
-			res = dbhand->Execute(fmt::format("update playerdate set logintime ={0} where guid = '{1}'", CTimer::GetTime(), msg.guid()).c_str());
+			res = dbhand->Execute(fmt::format("update playerdate set logintime ={0} where guid = '{1}'", 
+				CTimer::GetTime(), msg.guid()).c_str());
 			if (res)
 			{
 				sendMsg.set_ncode(netData::SelectPlayerRet::EC_SUCC);

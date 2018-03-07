@@ -141,7 +141,7 @@ void CClientAuthMgr::SendAuthInfoToLogic(Msg *pMsg, int32 clientid)
 	ClientAuthInfo *clientinfo = FindClientAuthInfo(clientid);
 	if (clientinfo)
 	{
-		ServerStatusInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByServerID(msg.nserverid());
+		ServerStatusInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByMapID(msg.nmapid());
 		if (_pInfo)
 		{
 			msg.set_ncode(netData::AuthRet::EC_SUCC);

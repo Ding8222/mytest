@@ -38,6 +38,7 @@ CServerStatusMgr::CServerStatusMgr()
 {
 	m_ServerInfo.clear();
 	m_GateServerInfo.clear();
+	m_ServerMapInfo.clear();
 }
 
 CServerStatusMgr::~CServerStatusMgr()
@@ -53,6 +54,7 @@ void CServerStatusMgr::Destroy()
 	}
 	m_ServerInfo.clear();
 	m_GateServerInfo.clear();
+	m_ServerMapInfo.clear();
 }
 
 void CServerStatusMgr::AddNewServer(serverinfo *info, Msg *pMsg)
@@ -60,14 +62,15 @@ void CServerStatusMgr::AddNewServer(serverinfo *info, Msg *pMsg)
 	svrData::ServerLoadInfo msg;
 	_CHECK_PARSE_(pMsg, msg);
 	
-	auto iter = m_ServerInfo.find(info->GetServerID());
+	int nServerID = info->GetServerID();
+	auto iter = m_ServerInfo.find(nServerID);
 	assert(iter == m_ServerInfo.end());
 	if (iter == m_ServerInfo.end())
 	{
 		ServerStatusInfo *_pInfo = serverstatusinfo_create();
 		if (_pInfo)
 		{
-			_pInfo->nServerID = info->GetServerID();
+			_pInfo->nServerID = nServerID;
 			_pInfo->nServerType = info->GetServerType();
 			_pInfo->nMaxClient = msg.nmaxclient();
 			_pInfo->nNowClient = msg.nnowclient();
@@ -81,6 +84,22 @@ void CServerStatusMgr::AddNewServer(serverinfo *info, Msg *pMsg)
 			{
 				m_GateServerInfo[_pInfo->nSubServerID] = _pInfo->nServerID;
 			}
+		}
+	}
+
+	for (auto &i: msg.mapid())
+	{
+		auto iter = m_ServerMapInfo.find(i);
+		if (iter != m_ServerMapInfo.end())
+		{
+			std::set<int> &maplist = iter->second;
+			maplist.insert(nServerID);
+		}
+		else
+		{
+			std::set<int> maplist;
+			maplist.insert(nServerID);
+			m_ServerMapInfo.insert(std::make_pair(i, maplist));
 		}
 	}
 }
@@ -127,6 +146,23 @@ ServerStatusInfo *CServerStatusMgr::GetGateInfoByServerID(int id)
 			{
 				return iterRet->second;
 			}
+		}
+	}
+	return nullptr;
+}
+
+ServerStatusInfo *CServerStatusMgr::GetGateInfoByMapID(int id)
+{
+	auto iter = m_ServerMapInfo.find(id);
+	if (iter != m_ServerMapInfo.end())
+	{
+		std::set<int> &serverset = iter->second;
+		if (serverset.size() > 0)
+		{
+			//这里列出了所有可进入的服务器ID
+			//可以根据负载选择一个服务器信息返回
+			for(auto &i: serverset)
+				return GetGateInfoByServerID(i);
 		}
 	}
 	return nullptr;

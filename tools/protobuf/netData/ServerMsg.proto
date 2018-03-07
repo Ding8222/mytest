@@ -39,6 +39,7 @@ message ServerLoadInfo
 	int32 nPort = 3;        // 端口
 	string sIP = 4;			// IP
 	int32 nSubServerID = 5;	// 并联的ServerID
+	repeated int32 mapid = 6;// 加载了哪些地图
 }
 
 // 0-5 服务器负载更新

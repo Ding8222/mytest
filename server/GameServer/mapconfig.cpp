@@ -4,6 +4,7 @@
 #include"log.h"
 #include "objectpool.h"
 #include "serverlog.h"
+#include "Config.h"
 
 using namespace tinyxml2;
 #define MAP_ID_MAX 10000
@@ -75,6 +76,25 @@ bool CMapConfig::Init()
 
 	while (pinfo)
 	{
+		int lineid = 0;
+		if (pinfo->QueryIntAttribute("lineid", &lineid) != XML_SUCCESS)
+		{
+			RunStateError("没有找到字段： 'lineid'");
+			return false;
+		}
+
+		if (lineid < 0)
+		{
+			RunStateError("线路ID错误！");
+			return false;
+		}
+
+		if (lineid != 0 && lineid != CConfig::Instance().GetLineID())
+		{
+			pinfo = pinfo->NextSiblingElement("maps");
+			continue;
+		}
+
 		int mapid = 0;
 		if (pinfo->QueryIntAttribute("mapid", &mapid) != XML_SUCCESS)
 		{

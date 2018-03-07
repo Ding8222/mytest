@@ -638,6 +638,18 @@ class ServerLoadInfo : public ::google::protobuf::Message /* @@protoc_insertion_
 
   // accessors -------------------------------------------------------
 
+  // repeated int32 mapid = 6;
+  int mapid_size() const;
+  void clear_mapid();
+  static const int kMapidFieldNumber = 6;
+  ::google::protobuf::int32 mapid(int index) const;
+  void set_mapid(int index, ::google::protobuf::int32 value);
+  void add_mapid(::google::protobuf::int32 value);
+  const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+      mapid() const;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+      mutable_mapid();
+
   // string sIP = 4;
   void clear_sip();
   static const int kSIPFieldNumber = 4;
@@ -680,6 +692,8 @@ class ServerLoadInfo : public ::google::protobuf::Message /* @@protoc_insertion_
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::int32 > mapid_;
+  mutable int _mapid_cached_byte_size_;
   ::google::protobuf::internal::ArenaStringPtr sip_;
   ::google::protobuf::int32 nmaxclient_;
   ::google::protobuf::int32 nnowclient_;
@@ -1841,6 +1855,36 @@ inline void ServerLoadInfo::set_nsubserverid(::google::protobuf::int32 value) {
   
   nsubserverid_ = value;
   // @@protoc_insertion_point(field_set:svrData.ServerLoadInfo.nSubServerID)
+}
+
+// repeated int32 mapid = 6;
+inline int ServerLoadInfo::mapid_size() const {
+  return mapid_.size();
+}
+inline void ServerLoadInfo::clear_mapid() {
+  mapid_.Clear();
+}
+inline ::google::protobuf::int32 ServerLoadInfo::mapid(int index) const {
+  // @@protoc_insertion_point(field_get:svrData.ServerLoadInfo.mapid)
+  return mapid_.Get(index);
+}
+inline void ServerLoadInfo::set_mapid(int index, ::google::protobuf::int32 value) {
+  mapid_.Set(index, value);
+  // @@protoc_insertion_point(field_set:svrData.ServerLoadInfo.mapid)
+}
+inline void ServerLoadInfo::add_mapid(::google::protobuf::int32 value) {
+  mapid_.Add(value);
+  // @@protoc_insertion_point(field_add:svrData.ServerLoadInfo.mapid)
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::int32 >&
+ServerLoadInfo::mapid() const {
+  // @@protoc_insertion_point(field_list:svrData.ServerLoadInfo.mapid)
+  return mapid_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
+ServerLoadInfo::mutable_mapid() {
+  // @@protoc_insertion_point(field_mutable_list:svrData.ServerLoadInfo.mapid)
+  return &mapid_;
 }
 
 // -------------------------------------------------------------------

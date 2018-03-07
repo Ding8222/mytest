@@ -7,23 +7,26 @@ using namespace tinyxml2;
 
 CConfig::CConfig()
 {
+	m_LineID = 0;
 	s_CenterServerIP.clear();
 	m_CenterServerPort = 0;
 	m_CenterServerID = 0;
 }
 CConfig::~CConfig()
 {
+	m_LineID = 0;
 	s_CenterServerIP.clear();
 	m_CenterServerPort = 0;
 	m_CenterServerID = 0;
 }
 
-bool CConfig::Init(const char *servername)
+bool CConfig::Init(const char *servername, int lineid)
 {
-	if (!CBaseConfig::Init(servername))
+	if (!CBaseConfig::Init(servername, lineid))
 		return false;
 
 	SetServerType(ServerEnum::EST_GAME);
+	SetLineID(lineid);
 
 	const char *filename = "./config/serverconfig.xml";
 	XMLDocument doc;

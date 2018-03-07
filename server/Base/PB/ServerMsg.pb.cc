@@ -344,6 +344,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::ServerLoadInfo, nport_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::ServerLoadInfo, sip_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::ServerLoadInfo, nsubserverid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::ServerLoadInfo, mapid_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::UpdateServerLoad, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -406,13 +407,13 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 5, -1, sizeof(::svrData::ServerRegister)},
   { 14, -1, sizeof(::svrData::ServerRegisterRet)},
   { 22, -1, sizeof(::svrData::ServerLoadInfo)},
-  { 32, -1, sizeof(::svrData::UpdateServerLoad)},
-  { 39, -1, sizeof(::svrData::AddNewClient)},
-  { 45, -1, sizeof(::svrData::DelClient)},
-  { 51, -1, sizeof(::svrData::ClientToken)},
-  { 58, -1, sizeof(::svrData::LoadPlayerData)},
-  { 77, -1, sizeof(::svrData::LoadPlayerDataRet)},
-  { 83, -1, sizeof(::svrData::ServerLog)},
+  { 33, -1, sizeof(::svrData::UpdateServerLoad)},
+  { 40, -1, sizeof(::svrData::AddNewClient)},
+  { 46, -1, sizeof(::svrData::DelClient)},
+  { 52, -1, sizeof(::svrData::ClientToken)},
+  { 59, -1, sizeof(::svrData::LoadPlayerData)},
+  { 78, -1, sizeof(::svrData::LoadPlayerDataRet)},
+  { 84, -1, sizeof(::svrData::ServerLog)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -458,25 +459,25 @@ void AddDescriptorsImpl() {
       "e\030\001 \001(\005\022\013\n\003sIP\030\002 \001(\t\022\r\n\005nPort\030\003 \001(\005\"W\n\002E"
       "C\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\026\n\022EC_SERVE"
       "R_ID_EXIST\020\002\022\036\n\032EC_TO_CONNECT_ID_NOT_EQU"
-      "AL\020\003\"j\n\016ServerLoadInfo\022\022\n\nnMaxClient\030\001 \001"
+      "AL\020\003\"y\n\016ServerLoadInfo\022\022\n\nnMaxClient\030\001 \001"
       "(\005\022\022\n\nnNowClient\030\002 \001(\005\022\r\n\005nPort\030\003 \001(\005\022\013\n"
-      "\003sIP\030\004 \001(\t\022\024\n\014nSubServerID\030\005 \001(\005\"D\n\020Upda"
-      "teServerLoad\022\027\n\017nClientCountNow\030\001 \001(\005\022\027\n"
-      "\017nClientCountMax\030\002 \001(\005\"\037\n\014AddNewClient\022\017"
-      "\n\007nGateID\030\001 \001(\005\"\036\n\tDelClient\022\021\n\tnClientI"
-      "D\030\001 \001(\005\"/\n\013ClientToken\022\017\n\007sEtoken\030\001 \001(\t\022"
-      "\017\n\007sSecret\030\002 \001(\014\"\335\001\n\016LoadPlayerData\022\020\n\010c"
-      "lientid\030\001 \001(\005\022\017\n\007account\030\002 \001(\t\022\014\n\004name\030\003"
-      " \001(\t\022\014\n\004guid\030\004 \001(\003\022\013\n\003sex\030\005 \001(\005\022\013\n\003job\030\006"
-      " \001(\005\022\r\n\005level\030\007 \001(\005\022\022\n\ncreatetime\030\010 \001(\005\022"
-      "\021\n\tlogintime\030\t \001(\005\022\r\n\005mapid\030\n \001(\005\022\t\n\001x\030\013"
-      " \001(\002\022\t\n\001y\030\014 \001(\002\022\t\n\001z\030\r \001(\002\022\014\n\004data\030\016 \001(\014"
-      "\"F\n\021LoadPlayerDataRet\022\020\n\010nRetCode\030\001 \001(\005\""
-      "\037\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\"\013\n\tServ"
-      "erLogb\006proto3"
+      "\003sIP\030\004 \001(\t\022\024\n\014nSubServerID\030\005 \001(\005\022\r\n\005mapi"
+      "d\030\006 \003(\005\"D\n\020UpdateServerLoad\022\027\n\017nClientCo"
+      "untNow\030\001 \001(\005\022\027\n\017nClientCountMax\030\002 \001(\005\"\037\n"
+      "\014AddNewClient\022\017\n\007nGateID\030\001 \001(\005\"\036\n\tDelCli"
+      "ent\022\021\n\tnClientID\030\001 \001(\005\"/\n\013ClientToken\022\017\n"
+      "\007sEtoken\030\001 \001(\t\022\017\n\007sSecret\030\002 \001(\014\"\335\001\n\016Load"
+      "PlayerData\022\020\n\010clientid\030\001 \001(\005\022\017\n\007account\030"
+      "\002 \001(\t\022\014\n\004name\030\003 \001(\t\022\014\n\004guid\030\004 \001(\003\022\013\n\003sex"
+      "\030\005 \001(\005\022\013\n\003job\030\006 \001(\005\022\r\n\005level\030\007 \001(\005\022\022\n\ncr"
+      "eatetime\030\010 \001(\005\022\021\n\tlogintime\030\t \001(\005\022\r\n\005map"
+      "id\030\n \001(\005\022\t\n\001x\030\013 \001(\002\022\t\n\001y\030\014 \001(\002\022\t\n\001z\030\r \001("
+      "\002\022\014\n\004data\030\016 \001(\014\"F\n\021LoadPlayerDataRet\022\020\n\010"
+      "nRetCode\030\001 \001(\005\"\037\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC"
+      "_SUCC\020\001\"\013\n\tServerLogb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 893);
+      descriptor, 908);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "ServerMsg.proto", &protobuf_RegisterTypes);
 }
@@ -1412,6 +1413,7 @@ const int ServerLoadInfo::kNNowClientFieldNumber;
 const int ServerLoadInfo::kNPortFieldNumber;
 const int ServerLoadInfo::kSIPFieldNumber;
 const int ServerLoadInfo::kNSubServerIDFieldNumber;
+const int ServerLoadInfo::kMapidFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ServerLoadInfo::ServerLoadInfo()
@@ -1425,6 +1427,7 @@ ServerLoadInfo::ServerLoadInfo()
 ServerLoadInfo::ServerLoadInfo(const ServerLoadInfo& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
+      mapid_(from.mapid_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   sip_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
@@ -1476,6 +1479,7 @@ void ServerLoadInfo::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  mapid_.Clear();
   sip_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&nmaxclient_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&nsubserverid_) -
@@ -1565,6 +1569,25 @@ bool ServerLoadInfo::MergePartialFromCodedStream(
         break;
       }
 
+      // repeated int32 mapid = 6;
+      case 6: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(50u /* 50 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, this->mutable_mapid())));
+        } else if (
+            static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(48u /* 48 & 0xFF */)) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 1, 50u, input, this->mutable_mapid())));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -1621,6 +1644,17 @@ void ServerLoadInfo::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->nsubserverid(), output);
   }
 
+  // repeated int32 mapid = 6;
+  if (this->mapid_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(6, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(static_cast< ::google::protobuf::uint32>(
+        _mapid_cached_byte_size_));
+  }
+  for (int i = 0, n = this->mapid_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32NoTag(
+      this->mapid(i), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -1666,6 +1700,19 @@ void ServerLoadInfo::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->nsubserverid(), target);
   }
 
+  // repeated int32 mapid = 6;
+  if (this->mapid_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      6,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+        static_cast< ::google::protobuf::int32>(
+            _mapid_cached_byte_size_), target);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteInt32NoTagToArray(this->mapid_, target);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -1683,6 +1730,22 @@ size_t ServerLoadInfo::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
+  // repeated int32 mapid = 6;
+  {
+    size_t data_size = ::google::protobuf::internal::WireFormatLite::
+      Int32Size(this->mapid_);
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+            static_cast< ::google::protobuf::int32>(data_size));
+    }
+    int cached_size = ::google::protobuf::internal::ToCachedSize(data_size);
+    GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+    _mapid_cached_byte_size_ = cached_size;
+    GOOGLE_SAFE_CONCURRENT_WRITES_END();
+    total_size += data_size;
+  }
+
   // string sIP = 4;
   if (this->sip().size() > 0) {
     total_size += 1 +
@@ -1747,6 +1810,7 @@ void ServerLoadInfo::MergeFrom(const ServerLoadInfo& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  mapid_.MergeFrom(from.mapid_);
   if (from.sip().size() > 0) {
 
     sip_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.sip_);
@@ -1789,6 +1853,7 @@ void ServerLoadInfo::Swap(ServerLoadInfo* other) {
 }
 void ServerLoadInfo::InternalSwap(ServerLoadInfo* other) {
   using std::swap;
+  mapid_.InternalSwap(&other->mapid_);
   sip_.Swap(&other->sip_);
   swap(nmaxclient_, other->nmaxclient_);
   swap(nnowclient_, other->nnowclient_);

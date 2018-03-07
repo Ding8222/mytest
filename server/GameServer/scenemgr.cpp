@@ -52,7 +52,9 @@ bool CScenemgr::Init()
 	const std::list<CMapInfo*> maplist = CMapConfig::Instance().GetMapList();
 	for (auto &iter : maplist)
 	{
-		if (!AddScene(iter))
+		if (AddScene(iter))
+			RunStateLog("加载普通场景成功，地图ID： %d", (*iter).GetMapID());
+		else
 		{
 			RunStateError("加载普通场景失败，地图ID： %d", (*iter).GetMapID());
 			return false;

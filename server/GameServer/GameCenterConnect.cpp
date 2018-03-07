@@ -6,6 +6,8 @@
 #include "PlayerMgr.h"
 #include "Utilities.h"
 #include "serverlog.h"
+#include "MapConfig.h"
+#include "MapInfo.h"
 
 #include "MainType.h"
 #include "ServerType.h"
@@ -58,6 +60,12 @@ void CGameCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
 	sendMsg.set_nnowclient(CPlayerMgr::Instance().GetPlayerSize());
 	sendMsg.set_nport(CConfig::Instance().GetListenPort());
 	sendMsg.set_sip(CConfig::Instance().GetServerIP());
+	const std::list<CMapInfo*> maplist = CMapConfig::Instance().GetMapList();
+	for (auto &iter : maplist)
+	{
+		sendMsg.add_mapid(iter->GetMapID());
+	}
+
 	SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_LOADINFO);
 }
 
