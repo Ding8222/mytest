@@ -459,14 +459,7 @@ bool CConnection::Real_Open (const char* dbname, const char *username, const cha
 	m_port = port;
 	
 	Close();
-
-	{
-		char buf[1024] = { 0 };
-		snprintf(buf, sizeof(buf) - 1, "thread_id = %d", CURRENT_THREAD);
-		buf[sizeof(buf) - 1] = 0;
-		ErrorOut(buf);
-	}
-
+	
 	m_conn = mysql_init(NULL);
 	if (!m_conn)
 	{

@@ -94,9 +94,6 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 				CClientAuth::Instance().AddAuthInfo(pMsg);
 				break;
 			}
-			default:
-			{
-			}
 			}
 			break;
 		}
@@ -112,14 +109,8 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 				CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
 				break;
 			}
-			default:
-			{
-			}
 			}
 			break;
-		}
-		default:
-		{
 		}
 		}
 	}

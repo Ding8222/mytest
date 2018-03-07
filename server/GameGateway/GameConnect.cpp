@@ -10,6 +10,7 @@
 #include "ServerType.h"
 #include "ClientType.h"
 #include "ServerMsg.pb.h"
+#include "ClientMsg.pb.h"
 
 extern int64 g_currenttime;
 
@@ -71,6 +72,27 @@ void CGameConnect::ProcessMsg(connector *_con)
 		msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
 		pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
 
+		if (tl->id < 0)
+		{
+			int nClienNum = abs(tl->id);
+			if(nClienNum >0)
+			{
+				MessagePack *pkmain = (MessagePack *)pMsg;
+				pkmain->Begin();
+				int pbSize = pkmain->GetInt32();
+				size_t size = 0;
+				MessagePack *pk = (MessagePack *)pkmain->GetBlockRef(pbSize, &size);
+				int nClientID = 0;
+				for (int i = 0; i < nClienNum; ++i)
+				{
+					nClientID = pkmain->GetInt32();
+					CGateClientMgr::Instance().SendMsg(nClientID, pk);
+				}
+			}
+		}
+		// 转发给client
+		CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
+		
 		switch (pMsg->GetMainType())
 		{
 		case SERVER_TYPE_MAIN:
@@ -82,9 +104,6 @@ void CGameConnect::ProcessMsg(connector *_con)
 				_con->SetRecvPingTime(g_currenttime);
 				break;
 			}
-			default:
-			{
-			}
 			}
 			break;
 		}
@@ -94,21 +113,14 @@ void CGameConnect::ProcessMsg(connector *_con)
 			{
 			case CLIENT_SUB_LOAD_PLAYERDATA:
 			{
-				CGateClientMgr::Instance().SetClientAlreadyLogin(tl->id, true);
-				CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
+				netData::LoadPlayerDataFinish msg;
+				_CHECK_PARSE_(pMsg, msg);
+				if(msg.ncode()== netData::LoadPlayerDataFinish::EC_SUCC)
+					CGateClientMgr::Instance().SetClientAlreadyLogin(tl->id, true);
 				break;
-			}
-			default:
-			{
-				CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
 			}
 			}
 			break;
-		}
-		default:
-		{
-			// 转发给client
-			CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
 		}
 		}
 	}
