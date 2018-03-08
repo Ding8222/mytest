@@ -93,7 +93,6 @@ void CLogConnecter::SendLog()
 {
 	if (isReady)
 	{
-		svrData::ServerLog sendMsg;
-		SendMsgToServer(LogServerID, sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVERLOG);
+
 	}
 }

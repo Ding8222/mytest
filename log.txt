@@ -108,3 +108,4 @@ logsvr，namechecksvr
 --ing
 --登陆负载v1
 --切换地图和切换game服务器待做
+--切换地图和换线一起合并制作

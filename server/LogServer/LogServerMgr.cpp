@@ -295,13 +295,6 @@ void CLogServerMgr::ProcessMsg(serverinfo *info)
 				info->SetPingTime(g_currenttime);
 				break;
 			}
-			case SVR_SUB_SERVERLOG:
-			{
-				svrData::ServerLog msg;
-				_CHECK_PARSE_(pMsg, msg);
-
-				//处理收到的log
-			}
 			default:
 				break;
 			}

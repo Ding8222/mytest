@@ -435,6 +435,31 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 				CClientAuthMgr::Instance().SendLoadPlayerDataToLogic(pMsg, tl->id);
 				break;
 			}
+			case SVR_SUB_CHANGELINE:
+			{
+				// client换线切图
+				svrData::ChangeLine msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				svrData::ChangeLineRet SendMsg;
+				ServerStatusInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByMapID(msg.nmapid(), msg.nlineid());
+				if (_pInfo)
+				{
+					SendMsg.set_nretcode(netData::AuthRet::EC_SUCC);
+					SendMsg.set_nserverid(_pInfo->nServerID);
+					SendMsg.set_sip(_pInfo->chIP);
+					SendMsg.set_nport(_pInfo->nPort);
+					SendMsg.set_nmapid(msg.nmapid());
+
+					svrData::ClientToken sendMsg;
+					sendMsg.set_setoken(msg.setoken());
+					sendMsg.set_ssecret(msg.ssecret());
+					CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GATE, 0, _pInfo->nServerID);
+				}
+				else
+					SendMsg.set_nretcode(netData::AuthRet::EC_SERVER);
+				break;
+			}
 			default:
 				break;
 			}

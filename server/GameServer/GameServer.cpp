@@ -88,7 +88,7 @@ bool CGameServer::Init()
 			break;
 		}
 
-		if (!CScenemgr::Instance().Init())
+		if (!CSceneMgr::Instance().Init())
 		{
 			RunStateError("初始化Scenemgr失败!");
 			break;
@@ -121,7 +121,7 @@ bool CGameServer::Init()
 	CLogConnecter::Instance().Destroy();
 	CMapConfig::Instance().Destroy();
 	CPlayerMgr::Instance().Destroy();
-	CScenemgr::Instance().Destroy();
+	CSceneMgr::Instance().Destroy();
 	CInstanceMgr::Instance().Destroy();
 	CSVData::Destroy();
 	Destroy();
@@ -168,7 +168,7 @@ void CGameServer::Run()
 	CLogConnecter::Instance().Destroy();
 	CMapConfig::Instance().Destroy();
 	CPlayerMgr::Instance().Destroy();
-	CScenemgr::Instance().Destroy();
+	CSceneMgr::Instance().Destroy();
 	CInstanceMgr::Instance().Destroy();
 	CSVData::Destroy();
 
@@ -188,7 +188,7 @@ void CGameServer::RunOnce()
 	CLogConnecter::Instance().Run();
 
 	CPlayerMgr::Instance().Run();
-	CScenemgr::Instance().Run();
+	CSceneMgr::Instance().Run();
 	CInstanceMgr::Instance().Run();
 
 	CGameGatewayMgr::Instance().EndRun();

@@ -53,6 +53,7 @@ void CGateCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
 {
 	// 发送负载信息给Center
 	svrData::ServerLoadInfo sendMsg;
+	sendMsg.set_nlineid(CConfig::Instance().GetLineID());
 	sendMsg.set_nmaxclient(0);
 	sendMsg.set_nnowclient(CClientAuth::Instance().GetClientSize());
 	sendMsg.set_nport(CConfig::Instance().GetListenPort());

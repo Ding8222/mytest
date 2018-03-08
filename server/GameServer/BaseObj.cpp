@@ -49,6 +49,16 @@ void CBaseObj::SetScene(CScene *_Scene)
 	m_Scene = _Scene;
 }
 
+// 离开当前场景
+bool CBaseObj::LeaveScene()
+{
+	if (m_Scene)
+	{
+		return m_Scene->DelObj(this);
+	}
+	return false;
+}
+
 // 移动到某个坐标
 bool CBaseObj::MoveTo(float x, float y, float z)
 {

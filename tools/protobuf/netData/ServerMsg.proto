@@ -34,12 +34,13 @@ message ServerRegisterRet
 // 0-4 发送服务器负载
 message ServerLoadInfo
 {
-	int32 nMaxClient = 1;   // 最大Client
-	int32 nNowClient = 2;   // 当前Client
-	int32 nPort = 3;        // 端口
-	string sIP = 4;			// IP
-	int32 nSubServerID = 5;	// 并联的ServerID
-	repeated int32 mapid = 6;// 加载了哪些地图
+	int32 nLineID = 1;
+	int32 nMaxClient = 2;   // 最大Client
+	int32 nNowClient = 3;   // 当前Client
+	int32 nPort = 4;        // 端口
+	string sIP = 5;			// IP
+	int32 nSubServerID = 6;	// 并联的ServerID
+	repeated int32 mapid = 7;// 加载了哪些地图
 }
 
 // 0-5 服务器负载更新
@@ -98,8 +99,27 @@ message LoadPlayerDataRet
 	int32 nRetCode = 1;		// 返回的信息
 }
 
-// 0-11
-message ServerLog
+// 0-11 切换线路
+message ChangeLine
 {
-	
+	int32 nMapID = 1;	//目标地图ID
+	int32 nLineID = 2;	// 目标线路ID
+	string sEtoken = 3;	// 账号信息
+	bytes sSecret = 4;	// 秘钥
+}
+
+// 0-12 切换线路返回
+message ChangeLineRet
+{
+	enum EC
+	{
+		EC_OTHER = 0;
+		EC_SUCC = 1;	
+		EC_SERVER = 2;	//分配server失败
+	};
+	int32 nRetCode = 1;		// 返回的信息
+	int32 nServerID = 2;	// 返回要连接的服务器ID
+	string sIP = 3;			// 返回要去连接的ip地址
+	int32 nPort = 4;			// 返回要去连接的port
+	int32 nMapID = 5;		// 要加载的地图ID
 }

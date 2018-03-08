@@ -36,17 +36,17 @@ static void scene_release(CScene *self)
 	ScenePool().FreeObject(self);
 }
 
-CScenemgr::CScenemgr()
+CSceneMgr::CSceneMgr()
 {
 	m_SceneMap.clear();
 }
 
-CScenemgr::~CScenemgr()
+CSceneMgr::~CSceneMgr()
 {
 	Destroy();
 }
 
-bool CScenemgr::Init()
+bool CSceneMgr::Init()
 {
 	// 加载普通地图
 	const std::list<CMapInfo*> maplist = CMapConfig::Instance().GetMapList();
@@ -64,7 +64,7 @@ bool CScenemgr::Init()
 	return true;
 }
 
-void CScenemgr::Destroy()
+void CSceneMgr::Destroy()
 {
 	std::unordered_map<int, CScene *>::iterator iter = m_SceneMap.begin();
 	for (; iter != m_SceneMap.end(); ++iter)
@@ -74,7 +74,7 @@ void CScenemgr::Destroy()
 	m_SceneMap.clear();
 }
 
-void CScenemgr::Run()
+void CSceneMgr::Run()
 {
 	// 普通地图
 	for (auto &i : m_SceneMap)
@@ -83,7 +83,7 @@ void CScenemgr::Run()
 	}
 }
 
-bool CScenemgr::AddScene(CMapInfo* mapconfig)
+bool CSceneMgr::AddScene(CMapInfo* mapconfig)
 {
 	if (!mapconfig)
 		return false;
@@ -106,7 +106,7 @@ bool CScenemgr::AddScene(CMapInfo* mapconfig)
 	return false;
 }
 
-CScene *CScenemgr::FindScene(int mapid)
+CScene *CSceneMgr::FindScene(int mapid)
 {
 	auto iter = m_SceneMap.find(mapid);
 	if (iter != m_SceneMap.end())

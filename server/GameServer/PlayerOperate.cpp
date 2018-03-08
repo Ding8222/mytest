@@ -1,7 +1,11 @@
-#include "PlayerOperate.h"
+﻿#include "PlayerOperate.h"
 #include "Utilities.h"
 #include "msgbase.h"
 #include "GameGatewayMgr.h"
+#include "SceneMgr.h"
+#include "MapConfig.h"
+#include "Scene.h"
+#include "serverlog.h"
 
 #include "MainType.h"
 #include "ServerType.h"
@@ -73,7 +77,46 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 		netData::ChangeMap msg;
 		_CHECK_PARSE_(pMsg, msg);
 
+		int32 nMapID = msg.nmapid();
+		CScene *scene = CSceneMgr::Instance().FindScene(nMapID);
+		if (scene)
+		{
+			// 本线路存在的地图
+			if (pPlayer->LeaveScene())
+				scene->AddObj(pPlayer);
+			else
+			{
+				RunStateError("玩家[%s][%d]离开地图[%d]失败，下线!", 
+					pPlayer->GetName(), pPlayer->GetTempID(), 
+					pPlayer->GetScene() == nullptr ? -1 : pPlayer->GetScene()->GetMapID()
+				);
+				pPlayer->OffLine();
+			}
+		}
+		else
+		{
+			// 本线路不存在的地图
+			if (CMapConfig::Instance().isValidMapID(nMapID))
+			{
+				// 在其他线路
+				// 向Center请求转移进入其他线路地图
+				svrData::ChangeLine SendMsg;
+				SendMsg.set_nlineid(0);
+				SendMsg.set_nmapid(nMapID);
 
+				FuncUti::SendMsgToCenter(pPlayer, SendMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE);
+#ifdef _DEBUG
+				RunStateError("玩家[%s]离开地图[%d]，换线!目标地图[%d]", 
+					pPlayer->GetName(),pPlayer->GetScene() == nullptr ? -1 : pPlayer->GetScene()->GetMapID(),
+					nMapID
+				);
+#endif
+			}
+			else
+			{
+				// 不存在的地图ID
+			}
+		}
 		break;
 	}
 	}

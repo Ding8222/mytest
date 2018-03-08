@@ -39,6 +39,7 @@ CMapConfig::CMapConfig()
 {
 	m_MapList.clear();
 	m_MapSet.clear();
+	m_TotalMapList.clear();
 }
 
 CMapConfig::~CMapConfig()
@@ -76,7 +77,22 @@ bool CMapConfig::Init()
 
 	while (pinfo)
 	{
-		int lineid = 0;
+		int32 mapid = 0;
+		if (pinfo->QueryIntAttribute("mapid", &mapid) != XML_SUCCESS)
+		{
+			RunStateError("没有找到字段： 'mapid'");
+			return false;
+		}
+
+		if (mapid <= 0 || mapid >= static_cast<int>(m_MapSet.size()))
+		{
+			RunStateError("地图ID错误！");
+			return false;
+		}
+
+		m_TotalMapList.insert(mapid);
+
+		int32 lineid = 0;
 		if (pinfo->QueryIntAttribute("lineid", &lineid) != XML_SUCCESS)
 		{
 			RunStateError("没有找到字段： 'lineid'");
@@ -93,19 +109,6 @@ bool CMapConfig::Init()
 		{
 			pinfo = pinfo->NextSiblingElement("maps");
 			continue;
-		}
-
-		int mapid = 0;
-		if (pinfo->QueryIntAttribute("mapid", &mapid) != XML_SUCCESS)
-		{
-			RunStateError("没有找到字段： 'mapid'");
-			return false;
-		}
-
-		if (mapid <= 0 || mapid >= static_cast<int>(m_MapSet.size()))
-		{
-			RunStateError("地图ID错误！");
-			return false;
 		}
 
 		std::string filename = pinfo->Attribute("bar_filename");
@@ -151,9 +154,10 @@ void CMapConfig::Destroy()
 		map_release(*iter);
 	}
 	m_MapList.clear();
+	m_TotalMapList.clear();
 }
 
-CMapInfo *CMapConfig::FindMapInfo(int mapid)
+CMapInfo *CMapConfig::FindMapInfo(int32 mapid)
 {
 	if (mapid <= 0 || mapid > static_cast<int>(m_MapSet.size()))
 		return nullptr;
@@ -164,4 +168,13 @@ CMapInfo *CMapConfig::FindMapInfo(int mapid)
 const std::list<CMapInfo*>& CMapConfig::GetMapList()
 {
 	return m_MapList;
+}
+
+bool CMapConfig::isValidMapID(int32 id)
+{
+	auto iter = m_TotalMapList.find(id);
+	if (iter != m_TotalMapList.end())
+		return true;
+
+	return false;
 }

@@ -9,15 +9,15 @@
 class CScene;
 class CMapInfo;
 
-class CScenemgr
+class CSceneMgr
 {
 public:
-	CScenemgr();
-	~CScenemgr();
+	CSceneMgr();
+	~CSceneMgr();
 
-	static CScenemgr &Instance()
+	static CSceneMgr &Instance()
 	{
-		static CScenemgr m;
+		static CSceneMgr m;
 		return m;
 	}
 

@@ -71,9 +71,11 @@ public:
 	// 设置当前场景
 	void SetScene(CScene *_Scene);
 
-	//获取当前场景
+	// 获取当前场景
 	CScene* GetScene() { return m_Scene; }
 
+	// 离开当前场景
+	bool LeaveScene();
 private:
 	// 当前地图ID
 	int m_NowMapID;

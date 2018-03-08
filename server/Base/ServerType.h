@@ -32,5 +32,8 @@
 // 返回加载数据结果
 #define SVR_SUB_LOAD_PLAYERDATA_RET 10
 
-// log信息
-#define  SVR_SUB_SERVERLOG 11
+// 切换线路
+#define  SVR_SUB_CHANGELINE 11
+
+// 切换线路返回
+#define  SVR_SUB_CHANGELINE_RET 12

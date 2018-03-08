@@ -62,7 +62,7 @@ void CServerStatusMgr::AddNewServer(serverinfo *info, Msg *pMsg)
 	svrData::ServerLoadInfo msg;
 	_CHECK_PARSE_(pMsg, msg);
 	
-	int nServerID = info->GetServerID();
+	int32 nServerID = info->GetServerID();
 	auto iter = m_ServerInfo.find(nServerID);
 	assert(iter == m_ServerInfo.end());
 	if (iter == m_ServerInfo.end())
@@ -92,19 +92,29 @@ void CServerStatusMgr::AddNewServer(serverinfo *info, Msg *pMsg)
 		auto iter = m_ServerMapInfo.find(i);
 		if (iter != m_ServerMapInfo.end())
 		{
-			std::set<int> &maplist = iter->second;
-			maplist.insert(nServerID);
+			std::list<stServerInfo> &maplist = iter->second;
+
+			stServerInfo temp;
+			temp.nLineiD = msg.nlineid();
+			temp.nServerID = nServerID;
+
+			maplist.push_back(temp);
 		}
 		else
 		{
-			std::set<int> maplist;
-			maplist.insert(nServerID);
+			stServerInfo temp;
+			temp.nLineiD = msg.nlineid();
+			temp.nServerID = nServerID;
+
+			std::list<stServerInfo> maplist;
+			maplist.push_back(temp);
+
 			m_ServerMapInfo.insert(std::make_pair(i, maplist));
 		}
 	}
 }
 
-void CServerStatusMgr::UpdateServerLoad(int id, int clientcountnow, int clientcountmax)
+void CServerStatusMgr::UpdateServerLoad(int32 id, int32 clientcountnow, int32 clientcountmax)
 {
 	auto iter = m_ServerInfo.find(id);
 	if (iter != m_ServerInfo.end())
@@ -114,7 +124,7 @@ void CServerStatusMgr::UpdateServerLoad(int id, int clientcountnow, int clientco
 	}
 }
 
-void CServerStatusMgr::DelServerID(int serverid)
+void CServerStatusMgr::DelServerID(int32 serverid)
 {
 	auto iter = m_ServerInfo.find(serverid);
 	if (iter != m_ServerInfo.end())
@@ -133,7 +143,7 @@ void CServerStatusMgr::DelServerID(int serverid)
 	}
 }
 
-ServerStatusInfo *CServerStatusMgr::GetGateInfoByServerID(int id)
+ServerStatusInfo *CServerStatusMgr::GetGateInfoByServerID(int32 id)
 {
 	auto iterGame = m_ServerInfo.find(id);
 	if (iterGame != m_ServerInfo.end())
@@ -151,18 +161,21 @@ ServerStatusInfo *CServerStatusMgr::GetGateInfoByServerID(int id)
 	return nullptr;
 }
 
-ServerStatusInfo *CServerStatusMgr::GetGateInfoByMapID(int id)
+ServerStatusInfo *CServerStatusMgr::GetGateInfoByMapID(int32 id, int32 lineid)
 {
 	auto iter = m_ServerMapInfo.find(id);
 	if (iter != m_ServerMapInfo.end())
 	{
-		std::set<int> &serverset = iter->second;
+		std::list<stServerInfo> &serverset = iter->second;
 		if (serverset.size() > 0)
 		{
 			//这里列出了所有可进入的服务器ID
 			//可以根据负载选择一个服务器信息返回
-			for(auto &i: serverset)
-				return GetGateInfoByServerID(i);
+			for (auto &i : serverset)
+			{
+				if (lineid == 0 || i.nLineiD == lineid)
+					return GetGateInfoByServerID(i.nServerID);
+			}
 		}
 	}
 	return nullptr;

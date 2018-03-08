@@ -37,7 +37,7 @@ namespace protobuf_ServerMsg_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[11];
+  static const ::google::protobuf::internal::ParseTable schema[12];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -63,8 +63,10 @@ void InitDefaultsLoadPlayerDataImpl();
 void InitDefaultsLoadPlayerData();
 void InitDefaultsLoadPlayerDataRetImpl();
 void InitDefaultsLoadPlayerDataRet();
-void InitDefaultsServerLogImpl();
-void InitDefaultsServerLog();
+void InitDefaultsChangeLineImpl();
+void InitDefaultsChangeLine();
+void InitDefaultsChangeLineRetImpl();
+void InitDefaultsChangeLineRet();
 inline void InitDefaults() {
   InitDefaultsPing();
   InitDefaultsServerRegister();
@@ -76,13 +78,20 @@ inline void InitDefaults() {
   InitDefaultsClientToken();
   InitDefaultsLoadPlayerData();
   InitDefaultsLoadPlayerDataRet();
-  InitDefaultsServerLog();
+  InitDefaultsChangeLine();
+  InitDefaultsChangeLineRet();
 }
 }  // namespace protobuf_ServerMsg_2eproto
 namespace svrData {
 class AddNewClient;
 class AddNewClientDefaultTypeInternal;
 extern AddNewClientDefaultTypeInternal _AddNewClient_default_instance_;
+class ChangeLine;
+class ChangeLineDefaultTypeInternal;
+extern ChangeLineDefaultTypeInternal _ChangeLine_default_instance_;
+class ChangeLineRet;
+class ChangeLineRetDefaultTypeInternal;
+extern ChangeLineRetDefaultTypeInternal _ChangeLineRet_default_instance_;
 class ClientToken;
 class ClientTokenDefaultTypeInternal;
 extern ClientTokenDefaultTypeInternal _ClientToken_default_instance_;
@@ -101,9 +110,6 @@ extern PingDefaultTypeInternal _Ping_default_instance_;
 class ServerLoadInfo;
 class ServerLoadInfoDefaultTypeInternal;
 extern ServerLoadInfoDefaultTypeInternal _ServerLoadInfo_default_instance_;
-class ServerLog;
-class ServerLogDefaultTypeInternal;
-extern ServerLogDefaultTypeInternal _ServerLog_default_instance_;
 class ServerRegister;
 class ServerRegisterDefaultTypeInternal;
 extern ServerRegisterDefaultTypeInternal _ServerRegister_default_instance_;
@@ -117,13 +123,14 @@ extern UpdateServerLoadDefaultTypeInternal _UpdateServerLoad_default_instance_;
 namespace google {
 namespace protobuf {
 template<> ::svrData::AddNewClient* Arena::Create< ::svrData::AddNewClient>(Arena*);
+template<> ::svrData::ChangeLine* Arena::Create< ::svrData::ChangeLine>(Arena*);
+template<> ::svrData::ChangeLineRet* Arena::Create< ::svrData::ChangeLineRet>(Arena*);
 template<> ::svrData::ClientToken* Arena::Create< ::svrData::ClientToken>(Arena*);
 template<> ::svrData::DelClient* Arena::Create< ::svrData::DelClient>(Arena*);
 template<> ::svrData::LoadPlayerData* Arena::Create< ::svrData::LoadPlayerData>(Arena*);
 template<> ::svrData::LoadPlayerDataRet* Arena::Create< ::svrData::LoadPlayerDataRet>(Arena*);
 template<> ::svrData::Ping* Arena::Create< ::svrData::Ping>(Arena*);
 template<> ::svrData::ServerLoadInfo* Arena::Create< ::svrData::ServerLoadInfo>(Arena*);
-template<> ::svrData::ServerLog* Arena::Create< ::svrData::ServerLog>(Arena*);
 template<> ::svrData::ServerRegister* Arena::Create< ::svrData::ServerRegister>(Arena*);
 template<> ::svrData::ServerRegisterRet* Arena::Create< ::svrData::ServerRegisterRet>(Arena*);
 template<> ::svrData::UpdateServerLoad* Arena::Create< ::svrData::UpdateServerLoad>(Arena*);
@@ -174,6 +181,27 @@ inline bool LoadPlayerDataRet_EC_Parse(
     const ::std::string& name, LoadPlayerDataRet_EC* value) {
   return ::google::protobuf::internal::ParseNamedEnum<LoadPlayerDataRet_EC>(
     LoadPlayerDataRet_EC_descriptor(), name, value);
+}
+enum ChangeLineRet_EC {
+  ChangeLineRet_EC_EC_OTHER = 0,
+  ChangeLineRet_EC_EC_SUCC = 1,
+  ChangeLineRet_EC_ChangeLineRet_EC_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  ChangeLineRet_EC_ChangeLineRet_EC_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool ChangeLineRet_EC_IsValid(int value);
+const ChangeLineRet_EC ChangeLineRet_EC_EC_MIN = ChangeLineRet_EC_EC_OTHER;
+const ChangeLineRet_EC ChangeLineRet_EC_EC_MAX = ChangeLineRet_EC_EC_SUCC;
+const int ChangeLineRet_EC_EC_ARRAYSIZE = ChangeLineRet_EC_EC_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* ChangeLineRet_EC_descriptor();
+inline const ::std::string& ChangeLineRet_EC_Name(ChangeLineRet_EC value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    ChangeLineRet_EC_descriptor(), value);
+}
+inline bool ChangeLineRet_EC_Parse(
+    const ::std::string& name, ChangeLineRet_EC* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ChangeLineRet_EC>(
+    ChangeLineRet_EC_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -638,10 +666,10 @@ class ServerLoadInfo : public ::google::protobuf::Message /* @@protoc_insertion_
 
   // accessors -------------------------------------------------------
 
-  // repeated int32 mapid = 6;
+  // repeated int32 mapid = 7;
   int mapid_size() const;
   void clear_mapid();
-  static const int kMapidFieldNumber = 6;
+  static const int kMapidFieldNumber = 7;
   ::google::protobuf::int32 mapid(int index) const;
   void set_mapid(int index, ::google::protobuf::int32 value);
   void add_mapid(::google::protobuf::int32 value);
@@ -650,9 +678,9 @@ class ServerLoadInfo : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::RepeatedField< ::google::protobuf::int32 >*
       mutable_mapid();
 
-  // string sIP = 4;
+  // string sIP = 5;
   void clear_sip();
-  static const int kSIPFieldNumber = 4;
+  static const int kSIPFieldNumber = 5;
   const ::std::string& sip() const;
   void set_sip(const ::std::string& value);
   #if LANG_CXX11
@@ -664,27 +692,33 @@ class ServerLoadInfo : public ::google::protobuf::Message /* @@protoc_insertion_
   ::std::string* release_sip();
   void set_allocated_sip(::std::string* sip);
 
-  // int32 nMaxClient = 1;
+  // int32 nLineID = 1;
+  void clear_nlineid();
+  static const int kNLineIDFieldNumber = 1;
+  ::google::protobuf::int32 nlineid() const;
+  void set_nlineid(::google::protobuf::int32 value);
+
+  // int32 nMaxClient = 2;
   void clear_nmaxclient();
-  static const int kNMaxClientFieldNumber = 1;
+  static const int kNMaxClientFieldNumber = 2;
   ::google::protobuf::int32 nmaxclient() const;
   void set_nmaxclient(::google::protobuf::int32 value);
 
-  // int32 nNowClient = 2;
+  // int32 nNowClient = 3;
   void clear_nnowclient();
-  static const int kNNowClientFieldNumber = 2;
+  static const int kNNowClientFieldNumber = 3;
   ::google::protobuf::int32 nnowclient() const;
   void set_nnowclient(::google::protobuf::int32 value);
 
-  // int32 nPort = 3;
+  // int32 nPort = 4;
   void clear_nport();
-  static const int kNPortFieldNumber = 3;
+  static const int kNPortFieldNumber = 4;
   ::google::protobuf::int32 nport() const;
   void set_nport(::google::protobuf::int32 value);
 
-  // int32 nSubServerID = 5;
+  // int32 nSubServerID = 6;
   void clear_nsubserverid();
-  static const int kNSubServerIDFieldNumber = 5;
+  static const int kNSubServerIDFieldNumber = 6;
   ::google::protobuf::int32 nsubserverid() const;
   void set_nsubserverid(::google::protobuf::int32 value);
 
@@ -695,6 +729,7 @@ class ServerLoadInfo : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::RepeatedField< ::google::protobuf::int32 > mapid_;
   mutable int _mapid_cached_byte_size_;
   ::google::protobuf::internal::ArenaStringPtr sip_;
+  ::google::protobuf::int32 nlineid_;
   ::google::protobuf::int32 nmaxclient_;
   ::google::protobuf::int32 nnowclient_;
   ::google::protobuf::int32 nport_;
@@ -1494,24 +1529,24 @@ class LoadPlayerDataRet : public ::google::protobuf::Message /* @@protoc_inserti
 };
 // -------------------------------------------------------------------
 
-class ServerLog : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:svrData.ServerLog) */ {
+class ChangeLine : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:svrData.ChangeLine) */ {
  public:
-  ServerLog();
-  virtual ~ServerLog();
+  ChangeLine();
+  virtual ~ChangeLine();
 
-  ServerLog(const ServerLog& from);
+  ChangeLine(const ChangeLine& from);
 
-  inline ServerLog& operator=(const ServerLog& from) {
+  inline ChangeLine& operator=(const ChangeLine& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  ServerLog(ServerLog&& from) noexcept
-    : ServerLog() {
+  ChangeLine(ChangeLine&& from) noexcept
+    : ChangeLine() {
     *this = ::std::move(from);
   }
 
-  inline ServerLog& operator=(ServerLog&& from) noexcept {
+  inline ChangeLine& operator=(ChangeLine&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -1521,34 +1556,34 @@ class ServerLog : public ::google::protobuf::Message /* @@protoc_insertion_point
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const ServerLog& default_instance();
+  static const ChangeLine& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const ServerLog* internal_default_instance() {
-    return reinterpret_cast<const ServerLog*>(
-               &_ServerLog_default_instance_);
+  static inline const ChangeLine* internal_default_instance() {
+    return reinterpret_cast<const ChangeLine*>(
+               &_ChangeLine_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     10;
 
-  void Swap(ServerLog* other);
-  friend void swap(ServerLog& a, ServerLog& b) {
+  void Swap(ChangeLine* other);
+  friend void swap(ChangeLine& a, ChangeLine& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline ServerLog* New() const PROTOBUF_FINAL {
-    return ::google::protobuf::Arena::Create<ServerLog>(NULL);
+  inline ChangeLine* New() const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<ChangeLine>(NULL);
   }
 
-  ServerLog* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
-    return ::google::protobuf::Arena::Create<ServerLog>(arena);
+  ChangeLine* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<ChangeLine>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const ServerLog& from);
-  void MergeFrom(const ServerLog& from);
+  void CopyFrom(const ChangeLine& from);
+  void MergeFrom(const ChangeLine& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -1564,7 +1599,7 @@ class ServerLog : public ::google::protobuf::Message /* @@protoc_insertion_point
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(ServerLog* other);
+  void InternalSwap(ChangeLine* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -1580,13 +1615,222 @@ class ServerLog : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   // accessors -------------------------------------------------------
 
-  // @@protoc_insertion_point(class_scope:svrData.ServerLog)
+  // string sEtoken = 3;
+  void clear_setoken();
+  static const int kSEtokenFieldNumber = 3;
+  const ::std::string& setoken() const;
+  void set_setoken(const ::std::string& value);
+  #if LANG_CXX11
+  void set_setoken(::std::string&& value);
+  #endif
+  void set_setoken(const char* value);
+  void set_setoken(const char* value, size_t size);
+  ::std::string* mutable_setoken();
+  ::std::string* release_setoken();
+  void set_allocated_setoken(::std::string* setoken);
+
+  // bytes sSecret = 4;
+  void clear_ssecret();
+  static const int kSSecretFieldNumber = 4;
+  const ::std::string& ssecret() const;
+  void set_ssecret(const ::std::string& value);
+  #if LANG_CXX11
+  void set_ssecret(::std::string&& value);
+  #endif
+  void set_ssecret(const char* value);
+  void set_ssecret(const void* value, size_t size);
+  ::std::string* mutable_ssecret();
+  ::std::string* release_ssecret();
+  void set_allocated_ssecret(::std::string* ssecret);
+
+  // int32 nMapID = 1;
+  void clear_nmapid();
+  static const int kNMapIDFieldNumber = 1;
+  ::google::protobuf::int32 nmapid() const;
+  void set_nmapid(::google::protobuf::int32 value);
+
+  // int32 nLineID = 2;
+  void clear_nlineid();
+  static const int kNLineIDFieldNumber = 2;
+  ::google::protobuf::int32 nlineid() const;
+  void set_nlineid(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:svrData.ChangeLine)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr setoken_;
+  ::google::protobuf::internal::ArenaStringPtr ssecret_;
+  ::google::protobuf::int32 nmapid_;
+  ::google::protobuf::int32 nlineid_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
-  friend void ::protobuf_ServerMsg_2eproto::InitDefaultsServerLogImpl();
+  friend void ::protobuf_ServerMsg_2eproto::InitDefaultsChangeLineImpl();
+};
+// -------------------------------------------------------------------
+
+class ChangeLineRet : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:svrData.ChangeLineRet) */ {
+ public:
+  ChangeLineRet();
+  virtual ~ChangeLineRet();
+
+  ChangeLineRet(const ChangeLineRet& from);
+
+  inline ChangeLineRet& operator=(const ChangeLineRet& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ChangeLineRet(ChangeLineRet&& from) noexcept
+    : ChangeLineRet() {
+    *this = ::std::move(from);
+  }
+
+  inline ChangeLineRet& operator=(ChangeLineRet&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChangeLineRet& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ChangeLineRet* internal_default_instance() {
+    return reinterpret_cast<const ChangeLineRet*>(
+               &_ChangeLineRet_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    11;
+
+  void Swap(ChangeLineRet* other);
+  friend void swap(ChangeLineRet& a, ChangeLineRet& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ChangeLineRet* New() const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<ChangeLineRet>(NULL);
+  }
+
+  ChangeLineRet* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<ChangeLineRet>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ChangeLineRet& from);
+  void MergeFrom(const ChangeLineRet& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ChangeLineRet* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef ChangeLineRet_EC EC;
+  static const EC EC_OTHER =
+    ChangeLineRet_EC_EC_OTHER;
+  static const EC EC_SUCC =
+    ChangeLineRet_EC_EC_SUCC;
+  static inline bool EC_IsValid(int value) {
+    return ChangeLineRet_EC_IsValid(value);
+  }
+  static const EC EC_MIN =
+    ChangeLineRet_EC_EC_MIN;
+  static const EC EC_MAX =
+    ChangeLineRet_EC_EC_MAX;
+  static const int EC_ARRAYSIZE =
+    ChangeLineRet_EC_EC_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  EC_descriptor() {
+    return ChangeLineRet_EC_descriptor();
+  }
+  static inline const ::std::string& EC_Name(EC value) {
+    return ChangeLineRet_EC_Name(value);
+  }
+  static inline bool EC_Parse(const ::std::string& name,
+      EC* value) {
+    return ChangeLineRet_EC_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // string sIP = 3;
+  void clear_sip();
+  static const int kSIPFieldNumber = 3;
+  const ::std::string& sip() const;
+  void set_sip(const ::std::string& value);
+  #if LANG_CXX11
+  void set_sip(::std::string&& value);
+  #endif
+  void set_sip(const char* value);
+  void set_sip(const char* value, size_t size);
+  ::std::string* mutable_sip();
+  ::std::string* release_sip();
+  void set_allocated_sip(::std::string* sip);
+
+  // int32 nRetCode = 1;
+  void clear_nretcode();
+  static const int kNRetCodeFieldNumber = 1;
+  ::google::protobuf::int32 nretcode() const;
+  void set_nretcode(::google::protobuf::int32 value);
+
+  // int32 nServerID = 2;
+  void clear_nserverid();
+  static const int kNServerIDFieldNumber = 2;
+  ::google::protobuf::int32 nserverid() const;
+  void set_nserverid(::google::protobuf::int32 value);
+
+  // int32 nPort = 4;
+  void clear_nport();
+  static const int kNPortFieldNumber = 4;
+  ::google::protobuf::int32 nport() const;
+  void set_nport(::google::protobuf::int32 value);
+
+  // int32 nMapID = 5;
+  void clear_nmapid();
+  static const int kNMapIDFieldNumber = 5;
+  ::google::protobuf::int32 nmapid() const;
+  void set_nmapid(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:svrData.ChangeLineRet)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr sip_;
+  ::google::protobuf::int32 nretcode_;
+  ::google::protobuf::int32 nserverid_;
+  ::google::protobuf::int32 nport_;
+  ::google::protobuf::int32 nmapid_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
+  friend void ::protobuf_ServerMsg_2eproto::InitDefaultsChangeLineRetImpl();
 };
 // ===================================================================
 
@@ -1748,7 +1992,21 @@ inline void ServerRegisterRet::set_nport(::google::protobuf::int32 value) {
 
 // ServerLoadInfo
 
-// int32 nMaxClient = 1;
+// int32 nLineID = 1;
+inline void ServerLoadInfo::clear_nlineid() {
+  nlineid_ = 0;
+}
+inline ::google::protobuf::int32 ServerLoadInfo::nlineid() const {
+  // @@protoc_insertion_point(field_get:svrData.ServerLoadInfo.nLineID)
+  return nlineid_;
+}
+inline void ServerLoadInfo::set_nlineid(::google::protobuf::int32 value) {
+  
+  nlineid_ = value;
+  // @@protoc_insertion_point(field_set:svrData.ServerLoadInfo.nLineID)
+}
+
+// int32 nMaxClient = 2;
 inline void ServerLoadInfo::clear_nmaxclient() {
   nmaxclient_ = 0;
 }
@@ -1762,7 +2020,7 @@ inline void ServerLoadInfo::set_nmaxclient(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:svrData.ServerLoadInfo.nMaxClient)
 }
 
-// int32 nNowClient = 2;
+// int32 nNowClient = 3;
 inline void ServerLoadInfo::clear_nnowclient() {
   nnowclient_ = 0;
 }
@@ -1776,7 +2034,7 @@ inline void ServerLoadInfo::set_nnowclient(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:svrData.ServerLoadInfo.nNowClient)
 }
 
-// int32 nPort = 3;
+// int32 nPort = 4;
 inline void ServerLoadInfo::clear_nport() {
   nport_ = 0;
 }
@@ -1790,7 +2048,7 @@ inline void ServerLoadInfo::set_nport(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:svrData.ServerLoadInfo.nPort)
 }
 
-// string sIP = 4;
+// string sIP = 5;
 inline void ServerLoadInfo::clear_sip() {
   sip_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1843,7 +2101,7 @@ inline void ServerLoadInfo::set_allocated_sip(::std::string* sip) {
   // @@protoc_insertion_point(field_set_allocated:svrData.ServerLoadInfo.sIP)
 }
 
-// int32 nSubServerID = 5;
+// int32 nSubServerID = 6;
 inline void ServerLoadInfo::clear_nsubserverid() {
   nsubserverid_ = 0;
 }
@@ -1857,7 +2115,7 @@ inline void ServerLoadInfo::set_nsubserverid(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:svrData.ServerLoadInfo.nSubServerID)
 }
 
-// repeated int32 mapid = 6;
+// repeated int32 mapid = 7;
 inline int ServerLoadInfo::mapid_size() const {
   return mapid_.size();
 }
@@ -2402,11 +2660,260 @@ inline void LoadPlayerDataRet::set_nretcode(::google::protobuf::int32 value) {
 
 // -------------------------------------------------------------------
 
-// ServerLog
+// ChangeLine
+
+// int32 nMapID = 1;
+inline void ChangeLine::clear_nmapid() {
+  nmapid_ = 0;
+}
+inline ::google::protobuf::int32 ChangeLine::nmapid() const {
+  // @@protoc_insertion_point(field_get:svrData.ChangeLine.nMapID)
+  return nmapid_;
+}
+inline void ChangeLine::set_nmapid(::google::protobuf::int32 value) {
+  
+  nmapid_ = value;
+  // @@protoc_insertion_point(field_set:svrData.ChangeLine.nMapID)
+}
+
+// int32 nLineID = 2;
+inline void ChangeLine::clear_nlineid() {
+  nlineid_ = 0;
+}
+inline ::google::protobuf::int32 ChangeLine::nlineid() const {
+  // @@protoc_insertion_point(field_get:svrData.ChangeLine.nLineID)
+  return nlineid_;
+}
+inline void ChangeLine::set_nlineid(::google::protobuf::int32 value) {
+  
+  nlineid_ = value;
+  // @@protoc_insertion_point(field_set:svrData.ChangeLine.nLineID)
+}
+
+// string sEtoken = 3;
+inline void ChangeLine::clear_setoken() {
+  setoken_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ChangeLine::setoken() const {
+  // @@protoc_insertion_point(field_get:svrData.ChangeLine.sEtoken)
+  return setoken_.GetNoArena();
+}
+inline void ChangeLine::set_setoken(const ::std::string& value) {
+  
+  setoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:svrData.ChangeLine.sEtoken)
+}
+#if LANG_CXX11
+inline void ChangeLine::set_setoken(::std::string&& value) {
+  
+  setoken_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:svrData.ChangeLine.sEtoken)
+}
+#endif
+inline void ChangeLine::set_setoken(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  setoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:svrData.ChangeLine.sEtoken)
+}
+inline void ChangeLine::set_setoken(const char* value, size_t size) {
+  
+  setoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:svrData.ChangeLine.sEtoken)
+}
+inline ::std::string* ChangeLine::mutable_setoken() {
+  
+  // @@protoc_insertion_point(field_mutable:svrData.ChangeLine.sEtoken)
+  return setoken_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ChangeLine::release_setoken() {
+  // @@protoc_insertion_point(field_release:svrData.ChangeLine.sEtoken)
+  
+  return setoken_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ChangeLine::set_allocated_setoken(::std::string* setoken) {
+  if (setoken != NULL) {
+    
+  } else {
+    
+  }
+  setoken_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), setoken);
+  // @@protoc_insertion_point(field_set_allocated:svrData.ChangeLine.sEtoken)
+}
+
+// bytes sSecret = 4;
+inline void ChangeLine::clear_ssecret() {
+  ssecret_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ChangeLine::ssecret() const {
+  // @@protoc_insertion_point(field_get:svrData.ChangeLine.sSecret)
+  return ssecret_.GetNoArena();
+}
+inline void ChangeLine::set_ssecret(const ::std::string& value) {
+  
+  ssecret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:svrData.ChangeLine.sSecret)
+}
+#if LANG_CXX11
+inline void ChangeLine::set_ssecret(::std::string&& value) {
+  
+  ssecret_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:svrData.ChangeLine.sSecret)
+}
+#endif
+inline void ChangeLine::set_ssecret(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  ssecret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:svrData.ChangeLine.sSecret)
+}
+inline void ChangeLine::set_ssecret(const void* value, size_t size) {
+  
+  ssecret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:svrData.ChangeLine.sSecret)
+}
+inline ::std::string* ChangeLine::mutable_ssecret() {
+  
+  // @@protoc_insertion_point(field_mutable:svrData.ChangeLine.sSecret)
+  return ssecret_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ChangeLine::release_ssecret() {
+  // @@protoc_insertion_point(field_release:svrData.ChangeLine.sSecret)
+  
+  return ssecret_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ChangeLine::set_allocated_ssecret(::std::string* ssecret) {
+  if (ssecret != NULL) {
+    
+  } else {
+    
+  }
+  ssecret_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ssecret);
+  // @@protoc_insertion_point(field_set_allocated:svrData.ChangeLine.sSecret)
+}
+
+// -------------------------------------------------------------------
+
+// ChangeLineRet
+
+// int32 nRetCode = 1;
+inline void ChangeLineRet::clear_nretcode() {
+  nretcode_ = 0;
+}
+inline ::google::protobuf::int32 ChangeLineRet::nretcode() const {
+  // @@protoc_insertion_point(field_get:svrData.ChangeLineRet.nRetCode)
+  return nretcode_;
+}
+inline void ChangeLineRet::set_nretcode(::google::protobuf::int32 value) {
+  
+  nretcode_ = value;
+  // @@protoc_insertion_point(field_set:svrData.ChangeLineRet.nRetCode)
+}
+
+// int32 nServerID = 2;
+inline void ChangeLineRet::clear_nserverid() {
+  nserverid_ = 0;
+}
+inline ::google::protobuf::int32 ChangeLineRet::nserverid() const {
+  // @@protoc_insertion_point(field_get:svrData.ChangeLineRet.nServerID)
+  return nserverid_;
+}
+inline void ChangeLineRet::set_nserverid(::google::protobuf::int32 value) {
+  
+  nserverid_ = value;
+  // @@protoc_insertion_point(field_set:svrData.ChangeLineRet.nServerID)
+}
+
+// string sIP = 3;
+inline void ChangeLineRet::clear_sip() {
+  sip_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ChangeLineRet::sip() const {
+  // @@protoc_insertion_point(field_get:svrData.ChangeLineRet.sIP)
+  return sip_.GetNoArena();
+}
+inline void ChangeLineRet::set_sip(const ::std::string& value) {
+  
+  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:svrData.ChangeLineRet.sIP)
+}
+#if LANG_CXX11
+inline void ChangeLineRet::set_sip(::std::string&& value) {
+  
+  sip_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:svrData.ChangeLineRet.sIP)
+}
+#endif
+inline void ChangeLineRet::set_sip(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:svrData.ChangeLineRet.sIP)
+}
+inline void ChangeLineRet::set_sip(const char* value, size_t size) {
+  
+  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:svrData.ChangeLineRet.sIP)
+}
+inline ::std::string* ChangeLineRet::mutable_sip() {
+  
+  // @@protoc_insertion_point(field_mutable:svrData.ChangeLineRet.sIP)
+  return sip_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ChangeLineRet::release_sip() {
+  // @@protoc_insertion_point(field_release:svrData.ChangeLineRet.sIP)
+  
+  return sip_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ChangeLineRet::set_allocated_sip(::std::string* sip) {
+  if (sip != NULL) {
+    
+  } else {
+    
+  }
+  sip_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), sip);
+  // @@protoc_insertion_point(field_set_allocated:svrData.ChangeLineRet.sIP)
+}
+
+// int32 nPort = 4;
+inline void ChangeLineRet::clear_nport() {
+  nport_ = 0;
+}
+inline ::google::protobuf::int32 ChangeLineRet::nport() const {
+  // @@protoc_insertion_point(field_get:svrData.ChangeLineRet.nPort)
+  return nport_;
+}
+inline void ChangeLineRet::set_nport(::google::protobuf::int32 value) {
+  
+  nport_ = value;
+  // @@protoc_insertion_point(field_set:svrData.ChangeLineRet.nPort)
+}
+
+// int32 nMapID = 5;
+inline void ChangeLineRet::clear_nmapid() {
+  nmapid_ = 0;
+}
+inline ::google::protobuf::int32 ChangeLineRet::nmapid() const {
+  // @@protoc_insertion_point(field_get:svrData.ChangeLineRet.nMapID)
+  return nmapid_;
+}
+inline void ChangeLineRet::set_nmapid(::google::protobuf::int32 value) {
+  
+  nmapid_ = value;
+  // @@protoc_insertion_point(field_set:svrData.ChangeLineRet.nMapID)
+}
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -2444,6 +2951,11 @@ template <> struct is_proto_enum< ::svrData::LoadPlayerDataRet_EC> : ::google::p
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::svrData::LoadPlayerDataRet_EC>() {
   return ::svrData::LoadPlayerDataRet_EC_descriptor();
+}
+template <> struct is_proto_enum< ::svrData::ChangeLineRet_EC> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::svrData::ChangeLineRet_EC>() {
+  return ::svrData::ChangeLineRet_EC_descriptor();
 }
 
 }  // namespace protobuf

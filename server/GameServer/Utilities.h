@@ -13,4 +13,6 @@ namespace FuncUti
 	void SendPBNoLoop(CPlayer *player, google::protobuf::Message &pMsg, int maintype, int subtype, bool bRef = false);
 	// 需要循环调用发送给玩家的，先把PB消息打包成Msg之后，调用该消息循环发送
 	void SendMsg(CPlayer *player, Msg &pMsg, bool bRef = false);
+	void SendMsgToCenter(CPlayer *player, google::protobuf::Message &pMsg, int maintype, int subtype);
+	void SendMsgToCenter(CPlayer *player, Msg &pMsg, bool bRef);
 }

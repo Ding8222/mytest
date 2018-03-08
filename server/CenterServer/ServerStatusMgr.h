@@ -5,13 +5,14 @@
 */
 #pragma once
 #include <unordered_map>
-#include <set>
+#include <list>
 #include "GlobalDefine.h"
 
 struct ServerStatusInfo
 {
 	ServerStatusInfo()
 	{
+		nLineID = 0;
 		nServerID = 0;
 		nServerType = 0;
 		nMaxClient = 0;
@@ -20,13 +21,26 @@ struct ServerStatusInfo
 		nPort = 0;
 		nSubServerID = 0;
 	}
-	int nServerID;
-	int nServerType;
-	int nMaxClient;
-	int nNowClient;
+	int32 nLineID;
+	int32 nServerID;
+	int32 nServerType;
+	int32 nMaxClient;
+	int32 nNowClient;
 	char chIP[MAX_IP_LEN];
-	int nPort;
-	int nSubServerID;
+	int32 nPort;
+	int32 nSubServerID;
+};
+
+struct stServerInfo
+{
+	stServerInfo()
+	{
+		nLineiD = 0;
+		nServerID = 0;
+	}
+
+	int32 nLineiD;
+	int32 nServerID;
 };
 
 class CServerStatusMgr
@@ -44,20 +58,20 @@ public:
 	void Destroy();
 
 	void AddNewServer(serverinfo *info, Msg *pMsg);
-	void UpdateServerLoad(int id, int clientcountnow, int clientcountmax);
-	void DelServerID(int serverid);
+	void UpdateServerLoad(int32 id, int32 clientcountnow, int32 clientcountmax);
+	void DelServerID(int32 serverid);
 
 	// 根据Server返回Gate的信息
-	ServerStatusInfo *GetGateInfoByServerID(int id);
+	ServerStatusInfo *GetGateInfoByServerID(int32 id);
 	// 根据负载返回玩家应该进去的服务器
-	// 传入的为申请的MapID
-	ServerStatusInfo *GetGateInfoByMapID(int id);
+	// 传入的为申请的MapID,线路ID（为0的时候，自动分配）
+	ServerStatusInfo *GetGateInfoByMapID(int32 id, int32 lineid = 0);
 private:
 
 	// <gameid,info>
-	std::unordered_map<int, ServerStatusInfo *> m_ServerInfo;
+	std::unordered_map<int32, ServerStatusInfo *> m_ServerInfo;
 	// <serverid,gateid>
-	std::unordered_map<int, int> m_GateServerInfo;
+	std::unordered_map<int32, int32> m_GateServerInfo;
 	// <mapid,serverid>
-	std::unordered_map<int, std::set<int>> m_ServerMapInfo;
+	std::unordered_map<int32, std::list<stServerInfo>> m_ServerMapInfo;
 };

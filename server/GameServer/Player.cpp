@@ -31,7 +31,7 @@ bool CPlayer::LoadData(Msg *pMsg)
 
 	SetName(msg.name().c_str());
 	SetNowPos(msg.x(), msg.y(), msg.z());
-	CScene *_pScene = CScenemgr::Instance().FindScene(msg.mapid());
+	CScene *_pScene = CSceneMgr::Instance().FindScene(msg.mapid());
 	if (!_pScene)
 		return false;
 	_pScene->AddObj(this);
@@ -50,6 +50,5 @@ bool CPlayer::SaveData()
 // 下线
 void CPlayer::OffLine()
 {
-	if(GetScene())
-		GetScene()->DelObj(this);
+	LeaveScene();
 }
