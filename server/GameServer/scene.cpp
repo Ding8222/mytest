@@ -4,6 +4,7 @@
 #include "MapInfo.h"
 #include "idmgr.c"
 #include "serverlog.h"
+#include "Utilities.h"
 
 CScene::CScene()
 {
@@ -131,9 +132,20 @@ bool CScene::Init(CMapInfo * _mapinfo)
 
 bool CScene::AddObj(CBaseObj * obj)
 {
-	if (!obj)
+	if (!FuncUti::isValidCret(obj))
 		return false;
 	
+	CScene *OldScene = obj->GetScene();
+	assert(!OldScene);
+	if (OldScene)
+	{
+		if (!OldScene->DelObj(obj))
+		{
+			RunStateError("对象%d从原地图[%d]移除失败!", obj->GetTempID(), OldScene->GetMapID());
+			return false;
+		}
+	}
+
 	int id = idmgr_allocid(m_IDPool);
 	if (id <= 0)
 	{
@@ -146,18 +158,15 @@ bool CScene::AddObj(CBaseObj * obj)
 
 	assert(m_ObjSet[id] == nullptr);
 	m_ObjSet[id] = obj;
-
-	char *mode = "wm";
-	float pos[3];
-	obj->GetNowPos(pos[0], pos[1], pos[2]);
-	Update(obj->GetTempID(), mode, pos);
+	obj->MoveTo(m_BirthPoint_X, m_BirthPoint_Y, m_BirthPoint_Z);
+	Update(obj->GetTempID(), obj->GetAoiMode(), obj->GetNowPos());
 
 	return true;
 }
 
 bool CScene::DelObj(CBaseObj * obj)
 {
-	if (!obj)
+	if (!FuncUti::isValidCret(obj))
 		return false;
 
 	int id = obj->GetTempID();
@@ -173,13 +182,10 @@ bool CScene::DelObj(CBaseObj * obj)
 	{
 		RunStateError("释放ID错误, ID:%d", id);
 	}
-	char *mode = "d";
-	float pos[3];
-	obj->GetNowPos(pos[0], pos[1], pos[2]);
-	Update(obj->GetTempID(), mode, pos);
 	obj->LeaveAoi();
-	m_ObjMap.erase(obj->GetTempID());
 	obj->SetTempID(0);
+	obj->SetScene(nullptr);
+	m_ObjMap.erase(obj->GetTempID());
 	return true;
 }
 
@@ -200,15 +206,12 @@ bool CScene::bCanMove(int x, int y, int z)
 
 bool CScene::MoveTo(CBaseObj * obj, float x, float y, float z)
 {
-	if (obj)
+	if (FuncUti::isValidCret(obj))
 	{
 		if (bCanMove(x, y, z))
 		{
 			obj->SetNowPos(x, y, z);
-			char *mode = "wm";
-			float pos[3];
-			obj->GetNowPos(pos[0], pos[1], pos[2]);
-			Update(obj->GetTempID(), mode, pos);
+			Update(obj->GetTempID(), obj->GetAoiMode(), obj->GetNowPos());
 			return true;
 		}
 	}
@@ -219,11 +222,20 @@ bool CScene::MoveTo(CBaseObj * obj, float x, float y, float z)
 static void callbackmessage(void *ud, uint32 watcher, uint32 marker) 
 {
 	CScene* sc = (CScene*)ud;
-	CBaseObj * p1 = sc->GetObj(watcher);
-	if (p1)
+	if (sc)
 	{
-		CBaseObj * p2 = sc->GetObj(marker);
-		p1->AddToAoiList(p2);
+		CBaseObj * p1 = sc->GetObj(watcher);
+		if (FuncUti::isValidCret(p1))
+		{
+			CBaseObj * p2 = sc->GetObj(marker);
+			if (FuncUti::isValidCret(p2))
+			{
+				p1->AddToAoiList(p2);
+				// 非玩家，需要帮忙加一下
+				if (!p2->IsPlayer())
+					p2->AddToAoiList(p1);
+			}
+		}
 	}
 }
 

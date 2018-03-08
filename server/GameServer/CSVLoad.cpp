@@ -1,26 +1,29 @@
 ﻿#include "CSVLoad.h"
 #include "serverlog.h"
+#include "fmt/ostream.h"
 
 namespace CSVData
 {
+	// 读取CSV
 	bool Init()
 	{
-		if (!CSV::CsvLoader::LoadCsv<Example>("Example.CSV"))
+		if (!CSV::CsvLoader::LoadCsv<CExample>("Example"))
 			return false;
-
-		RunStateError("加载CSV成功！");
+		
+		RunStateLog("加载所有CSV成功！");
 		return true;
 	}
 
+	// 需要释放申请的资源
 	void Destroy()
 	{
-		Example::Destroy();
+		CExample::Destroy();
 	}
 
-	std::unordered_map<int64, Example *> Example::m_Data;
-	bool Example::AddData(CSV::Row & _Row)
+	std::unordered_map<int64, stExample *> CExample::m_Data;
+	bool CExample::AddData(CSV::Row & _Row)
 	{
-		Example *pdata = new Example;
+		stExample *pdata = new stExample;
 		_Row.getValue(pdata->nIndex, "序号");
 		_Row.getValue(pdata->nGold, "金额");
 		_Row.getValue(pdata->text, "描述");

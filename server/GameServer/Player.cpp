@@ -5,7 +5,8 @@
 #include "msgbase.h"
 
 #include "ServerMsg.pb.h"
-CPlayer::CPlayer()
+
+CPlayer::CPlayer():CBaseObj(EOT_PLAYER)
 {
 	m_GateInfo = nullptr;
 	m_ClientID = 0;

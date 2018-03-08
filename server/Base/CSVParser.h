@@ -154,7 +154,7 @@ namespace CSV
 					return false;
 				}
 				
-				CSV::Parser file = CSV::Parser(std::string("data/csv/").append(filename));
+				CSV::Parser file = CSV::Parser(std::string("data/csv/").append(filename).append(".csv"));
 				for (size_t i = 0; i < file.rowCount(); i++)
 				{
 					if (!T::AddData(file.getRow(i)))

@@ -25,11 +25,13 @@ public:
 	void Destroy();
 	void Run();
 
+public:
 	CScene *FindScene(int mapid);
+
 private:
 	bool AddScene(CMapInfo* mapconfig);
-private:
 
+private:
 	// mapid,scene
 	std::unordered_map<int ,CScene *> m_SceneMap;
 };

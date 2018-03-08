@@ -23,9 +23,9 @@ namespace FuncUti
 		return wszString;
 	}
 
-	bool isValidCret(CBaseObj *player)
+	bool isValidCret(CBaseObj *obj)
 	{
-		if (player && !player->IsWaitRemove())
+		if (obj && !obj->IsWaitRemove())
 			return true;
 		return false;
 	}
@@ -63,11 +63,14 @@ namespace FuncUti
 				std::unordered_map<uint32, CBaseObj *>::iterator iter = playerlist->begin();
 				for (; iter != playerlist->end(); ++iter)
 				{
-					CPlayer * p = (CPlayer *)iter->second;
-					if (isValidCret(p))
+					if (iter->second->IsPlayer())
 					{
-						pkmain.PushInt32(p->GetClientID());
-						--tail.id;
+						CPlayer * p = (CPlayer *)iter->second;
+						if (isValidCret(p))
+						{
+							pkmain.PushInt32(p->GetClientID());
+							--tail.id;
+						}
 					}
 				}
 
@@ -105,11 +108,14 @@ namespace FuncUti
 			std::unordered_map<uint32, CBaseObj *>::iterator iter = playerlist->begin();
 			for (; iter != playerlist->end(); ++iter)
 			{
-				CPlayer * p = (CPlayer *)iter->second;
-				if (isValidCret(p))
+				if (iter->second->IsPlayer())
 				{
-					pkmain.PushInt32(p->GetClientID());
-					--tail.id;
+					CPlayer * p = (CPlayer *)iter->second;
+					if (isValidCret(p))
+					{
+						pkmain.PushInt32(p->GetClientID());
+						--tail.id;
+					}
 				}
 			}
 
