@@ -202,7 +202,7 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 			{
 			case ServerEnum::EST_GATE:
 			{
-				ProcessClientMsg(info->GetServerID(), tl->id, pMsg);
+				ProcessClientMsg(tl->id, pMsg);
 				break;
 			}
 			}
@@ -211,13 +211,12 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 	}
 }
 
-void CGameGatewayMgr::ProcessClientMsg(int gateid, int32 clientid, Msg *pMsg)
+void CGameGatewayMgr::ProcessClientMsg(int32 clientid, Msg *pMsg)
 {
 	CPlayer *player = CPlayerMgr::Instance().FindPlayerByClientID(clientid);
 	if (FuncUti::isValidCret(player))
 	{
-		CPlayerOperate::SetPlayer(player);
-		CPlayerOperate::Operate(pMsg, clientid);
+		Operate(player, pMsg);
 	}
 }
 

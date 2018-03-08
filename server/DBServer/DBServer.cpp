@@ -43,7 +43,7 @@ bool CDBServer::Init()
 		if (!CCtrlHandler::Instance().Init(&cb))
 		{
 			RunStateError("初始化CtrlHandler失败!");
-			return false;
+			break;
 		}
 #endif
 

@@ -13,3 +13,6 @@
 
 // 移动返回
 #define CLIENT_SUB_MOVE_RET 4
+
+// 切换地图
+#define CLIENT_SUB_CHANGEMAP 5

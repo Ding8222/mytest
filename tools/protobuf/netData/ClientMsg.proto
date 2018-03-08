@@ -43,3 +43,9 @@ message PlayerMoveRet
 	uint32 nTempID = 4;//对象的临时ID
 	int32 nCode = 5;//返回的错误码
 }
+
+// 3-6 请求切换地图
+message ChangeMap
+{
+	int32 nMapID = 1;
+}

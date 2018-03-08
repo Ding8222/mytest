@@ -42,7 +42,7 @@ bool CLogServer::Init()
 		if (!CCtrlHandler::Instance().Init(&cb))
 		{
 			RunStateError("≥ı ºªØCtrlHandler ß∞‹!");
-			return false;
+			break;
 		}
 #endif
 		if (!CLogServerMgr::Instance().Init(

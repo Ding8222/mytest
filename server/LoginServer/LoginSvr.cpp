@@ -45,7 +45,7 @@ bool CLoginServer::Init()
 		if (!CCtrlHandler::Instance().Init(&cb))
 		{
 			RunStateError("初始化CtrlHandler失败!");
-			return false;
+			break;
 		}
 #endif
 		if (!CLoginClientMgr::Instance().Init(CConfig::Instance().GetMaxClientNum(),
@@ -55,13 +55,13 @@ bool CLoginServer::Init()
 			CConfig::Instance().GetSendDataLimt()))
 		{
 			RunStateError("初始化client mgr 失败!");
-			return 0;
+			break;
 		}
 
 		if (!CLoginCenterConnect::Instance().Init())
 		{
 			RunStateError("初始化中心服务器连接失败!");
-			return 0;
+			break;
 		}
 
 		if (!CLogConnecter::Instance().Init(

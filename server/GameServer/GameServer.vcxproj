@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClCompile Include="aoi.c" />
     <ClCompile Include="BaseObj.cpp" />
+    <ClCompile Include="CSVLoad.cpp" />
     <ClCompile Include="Instance.cpp" />
     <ClCompile Include="InstanceMgr.cpp" />
     <ClCompile Include="PlayerMgr.cpp" />
@@ -149,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="aoi.h" />
     <ClInclude Include="BaseObj.h" />
+    <ClInclude Include="CSVLoad.h" />
     <ClInclude Include="Instance.h" />
     <ClInclude Include="InstanceMgr.h" />
     <ClInclude Include="PlayerMgr.h" />

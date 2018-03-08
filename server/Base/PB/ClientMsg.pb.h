@@ -37,7 +37,7 @@ namespace protobuf_ClientMsg_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[5];
+  static const ::google::protobuf::internal::ParseTable schema[6];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -53,15 +53,21 @@ void InitDefaultsPlayerMoveImpl();
 void InitDefaultsPlayerMove();
 void InitDefaultsPlayerMoveRetImpl();
 void InitDefaultsPlayerMoveRet();
+void InitDefaultsChangeMapImpl();
+void InitDefaultsChangeMap();
 inline void InitDefaults() {
   InitDefaultsPing();
   InitDefaultsLoadPlayerDataFinish();
   InitDefaultsLoadMapFinish();
   InitDefaultsPlayerMove();
   InitDefaultsPlayerMoveRet();
+  InitDefaultsChangeMap();
 }
 }  // namespace protobuf_ClientMsg_2eproto
 namespace netData {
+class ChangeMap;
+class ChangeMapDefaultTypeInternal;
+extern ChangeMapDefaultTypeInternal _ChangeMap_default_instance_;
 class LoadMapFinish;
 class LoadMapFinishDefaultTypeInternal;
 extern LoadMapFinishDefaultTypeInternal _LoadMapFinish_default_instance_;
@@ -80,6 +86,7 @@ extern PlayerMoveRetDefaultTypeInternal _PlayerMoveRet_default_instance_;
 }  // namespace netData
 namespace google {
 namespace protobuf {
+template<> ::netData::ChangeMap* Arena::Create< ::netData::ChangeMap>(Arena*);
 template<> ::netData::LoadMapFinish* Arena::Create< ::netData::LoadMapFinish>(Arena*);
 template<> ::netData::LoadPlayerDataFinish* Arena::Create< ::netData::LoadPlayerDataFinish>(Arena*);
 template<> ::netData::Ping* Arena::Create< ::netData::Ping>(Arena*);
@@ -689,6 +696,109 @@ class PlayerMoveRet : public ::google::protobuf::Message /* @@protoc_insertion_p
   friend struct ::protobuf_ClientMsg_2eproto::TableStruct;
   friend void ::protobuf_ClientMsg_2eproto::InitDefaultsPlayerMoveRetImpl();
 };
+// -------------------------------------------------------------------
+
+class ChangeMap : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:netData.ChangeMap) */ {
+ public:
+  ChangeMap();
+  virtual ~ChangeMap();
+
+  ChangeMap(const ChangeMap& from);
+
+  inline ChangeMap& operator=(const ChangeMap& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ChangeMap(ChangeMap&& from) noexcept
+    : ChangeMap() {
+    *this = ::std::move(from);
+  }
+
+  inline ChangeMap& operator=(ChangeMap&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChangeMap& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ChangeMap* internal_default_instance() {
+    return reinterpret_cast<const ChangeMap*>(
+               &_ChangeMap_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    5;
+
+  void Swap(ChangeMap* other);
+  friend void swap(ChangeMap& a, ChangeMap& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ChangeMap* New() const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<ChangeMap>(NULL);
+  }
+
+  ChangeMap* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<ChangeMap>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ChangeMap& from);
+  void MergeFrom(const ChangeMap& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ChangeMap* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // int32 nMapID = 1;
+  void clear_nmapid();
+  static const int kNMapIDFieldNumber = 1;
+  ::google::protobuf::int32 nmapid() const;
+  void set_nmapid(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:netData.ChangeMap)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int32 nmapid_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_ClientMsg_2eproto::TableStruct;
+  friend void ::protobuf_ClientMsg_2eproto::InitDefaultsChangeMapImpl();
+};
 // ===================================================================
 
 
@@ -856,9 +966,29 @@ inline void PlayerMoveRet::set_ncode(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:netData.PlayerMoveRet.nCode)
 }
 
+// -------------------------------------------------------------------
+
+// ChangeMap
+
+// int32 nMapID = 1;
+inline void ChangeMap::clear_nmapid() {
+  nmapid_ = 0;
+}
+inline ::google::protobuf::int32 ChangeMap::nmapid() const {
+  // @@protoc_insertion_point(field_get:netData.ChangeMap.nMapID)
+  return nmapid_;
+}
+inline void ChangeMap::set_nmapid(::google::protobuf::int32 value) {
+  
+  nmapid_ = value;
+  // @@protoc_insertion_point(field_set:netData.ChangeMap.nMapID)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

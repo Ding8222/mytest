@@ -75,6 +75,9 @@
     <ClCompile Include="PlayerOperate.cpp">
       <Filter>玩家操作</Filter>
     </ClCompile>
+    <ClCompile Include="CSVLoad.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -124,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="PlayerOperate.h">
       <Filter>玩家操作</Filter>
+    </ClInclude>
+    <ClInclude Include="CSVLoad.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -43,7 +43,7 @@ bool CRobotSvr::Init()
 		if (!CCtrlHandler::Instance().Init(&cb))
 		{
 			RunStateError("初始化CtrlHandler失败!");
-			return false;
+			break;
 		}
 #endif
 		if (!CRobotMgr::Instance().Init(CConfig::Instance().GetLoginServerIP().c_str(),
@@ -54,7 +54,7 @@ bool CRobotSvr::Init()
 			CConfig::Instance().GetOverTime()))
 		{
 			RunStateError("初始化client mgr 失败!");
-			return 0;
+			break;
 		}
 		
 		m_Run = true;

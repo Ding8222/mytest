@@ -45,6 +45,11 @@ class PlayerMoveRetDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<PlayerMoveRet>
       _instance;
 } _PlayerMoveRet_default_instance_;
+class ChangeMapDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<ChangeMap>
+      _instance;
+} _ChangeMap_default_instance_;
 }  // namespace netData
 namespace protobuf_ClientMsg_2eproto {
 void InitDefaultsPingImpl() {
@@ -152,7 +157,28 @@ void InitDefaultsPlayerMoveRet() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsPlayerMoveRetImpl);
 }
 
-::google::protobuf::Metadata file_level_metadata[5];
+void InitDefaultsChangeMapImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::netData::_ChangeMap_default_instance_;
+    new (ptr) ::netData::ChangeMap();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::netData::ChangeMap::InitAsDefaultInstance();
+}
+
+void InitDefaultsChangeMap() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsChangeMapImpl);
+}
+
+::google::protobuf::Metadata file_level_metadata[6];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[1];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
@@ -191,6 +217,12 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::PlayerMoveRet, z_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::PlayerMoveRet, ntempid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::PlayerMoveRet, ncode_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::ChangeMap, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::ChangeMap, nmapid_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::netData::Ping)},
@@ -198,6 +230,7 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 12, -1, sizeof(::netData::LoadMapFinish)},
   { 17, -1, sizeof(::netData::PlayerMove)},
   { 25, -1, sizeof(::netData::PlayerMoveRet)},
+  { 35, -1, sizeof(::netData::ChangeMap)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -206,6 +239,7 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::netData::_LoadMapFinish_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::netData::_PlayerMove_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::netData::_PlayerMoveRet_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::netData::_ChangeMap_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -224,7 +258,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 5);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 6);
 }
 
 void AddDescriptorsImpl() {
@@ -237,10 +271,10 @@ void AddDescriptorsImpl() {
       "yerMove\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002"
       "\"P\n\rPlayerMoveRet\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022"
       "\t\n\001z\030\003 \001(\002\022\017\n\007nTempID\030\004 \001(\r\022\r\n\005nCode\030\005 \001"
-      "(\005b\006proto3"
+      "(\005\"\033\n\tChangeMap\022\016\n\006nMapID\030\001 \001(\005b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 290);
+      descriptor, 319);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "ClientMsg.proto", &protobuf_RegisterTypes);
 }
@@ -1606,6 +1640,237 @@ void PlayerMoveRet::InternalSwap(PlayerMoveRet* other) {
 }
 
 
+// ===================================================================
+
+void ChangeMap::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ChangeMap::kNMapIDFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ChangeMap::ChangeMap()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_ClientMsg_2eproto::InitDefaultsChangeMap();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:netData.ChangeMap)
+}
+ChangeMap::ChangeMap(const ChangeMap& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  nmapid_ = from.nmapid_;
+  // @@protoc_insertion_point(copy_constructor:netData.ChangeMap)
+}
+
+void ChangeMap::SharedCtor() {
+  nmapid_ = 0;
+  _cached_size_ = 0;
+}
+
+ChangeMap::~ChangeMap() {
+  // @@protoc_insertion_point(destructor:netData.ChangeMap)
+  SharedDtor();
+}
+
+void ChangeMap::SharedDtor() {
+}
+
+void ChangeMap::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ChangeMap::descriptor() {
+  ::protobuf_ClientMsg_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_ClientMsg_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const ChangeMap& ChangeMap::default_instance() {
+  ::protobuf_ClientMsg_2eproto::InitDefaultsChangeMap();
+  return *internal_default_instance();
+}
+
+
+void ChangeMap::Clear() {
+// @@protoc_insertion_point(message_clear_start:netData.ChangeMap)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  nmapid_ = 0;
+  _internal_metadata_.Clear();
+}
+
+bool ChangeMap::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:netData.ChangeMap)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // int32 nMapID = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &nmapid_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:netData.ChangeMap)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:netData.ChangeMap)
+  return false;
+#undef DO_
+}
+
+void ChangeMap::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:netData.ChangeMap)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 nMapID = 1;
+  if (this->nmapid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->nmapid(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:netData.ChangeMap)
+}
+
+::google::protobuf::uint8* ChangeMap::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:netData.ChangeMap)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // int32 nMapID = 1;
+  if (this->nmapid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->nmapid(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:netData.ChangeMap)
+  return target;
+}
+
+size_t ChangeMap::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:netData.ChangeMap)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // int32 nMapID = 1;
+  if (this->nmapid() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->nmapid());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ChangeMap::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:netData.ChangeMap)
+  GOOGLE_DCHECK_NE(&from, this);
+  const ChangeMap* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const ChangeMap>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:netData.ChangeMap)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:netData.ChangeMap)
+    MergeFrom(*source);
+  }
+}
+
+void ChangeMap::MergeFrom(const ChangeMap& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:netData.ChangeMap)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.nmapid() != 0) {
+    set_nmapid(from.nmapid());
+  }
+}
+
+void ChangeMap::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:netData.ChangeMap)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ChangeMap::CopyFrom(const ChangeMap& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:netData.ChangeMap)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ChangeMap::IsInitialized() const {
+  return true;
+}
+
+void ChangeMap::Swap(ChangeMap* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ChangeMap::InternalSwap(ChangeMap* other) {
+  using std::swap;
+  swap(nmapid_, other->nmapid_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ChangeMap::GetMetadata() const {
+  protobuf_ClientMsg_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_ClientMsg_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace netData
 namespace google {
@@ -1624,6 +1889,9 @@ template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::netData::PlayerMove* Arena::Crea
 }
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::netData::PlayerMoveRet* Arena::Create< ::netData::PlayerMoveRet >(Arena* arena) {
   return Arena::CreateInternal< ::netData::PlayerMoveRet >(arena);
+}
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::netData::ChangeMap* Arena::Create< ::netData::ChangeMap >(Arena* arena) {
+  return Arena::CreateInternal< ::netData::ChangeMap >(arena);
 }
 }  // namespace protobuf
 }  // namespace google

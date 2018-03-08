@@ -11,71 +11,70 @@
 #include "Login.pb.h"
 #include "ClientMsg.pb.h"
 
-CPlayer * CPlayerOperate::m_pPlayer = NULL;
-CPlayerOperate::CPlayerOperate()
-{
-
-}
-CPlayerOperate::~CPlayerOperate()
-{
-
-}
-
-void CPlayerOperate::Operate(Msg *pMsg, int32 clientid)
+void Operate(CPlayer *pPlayer, Msg *pMsg)
 {
 	if (!pMsg)
 		return;
 
-	if (!FuncUti::isValidCret(m_pPlayer))
+	if (!FuncUti::isValidCret(pPlayer))
 		return;
 
 	switch (pMsg->GetMainType())
 	{
 	case LOGIN_TYPE_MAIN:
 	{
-		// 		switch (pMsg->GetSubType())
-		// 		{
-		// 		default:
-		// 		{
-		// 		}
-		// 		}
-		// 		break;
+		DoLoginMsg(pPlayer, pMsg);
+ 		break;
 	}
 	case CLIENT_TYPE_MAIN:
 	{
-		switch (pMsg->GetSubType())
-		{
-		case CLIENT_SUB_MOVE:
-		{
-			netData::PlayerMove msg;
-			_CHECK_PARSE_(pMsg, msg);
-
-			netData::PlayerMoveRet sendMsg;
-			sendMsg.set_ntempid(m_pPlayer->GetTempID());
-			if (m_pPlayer->MoveTo(msg.x(), msg.y(), msg.z()))
-			{
-				sendMsg.set_x(msg.x());
-				sendMsg.set_y(msg.y());
-				sendMsg.set_z(msg.z());
-			}
-			else
-			{
-				float _Pos[EPP_MAX] = { 0 };
-				m_pPlayer->GetNowPos(_Pos[EPP_X], _Pos[EPP_Y], _Pos[EPP_Z]);
-				sendMsg.set_x(_Pos[EPP_X]);
-				sendMsg.set_y(_Pos[EPP_Y]);
-				sendMsg.set_z(_Pos[EPP_Z]);
-			}
-			FuncUti::SendPBNoLoop(m_pPlayer,sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE_RET,true);
-			break;
-		}
-		default:
-		{
-		}
-		}
+		DoClientMsg(pPlayer, pMsg);
 		break;
 	}
-	default:
+	}
+}
+
+
+void DoLoginMsg(CPlayer *pPlayer, Msg *pMsg)
+{
+
+}
+
+void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
+{
+	switch (pMsg->GetSubType())
+	{
+	case CLIENT_SUB_MOVE:
+	{
+		netData::PlayerMove msg;
+		_CHECK_PARSE_(pMsg, msg);
+
+		netData::PlayerMoveRet sendMsg;
+		sendMsg.set_ntempid(pPlayer->GetTempID());
+		if (pPlayer->MoveTo(msg.x(), msg.y(), msg.z()))
+		{
+			sendMsg.set_x(msg.x());
+			sendMsg.set_y(msg.y());
+			sendMsg.set_z(msg.z());
+		}
+		else
+		{
+			float _Pos[EPP_MAX] = { 0 };
+			pPlayer->GetNowPos(_Pos[EPP_X], _Pos[EPP_Y], _Pos[EPP_Z]);
+			sendMsg.set_x(_Pos[EPP_X]);
+			sendMsg.set_y(_Pos[EPP_Y]);
+			sendMsg.set_z(_Pos[EPP_Z]);
+		}
+		FuncUti::SendPBNoLoop(pPlayer, sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE_RET, true);
 		break;
+	}
+	case CLIENT_SUB_CHANGEMAP:
+	{
+		netData::ChangeMap msg;
+		_CHECK_PARSE_(pMsg, msg);
+
+
+		break;
+	}
 	}
 }

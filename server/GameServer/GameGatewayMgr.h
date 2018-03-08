@@ -32,7 +32,7 @@ public:
 	// 处理服务器发来的消息
 	void ProcessMsg(serverinfo *info);
 	// 处理Client发来的消息，此时Client已经验证成功了
-	void ProcessClientMsg(int gateid, int32 clientid, Msg *pMsg);
+	void ProcessClientMsg(int32 clientid, Msg *pMsg);
 
 private:
 	// 添加新的Server

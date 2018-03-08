@@ -135,6 +135,7 @@
     <ClInclude Include="ConnectMgr.h" />
     <ClInclude Include="connector.h" />
     <ClInclude Include="crosslib.h" />
+    <ClInclude Include="CSVParser.h" />
     <ClInclude Include="CtrlHandler.h" />
     <ClInclude Include="datahand.h" />
     <ClInclude Include="DBSvrType.h" />

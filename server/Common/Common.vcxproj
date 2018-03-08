@@ -129,6 +129,7 @@
     <ClCompile Include="ConnectMgr.cpp" />
     <ClCompile Include="connector.cpp" />
     <ClCompile Include="crosslib.c" />
+    <ClCompile Include="CSVParser.cpp" />
     <ClCompile Include="CtrlHandler.cpp" />
     <ClCompile Include="datahand.cpp" />
     <ClCompile Include="Guid.cpp" />

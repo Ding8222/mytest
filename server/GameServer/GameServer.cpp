@@ -9,6 +9,7 @@
 #include "Timer.h"
 #include "ServerLog.h"
 #include "LogConnecter.h"
+#include "CSVLoad.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -47,7 +48,7 @@ bool CGameServer::Init()
 		if (!CCtrlHandler::Instance().Init(&cb))
 		{
 			RunStateError("初始化CtrlHandler失败!");
-			return false;
+			break;
 		}
 #endif
 
@@ -58,13 +59,13 @@ bool CGameServer::Init()
 			CConfig::Instance().GetOverTime()))
 		{
 			RunStateError("初始化GameGatewayMgr失败!");
-			return false;
+			break;
 		}
 
 		if (!CGameCenterConnect::Instance().Init())
 		{
 			RunStateError("初始化中心服务器连接失败!");
-			return 0;
+			break;
 		}
 
 		if (!CLogConnecter::Instance().Init(
@@ -84,25 +85,31 @@ bool CGameServer::Init()
 		if (!CMapConfig::Instance().Init())
 		{
 			RunStateError("初始化MapConfig失败!");
-			return false;
+			break;
 		}
 
 		if (!CScenemgr::Instance().Init())
 		{
 			RunStateError("初始化Scenemgr失败!");
-			return false;
+			break;
 		}
 
 		if (!CInstanceMgr::Instance().Init())
 		{
 			RunStateError("初始化InstanceMgr失败!");
-			return false;
+			break;
 		}
 
+		if (!CSVData::Init())
+		{
+			RunStateError("加载CSVData失败!");
+			break;
+		}
+		
 		if (!CPlayerMgr::Instance().init())
 		{
 			RunStateError("初始化PlayerMgr失败!");
-			return false;
+			break;
 		}
 
 		m_Run = true;
@@ -116,6 +123,7 @@ bool CGameServer::Init()
 	CPlayerMgr::Instance().Destroy();
 	CScenemgr::Instance().Destroy();
 	CInstanceMgr::Instance().Destroy();
+	CSVData::Destroy();
 	Destroy();
 
 	return false;
@@ -162,6 +170,7 @@ void CGameServer::Run()
 	CPlayerMgr::Instance().Destroy();
 	CScenemgr::Instance().Destroy();
 	CInstanceMgr::Instance().Destroy();
+	CSVData::Destroy();
 
 	Destroy();
 }
