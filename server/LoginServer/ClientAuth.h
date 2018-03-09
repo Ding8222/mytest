@@ -2,6 +2,20 @@
 #include <unordered_map>
 #include "osrng.h"
 
+struct ClientAuthInfo
+{
+	ClientAuthInfo()
+	{
+		ClientID = 0;
+		Token.clear();
+		Secret.clear();
+	}
+
+	int32 ClientID;
+	std::string Token;	// 账号
+	std::string Secret;	// 秘钥
+};
+
 class CClientAuth
 {
 public:
@@ -14,6 +28,7 @@ public:
 		return m;
 	}
 
+	bool Init();
 	void Destroy();
 
 	// 握手
@@ -22,21 +37,32 @@ public:
 	void Challenge(CClient *cl, Msg *pMsg);
 	// 认证
 	void Auth(CClient *cl, Msg *pMsg);
+	// 认证返回
+	bool AuthRet(int32 clientid, const std::string &token);
+	// 请求角色列表
+	void GetPlayerList(CClient *cl, Msg *pMsg);
+	// 请求创建角色
+	void CreatePlayer(CClient *cl, Msg *pMsg);
+	// 请求选择角色
+	void SelectPlayer(CClient *cl, Msg *pMsg);
 	// Client断开连接
 	void OnClientDisconnect(CClient *cl);
 private:
 	// 添加Secret
-	void AddSecret(int32 clientid, std::string secret);
-	// 删除Secret
-	void DelSecret(int32 clientid);
+	bool AddSecret(int32 clientid, const std::string &secret);
+	bool AddToken(int32 clientid, const std::string &token);
+	// 删除认证信息
+	void DelAutoInfo(int32 clientid);
 	// 验证Secret是否正确
-	bool CheckSecret(int32 clientid, std::string &secret);
+	bool CheckSecret(int32 clientid, const std::string &secret);
 	// 获取Secret
 	std::string GetSecret(int32 clientid);
+	std::string GetToken(int32 clientid);
 private:
 
 	// clientid,Secret
 	std::unordered_map<int32, std::string > m_Secret;
-	
+
+	std::vector<ClientAuthInfo *> m_ClientAuthInfoSet;
 	static CryptoPP::AutoSeededRandomPool prng;
 };

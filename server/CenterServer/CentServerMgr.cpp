@@ -441,23 +441,25 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 				svrData::ChangeLine msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				svrData::ChangeLineRet SendMsg;
-				ServerStatusInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByMapID(msg.nmapid(), msg.nlineid());
-				if (_pInfo)
-				{
-					SendMsg.set_nretcode(netData::AuthRet::EC_SUCC);
-					SendMsg.set_nserverid(_pInfo->nServerID);
-					SendMsg.set_sip(_pInfo->chIP);
-					SendMsg.set_nport(_pInfo->nPort);
-					SendMsg.set_nmapid(msg.nmapid());
-
-					svrData::ClientToken sendMsg;
-					sendMsg.set_setoken(msg.setoken());
-					sendMsg.set_ssecret(msg.ssecret());
-					CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GATE, 0, _pInfo->nServerID);
-				}
-				else
-					SendMsg.set_nretcode(netData::AuthRet::EC_SERVER);
+// 				svrData::ChangeLineRet SendMsg;
+// 				ServerStatusInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByMapID(msg.nmapid(), msg.nlineid());
+// 				if (_pInfo)
+// 				{
+// 					SendMsg.set_nretcode(netData::ChangeLineRet::EC_SUCC);
+// 					SendMsg.set_nserverid(_pInfo->nServerID);
+// 					SendMsg.set_sip(_pInfo->chIP);
+// 					SendMsg.set_nport(_pInfo->nPort);
+// 					SendMsg.set_nmapid(msg.nmapid());
+// 
+// 					svrData::ClientToken sendMsg;
+// 					msg.set_allocated_data(sendMsg.mutable_data());
+// 					sendMsg.set_setoken(msg.setoken());
+// 					sendMsg.set_ssecret(msg.ssecret());
+// 
+// 					CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GATE, 0, _pInfo->nServerID);
+// 				}
+// 				else
+// 					SendMsg.set_nretcode(netData::ChangeLineRet::EC_SERVER);
 				break;
 			}
 			default:
@@ -530,6 +532,13 @@ void CCentServerMgr::ProcessLoginMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			CClientAuthMgr::Instance().AddClientAuthInfo(pMsg,tl->id, info->GetServerID());
 			break;
 		}
+		case LOGIN_SUB_PLAYER_LIST:
+		case LOGIN_SUB_CREATE_PLAYER:
+		case LOGIN_SUB_SELECT_PLAYER:
+		{
+			CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_DB, tl->id);
+			break;
+		}
 		default:
 			break;
 		}
@@ -550,14 +559,46 @@ void CCentServerMgr::ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		{
 		case LOGIN_SUB_AUTH_RET:
 		{
-			CClientAuthMgr::Instance().SendAuthInfoToLogic(pMsg,tl->id);
+			netData::AuthRet msg;
+			_CHECK_PARSE_(pMsg, msg);
+			msg.set_ncode(netData::AuthRet::EC_AUTHINFO);
+
+			ClientAuthInfo *clientinfo = CClientAuthMgr::Instance().FindClientAuthInfo(tl->id);
+			if (clientinfo)
+				msg.set_ncode(netData::AuthRet::EC_SUCC);
+
+			CCentServerMgr::Instance().SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, tl->id);
+
 			break;
 		}
 		case LOGIN_SUB_PLAYER_LIST_RET:
 		case LOGIN_SUB_CREATE_PLAYER_RET:
+		{
+			CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_LOGIN, tl->id);
+		}
 		case LOGIN_SUB_SELECT_PLAYER_RET:
 		{
-			CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_GATE, tl->id);
+// 			// 选角返回，分配服务器
+// 			ServerStatusInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByMapID(msg.nmapid(), msg.nlineid());
+// 			if (_pInfo)
+// 			{
+// 				SendMsg.set_nretcode(netData::AuthRet::EC_SUCC);
+// 				SendMsg.set_nserverid(_pInfo->nServerID);
+// 				SendMsg.set_sip(_pInfo->chIP);
+// 				SendMsg.set_nport(_pInfo->nPort);
+// 				SendMsg.set_nmapid(msg.nmapid());
+// 
+// 				svrData::ClientToken sendMsg;
+// 				sendMsg.set_bchangeline(true);
+// 				msg.set_allocated_data(sendMsg.mutable_data());
+// 				sendMsg.set_setoken(msg.setoken());
+// 				sendMsg.set_ssecret(msg.ssecret());
+// 
+// 				CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GATE, 0, _pInfo->nServerID);
+// 			}
+// 			else
+// 				SendMsg.set_nretcode(netData::AuthRet::EC_SERVER);
+// 			CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_LOGIN, tl->id);
 			break;
 		}
 		default:
@@ -578,13 +619,6 @@ void CCentServerMgr::ProcessGateMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 	{
 		switch (pMsg->GetSubType())
 		{
-		case LOGIN_SUB_PLAYER_LIST:
-		case LOGIN_SUB_CREATE_PLAYER:
-		case LOGIN_SUB_SELECT_PLAYER:
-		{
-			CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_DB, tl->id);
-			break;
-		}
 		default:
 			break;
 		}

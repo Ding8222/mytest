@@ -415,7 +415,7 @@ void InitDefaultsSelectPlayerRet() {
 }
 
 ::google::protobuf::Metadata file_level_metadata[15];
-const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[5];
+const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[6];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
@@ -429,6 +429,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::HandShakeRet, ncode_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::HandShakeRet, schallenge_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::HandShakeRet, sserverkey_),
   ~0u,  // no _has_bits_
@@ -456,10 +457,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::AuthRet, ncode_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::AuthRet, nserverid_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::AuthRet, ip_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::AuthRet, port_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::AuthRet, nmapid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::AuthRet, stoken_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::Login, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -522,23 +520,24 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::SelectPlayerRet, ncode_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::SelectPlayerRet, nmapid_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::netData::HandShake)},
   { 6, -1, sizeof(::netData::HandShakeRet)},
-  { 13, -1, sizeof(::netData::Challenge)},
-  { 19, -1, sizeof(::netData::ChallengeRet)},
-  { 25, -1, sizeof(::netData::Auth)},
-  { 32, -1, sizeof(::netData::AuthRet)},
-  { 42, -1, sizeof(::netData::Login)},
-  { 49, -1, sizeof(::netData::LoginRet)},
-  { 55, -1, sizeof(::netData::PlayerLite)},
-  { 64, -1, sizeof(::netData::PlayerList)},
-  { 70, -1, sizeof(::netData::PlayerListRet)},
-  { 76, -1, sizeof(::netData::CreatePlayer)},
-  { 85, -1, sizeof(::netData::CreatePlayerRet)},
-  { 92, -1, sizeof(::netData::SelectPlayer)},
-  { 98, -1, sizeof(::netData::SelectPlayerRet)},
+  { 14, -1, sizeof(::netData::Challenge)},
+  { 20, -1, sizeof(::netData::ChallengeRet)},
+  { 26, -1, sizeof(::netData::Auth)},
+  { 33, -1, sizeof(::netData::AuthRet)},
+  { 40, -1, sizeof(::netData::Login)},
+  { 47, -1, sizeof(::netData::LoginRet)},
+  { 53, -1, sizeof(::netData::PlayerLite)},
+  { 62, -1, sizeof(::netData::PlayerList)},
+  { 68, -1, sizeof(::netData::PlayerListRet)},
+  { 74, -1, sizeof(::netData::CreatePlayer)},
+  { 83, -1, sizeof(::netData::CreatePlayerRet)},
+  { 90, -1, sizeof(::netData::SelectPlayer)},
+  { 96, -1, sizeof(::netData::SelectPlayerRet)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -582,34 +581,35 @@ void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
       "\n\013Login.proto\022\007netData\"\037\n\tHandShake\022\022\n\ns"
-      "ClientKey\030\001 \001(\014\"6\n\014HandShakeRet\022\022\n\nsChal"
-      "lenge\030\001 \001(\014\022\022\n\nsServerKey\030\002 \001(\014\"\032\n\tChall"
-      "enge\022\r\n\005sHmac\030\001 \001(\t\"K\n\014ChallengeRet\022\r\n\005n"
-      "Code\030\001 \001(\005\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUC"
-      "C\020\001\022\013\n\007EC_FAIL\020\002\"(\n\004Auth\022\017\n\007sEtoken\030\001 \001("
-      "\t\022\017\n\007sSecret\030\002 \001(\014\"\300\001\n\007AuthRet\022\r\n\005nCode\030"
-      "\001 \001(\005\022\021\n\tnServerID\030\002 \001(\005\022\n\n\002ip\030\003 \001(\t\022\014\n\004"
-      "port\030\004 \001(\005\022\016\n\006nMapID\030\005 \001(\005\"i\n\002EC\022\014\n\010EC_O"
-      "THER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002\022\020\n\014EC_H"
-      "ANDSHAKE\020\003\022\r\n\tEC_SERVER\020\004\022\t\n\005EC_DB\020\005\022\017\n\013"
-      "EC_AUTHINFO\020\006\"(\n\005Login\022\016\n\006sToken\030\001 \001(\t\022\017"
-      "\n\007sSecret\030\002 \001(\014\"G\n\010LoginRet\022\r\n\005nCode\030\001 \001"
-      "(\005\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007E"
-      "C_FAIL\020\002\"E\n\nPlayerLite\022\014\n\004guid\030\001 \001(\003\022\r\n\005"
-      "sName\030\002 \001(\t\022\014\n\004nJob\030\003 \001(\005\022\014\n\004nSex\030\004 \001(\005\""
-      "\035\n\nPlayerList\022\017\n\007account\030\001 \001(\t\"2\n\rPlayer"
-      "ListRet\022!\n\004list\030\001 \003(\0132\023.netData.PlayerLi"
-      "te\"J\n\014CreatePlayer\022\r\n\005sName\030\001 \001(\t\022\014\n\004nJo"
-      "b\030\002 \001(\005\022\014\n\004nSex\030\003 \001(\005\022\017\n\007account\030\004 \001(\t\"q"
-      "\n\017CreatePlayerRet\022\r\n\005nCode\030\001 \001(\005\022!\n\004info"
-      "\030\002 \001(\0132\023.netData.PlayerLite\",\n\002EC\022\014\n\010EC_"
-      "OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002\"\034\n\014Sel"
-      "ectPlayer\022\014\n\004guid\030\001 \001(\003\"N\n\017SelectPlayerR"
-      "et\022\r\n\005nCode\030\001 \001(\005\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n"
-      "\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002b\006proto3"
+      "ClientKey\030\001 \001(\014\"s\n\014HandShakeRet\022\r\n\005nCode"
+      "\030\001 \001(\005\022\022\n\nsChallenge\030\002 \001(\014\022\022\n\nsServerKey"
+      "\030\003 \001(\014\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022"
+      "\013\n\007EC_FAIL\020\002\"\032\n\tChallenge\022\r\n\005sHmac\030\001 \001(\t"
+      "\"K\n\014ChallengeRet\022\r\n\005nCode\030\001 \001(\005\",\n\002EC\022\014\n"
+      "\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002\"(\n"
+      "\004Auth\022\017\n\007sEtoken\030\001 \001(\t\022\017\n\007sSecret\030\002 \001(\014\""
+      "\225\001\n\007AuthRet\022\r\n\005nCode\030\001 \001(\005\022\016\n\006sToken\030\002 \001"
+      "(\t\"k\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007E"
+      "C_FAIL\020\002\022\020\n\014EC_HANDSHAKE\020\003\022\017\n\013EC_ADDTOKE"
+      "N\020\004\022\t\n\005EC_DB\020\005\022\017\n\013EC_AUTHINFO\020\006\"(\n\005Login"
+      "\022\016\n\006sToken\030\001 \001(\t\022\017\n\007sSecret\030\002 \001(\014\"G\n\010Log"
+      "inRet\022\r\n\005nCode\030\001 \001(\005\",\n\002EC\022\014\n\010EC_OTHER\020\000"
+      "\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002\"E\n\nPlayerLite"
+      "\022\014\n\004guid\030\001 \001(\003\022\r\n\005sName\030\002 \001(\t\022\014\n\004nJob\030\003 "
+      "\001(\005\022\014\n\004nSex\030\004 \001(\005\"\035\n\nPlayerList\022\017\n\007accou"
+      "nt\030\001 \001(\t\"2\n\rPlayerListRet\022!\n\004list\030\001 \003(\0132"
+      "\023.netData.PlayerLite\"J\n\014CreatePlayer\022\r\n\005"
+      "sName\030\001 \001(\t\022\014\n\004nJob\030\002 \001(\005\022\014\n\004nSex\030\003 \001(\005\022"
+      "\017\n\007account\030\004 \001(\t\"q\n\017CreatePlayerRet\022\r\n\005n"
+      "Code\030\001 \001(\005\022!\n\004info\030\002 \001(\0132\023.netData.Playe"
+      "rLite\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013"
+      "\n\007EC_FAIL\020\002\"\034\n\014SelectPlayer\022\014\n\004guid\030\001 \001("
+      "\003\"^\n\017SelectPlayerRet\022\r\n\005nCode\030\001 \001(\005\022\016\n\006n"
+      "MapID\030\002 \001(\005\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SU"
+      "CC\020\001\022\013\n\007EC_FAIL\020\002b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1031);
+      descriptor, 1065);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Login.proto", &protobuf_RegisterTypes);
 }
@@ -626,9 +626,32 @@ struct StaticDescriptorInitializer {
 } static_descriptor_initializer;
 }  // namespace protobuf_Login_2eproto
 namespace netData {
-const ::google::protobuf::EnumDescriptor* ChallengeRet_EC_descriptor() {
+const ::google::protobuf::EnumDescriptor* HandShakeRet_EC_descriptor() {
   protobuf_Login_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_Login_2eproto::file_level_enum_descriptors[0];
+}
+bool HandShakeRet_EC_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+      return true;
+    default:
+      return false;
+  }
+}
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const HandShakeRet_EC HandShakeRet::EC_OTHER;
+const HandShakeRet_EC HandShakeRet::EC_SUCC;
+const HandShakeRet_EC HandShakeRet::EC_FAIL;
+const HandShakeRet_EC HandShakeRet::EC_MIN;
+const HandShakeRet_EC HandShakeRet::EC_MAX;
+const int HandShakeRet::EC_ARRAYSIZE;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+const ::google::protobuf::EnumDescriptor* ChallengeRet_EC_descriptor() {
+  protobuf_Login_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_Login_2eproto::file_level_enum_descriptors[1];
 }
 bool ChallengeRet_EC_IsValid(int value) {
   switch (value) {
@@ -651,7 +674,7 @@ const int ChallengeRet::EC_ARRAYSIZE;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 const ::google::protobuf::EnumDescriptor* AuthRet_EC_descriptor() {
   protobuf_Login_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_Login_2eproto::file_level_enum_descriptors[1];
+  return protobuf_Login_2eproto::file_level_enum_descriptors[2];
 }
 bool AuthRet_EC_IsValid(int value) {
   switch (value) {
@@ -673,7 +696,7 @@ const AuthRet_EC AuthRet::EC_OTHER;
 const AuthRet_EC AuthRet::EC_SUCC;
 const AuthRet_EC AuthRet::EC_FAIL;
 const AuthRet_EC AuthRet::EC_HANDSHAKE;
-const AuthRet_EC AuthRet::EC_SERVER;
+const AuthRet_EC AuthRet::EC_ADDTOKEN;
 const AuthRet_EC AuthRet::EC_DB;
 const AuthRet_EC AuthRet::EC_AUTHINFO;
 const AuthRet_EC AuthRet::EC_MIN;
@@ -682,7 +705,7 @@ const int AuthRet::EC_ARRAYSIZE;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 const ::google::protobuf::EnumDescriptor* LoginRet_EC_descriptor() {
   protobuf_Login_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_Login_2eproto::file_level_enum_descriptors[2];
+  return protobuf_Login_2eproto::file_level_enum_descriptors[3];
 }
 bool LoginRet_EC_IsValid(int value) {
   switch (value) {
@@ -705,7 +728,7 @@ const int LoginRet::EC_ARRAYSIZE;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 const ::google::protobuf::EnumDescriptor* CreatePlayerRet_EC_descriptor() {
   protobuf_Login_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_Login_2eproto::file_level_enum_descriptors[3];
+  return protobuf_Login_2eproto::file_level_enum_descriptors[4];
 }
 bool CreatePlayerRet_EC_IsValid(int value) {
   switch (value) {
@@ -728,7 +751,7 @@ const int CreatePlayerRet::EC_ARRAYSIZE;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 const ::google::protobuf::EnumDescriptor* SelectPlayerRet_EC_descriptor() {
   protobuf_Login_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_Login_2eproto::file_level_enum_descriptors[4];
+  return protobuf_Login_2eproto::file_level_enum_descriptors[5];
 }
 bool SelectPlayerRet_EC_IsValid(int value) {
   switch (value) {
@@ -992,6 +1015,7 @@ void HandShake::InternalSwap(HandShake* other) {
 void HandShakeRet::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int HandShakeRet::kNCodeFieldNumber;
 const int HandShakeRet::kSChallengeFieldNumber;
 const int HandShakeRet::kSServerKeyFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
@@ -1017,12 +1041,14 @@ HandShakeRet::HandShakeRet(const HandShakeRet& from)
   if (from.sserverkey().size() > 0) {
     sserverkey_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.sserverkey_);
   }
+  ncode_ = from.ncode_;
   // @@protoc_insertion_point(copy_constructor:netData.HandShakeRet)
 }
 
 void HandShakeRet::SharedCtor() {
   schallenge_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   sserverkey_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ncode_ = 0;
   _cached_size_ = 0;
 }
 
@@ -1060,6 +1086,7 @@ void HandShakeRet::Clear() {
 
   schallenge_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   sserverkey_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ncode_ = 0;
   _internal_metadata_.Clear();
 }
 
@@ -1073,10 +1100,24 @@ bool HandShakeRet::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // bytes sChallenge = 1;
+      // int32 nCode = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &ncode_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bytes sChallenge = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_schallenge()));
         } else {
@@ -1085,10 +1126,10 @@ bool HandShakeRet::MergePartialFromCodedStream(
         break;
       }
 
-      // bytes sServerKey = 2;
-      case 2: {
+      // bytes sServerKey = 3;
+      case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_sserverkey()));
         } else {
@@ -1123,16 +1164,21 @@ void HandShakeRet::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bytes sChallenge = 1;
-  if (this->schallenge().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
-      1, this->schallenge(), output);
+  // int32 nCode = 1;
+  if (this->ncode() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->ncode(), output);
   }
 
-  // bytes sServerKey = 2;
+  // bytes sChallenge = 2;
+  if (this->schallenge().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
+      2, this->schallenge(), output);
+  }
+
+  // bytes sServerKey = 3;
   if (this->sserverkey().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
-      2, this->sserverkey(), output);
+      3, this->sserverkey(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1149,18 +1195,23 @@ void HandShakeRet::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bytes sChallenge = 1;
+  // int32 nCode = 1;
+  if (this->ncode() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->ncode(), target);
+  }
+
+  // bytes sChallenge = 2;
   if (this->schallenge().size() > 0) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->schallenge(), target);
+        2, this->schallenge(), target);
   }
 
-  // bytes sServerKey = 2;
+  // bytes sServerKey = 3;
   if (this->sserverkey().size() > 0) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        2, this->sserverkey(), target);
+        3, this->sserverkey(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1180,18 +1231,25 @@ size_t HandShakeRet::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // bytes sChallenge = 1;
+  // bytes sChallenge = 2;
   if (this->schallenge().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::BytesSize(
         this->schallenge());
   }
 
-  // bytes sServerKey = 2;
+  // bytes sServerKey = 3;
   if (this->sserverkey().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::BytesSize(
         this->sserverkey());
+  }
+
+  // int32 nCode = 1;
+  if (this->ncode() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->ncode());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -1231,6 +1289,9 @@ void HandShakeRet::MergeFrom(const HandShakeRet& from) {
 
     sserverkey_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.sserverkey_);
   }
+  if (from.ncode() != 0) {
+    set_ncode(from.ncode());
+  }
 }
 
 void HandShakeRet::CopyFrom(const ::google::protobuf::Message& from) {
@@ -1259,6 +1320,7 @@ void HandShakeRet::InternalSwap(HandShakeRet* other) {
   using std::swap;
   schallenge_.Swap(&other->schallenge_);
   sserverkey_.Swap(&other->sserverkey_);
+  swap(ncode_, other->ncode_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -2049,10 +2111,7 @@ void AuthRet::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int AuthRet::kNCodeFieldNumber;
-const int AuthRet::kNServerIDFieldNumber;
-const int AuthRet::kIpFieldNumber;
-const int AuthRet::kPortFieldNumber;
-const int AuthRet::kNMapIDFieldNumber;
+const int AuthRet::kSTokenFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 AuthRet::AuthRet()
@@ -2068,21 +2127,17 @@ AuthRet::AuthRet(const AuthRet& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ip_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.ip().size() > 0) {
-    ip_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ip_);
+  stoken_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.stoken().size() > 0) {
+    stoken_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.stoken_);
   }
-  ::memcpy(&ncode_, &from.ncode_,
-    static_cast<size_t>(reinterpret_cast<char*>(&nmapid_) -
-    reinterpret_cast<char*>(&ncode_)) + sizeof(nmapid_));
+  ncode_ = from.ncode_;
   // @@protoc_insertion_point(copy_constructor:netData.AuthRet)
 }
 
 void AuthRet::SharedCtor() {
-  ip_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&ncode_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&nmapid_) -
-      reinterpret_cast<char*>(&ncode_)) + sizeof(nmapid_));
+  stoken_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ncode_ = 0;
   _cached_size_ = 0;
 }
 
@@ -2092,7 +2147,7 @@ AuthRet::~AuthRet() {
 }
 
 void AuthRet::SharedDtor() {
-  ip_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  stoken_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void AuthRet::SetCachedSize(int size) const {
@@ -2117,10 +2172,8 @@ void AuthRet::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ip_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&ncode_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&nmapid_) -
-      reinterpret_cast<char*>(&ncode_)) + sizeof(nmapid_));
+  stoken_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ncode_ = 0;
   _internal_metadata_.Clear();
 }
 
@@ -2148,58 +2201,16 @@ bool AuthRet::MergePartialFromCodedStream(
         break;
       }
 
-      // int32 nServerID = 2;
+      // string sToken = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &nserverid_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // string ip = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_ip()));
+                input, this->mutable_stoken()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->ip().data(), static_cast<int>(this->ip().length()),
+            this->stoken().data(), static_cast<int>(this->stoken().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "netData.AuthRet.ip"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // int32 port = 4;
-      case 4: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &port_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // int32 nMapID = 5;
-      case 5: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &nmapid_)));
+            "netData.AuthRet.sToken"));
         } else {
           goto handle_unusual;
         }
@@ -2237,29 +2248,14 @@ void AuthRet::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->ncode(), output);
   }
 
-  // int32 nServerID = 2;
-  if (this->nserverid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->nserverid(), output);
-  }
-
-  // string ip = 3;
-  if (this->ip().size() > 0) {
+  // string sToken = 2;
+  if (this->stoken().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->ip().data(), static_cast<int>(this->ip().length()),
+      this->stoken().data(), static_cast<int>(this->stoken().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "netData.AuthRet.ip");
+      "netData.AuthRet.sToken");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      3, this->ip(), output);
-  }
-
-  // int32 port = 4;
-  if (this->port() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->port(), output);
-  }
-
-  // int32 nMapID = 5;
-  if (this->nmapid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->nmapid(), output);
+      2, this->stoken(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2281,30 +2277,15 @@ void AuthRet::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->ncode(), target);
   }
 
-  // int32 nServerID = 2;
-  if (this->nserverid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->nserverid(), target);
-  }
-
-  // string ip = 3;
-  if (this->ip().size() > 0) {
+  // string sToken = 2;
+  if (this->stoken().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->ip().data(), static_cast<int>(this->ip().length()),
+      this->stoken().data(), static_cast<int>(this->stoken().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "netData.AuthRet.ip");
+      "netData.AuthRet.sToken");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->ip(), target);
-  }
-
-  // int32 port = 4;
-  if (this->port() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->port(), target);
-  }
-
-  // int32 nMapID = 5;
-  if (this->nmapid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->nmapid(), target);
+        2, this->stoken(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2324,11 +2305,11 @@ size_t AuthRet::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // string ip = 3;
-  if (this->ip().size() > 0) {
+  // string sToken = 2;
+  if (this->stoken().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->ip());
+        this->stoken());
   }
 
   // int32 nCode = 1;
@@ -2336,27 +2317,6 @@ size_t AuthRet::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->ncode());
-  }
-
-  // int32 nServerID = 2;
-  if (this->nserverid() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->nserverid());
-  }
-
-  // int32 port = 4;
-  if (this->port() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->port());
-  }
-
-  // int32 nMapID = 5;
-  if (this->nmapid() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->nmapid());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2388,21 +2348,12 @@ void AuthRet::MergeFrom(const AuthRet& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.ip().size() > 0) {
+  if (from.stoken().size() > 0) {
 
-    ip_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.ip_);
+    stoken_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.stoken_);
   }
   if (from.ncode() != 0) {
     set_ncode(from.ncode());
-  }
-  if (from.nserverid() != 0) {
-    set_nserverid(from.nserverid());
-  }
-  if (from.port() != 0) {
-    set_port(from.port());
-  }
-  if (from.nmapid() != 0) {
-    set_nmapid(from.nmapid());
   }
 }
 
@@ -2430,11 +2381,8 @@ void AuthRet::Swap(AuthRet* other) {
 }
 void AuthRet::InternalSwap(AuthRet* other) {
   using std::swap;
-  ip_.Swap(&other->ip_);
+  stoken_.Swap(&other->stoken_);
   swap(ncode_, other->ncode_);
-  swap(nserverid_, other->nserverid_);
-  swap(port_, other->port_);
-  swap(nmapid_, other->nmapid_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -4728,6 +4676,7 @@ void SelectPlayerRet::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int SelectPlayerRet::kNCodeFieldNumber;
+const int SelectPlayerRet::kNMapIDFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 SelectPlayerRet::SelectPlayerRet()
@@ -4743,12 +4692,16 @@ SelectPlayerRet::SelectPlayerRet(const SelectPlayerRet& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ncode_ = from.ncode_;
+  ::memcpy(&ncode_, &from.ncode_,
+    static_cast<size_t>(reinterpret_cast<char*>(&nmapid_) -
+    reinterpret_cast<char*>(&ncode_)) + sizeof(nmapid_));
   // @@protoc_insertion_point(copy_constructor:netData.SelectPlayerRet)
 }
 
 void SelectPlayerRet::SharedCtor() {
-  ncode_ = 0;
+  ::memset(&ncode_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&nmapid_) -
+      reinterpret_cast<char*>(&ncode_)) + sizeof(nmapid_));
   _cached_size_ = 0;
 }
 
@@ -4782,7 +4735,9 @@ void SelectPlayerRet::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ncode_ = 0;
+  ::memset(&ncode_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&nmapid_) -
+      reinterpret_cast<char*>(&ncode_)) + sizeof(nmapid_));
   _internal_metadata_.Clear();
 }
 
@@ -4804,6 +4759,20 @@ bool SelectPlayerRet::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &ncode_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 nMapID = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &nmapid_)));
         } else {
           goto handle_unusual;
         }
@@ -4841,6 +4810,11 @@ void SelectPlayerRet::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->ncode(), output);
   }
 
+  // int32 nMapID = 2;
+  if (this->nmapid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->nmapid(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -4858,6 +4832,11 @@ void SelectPlayerRet::SerializeWithCachedSizes(
   // int32 nCode = 1;
   if (this->ncode() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->ncode(), target);
+  }
+
+  // int32 nMapID = 2;
+  if (this->nmapid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->nmapid(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -4882,6 +4861,13 @@ size_t SelectPlayerRet::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->ncode());
+  }
+
+  // int32 nMapID = 2;
+  if (this->nmapid() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->nmapid());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -4916,6 +4902,9 @@ void SelectPlayerRet::MergeFrom(const SelectPlayerRet& from) {
   if (from.ncode() != 0) {
     set_ncode(from.ncode());
   }
+  if (from.nmapid() != 0) {
+    set_nmapid(from.nmapid());
+  }
 }
 
 void SelectPlayerRet::CopyFrom(const ::google::protobuf::Message& from) {
@@ -4943,6 +4932,7 @@ void SelectPlayerRet::Swap(SelectPlayerRet* other) {
 void SelectPlayerRet::InternalSwap(SelectPlayerRet* other) {
   using std::swap;
   swap(ncode_, other->ncode_);
+  swap(nmapid_, other->nmapid_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }

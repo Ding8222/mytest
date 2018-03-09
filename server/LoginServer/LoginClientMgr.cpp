@@ -86,7 +86,25 @@ void CLoginClientMgr::ProcessClientMsg(CClient *cl)
 		{
 			if (cl->IsAlreadyAuth())
 			{
-				// 认证通过的
+				// 认证通过的选角
+				switch (pMsg->GetSubType())
+				{
+				case LOGIN_SUB_PLAYER_LIST:
+				{
+					CClientAuth::Instance().GetPlayerList(cl, pMsg);
+					break;
+				}
+				case LOGIN_SUB_CREATE_PLAYER:
+				{
+					CClientAuth::Instance().CreatePlayer(cl, pMsg);
+					break;
+				}
+				case LOGIN_SUB_SELECT_PLAYER:
+				{
+					CClientAuth::Instance().SelectPlayer(cl, pMsg);
+					break;
+				}
+				}
 			}
 			else
 			{
@@ -108,18 +126,10 @@ void CLoginClientMgr::ProcessClientMsg(CClient *cl)
 					CClientAuth::Instance().Auth(cl, pMsg);
 					break;
 				}
-				default:
-				{
-
-				}
 				}
 				break;
 			}
 			break;
-		}
-		default:
-		{
-
 		}
 		}
 	}

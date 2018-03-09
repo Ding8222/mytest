@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <unordered_map>
+#include "ServerMsg.pb.h"
 
 struct ClientAuthInfo
 {
@@ -13,6 +14,7 @@ struct ClientAuthInfo
 	int32 ClientID;
 	std::string Token;	// 账号
 	std::string Secret;	// 秘钥
+	svrData::LoadPlayerData Data;//玩家数据
 };
 
 class CClient;
@@ -38,12 +40,6 @@ public:
 	void KickClient(int32 clientid);
 	// client请求认证
 	void AddNewClient(Msg *pMsg, CClient *cl);
-	// 请求角色列表
-	void GetPlayerList(Msg *pMsg, CClient *cl);
-	// 请求创建角色
-	void CreatePlayer(Msg *pMsg, CClient *cl);
-	// 请求选择角色
-	void SelectPlayer(Msg *pMsg, CClient *cl);
 	// client主动退出
 	void Offline(int32 clientid);
 	// 返回当前Client数量

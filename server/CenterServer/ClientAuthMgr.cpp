@@ -135,37 +135,7 @@ int32 CClientAuthMgr::GetClientLoginSvr(int32 clientid)
 // 发送认证信息到逻辑服
 void CClientAuthMgr::SendAuthInfoToLogic(Msg *pMsg, int32 clientid)
 {
-	netData::AuthRet msg;
-	_CHECK_PARSE_(pMsg, msg);
 
-	ClientAuthInfo *clientinfo = FindClientAuthInfo(clientid);
-	if (clientinfo)
-	{
-		ServerStatusInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByMapID(msg.nmapid());
-		if (_pInfo)
-		{
-			msg.set_ncode(netData::AuthRet::EC_SUCC);
-			msg.set_nserverid(_pInfo->nServerID);
-			msg.set_ip(_pInfo->chIP);
-			msg.set_port(_pInfo->nPort);
-
-			svrData::ClientToken sendMsg;
-			sendMsg.set_setoken(clientinfo->Token);
-			sendMsg.set_ssecret(clientinfo->Secret);
-			CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GATE, 0, _pInfo->nServerID);
-		}
-		else
-			msg.set_ncode(netData::AuthRet::EC_SERVER);
-	}
-	else
-		msg.set_ncode(netData::AuthRet::EC_AUTHINFO);
-
-	CCentServerMgr::Instance().SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, clientid);
-	if(msg.ncode()== netData::AuthRet::EC_SERVER)
-	{
-		// 认证失败，移除认证信息
-		DelClientAuthInfo(clientid);
-	}
 }
 
 void CClientAuthMgr::SendLoadPlayerDataToLogic(Msg *pMsg, int32 clientid)

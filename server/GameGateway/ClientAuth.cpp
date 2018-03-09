@@ -76,7 +76,6 @@ void CClientAuth::AddAuthInfo(Msg *pMsg)
 
 	svrData::ClientToken msg;
 	_CHECK_PARSE_(pMsg, msg);
-
 	auto iter = m_ClientSecretInfo.find(msg.setoken());
 	if (iter == m_ClientSecretInfo.end())
 	{
@@ -86,6 +85,7 @@ void CClientAuth::AddAuthInfo(Msg *pMsg)
 			_pData->ClientID = 0;
 			_pData->Token = msg.setoken();
 			_pData->Secret = msg.ssecret();
+			msg.set_allocated_data(&(_pData->Data));
 			m_ClientSecretInfo.insert(std::make_pair(msg.setoken(), _pData));
 		}
 	}
@@ -101,6 +101,7 @@ void CClientAuth::AddAuthInfo(Msg *pMsg)
 		}
 		_pData->Token = msg.setoken();
 		_pData->Secret = msg.ssecret();
+		msg.set_allocated_data(&(_pData->Data));
 	}
 }
 
@@ -175,44 +176,6 @@ void CClientAuth::AddNewClient(Msg *pMsg, CClient *cl)
 	CGateClientMgr::Instance().SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET);
 	// 认证失败
 	ClientConnectError("新的客户端认证失败！token:%s", msg.stoken().c_str());
-}
-
-// 请求角色列表
-void CClientAuth::GetPlayerList(Msg *pMsg, CClient *cl)
-{
-	ClientAuthInfo *_pData = FindAuthInfo(cl->GetClientID());
-	if (_pData)
-	{
-		netData::PlayerList sendMsg;
-		_CHECK_PARSE_(pMsg, sendMsg);
-		sendMsg.set_account(_pData->Token);
-
-		CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_PLAYER_LIST, cl->GetClientID());
-	}
-}
-
-// 请求创建角色
-void CClientAuth::CreatePlayer(Msg *pMsg, CClient *cl)
-{
-	ClientAuthInfo *_pData = FindAuthInfo(cl->GetClientID());
-	if (_pData)
-	{
-		netData::CreatePlayer sendMsg;
-		_CHECK_PARSE_(pMsg, sendMsg);
-		sendMsg.set_account(_pData->Token);
-
-		CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_CREATE_PLAYER, cl->GetClientID());
-	}
-}
-
-// 请求选择角色
-void CClientAuth::SelectPlayer(Msg *pMsg, CClient *cl)
-{
-	ClientAuthInfo *_pData = FindAuthInfo(cl->GetClientID());
-	if (_pData)
-	{
-		CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), *pMsg, cl->GetClientID());
-	}
 }
 
 void CClientAuth::Offline(int32 clientid)

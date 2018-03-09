@@ -71,12 +71,10 @@ void CClientLogin::ClientAuth(task *tk, Msg *pMsg)
 
 		netData::AuthRet sendMsg;
 		sendMsg.set_ncode(netData::AuthRet::EC_FAIL);
-		sendMsg.set_nmapid(CConfig::Instance().GetBeginMap());
 		DataBase::CRecordset *res = dbhand->Execute(fmt::format("select * from account where account = '{0}' limit 1",
 			msg.setoken().c_str()).c_str());
 		if (res && res->IsOpen() && !res->IsEnd())
 		{
-			sendMsg.set_nmapid(res->GetInt("mapid"));
 			// 存在的账号
 			res = dbhand->Execute(fmt::format("update account set logintime ={0} where account = '{1}'", 
 				CTimer::GetTime(), msg.setoken().c_str()).c_str());
@@ -86,8 +84,8 @@ void CClientLogin::ClientAuth(task *tk, Msg *pMsg)
 		else
 		{
 			// 不存在的账号，创建
-			res = dbhand->Execute(fmt::format("insert into account (account,createtime,logintime,mapid) values ('{0}',{1},{2},{3})", 
-				msg.setoken().c_str(), CTimer::GetTime(), CTimer::GetTime(), CConfig::Instance().GetBeginMap()).c_str());
+			res = dbhand->Execute(fmt::format("insert into account (account,createtime,logintime) values ('{0}',{1},{2})", 
+				msg.setoken().c_str(), CTimer::GetTime(), CTimer::GetTime()).c_str());
 			if (res)
 			{
 				res = dbhand->Execute("select @@IDENTITY");

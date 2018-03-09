@@ -67,6 +67,7 @@ message ClientToken
 {
 	string sEtoken = 1;	// 账号信息
 	bytes sSecret = 2;	// 秘钥
+	LoadPlayerData data = 4;// 玩家数据
 }
 
 // 0-9 通知game加载玩家数据
@@ -79,8 +80,8 @@ message LoadPlayerData
 	int32 sex = 5;
 	int32 job = 6;
 	int32 level = 7;
-	int32 createtime = 8;
-	int32 logintime = 9;
+	int64 createtime = 8;
+	int64 logintime = 9;
 	int32 mapid = 10;
 	float x = 11;
 	float y = 12;
@@ -106,6 +107,7 @@ message ChangeLine
 	int32 nLineID = 2;	// 目标线路ID
 	string sEtoken = 3;	// 账号信息
 	bytes sSecret = 4;	// 秘钥
+	LoadPlayerData data = 5;// 玩家数据
 }
 
 // 0-12 切换线路返回

@@ -103,14 +103,20 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 				svrData::ChangeLine SendMsg;
 				SendMsg.set_nlineid(0);
 				SendMsg.set_nmapid(nMapID);
-
-				FuncUti::SendMsgToCenter(pPlayer, SendMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE);
+				svrData::LoadPlayerData *pData = SendMsg.mutable_data();
+				if (pData)
+				{
+					if (pPlayer->PackData(pData))
+					{
 #ifdef _DEBUG
-				RunStateError("玩家[%s]离开地图[%d]，换线!目标地图[%d]", 
-					pPlayer->GetName(),pPlayer->GetScene() == nullptr ? -1 : pPlayer->GetScene()->GetMapID(),
-					nMapID
-				);
+						RunStateError("玩家[%s]离开地图[%d]，换线!目标地图[%d]",
+							pPlayer->GetName(), pPlayer->GetScene() == nullptr ? -1 : pPlayer->GetScene()->GetMapID(),
+							nMapID
+						);
 #endif
+						FuncUti::SendMsgToCenter(pPlayer, SendMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE);
+					}
+				}
 			}
 			else
 			{

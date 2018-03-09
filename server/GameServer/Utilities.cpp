@@ -2,8 +2,6 @@
 #include <windows.h>
 #include "Utilities.h"
 #include "GameGatewayMgr.h"
-#include "GameCenterConnect.h"
-#include "Config.h"
 
 namespace FuncUti
 {
@@ -126,15 +124,5 @@ namespace FuncUti
 			--tail.id;
 			CGameGatewayMgr::Instance().SendMsg(gate, pMsg, &tail, sizeof(tail));
 		}
-	}
-
-	void SendMsgToCenter(CPlayer *player, google::protobuf::Message &pMsg, int maintype, int subtype)
-	{
-		CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), pMsg, maintype, subtype, player->GetClientID());
-	}
-
-	void SendMsgToCenter(CPlayer *player, Msg &pMsg, bool bRef)
-	{
-		CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), pMsg, player->GetClientID());
 	}
 }

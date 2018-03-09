@@ -37,6 +37,9 @@ public:
 	// 获取当前坐标
 	void GetNowPos(float &x, float &y, float &z);
 	float *GetNowPos() { return m_NowPos; }
+	float GetPosX() { return m_NowPos[EOP_X]; }
+	float GetPosY() { return m_NowPos[EOP_Y]; }
+	float GetPosZ() { return m_NowPos[EOP_Z]; }
 
 	// 设置当前坐标
 	void SetNowPos(const float &x, const float &y, const float &z);
@@ -62,6 +65,10 @@ public:
 	// 获取视野中的对象
 	std::unordered_map<uint32, CBaseObj *> *GetAoiList() { return &m_AoiList; };
 	
+	// 获取当前所在地图ID
+	int32 GetMapID() { return m_NowMapID; }
+	void SetMapID(int32 id) { m_NowMapID = id; }
+
 	// 获取临时ID
 	uint32 GetTempID() { return m_TempID; }
 
@@ -92,6 +99,12 @@ private:
 
 public:
 	int8 GetObjType() { return m_ObjType; }
+	void SetSex(int8 sex) { m_ObjSex = sex; }
+	int8 GetSex() { return m_ObjSex; }
+	void SetJob(int8 job) { m_ObjJob = job; }
+	int8 GetJob() { return m_ObjJob; }
+	void SetLevel(int8 level) { m_ObjLevel = level; }
+	int8 GetLevel() { return m_ObjLevel; }
 	bool IsPlayer() { return m_ObjType == EOT_PLAYER; }
 	bool IsMonster() { return m_ObjType == EOT_MONSTER; }
 	bool IsNPC() { return m_ObjType == EOT_NPC; }
@@ -104,6 +117,9 @@ public:
 private:
 	// 对象类型
 	int8 m_ObjType;
+	int8 m_ObjSex;
+	int8 m_ObjJob;
+	int8 m_ObjLevel;
 	// 名称
 	char m_ObjName[MAX_NAME_LEN];
 	// Aoi模式

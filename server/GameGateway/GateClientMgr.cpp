@@ -135,9 +135,6 @@ void CGateClientMgr::ProcessClientAuth(CClient *cl, Msg *pMsg)
 			cl->SetPingTime(g_currenttime);
 			break;
 		}
-		default:
-		{
-		}
 		}
 		break;
 	}
@@ -149,24 +146,6 @@ void CGateClientMgr::ProcessClientAuth(CClient *cl, Msg *pMsg)
 		{
 			CClientAuth::Instance().AddNewClient(pMsg, cl);
 			break;
-		}
-		case LOGIN_SUB_PLAYER_LIST:
-		{
-			CClientAuth::Instance().GetPlayerList(pMsg, cl);
-			break;
-		}
-		case LOGIN_SUB_CREATE_PLAYER:
-		{
-			CClientAuth::Instance().CreatePlayer(pMsg, cl);
-			break;
-		}
-		case LOGIN_SUB_SELECT_PLAYER:
-		{
-			CClientAuth::Instance().SelectPlayer(pMsg, cl);
-			break;
-		}
-		default:
-		{
 		}
 		}
 		break;

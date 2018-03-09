@@ -5,6 +5,7 @@
 #include "ServerLog.h"
 #include "msgbase.h"
 #include "GlobalDefine.h"
+#include "ClientAuth.h"
 
 #include "MainType.h"
 #include "ServerType.h"
@@ -100,7 +101,10 @@ void CLoginCenterConnect::ProcessMsg(connector *_con)
 
 				if (msg.ncode() == netData::AuthRet::EC_SUCC)
 				{
-					CLoginClientMgr::Instance().SetClientAuthSucceed(tl->id);
+					if (CClientAuth::Instance().AuthRet(tl->id, msg.stoken()))
+						CLoginClientMgr::Instance().SetClientAuthSucceed(tl->id);
+					else
+						msg.set_ncode(netData::AuthRet::EC_ADDTOKEN);
 				}
 				CLoginClientMgr::Instance().SendMsg(tl->id, pMsg);
 				break;

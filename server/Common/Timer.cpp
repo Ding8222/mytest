@@ -35,7 +35,7 @@ uint64 get_time()
 #endif
 }
 
-uint32 CTimer::m_Time = static_cast<uint32>(time(nullptr));
+int64 CTimer::m_Time = time(nullptr);
 uint64 CTimer::m_Time64 = get_time();
 
 CTimer::CTimer()
@@ -51,5 +51,5 @@ CTimer::~CTimer()
 void CTimer::UpdateTime()
 {
 	m_Time64 = get_time();
-	m_Time = static_cast<uint32>(time(nullptr));
+	m_Time = time(nullptr);
 }

@@ -185,12 +185,13 @@ inline bool LoadPlayerDataRet_EC_Parse(
 enum ChangeLineRet_EC {
   ChangeLineRet_EC_EC_OTHER = 0,
   ChangeLineRet_EC_EC_SUCC = 1,
+  ChangeLineRet_EC_EC_SERVER = 2,
   ChangeLineRet_EC_ChangeLineRet_EC_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   ChangeLineRet_EC_ChangeLineRet_EC_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool ChangeLineRet_EC_IsValid(int value);
 const ChangeLineRet_EC ChangeLineRet_EC_EC_MIN = ChangeLineRet_EC_EC_OTHER;
-const ChangeLineRet_EC ChangeLineRet_EC_EC_MAX = ChangeLineRet_EC_EC_SUCC;
+const ChangeLineRet_EC ChangeLineRet_EC_EC_MAX = ChangeLineRet_EC_EC_SERVER;
 const int ChangeLineRet_EC_EC_ARRAYSIZE = ChangeLineRet_EC_EC_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* ChangeLineRet_EC_descriptor();
@@ -1170,12 +1171,22 @@ class ClientToken : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::std::string* release_ssecret();
   void set_allocated_ssecret(::std::string* ssecret);
 
+  // .svrData.LoadPlayerData data = 4;
+  bool has_data() const;
+  void clear_data();
+  static const int kDataFieldNumber = 4;
+  const ::svrData::LoadPlayerData& data() const;
+  ::svrData::LoadPlayerData* release_data();
+  ::svrData::LoadPlayerData* mutable_data();
+  void set_allocated_data(::svrData::LoadPlayerData* data);
+
   // @@protoc_insertion_point(class_scope:svrData.ClientToken)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr setoken_;
   ::google::protobuf::internal::ArenaStringPtr ssecret_;
+  ::svrData::LoadPlayerData* data_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsClientTokenImpl();
@@ -1340,17 +1351,17 @@ class LoadPlayerData : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::int32 level() const;
   void set_level(::google::protobuf::int32 value);
 
-  // int32 createtime = 8;
+  // int64 createtime = 8;
   void clear_createtime();
   static const int kCreatetimeFieldNumber = 8;
-  ::google::protobuf::int32 createtime() const;
-  void set_createtime(::google::protobuf::int32 value);
+  ::google::protobuf::int64 createtime() const;
+  void set_createtime(::google::protobuf::int64 value);
 
-  // int32 logintime = 9;
+  // int64 logintime = 9;
   void clear_logintime();
   static const int kLogintimeFieldNumber = 9;
-  ::google::protobuf::int32 logintime() const;
-  void set_logintime(::google::protobuf::int32 value);
+  ::google::protobuf::int64 logintime() const;
+  void set_logintime(::google::protobuf::int64 value);
 
   // int32 mapid = 10;
   void clear_mapid();
@@ -1388,8 +1399,8 @@ class LoadPlayerData : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::int64 guid_;
   ::google::protobuf::int32 job_;
   ::google::protobuf::int32 level_;
-  ::google::protobuf::int32 createtime_;
-  ::google::protobuf::int32 logintime_;
+  ::google::protobuf::int64 createtime_;
+  ::google::protobuf::int64 logintime_;
   ::google::protobuf::int32 mapid_;
   float x_;
   float y_;
@@ -1643,6 +1654,15 @@ class ChangeLine : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::std::string* release_ssecret();
   void set_allocated_ssecret(::std::string* ssecret);
 
+  // .svrData.LoadPlayerData data = 5;
+  bool has_data() const;
+  void clear_data();
+  static const int kDataFieldNumber = 5;
+  const ::svrData::LoadPlayerData& data() const;
+  ::svrData::LoadPlayerData* release_data();
+  ::svrData::LoadPlayerData* mutable_data();
+  void set_allocated_data(::svrData::LoadPlayerData* data);
+
   // int32 nMapID = 1;
   void clear_nmapid();
   static const int kNMapIDFieldNumber = 1;
@@ -1661,6 +1681,7 @@ class ChangeLine : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr setoken_;
   ::google::protobuf::internal::ArenaStringPtr ssecret_;
+  ::svrData::LoadPlayerData* data_;
   ::google::protobuf::int32 nmapid_;
   ::google::protobuf::int32 nlineid_;
   mutable int _cached_size_;
@@ -1758,6 +1779,8 @@ class ChangeLineRet : public ::google::protobuf::Message /* @@protoc_insertion_p
     ChangeLineRet_EC_EC_OTHER;
   static const EC EC_SUCC =
     ChangeLineRet_EC_EC_SUCC;
+  static const EC EC_SERVER =
+    ChangeLineRet_EC_EC_SERVER;
   static inline bool EC_IsValid(int value) {
     return ChangeLineRet_EC_IsValid(value);
   }
@@ -2323,6 +2346,57 @@ inline void ClientToken::set_allocated_ssecret(::std::string* ssecret) {
   // @@protoc_insertion_point(field_set_allocated:svrData.ClientToken.sSecret)
 }
 
+// .svrData.LoadPlayerData data = 4;
+inline bool ClientToken::has_data() const {
+  return this != internal_default_instance() && data_ != NULL;
+}
+inline void ClientToken::clear_data() {
+  if (GetArenaNoVirtual() == NULL && data_ != NULL) {
+    delete data_;
+  }
+  data_ = NULL;
+}
+inline const ::svrData::LoadPlayerData& ClientToken::data() const {
+  const ::svrData::LoadPlayerData* p = data_;
+  // @@protoc_insertion_point(field_get:svrData.ClientToken.data)
+  return p != NULL ? *p : *reinterpret_cast<const ::svrData::LoadPlayerData*>(
+      &::svrData::_LoadPlayerData_default_instance_);
+}
+inline ::svrData::LoadPlayerData* ClientToken::release_data() {
+  // @@protoc_insertion_point(field_release:svrData.ClientToken.data)
+  
+  ::svrData::LoadPlayerData* temp = data_;
+  data_ = NULL;
+  return temp;
+}
+inline ::svrData::LoadPlayerData* ClientToken::mutable_data() {
+  
+  if (data_ == NULL) {
+    data_ = ::google::protobuf::Arena::Create< ::svrData::LoadPlayerData >(
+        GetArenaNoVirtual());
+  }
+  // @@protoc_insertion_point(field_mutable:svrData.ClientToken.data)
+  return data_;
+}
+inline void ClientToken::set_allocated_data(::svrData::LoadPlayerData* data) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete data_;
+  }
+  if (data) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      data = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, data, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  data_ = data;
+  // @@protoc_insertion_point(field_set_allocated:svrData.ClientToken.data)
+}
+
 // -------------------------------------------------------------------
 
 // LoadPlayerData
@@ -2503,29 +2577,29 @@ inline void LoadPlayerData::set_level(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:svrData.LoadPlayerData.level)
 }
 
-// int32 createtime = 8;
+// int64 createtime = 8;
 inline void LoadPlayerData::clear_createtime() {
-  createtime_ = 0;
+  createtime_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int32 LoadPlayerData::createtime() const {
+inline ::google::protobuf::int64 LoadPlayerData::createtime() const {
   // @@protoc_insertion_point(field_get:svrData.LoadPlayerData.createtime)
   return createtime_;
 }
-inline void LoadPlayerData::set_createtime(::google::protobuf::int32 value) {
+inline void LoadPlayerData::set_createtime(::google::protobuf::int64 value) {
   
   createtime_ = value;
   // @@protoc_insertion_point(field_set:svrData.LoadPlayerData.createtime)
 }
 
-// int32 logintime = 9;
+// int64 logintime = 9;
 inline void LoadPlayerData::clear_logintime() {
-  logintime_ = 0;
+  logintime_ = GOOGLE_LONGLONG(0);
 }
-inline ::google::protobuf::int32 LoadPlayerData::logintime() const {
+inline ::google::protobuf::int64 LoadPlayerData::logintime() const {
   // @@protoc_insertion_point(field_get:svrData.LoadPlayerData.logintime)
   return logintime_;
 }
-inline void LoadPlayerData::set_logintime(::google::protobuf::int32 value) {
+inline void LoadPlayerData::set_logintime(::google::protobuf::int64 value) {
   
   logintime_ = value;
   // @@protoc_insertion_point(field_set:svrData.LoadPlayerData.logintime)
@@ -2794,6 +2868,57 @@ inline void ChangeLine::set_allocated_ssecret(::std::string* ssecret) {
   }
   ssecret_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ssecret);
   // @@protoc_insertion_point(field_set_allocated:svrData.ChangeLine.sSecret)
+}
+
+// .svrData.LoadPlayerData data = 5;
+inline bool ChangeLine::has_data() const {
+  return this != internal_default_instance() && data_ != NULL;
+}
+inline void ChangeLine::clear_data() {
+  if (GetArenaNoVirtual() == NULL && data_ != NULL) {
+    delete data_;
+  }
+  data_ = NULL;
+}
+inline const ::svrData::LoadPlayerData& ChangeLine::data() const {
+  const ::svrData::LoadPlayerData* p = data_;
+  // @@protoc_insertion_point(field_get:svrData.ChangeLine.data)
+  return p != NULL ? *p : *reinterpret_cast<const ::svrData::LoadPlayerData*>(
+      &::svrData::_LoadPlayerData_default_instance_);
+}
+inline ::svrData::LoadPlayerData* ChangeLine::release_data() {
+  // @@protoc_insertion_point(field_release:svrData.ChangeLine.data)
+  
+  ::svrData::LoadPlayerData* temp = data_;
+  data_ = NULL;
+  return temp;
+}
+inline ::svrData::LoadPlayerData* ChangeLine::mutable_data() {
+  
+  if (data_ == NULL) {
+    data_ = ::google::protobuf::Arena::Create< ::svrData::LoadPlayerData >(
+        GetArenaNoVirtual());
+  }
+  // @@protoc_insertion_point(field_mutable:svrData.ChangeLine.data)
+  return data_;
+}
+inline void ChangeLine::set_allocated_data(::svrData::LoadPlayerData* data) {
+  ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == NULL) {
+    delete data_;
+  }
+  if (data) {
+    ::google::protobuf::Arena* submessage_arena = NULL;
+    if (message_arena != submessage_arena) {
+      data = ::google::protobuf::internal::GetOwnedMessage(
+          message_arena, data, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  data_ = data;
+  // @@protoc_insertion_point(field_set_allocated:svrData.ChangeLine.data)
 }
 
 // -------------------------------------------------------------------

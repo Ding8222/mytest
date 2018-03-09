@@ -159,6 +159,28 @@ template<> ::netData::SelectPlayerRet* Arena::Create< ::netData::SelectPlayerRet
 }  // namespace google
 namespace netData {
 
+enum HandShakeRet_EC {
+  HandShakeRet_EC_EC_OTHER = 0,
+  HandShakeRet_EC_EC_SUCC = 1,
+  HandShakeRet_EC_EC_FAIL = 2,
+  HandShakeRet_EC_HandShakeRet_EC_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  HandShakeRet_EC_HandShakeRet_EC_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool HandShakeRet_EC_IsValid(int value);
+const HandShakeRet_EC HandShakeRet_EC_EC_MIN = HandShakeRet_EC_EC_OTHER;
+const HandShakeRet_EC HandShakeRet_EC_EC_MAX = HandShakeRet_EC_EC_FAIL;
+const int HandShakeRet_EC_EC_ARRAYSIZE = HandShakeRet_EC_EC_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* HandShakeRet_EC_descriptor();
+inline const ::std::string& HandShakeRet_EC_Name(HandShakeRet_EC value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    HandShakeRet_EC_descriptor(), value);
+}
+inline bool HandShakeRet_EC_Parse(
+    const ::std::string& name, HandShakeRet_EC* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<HandShakeRet_EC>(
+    HandShakeRet_EC_descriptor(), name, value);
+}
 enum ChallengeRet_EC {
   ChallengeRet_EC_EC_OTHER = 0,
   ChallengeRet_EC_EC_SUCC = 1,
@@ -186,7 +208,7 @@ enum AuthRet_EC {
   AuthRet_EC_EC_SUCC = 1,
   AuthRet_EC_EC_FAIL = 2,
   AuthRet_EC_EC_HANDSHAKE = 3,
-  AuthRet_EC_EC_SERVER = 4,
+  AuthRet_EC_EC_ADDTOKEN = 4,
   AuthRet_EC_EC_DB = 5,
   AuthRet_EC_EC_AUTHINFO = 6,
   AuthRet_EC_AuthRet_EC_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
@@ -470,11 +492,39 @@ class HandShakeRet : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // nested types ----------------------------------------------------
 
+  typedef HandShakeRet_EC EC;
+  static const EC EC_OTHER =
+    HandShakeRet_EC_EC_OTHER;
+  static const EC EC_SUCC =
+    HandShakeRet_EC_EC_SUCC;
+  static const EC EC_FAIL =
+    HandShakeRet_EC_EC_FAIL;
+  static inline bool EC_IsValid(int value) {
+    return HandShakeRet_EC_IsValid(value);
+  }
+  static const EC EC_MIN =
+    HandShakeRet_EC_EC_MIN;
+  static const EC EC_MAX =
+    HandShakeRet_EC_EC_MAX;
+  static const int EC_ARRAYSIZE =
+    HandShakeRet_EC_EC_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  EC_descriptor() {
+    return HandShakeRet_EC_descriptor();
+  }
+  static inline const ::std::string& EC_Name(EC value) {
+    return HandShakeRet_EC_Name(value);
+  }
+  static inline bool EC_Parse(const ::std::string& name,
+      EC* value) {
+    return HandShakeRet_EC_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
-  // bytes sChallenge = 1;
+  // bytes sChallenge = 2;
   void clear_schallenge();
-  static const int kSChallengeFieldNumber = 1;
+  static const int kSChallengeFieldNumber = 2;
   const ::std::string& schallenge() const;
   void set_schallenge(const ::std::string& value);
   #if LANG_CXX11
@@ -486,9 +536,9 @@ class HandShakeRet : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::std::string* release_schallenge();
   void set_allocated_schallenge(::std::string* schallenge);
 
-  // bytes sServerKey = 2;
+  // bytes sServerKey = 3;
   void clear_sserverkey();
-  static const int kSServerKeyFieldNumber = 2;
+  static const int kSServerKeyFieldNumber = 3;
   const ::std::string& sserverkey() const;
   void set_sserverkey(const ::std::string& value);
   #if LANG_CXX11
@@ -500,12 +550,19 @@ class HandShakeRet : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::std::string* release_sserverkey();
   void set_allocated_sserverkey(::std::string* sserverkey);
 
+  // int32 nCode = 1;
+  void clear_ncode();
+  static const int kNCodeFieldNumber = 1;
+  ::google::protobuf::int32 ncode() const;
+  void set_ncode(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:netData.HandShakeRet)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr schallenge_;
   ::google::protobuf::internal::ArenaStringPtr sserverkey_;
+  ::google::protobuf::int32 ncode_;
   mutable int _cached_size_;
   friend struct ::protobuf_Login_2eproto::TableStruct;
   friend void ::protobuf_Login_2eproto::InitDefaultsHandShakeRetImpl();
@@ -973,8 +1030,8 @@ class AuthRet : public ::google::protobuf::Message /* @@protoc_insertion_point(c
     AuthRet_EC_EC_FAIL;
   static const EC EC_HANDSHAKE =
     AuthRet_EC_EC_HANDSHAKE;
-  static const EC EC_SERVER =
-    AuthRet_EC_EC_SERVER;
+  static const EC EC_ADDTOKEN =
+    AuthRet_EC_EC_ADDTOKEN;
   static const EC EC_DB =
     AuthRet_EC_EC_DB;
   static const EC EC_AUTHINFO =
@@ -1002,19 +1059,19 @@ class AuthRet : public ::google::protobuf::Message /* @@protoc_insertion_point(c
 
   // accessors -------------------------------------------------------
 
-  // string ip = 3;
-  void clear_ip();
-  static const int kIpFieldNumber = 3;
-  const ::std::string& ip() const;
-  void set_ip(const ::std::string& value);
+  // string sToken = 2;
+  void clear_stoken();
+  static const int kSTokenFieldNumber = 2;
+  const ::std::string& stoken() const;
+  void set_stoken(const ::std::string& value);
   #if LANG_CXX11
-  void set_ip(::std::string&& value);
+  void set_stoken(::std::string&& value);
   #endif
-  void set_ip(const char* value);
-  void set_ip(const char* value, size_t size);
-  ::std::string* mutable_ip();
-  ::std::string* release_ip();
-  void set_allocated_ip(::std::string* ip);
+  void set_stoken(const char* value);
+  void set_stoken(const char* value, size_t size);
+  ::std::string* mutable_stoken();
+  ::std::string* release_stoken();
+  void set_allocated_stoken(::std::string* stoken);
 
   // int32 nCode = 1;
   void clear_ncode();
@@ -1022,33 +1079,12 @@ class AuthRet : public ::google::protobuf::Message /* @@protoc_insertion_point(c
   ::google::protobuf::int32 ncode() const;
   void set_ncode(::google::protobuf::int32 value);
 
-  // int32 nServerID = 2;
-  void clear_nserverid();
-  static const int kNServerIDFieldNumber = 2;
-  ::google::protobuf::int32 nserverid() const;
-  void set_nserverid(::google::protobuf::int32 value);
-
-  // int32 port = 4;
-  void clear_port();
-  static const int kPortFieldNumber = 4;
-  ::google::protobuf::int32 port() const;
-  void set_port(::google::protobuf::int32 value);
-
-  // int32 nMapID = 5;
-  void clear_nmapid();
-  static const int kNMapIDFieldNumber = 5;
-  ::google::protobuf::int32 nmapid() const;
-  void set_nmapid(::google::protobuf::int32 value);
-
   // @@protoc_insertion_point(class_scope:netData.AuthRet)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr ip_;
+  ::google::protobuf::internal::ArenaStringPtr stoken_;
   ::google::protobuf::int32 ncode_;
-  ::google::protobuf::int32 nserverid_;
-  ::google::protobuf::int32 port_;
-  ::google::protobuf::int32 nmapid_;
   mutable int _cached_size_;
   friend struct ::protobuf_Login_2eproto::TableStruct;
   friend void ::protobuf_Login_2eproto::InitDefaultsAuthRetImpl();
@@ -2168,11 +2204,18 @@ class SelectPlayerRet : public ::google::protobuf::Message /* @@protoc_insertion
   ::google::protobuf::int32 ncode() const;
   void set_ncode(::google::protobuf::int32 value);
 
+  // int32 nMapID = 2;
+  void clear_nmapid();
+  static const int kNMapIDFieldNumber = 2;
+  ::google::protobuf::int32 nmapid() const;
+  void set_nmapid(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:netData.SelectPlayerRet)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::int32 ncode_;
+  ::google::protobuf::int32 nmapid_;
   mutable int _cached_size_;
   friend struct ::protobuf_Login_2eproto::TableStruct;
   friend void ::protobuf_Login_2eproto::InitDefaultsSelectPlayerRetImpl();
@@ -2245,7 +2288,21 @@ inline void HandShake::set_allocated_sclientkey(::std::string* sclientkey) {
 
 // HandShakeRet
 
-// bytes sChallenge = 1;
+// int32 nCode = 1;
+inline void HandShakeRet::clear_ncode() {
+  ncode_ = 0;
+}
+inline ::google::protobuf::int32 HandShakeRet::ncode() const {
+  // @@protoc_insertion_point(field_get:netData.HandShakeRet.nCode)
+  return ncode_;
+}
+inline void HandShakeRet::set_ncode(::google::protobuf::int32 value) {
+  
+  ncode_ = value;
+  // @@protoc_insertion_point(field_set:netData.HandShakeRet.nCode)
+}
+
+// bytes sChallenge = 2;
 inline void HandShakeRet::clear_schallenge() {
   schallenge_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -2298,7 +2355,7 @@ inline void HandShakeRet::set_allocated_schallenge(::std::string* schallenge) {
   // @@protoc_insertion_point(field_set_allocated:netData.HandShakeRet.sChallenge)
 }
 
-// bytes sServerKey = 2;
+// bytes sServerKey = 3;
 inline void HandShakeRet::clear_sserverkey() {
   sserverkey_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -2554,99 +2611,57 @@ inline void AuthRet::set_ncode(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:netData.AuthRet.nCode)
 }
 
-// int32 nServerID = 2;
-inline void AuthRet::clear_nserverid() {
-  nserverid_ = 0;
+// string sToken = 2;
+inline void AuthRet::clear_stoken() {
+  stoken_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::google::protobuf::int32 AuthRet::nserverid() const {
-  // @@protoc_insertion_point(field_get:netData.AuthRet.nServerID)
-  return nserverid_;
+inline const ::std::string& AuthRet::stoken() const {
+  // @@protoc_insertion_point(field_get:netData.AuthRet.sToken)
+  return stoken_.GetNoArena();
 }
-inline void AuthRet::set_nserverid(::google::protobuf::int32 value) {
+inline void AuthRet::set_stoken(const ::std::string& value) {
   
-  nserverid_ = value;
-  // @@protoc_insertion_point(field_set:netData.AuthRet.nServerID)
-}
-
-// string ip = 3;
-inline void AuthRet::clear_ip() {
-  ip_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& AuthRet::ip() const {
-  // @@protoc_insertion_point(field_get:netData.AuthRet.ip)
-  return ip_.GetNoArena();
-}
-inline void AuthRet::set_ip(const ::std::string& value) {
-  
-  ip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:netData.AuthRet.ip)
+  stoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:netData.AuthRet.sToken)
 }
 #if LANG_CXX11
-inline void AuthRet::set_ip(::std::string&& value) {
+inline void AuthRet::set_stoken(::std::string&& value) {
   
-  ip_.SetNoArena(
+  stoken_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:netData.AuthRet.ip)
+  // @@protoc_insertion_point(field_set_rvalue:netData.AuthRet.sToken)
 }
 #endif
-inline void AuthRet::set_ip(const char* value) {
+inline void AuthRet::set_stoken(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
-  ip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:netData.AuthRet.ip)
+  stoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:netData.AuthRet.sToken)
 }
-inline void AuthRet::set_ip(const char* value, size_t size) {
+inline void AuthRet::set_stoken(const char* value, size_t size) {
   
-  ip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  stoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:netData.AuthRet.ip)
+  // @@protoc_insertion_point(field_set_pointer:netData.AuthRet.sToken)
 }
-inline ::std::string* AuthRet::mutable_ip() {
+inline ::std::string* AuthRet::mutable_stoken() {
   
-  // @@protoc_insertion_point(field_mutable:netData.AuthRet.ip)
-  return ip_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  // @@protoc_insertion_point(field_mutable:netData.AuthRet.sToken)
+  return stoken_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* AuthRet::release_ip() {
-  // @@protoc_insertion_point(field_release:netData.AuthRet.ip)
+inline ::std::string* AuthRet::release_stoken() {
+  // @@protoc_insertion_point(field_release:netData.AuthRet.sToken)
   
-  return ip_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return stoken_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void AuthRet::set_allocated_ip(::std::string* ip) {
-  if (ip != NULL) {
+inline void AuthRet::set_allocated_stoken(::std::string* stoken) {
+  if (stoken != NULL) {
     
   } else {
     
   }
-  ip_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ip);
-  // @@protoc_insertion_point(field_set_allocated:netData.AuthRet.ip)
-}
-
-// int32 port = 4;
-inline void AuthRet::clear_port() {
-  port_ = 0;
-}
-inline ::google::protobuf::int32 AuthRet::port() const {
-  // @@protoc_insertion_point(field_get:netData.AuthRet.port)
-  return port_;
-}
-inline void AuthRet::set_port(::google::protobuf::int32 value) {
-  
-  port_ = value;
-  // @@protoc_insertion_point(field_set:netData.AuthRet.port)
-}
-
-// int32 nMapID = 5;
-inline void AuthRet::clear_nmapid() {
-  nmapid_ = 0;
-}
-inline ::google::protobuf::int32 AuthRet::nmapid() const {
-  // @@protoc_insertion_point(field_get:netData.AuthRet.nMapID)
-  return nmapid_;
-}
-inline void AuthRet::set_nmapid(::google::protobuf::int32 value) {
-  
-  nmapid_ = value;
-  // @@protoc_insertion_point(field_set:netData.AuthRet.nMapID)
+  stoken_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), stoken);
+  // @@protoc_insertion_point(field_set_allocated:netData.AuthRet.sToken)
 }
 
 // -------------------------------------------------------------------
@@ -3210,6 +3225,20 @@ inline void SelectPlayerRet::set_ncode(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:netData.SelectPlayerRet.nCode)
 }
 
+// int32 nMapID = 2;
+inline void SelectPlayerRet::clear_nmapid() {
+  nmapid_ = 0;
+}
+inline ::google::protobuf::int32 SelectPlayerRet::nmapid() const {
+  // @@protoc_insertion_point(field_get:netData.SelectPlayerRet.nMapID)
+  return nmapid_;
+}
+inline void SelectPlayerRet::set_nmapid(::google::protobuf::int32 value) {
+  
+  nmapid_ = value;
+  // @@protoc_insertion_point(field_set:netData.SelectPlayerRet.nMapID)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
@@ -3249,6 +3278,11 @@ inline void SelectPlayerRet::set_ncode(::google::protobuf::int32 value) {
 namespace google {
 namespace protobuf {
 
+template <> struct is_proto_enum< ::netData::HandShakeRet_EC> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::netData::HandShakeRet_EC>() {
+  return ::netData::HandShakeRet_EC_descriptor();
+}
 template <> struct is_proto_enum< ::netData::ChallengeRet_EC> : ::google::protobuf::internal::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::netData::ChallengeRet_EC>() {

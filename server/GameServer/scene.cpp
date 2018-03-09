@@ -185,6 +185,7 @@ bool CScene::DelObj(CBaseObj * obj)
 	obj->LeaveAoi();
 	obj->SetTempID(0);
 	obj->SetScene(nullptr);
+	obj->SetMapID(0);
 	m_ObjMap.erase(obj->GetTempID());
 	return true;
 }

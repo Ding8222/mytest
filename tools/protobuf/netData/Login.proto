@@ -10,8 +10,15 @@ message HandShake
 // 2-2 握手返回
 message HandShakeRet
 {
-	bytes sChallenge = 1;		//base64encode(randomkey)
-	bytes sServerKey = 2;		//base64encode(dhexchange(randomkey))
+	enum EC
+	{
+		EC_OTHER = 0;
+		EC_SUCC = 1;
+		EC_FAIL = 2;
+	};
+	int32 nCode = 1;	//握手结果
+	bytes sChallenge = 2;		//base64encode(randomkey)
+	bytes sServerKey = 3;		//base64encode(dhexchange(randomkey))
 }
 
 // 收到1-2之后
@@ -54,15 +61,12 @@ message AuthRet
 		EC_SUCC = 1;
 		EC_FAIL = 2;
 		EC_HANDSHAKE = 3;	// 握手失败
-		EC_SERVER = 4;		// 分配Server失败
+		EC_ADDTOKEN = 4;	// Login添加Token失败
 		EC_DB = 5;			// 数据库查询失败
 		EC_AUTHINFO = 6;	// 没有找到认证信息
 	};
 	int32 nCode = 1;
-	int32 nServerID = 2;	// 返回要连接的服务器ID
-	string ip = 3;			// 返回要去连接的ip地址
-	int32 port = 4;			// 返回要去连接的port
-	int32 nMapID = 5;		// 要加载的地图ID
+	string sToken = 2;	//账号
 }
 
 // 2-7 登陆
@@ -145,4 +149,5 @@ message SelectPlayerRet
 		EC_FAIL = 2;
 	};
 	int32 nCode = 1;
+	int32 nMapID = 2;		// 要加载的地图ID
 }
