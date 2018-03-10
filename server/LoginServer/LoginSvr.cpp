@@ -77,6 +77,12 @@ bool CLoginServer::Init()
 			break;
 		}
 
+		if (!CClientAuth::Instance().Init())
+		{
+			RunStateError("初始化 ClientAuth 失败!");
+			break;
+		}
+
 		m_Run = true;
 		return true;
 	} while (true);

@@ -54,6 +54,7 @@ message UpdateServerLoad
 message AddNewClient
 {
 	int32 nGateID = 1;
+	int32 nTempID = 2;
 }
 
 // 0-7 client断开

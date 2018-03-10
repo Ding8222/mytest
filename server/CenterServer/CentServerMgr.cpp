@@ -403,6 +403,7 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 
 				//通知CLient登录成功
 				netData::LoginRet sendMsg;
+				sendMsg.set_ntempid(msg.ntempid());
 				sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
 				CCentServerMgr::Instance().SendMsgToServer(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, ServerEnum::EST_GATE, tl->id);
 				break;
@@ -432,7 +433,38 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 			}
 			case SVR_SUB_LOAD_PLAYERDATA:
 			{
-				CClientAuthMgr::Instance().SendLoadPlayerDataToLogic(pMsg, tl->id);
+				svrData::LoadPlayerData msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				netData::SelectPlayerRet SendMsg;
+				ClientAuthInfo *_pAuthInfo = CClientAuthMgr::Instance().FindClientAuthInfo(tl->id);
+				if (_pAuthInfo)
+				{
+					ServerStatusInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByMapID(msg.mapid());
+					if (_pInfo)
+					{
+						// 返回loginsvr，通知client选角成功，登陆gamegateway
+						SendMsg.set_ncode(netData::SelectPlayerRet::EC_SUCC);
+						SendMsg.set_nserverid(_pInfo->nServerID);
+						SendMsg.set_sip(_pInfo->chIP);
+						SendMsg.set_nport(_pInfo->nPort);
+						SendMsg.set_nmapid(msg.mapid());
+
+						// 将角色数据和认证信息发送到gamegateway
+						svrData::ClientToken sendMsg;
+						sendMsg.mutable_data()->MergeFrom(msg);
+						sendMsg.set_setoken(_pAuthInfo->Token);
+						sendMsg.set_ssecret(_pAuthInfo->Secret);
+						CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GATE, 0, _pInfo->nServerID);
+					}
+					else
+						SendMsg.set_ncode(netData::SelectPlayerRet::EC_SERVER);
+				}
+				else
+					SendMsg.set_ncode(netData::SelectPlayerRet::EC_AUTH);
+
+				CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER_RET, ServerEnum::EST_LOGIN, tl->id);
+
 				break;
 			}
 			case SVR_SUB_CHANGELINE:
@@ -565,7 +597,10 @@ void CCentServerMgr::ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 
 			ClientAuthInfo *clientinfo = CClientAuthMgr::Instance().FindClientAuthInfo(tl->id);
 			if (clientinfo)
+			{
+				msg.set_stoken(clientinfo->Token);
 				msg.set_ncode(netData::AuthRet::EC_SUCC);
+			}
 
 			CCentServerMgr::Instance().SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, tl->id);
 
@@ -573,41 +608,14 @@ void CCentServerMgr::ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		}
 		case LOGIN_SUB_PLAYER_LIST_RET:
 		case LOGIN_SUB_CREATE_PLAYER_RET:
-		{
-			CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_LOGIN, tl->id);
-		}
 		case LOGIN_SUB_SELECT_PLAYER_RET:
 		{
-// 			// 选角返回，分配服务器
-// 			ServerStatusInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByMapID(msg.nmapid(), msg.nlineid());
-// 			if (_pInfo)
-// 			{
-// 				SendMsg.set_nretcode(netData::AuthRet::EC_SUCC);
-// 				SendMsg.set_nserverid(_pInfo->nServerID);
-// 				SendMsg.set_sip(_pInfo->chIP);
-// 				SendMsg.set_nport(_pInfo->nPort);
-// 				SendMsg.set_nmapid(msg.nmapid());
-// 
-// 				svrData::ClientToken sendMsg;
-// 				sendMsg.set_bchangeline(true);
-// 				msg.set_allocated_data(sendMsg.mutable_data());
-// 				sendMsg.set_setoken(msg.setoken());
-// 				sendMsg.set_ssecret(msg.ssecret());
-// 
-// 				CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GATE, 0, _pInfo->nServerID);
-// 			}
-// 			else
-// 				SendMsg.set_nretcode(netData::AuthRet::EC_SERVER);
-// 			CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_LOGIN, tl->id);
+			CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_LOGIN, tl->id);
 			break;
 		}
-		default:
-			break;
 		}
 		break;
 	}
-	default:
-		break;
 	}
 }
 

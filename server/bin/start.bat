@@ -9,4 +9,4 @@ start "[Game]GameGateway"	"GameGateway.exe" 1
 start "[Game]GameServer"	"GameServer.exe" 2
 start "[Game]GameGateway"	"GameGateway.exe" 2
 
-start "[Game]Robot" "Robot.exe" 
+::start "[Game]Robot" "Robot.exe" 

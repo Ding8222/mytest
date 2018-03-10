@@ -173,9 +173,6 @@ void CRobotMgr::ProcessRegister(CRobot *con)
 				con->SetRecvPingTime(g_currenttime);
 				break;
 			}
-			default:
-			{
-			}
 			}
 			break;
 		}
@@ -199,12 +196,8 @@ void CRobotMgr::ProcessRegister(CRobot *con)
 				con->SetHandShake(true);
 				break;
 			}
-			default:
-				break;
 			}
 		}
-		default:
-			break;
 		}
 	}
 }
@@ -227,24 +220,6 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 			case CLIENT_SUB_PING:
 			{
 				_con->SetRecvPingTime(g_currenttime);
-				break;
-			}
-			case CLIENT_SUB_LOAD_PLAYERDATA:
-			{
-				netData::LoadPlayerDataFinish msg;
-				_CHECK_PARSE_(pMsg, msg);
-
-				if (msg.ncode() == netData::LoadPlayerDataFinish::EC_SUCC)
-				{
-					RunStateLog("逻辑服加载数据成功!TempID:%d", msg.ntempid());
-					_con->SetTempID(msg.ntempid());
-					netData::PlayerMove sendMsg;
-					sendMsg.set_x(1);
-					sendMsg.set_y(1);
-					sendMsg.set_z(0);
-					_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
-				}
-
 				break;
 			}
 			case CLIENT_SUB_MOVE_RET:
@@ -286,9 +261,6 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				}
 				break;
 			}
-			default:
-			{
-			}
 			}
 			break;
 		}
@@ -301,9 +273,6 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				_con->SetRecvPingTime(g_currenttime);
 				break;
 			}
-			default:
-			{
-			}
 			}
 			break;
 		}
@@ -311,24 +280,6 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 		{
 			switch (pMsg->GetSubType())
 			{
-			case LOGIN_SUB_AUTH_RET:
-			{
-				netData::AuthRet msg;
-				_CHECK_PARSE_(pMsg, msg);
-
-				if (msg.port() > 0)
-				{
-					_con->ChangeConnect(msg.ip().c_str(), msg.port(), msg.nserverid(), true);
-				}
-				else
-				{
-					netData::Auth sendMsg;
-					sendMsg.set_setoken(_con->GetAccount());
-					_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH);
-				}
-				RunStateLog("AuthRet:%d,ip:%s,port:%d", msg.ncode(), msg.ip().c_str(), msg.port());
-				break;
-			}
 			case LOGIN_SUB_LOGIN_RET:
 			{
 				netData::LoginRet msg;
@@ -338,12 +289,35 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 
 				if (msg.ncode() == netData::LoginRet::EC_SUCC)
 				{
+					RunStateLog("逻辑服加载数据成功!TempID:%d", msg.ntempid());
+					_con->SetTempID(msg.ntempid());
+					netData::PlayerMove sendMsg;
+					sendMsg.set_x(1);
+					sendMsg.set_y(1);
+					sendMsg.set_z(0);
+					_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
+				}
+				else
+				{
+					_con->ChangeConnect(s_LoginServerIP.c_str(), m_LoginServerPort, m_LoginServerID, false);
+				}
+				break;
+			}
+			case LOGIN_SUB_AUTH_RET:
+			{
+				netData::AuthRet msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				if (msg.ncode() == netData::AuthRet::EC_SUCC)
+				{
 					netData::PlayerList sendMsg;
 					_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_PLAYER_LIST);
 				}
 				else
 				{
-					_con->ChangeConnect(s_LoginServerIP.c_str(), m_LoginServerPort, m_LoginServerID, false);
+					netData::Auth sendMsg;
+					sendMsg.set_setoken(_con->GetAccount());
+					_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH);
 				}
 				break;
 			}
@@ -392,17 +366,13 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				netData::SelectPlayerRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
+				if(msg.ncode() == netData::SelectPlayerRet::EC_SUCC)
+					_con->ChangeConnect(msg.sip().c_str(), msg.nport(), msg.nserverid(), true);
 				RunStateLog("SelectPlayerRet:%d", msg.ncode());
 				break;
 			}
-			default:
-			{
-			}
 			}
 			break;
-		}
-		default:
-		{
 		}
 		}
 	}

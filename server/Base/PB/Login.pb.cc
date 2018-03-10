@@ -471,6 +471,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::LoginRet, ncode_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::LoginRet, ntempid_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::PlayerLite, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -521,6 +522,10 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::SelectPlayerRet, ncode_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::SelectPlayerRet, nmapid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::SelectPlayerRet, nserverid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::SelectPlayerRet, nlineid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::SelectPlayerRet, nport_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::SelectPlayerRet, sip_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::netData::HandShake)},
@@ -531,13 +536,13 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 33, -1, sizeof(::netData::AuthRet)},
   { 40, -1, sizeof(::netData::Login)},
   { 47, -1, sizeof(::netData::LoginRet)},
-  { 53, -1, sizeof(::netData::PlayerLite)},
-  { 62, -1, sizeof(::netData::PlayerList)},
-  { 68, -1, sizeof(::netData::PlayerListRet)},
-  { 74, -1, sizeof(::netData::CreatePlayer)},
-  { 83, -1, sizeof(::netData::CreatePlayerRet)},
-  { 90, -1, sizeof(::netData::SelectPlayer)},
-  { 96, -1, sizeof(::netData::SelectPlayerRet)},
+  { 54, -1, sizeof(::netData::PlayerLite)},
+  { 63, -1, sizeof(::netData::PlayerList)},
+  { 69, -1, sizeof(::netData::PlayerListRet)},
+  { 75, -1, sizeof(::netData::CreatePlayer)},
+  { 84, -1, sizeof(::netData::CreatePlayerRet)},
+  { 91, -1, sizeof(::netData::SelectPlayer)},
+  { 97, -1, sizeof(::netData::SelectPlayerRet)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -592,24 +597,27 @@ void AddDescriptorsImpl() {
       "(\t\"k\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007E"
       "C_FAIL\020\002\022\020\n\014EC_HANDSHAKE\020\003\022\017\n\013EC_ADDTOKE"
       "N\020\004\022\t\n\005EC_DB\020\005\022\017\n\013EC_AUTHINFO\020\006\"(\n\005Login"
-      "\022\016\n\006sToken\030\001 \001(\t\022\017\n\007sSecret\030\002 \001(\014\"G\n\010Log"
-      "inRet\022\r\n\005nCode\030\001 \001(\005\",\n\002EC\022\014\n\010EC_OTHER\020\000"
-      "\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002\"E\n\nPlayerLite"
-      "\022\014\n\004guid\030\001 \001(\003\022\r\n\005sName\030\002 \001(\t\022\014\n\004nJob\030\003 "
-      "\001(\005\022\014\n\004nSex\030\004 \001(\005\"\035\n\nPlayerList\022\017\n\007accou"
-      "nt\030\001 \001(\t\"2\n\rPlayerListRet\022!\n\004list\030\001 \003(\0132"
-      "\023.netData.PlayerLite\"J\n\014CreatePlayer\022\r\n\005"
-      "sName\030\001 \001(\t\022\014\n\004nJob\030\002 \001(\005\022\014\n\004nSex\030\003 \001(\005\022"
-      "\017\n\007account\030\004 \001(\t\"q\n\017CreatePlayerRet\022\r\n\005n"
-      "Code\030\001 \001(\005\022!\n\004info\030\002 \001(\0132\023.netData.Playe"
-      "rLite\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013"
-      "\n\007EC_FAIL\020\002\"\034\n\014SelectPlayer\022\014\n\004guid\030\001 \001("
-      "\003\"^\n\017SelectPlayerRet\022\r\n\005nCode\030\001 \001(\005\022\016\n\006n"
-      "MapID\030\002 \001(\005\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SU"
-      "CC\020\001\022\013\n\007EC_FAIL\020\002b\006proto3"
+      "\022\016\n\006sToken\030\001 \001(\t\022\017\n\007sSecret\030\002 \001(\014\"X\n\010Log"
+      "inRet\022\r\n\005nCode\030\001 \001(\005\022\017\n\007nTempID\030\002 \001(\005\",\n"
+      "\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAI"
+      "L\020\002\"E\n\nPlayerLite\022\014\n\004guid\030\001 \001(\003\022\r\n\005sName"
+      "\030\002 \001(\t\022\014\n\004nJob\030\003 \001(\005\022\014\n\004nSex\030\004 \001(\005\"\035\n\nPl"
+      "ayerList\022\017\n\007account\030\001 \001(\t\"2\n\rPlayerListR"
+      "et\022!\n\004list\030\001 \003(\0132\023.netData.PlayerLite\"J\n"
+      "\014CreatePlayer\022\r\n\005sName\030\001 \001(\t\022\014\n\004nJob\030\002 \001"
+      "(\005\022\014\n\004nSex\030\003 \001(\005\022\017\n\007account\030\004 \001(\t\"q\n\017Cre"
+      "atePlayerRet\022\r\n\005nCode\030\001 \001(\005\022!\n\004info\030\002 \001("
+      "\0132\023.netData.PlayerLite\",\n\002EC\022\014\n\010EC_OTHER"
+      "\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002\"\034\n\014SelectPl"
+      "ayer\022\014\n\004guid\030\001 \001(\003\"\272\001\n\017SelectPlayerRet\022\r"
+      "\n\005nCode\030\001 \001(\005\022\016\n\006nMapID\030\002 \001(\005\022\021\n\tnServer"
+      "ID\030\003 \001(\005\022\017\n\007nLineID\030\004 \001(\005\022\r\n\005nPort\030\005 \001(\005"
+      "\022\013\n\003sIP\030\006 \001(\t\"H\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_"
+      "SUCC\020\001\022\013\n\007EC_FAIL\020\002\022\r\n\tEC_SERVER\020\003\022\013\n\007EC"
+      "_AUTH\020\004b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1065);
+      descriptor, 1175);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Login.proto", &protobuf_RegisterTypes);
 }
@@ -758,6 +766,8 @@ bool SelectPlayerRet_EC_IsValid(int value) {
     case 0:
     case 1:
     case 2:
+    case 3:
+    case 4:
       return true;
     default:
       return false;
@@ -768,6 +778,8 @@ bool SelectPlayerRet_EC_IsValid(int value) {
 const SelectPlayerRet_EC SelectPlayerRet::EC_OTHER;
 const SelectPlayerRet_EC SelectPlayerRet::EC_SUCC;
 const SelectPlayerRet_EC SelectPlayerRet::EC_FAIL;
+const SelectPlayerRet_EC SelectPlayerRet::EC_SERVER;
+const SelectPlayerRet_EC SelectPlayerRet::EC_AUTH;
 const SelectPlayerRet_EC SelectPlayerRet::EC_MIN;
 const SelectPlayerRet_EC SelectPlayerRet::EC_MAX;
 const int SelectPlayerRet::EC_ARRAYSIZE;
@@ -2693,6 +2705,7 @@ void LoginRet::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int LoginRet::kNCodeFieldNumber;
+const int LoginRet::kNTempIDFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 LoginRet::LoginRet()
@@ -2708,12 +2721,16 @@ LoginRet::LoginRet(const LoginRet& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ncode_ = from.ncode_;
+  ::memcpy(&ncode_, &from.ncode_,
+    static_cast<size_t>(reinterpret_cast<char*>(&ntempid_) -
+    reinterpret_cast<char*>(&ncode_)) + sizeof(ntempid_));
   // @@protoc_insertion_point(copy_constructor:netData.LoginRet)
 }
 
 void LoginRet::SharedCtor() {
-  ncode_ = 0;
+  ::memset(&ncode_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&ntempid_) -
+      reinterpret_cast<char*>(&ncode_)) + sizeof(ntempid_));
   _cached_size_ = 0;
 }
 
@@ -2747,7 +2764,9 @@ void LoginRet::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ncode_ = 0;
+  ::memset(&ncode_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&ntempid_) -
+      reinterpret_cast<char*>(&ncode_)) + sizeof(ntempid_));
   _internal_metadata_.Clear();
 }
 
@@ -2769,6 +2788,20 @@ bool LoginRet::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &ncode_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 nTempID = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &ntempid_)));
         } else {
           goto handle_unusual;
         }
@@ -2806,6 +2839,11 @@ void LoginRet::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->ncode(), output);
   }
 
+  // int32 nTempID = 2;
+  if (this->ntempid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->ntempid(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -2823,6 +2861,11 @@ void LoginRet::SerializeWithCachedSizes(
   // int32 nCode = 1;
   if (this->ncode() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->ncode(), target);
+  }
+
+  // int32 nTempID = 2;
+  if (this->ntempid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->ntempid(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2847,6 +2890,13 @@ size_t LoginRet::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->ncode());
+  }
+
+  // int32 nTempID = 2;
+  if (this->ntempid() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->ntempid());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2881,6 +2931,9 @@ void LoginRet::MergeFrom(const LoginRet& from) {
   if (from.ncode() != 0) {
     set_ncode(from.ncode());
   }
+  if (from.ntempid() != 0) {
+    set_ntempid(from.ntempid());
+  }
 }
 
 void LoginRet::CopyFrom(const ::google::protobuf::Message& from) {
@@ -2908,6 +2961,7 @@ void LoginRet::Swap(LoginRet* other) {
 void LoginRet::InternalSwap(LoginRet* other) {
   using std::swap;
   swap(ncode_, other->ncode_);
+  swap(ntempid_, other->ntempid_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -4677,6 +4731,10 @@ void SelectPlayerRet::InitAsDefaultInstance() {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int SelectPlayerRet::kNCodeFieldNumber;
 const int SelectPlayerRet::kNMapIDFieldNumber;
+const int SelectPlayerRet::kNServerIDFieldNumber;
+const int SelectPlayerRet::kNLineIDFieldNumber;
+const int SelectPlayerRet::kNPortFieldNumber;
+const int SelectPlayerRet::kSIPFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 SelectPlayerRet::SelectPlayerRet()
@@ -4692,16 +4750,21 @@ SelectPlayerRet::SelectPlayerRet(const SelectPlayerRet& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  sip_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.sip().size() > 0) {
+    sip_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.sip_);
+  }
   ::memcpy(&ncode_, &from.ncode_,
-    static_cast<size_t>(reinterpret_cast<char*>(&nmapid_) -
-    reinterpret_cast<char*>(&ncode_)) + sizeof(nmapid_));
+    static_cast<size_t>(reinterpret_cast<char*>(&nport_) -
+    reinterpret_cast<char*>(&ncode_)) + sizeof(nport_));
   // @@protoc_insertion_point(copy_constructor:netData.SelectPlayerRet)
 }
 
 void SelectPlayerRet::SharedCtor() {
+  sip_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&ncode_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&nmapid_) -
-      reinterpret_cast<char*>(&ncode_)) + sizeof(nmapid_));
+      reinterpret_cast<char*>(&nport_) -
+      reinterpret_cast<char*>(&ncode_)) + sizeof(nport_));
   _cached_size_ = 0;
 }
 
@@ -4711,6 +4774,7 @@ SelectPlayerRet::~SelectPlayerRet() {
 }
 
 void SelectPlayerRet::SharedDtor() {
+  sip_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void SelectPlayerRet::SetCachedSize(int size) const {
@@ -4735,9 +4799,10 @@ void SelectPlayerRet::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  sip_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&ncode_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&nmapid_) -
-      reinterpret_cast<char*>(&ncode_)) + sizeof(nmapid_));
+      reinterpret_cast<char*>(&nport_) -
+      reinterpret_cast<char*>(&ncode_)) + sizeof(nport_));
   _internal_metadata_.Clear();
 }
 
@@ -4773,6 +4838,64 @@ bool SelectPlayerRet::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &nmapid_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 nServerID = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &nserverid_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 nLineID = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &nlineid_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 nPort = 5;
+      case 5: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &nport_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // string sIP = 6;
+      case 6: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(50u /* 50 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_sip()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->sip().data(), static_cast<int>(this->sip().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "netData.SelectPlayerRet.sIP"));
         } else {
           goto handle_unusual;
         }
@@ -4815,6 +4938,31 @@ void SelectPlayerRet::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->nmapid(), output);
   }
 
+  // int32 nServerID = 3;
+  if (this->nserverid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->nserverid(), output);
+  }
+
+  // int32 nLineID = 4;
+  if (this->nlineid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->nlineid(), output);
+  }
+
+  // int32 nPort = 5;
+  if (this->nport() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->nport(), output);
+  }
+
+  // string sIP = 6;
+  if (this->sip().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->sip().data(), static_cast<int>(this->sip().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "netData.SelectPlayerRet.sIP");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      6, this->sip(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -4839,6 +4987,32 @@ void SelectPlayerRet::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->nmapid(), target);
   }
 
+  // int32 nServerID = 3;
+  if (this->nserverid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->nserverid(), target);
+  }
+
+  // int32 nLineID = 4;
+  if (this->nlineid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->nlineid(), target);
+  }
+
+  // int32 nPort = 5;
+  if (this->nport() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->nport(), target);
+  }
+
+  // string sIP = 6;
+  if (this->sip().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->sip().data(), static_cast<int>(this->sip().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "netData.SelectPlayerRet.sIP");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        6, this->sip(), target);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -4856,6 +5030,13 @@ size_t SelectPlayerRet::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
+  // string sIP = 6;
+  if (this->sip().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->sip());
+  }
+
   // int32 nCode = 1;
   if (this->ncode() != 0) {
     total_size += 1 +
@@ -4868,6 +5049,27 @@ size_t SelectPlayerRet::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->nmapid());
+  }
+
+  // int32 nServerID = 3;
+  if (this->nserverid() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->nserverid());
+  }
+
+  // int32 nLineID = 4;
+  if (this->nlineid() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->nlineid());
+  }
+
+  // int32 nPort = 5;
+  if (this->nport() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->nport());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -4899,11 +5101,24 @@ void SelectPlayerRet::MergeFrom(const SelectPlayerRet& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (from.sip().size() > 0) {
+
+    sip_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.sip_);
+  }
   if (from.ncode() != 0) {
     set_ncode(from.ncode());
   }
   if (from.nmapid() != 0) {
     set_nmapid(from.nmapid());
+  }
+  if (from.nserverid() != 0) {
+    set_nserverid(from.nserverid());
+  }
+  if (from.nlineid() != 0) {
+    set_nlineid(from.nlineid());
+  }
+  if (from.nport() != 0) {
+    set_nport(from.nport());
   }
 }
 
@@ -4931,8 +5146,12 @@ void SelectPlayerRet::Swap(SelectPlayerRet* other) {
 }
 void SelectPlayerRet::InternalSwap(SelectPlayerRet* other) {
   using std::swap;
+  sip_.Swap(&other->sip_);
   swap(ncode_, other->ncode_);
   swap(nmapid_, other->nmapid_);
+  swap(nserverid_, other->nserverid_);
+  swap(nlineid_, other->nlineid_);
+  swap(nport_, other->nport_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }

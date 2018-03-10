@@ -943,11 +943,18 @@ class AddNewClient : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::int32 ngateid() const;
   void set_ngateid(::google::protobuf::int32 value);
 
+  // int32 nTempID = 2;
+  void clear_ntempid();
+  static const int kNTempIDFieldNumber = 2;
+  ::google::protobuf::int32 ntempid() const;
+  void set_ntempid(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:svrData.AddNewClient)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::int32 ngateid_;
+  ::google::protobuf::int32 ntempid_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsAddNewClientImpl();
@@ -2216,6 +2223,20 @@ inline void AddNewClient::set_ngateid(::google::protobuf::int32 value) {
   
   ngateid_ = value;
   // @@protoc_insertion_point(field_set:svrData.AddNewClient.nGateID)
+}
+
+// int32 nTempID = 2;
+inline void AddNewClient::clear_ntempid() {
+  ntempid_ = 0;
+}
+inline ::google::protobuf::int32 AddNewClient::ntempid() const {
+  // @@protoc_insertion_point(field_get:svrData.AddNewClient.nTempID)
+  return ntempid_;
+}
+inline void AddNewClient::set_ntempid(::google::protobuf::int32 value) {
+  
+  ntempid_ = value;
+  // @@protoc_insertion_point(field_set:svrData.AddNewClient.nTempID)
 }
 
 // -------------------------------------------------------------------

@@ -10,12 +10,15 @@ CPlayer::CPlayer():CBaseObj(EOT_PLAYER)
 {
 	m_GateInfo = nullptr;
 	m_ClientID = 0;
+	m_Guid = 0;
+	m_CreateTime = 0;
+	m_LoginTime = 0;
+	memset(m_Data, 0, sizeof(m_Data));
 }
 
 CPlayer::~CPlayer()
 {
-	m_GateInfo = nullptr;
-	m_ClientID = 0;
+
 }
 
 void CPlayer::Run()
@@ -28,7 +31,6 @@ bool CPlayer::LoadData(Msg *pMsg)
 {
 	svrData::LoadPlayerData msg;
 	_CHECK_PARSE_(pMsg, msg) false;
-
 
 	SetClientID(msg.clientid());
 	SetAccount(msg.account());

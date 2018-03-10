@@ -85,7 +85,7 @@ void CClientAuth::AddAuthInfo(Msg *pMsg)
 			_pData->ClientID = 0;
 			_pData->Token = msg.setoken();
 			_pData->Secret = msg.ssecret();
-			msg.set_allocated_data(&(_pData->Data));
+			_pData->Data.CopyFrom(msg.data());
 			m_ClientSecretInfo.insert(std::make_pair(msg.setoken(), _pData));
 		}
 	}
@@ -101,7 +101,7 @@ void CClientAuth::AddAuthInfo(Msg *pMsg)
 		}
 		_pData->Token = msg.setoken();
 		_pData->Secret = msg.ssecret();
-		msg.set_allocated_data(&(_pData->Data));
+		_pData->Data.CopyFrom(msg.data());
 	}
 }
 
@@ -130,7 +130,6 @@ void CClientAuth::KickClient(int32 clientid)
 	svrData::DelClient sendMsg;
 	sendMsg.set_nclientid(clientid);
 	CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, clientid);
-	CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, clientid);
 
 	// 通知延迟关闭Client
 	CGateClientMgr::Instance().DelayCloseClient(clientid);
@@ -162,11 +161,8 @@ void CClientAuth::AddNewClient(Msg *pMsg, CClient *cl)
 			m_ClientAuthInfo.insert(std::make_pair(cl->GetClientID(), _pData));
 			ClientConnectLog("新的客户端认证成功！token:%s", msg.stoken().c_str());
 
-			svrData::AddNewClient sendMsg;
-			sendMsg.set_ngateid(CConfig::Instance().GetServerID());
-			CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT, cl->GetClientID());
+			CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), _pData->Data, SERVER_TYPE_MAIN, SVR_SUB_LOAD_PLAYERDATA, cl->GetClientID());
 			cl->SetAlreadyAuth();
-
 			return;
 		}
 	}

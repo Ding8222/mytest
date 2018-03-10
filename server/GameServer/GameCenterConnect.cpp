@@ -98,34 +98,8 @@ void CGameCenterConnect::ProcessMsg(connector *_con)
 				_con->SetRecvPingTime(g_currenttime);
 				break;
 			}
-			case SVR_SUB_LOAD_PLAYERDATA:
-			{
-				CPlayer *player = CPlayerMgr::Instance().FindPlayerByClientID(tl->id);
-				netData::LoadPlayerDataFinish sendMsg;
-				if (FuncUti::isValidCret(player))
-				{
-					if (player->LoadData(pMsg))
-					{
-						sendMsg.set_ntempid(player->GetTempID());
-						sendMsg.set_ncode(netData::LoadPlayerDataFinish::EC_SUCC);
-					}
-					else
-						sendMsg.set_ncode(netData::LoadPlayerDataFinish::EC_FAIL);
-				}
-				else
-					sendMsg.set_ncode(netData::LoadPlayerDataFinish::EC_FAIL);
-
-				FuncUti::SendPBNoLoop(player, sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_LOAD_PLAYERDATA);
-				break;
-			}
-			default:
-			{
-			}
 			}
 			break;
-		}
-		default:
-		{
 		}
 		}
 	}

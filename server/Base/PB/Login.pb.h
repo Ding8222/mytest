@@ -277,12 +277,14 @@ enum SelectPlayerRet_EC {
   SelectPlayerRet_EC_EC_OTHER = 0,
   SelectPlayerRet_EC_EC_SUCC = 1,
   SelectPlayerRet_EC_EC_FAIL = 2,
+  SelectPlayerRet_EC_EC_SERVER = 3,
+  SelectPlayerRet_EC_EC_AUTH = 4,
   SelectPlayerRet_EC_SelectPlayerRet_EC_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   SelectPlayerRet_EC_SelectPlayerRet_EC_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool SelectPlayerRet_EC_IsValid(int value);
 const SelectPlayerRet_EC SelectPlayerRet_EC_EC_MIN = SelectPlayerRet_EC_EC_OTHER;
-const SelectPlayerRet_EC SelectPlayerRet_EC_EC_MAX = SelectPlayerRet_EC_EC_FAIL;
+const SelectPlayerRet_EC SelectPlayerRet_EC_EC_MAX = SelectPlayerRet_EC_EC_AUTH;
 const int SelectPlayerRet_EC_EC_ARRAYSIZE = SelectPlayerRet_EC_EC_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* SelectPlayerRet_EC_descriptor();
@@ -1337,11 +1339,18 @@ class LoginRet : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::int32 ncode() const;
   void set_ncode(::google::protobuf::int32 value);
 
+  // int32 nTempID = 2;
+  void clear_ntempid();
+  static const int kNTempIDFieldNumber = 2;
+  ::google::protobuf::int32 ntempid() const;
+  void set_ntempid(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:netData.LoginRet)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::int32 ncode_;
+  ::google::protobuf::int32 ntempid_;
   mutable int _cached_size_;
   friend struct ::protobuf_Login_2eproto::TableStruct;
   friend void ::protobuf_Login_2eproto::InitDefaultsLoginRetImpl();
@@ -2175,6 +2184,10 @@ class SelectPlayerRet : public ::google::protobuf::Message /* @@protoc_insertion
     SelectPlayerRet_EC_EC_SUCC;
   static const EC EC_FAIL =
     SelectPlayerRet_EC_EC_FAIL;
+  static const EC EC_SERVER =
+    SelectPlayerRet_EC_EC_SERVER;
+  static const EC EC_AUTH =
+    SelectPlayerRet_EC_EC_AUTH;
   static inline bool EC_IsValid(int value) {
     return SelectPlayerRet_EC_IsValid(value);
   }
@@ -2198,6 +2211,20 @@ class SelectPlayerRet : public ::google::protobuf::Message /* @@protoc_insertion
 
   // accessors -------------------------------------------------------
 
+  // string sIP = 6;
+  void clear_sip();
+  static const int kSIPFieldNumber = 6;
+  const ::std::string& sip() const;
+  void set_sip(const ::std::string& value);
+  #if LANG_CXX11
+  void set_sip(::std::string&& value);
+  #endif
+  void set_sip(const char* value);
+  void set_sip(const char* value, size_t size);
+  ::std::string* mutable_sip();
+  ::std::string* release_sip();
+  void set_allocated_sip(::std::string* sip);
+
   // int32 nCode = 1;
   void clear_ncode();
   static const int kNCodeFieldNumber = 1;
@@ -2210,12 +2237,34 @@ class SelectPlayerRet : public ::google::protobuf::Message /* @@protoc_insertion
   ::google::protobuf::int32 nmapid() const;
   void set_nmapid(::google::protobuf::int32 value);
 
+  // int32 nServerID = 3;
+  void clear_nserverid();
+  static const int kNServerIDFieldNumber = 3;
+  ::google::protobuf::int32 nserverid() const;
+  void set_nserverid(::google::protobuf::int32 value);
+
+  // int32 nLineID = 4;
+  void clear_nlineid();
+  static const int kNLineIDFieldNumber = 4;
+  ::google::protobuf::int32 nlineid() const;
+  void set_nlineid(::google::protobuf::int32 value);
+
+  // int32 nPort = 5;
+  void clear_nport();
+  static const int kNPortFieldNumber = 5;
+  ::google::protobuf::int32 nport() const;
+  void set_nport(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:netData.SelectPlayerRet)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr sip_;
   ::google::protobuf::int32 ncode_;
   ::google::protobuf::int32 nmapid_;
+  ::google::protobuf::int32 nserverid_;
+  ::google::protobuf::int32 nlineid_;
+  ::google::protobuf::int32 nport_;
   mutable int _cached_size_;
   friend struct ::protobuf_Login_2eproto::TableStruct;
   friend void ::protobuf_Login_2eproto::InitDefaultsSelectPlayerRetImpl();
@@ -2792,6 +2841,20 @@ inline void LoginRet::set_ncode(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:netData.LoginRet.nCode)
 }
 
+// int32 nTempID = 2;
+inline void LoginRet::clear_ntempid() {
+  ntempid_ = 0;
+}
+inline ::google::protobuf::int32 LoginRet::ntempid() const {
+  // @@protoc_insertion_point(field_get:netData.LoginRet.nTempID)
+  return ntempid_;
+}
+inline void LoginRet::set_ntempid(::google::protobuf::int32 value) {
+  
+  ntempid_ = value;
+  // @@protoc_insertion_point(field_set:netData.LoginRet.nTempID)
+}
+
 // -------------------------------------------------------------------
 
 // PlayerLite
@@ -3237,6 +3300,101 @@ inline void SelectPlayerRet::set_nmapid(::google::protobuf::int32 value) {
   
   nmapid_ = value;
   // @@protoc_insertion_point(field_set:netData.SelectPlayerRet.nMapID)
+}
+
+// int32 nServerID = 3;
+inline void SelectPlayerRet::clear_nserverid() {
+  nserverid_ = 0;
+}
+inline ::google::protobuf::int32 SelectPlayerRet::nserverid() const {
+  // @@protoc_insertion_point(field_get:netData.SelectPlayerRet.nServerID)
+  return nserverid_;
+}
+inline void SelectPlayerRet::set_nserverid(::google::protobuf::int32 value) {
+  
+  nserverid_ = value;
+  // @@protoc_insertion_point(field_set:netData.SelectPlayerRet.nServerID)
+}
+
+// int32 nLineID = 4;
+inline void SelectPlayerRet::clear_nlineid() {
+  nlineid_ = 0;
+}
+inline ::google::protobuf::int32 SelectPlayerRet::nlineid() const {
+  // @@protoc_insertion_point(field_get:netData.SelectPlayerRet.nLineID)
+  return nlineid_;
+}
+inline void SelectPlayerRet::set_nlineid(::google::protobuf::int32 value) {
+  
+  nlineid_ = value;
+  // @@protoc_insertion_point(field_set:netData.SelectPlayerRet.nLineID)
+}
+
+// int32 nPort = 5;
+inline void SelectPlayerRet::clear_nport() {
+  nport_ = 0;
+}
+inline ::google::protobuf::int32 SelectPlayerRet::nport() const {
+  // @@protoc_insertion_point(field_get:netData.SelectPlayerRet.nPort)
+  return nport_;
+}
+inline void SelectPlayerRet::set_nport(::google::protobuf::int32 value) {
+  
+  nport_ = value;
+  // @@protoc_insertion_point(field_set:netData.SelectPlayerRet.nPort)
+}
+
+// string sIP = 6;
+inline void SelectPlayerRet::clear_sip() {
+  sip_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& SelectPlayerRet::sip() const {
+  // @@protoc_insertion_point(field_get:netData.SelectPlayerRet.sIP)
+  return sip_.GetNoArena();
+}
+inline void SelectPlayerRet::set_sip(const ::std::string& value) {
+  
+  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:netData.SelectPlayerRet.sIP)
+}
+#if LANG_CXX11
+inline void SelectPlayerRet::set_sip(::std::string&& value) {
+  
+  sip_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:netData.SelectPlayerRet.sIP)
+}
+#endif
+inline void SelectPlayerRet::set_sip(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:netData.SelectPlayerRet.sIP)
+}
+inline void SelectPlayerRet::set_sip(const char* value, size_t size) {
+  
+  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:netData.SelectPlayerRet.sIP)
+}
+inline ::std::string* SelectPlayerRet::mutable_sip() {
+  
+  // @@protoc_insertion_point(field_mutable:netData.SelectPlayerRet.sIP)
+  return sip_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* SelectPlayerRet::release_sip() {
+  // @@protoc_insertion_point(field_release:netData.SelectPlayerRet.sIP)
+  
+  return sip_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void SelectPlayerRet::set_allocated_sip(::std::string* sip) {
+  if (sip != NULL) {
+    
+  } else {
+    
+  }
+  sip_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), sip);
+  // @@protoc_insertion_point(field_set_allocated:netData.SelectPlayerRet.sIP)
 }
 
 #ifdef __GNUC__

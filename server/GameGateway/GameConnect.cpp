@@ -111,14 +111,6 @@ void CGameConnect::ProcessMsg(connector *_con)
 		{
 			switch (pMsg->GetSubType())
 			{
-			case CLIENT_SUB_LOAD_PLAYERDATA:
-			{
-				netData::LoadPlayerDataFinish msg;
-				_CHECK_PARSE_(pMsg, msg);
-				if(msg.ncode()== netData::LoadPlayerDataFinish::EC_SUCC)
-					CGateClientMgr::Instance().SetClientAlreadyLogin(tl->id, true);
-				break;
-			}
 			}
 			break;
 		}

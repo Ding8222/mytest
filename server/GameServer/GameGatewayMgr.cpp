@@ -176,22 +176,38 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				info->SetPingTime(g_currenttime);
 				break;
 			}
-			case SVR_SUB_NEW_CLIENT:
-			{
-				CPlayerMgr::Instance().AddPlayer(info, tl->id);
-				CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), *pMsg, tl->id);
-				break;
-			}
 			case SVR_SUB_DEL_CLIENT:
 			{
 				svrData::DelClient msg;
 				_CHECK_PARSE_(pMsg, msg);
 
 				CPlayerMgr::Instance().DelPlayer(msg.nclientid());
+				CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), *pMsg, tl->id);
 				break;
 			}
-			default:
+			case SVR_SUB_LOAD_PLAYERDATA:
 			{
+				CPlayerMgr::Instance().AddPlayer(info, tl->id);
+				CPlayer *player = CPlayerMgr::Instance().FindPlayerByClientID(tl->id);
+				netData::LoginRet sendMsg;
+				if (FuncUti::isValidCret(player))
+				{
+					if (player->LoadData(pMsg))
+					{
+						svrData::AddNewClient SendMsgToCenter;
+						SendMsgToCenter.set_ntempid(player->GetTempID());
+						SendMsgToCenter.set_ngateid(info->GetServerID());
+						CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), SendMsgToCenter, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT, tl->id);
+						return;
+					}
+					else
+						sendMsg.set_ncode(netData::LoginRet::EC_FAIL);
+				}
+				else
+					sendMsg.set_ncode(netData::LoginRet::EC_FAIL);
+
+				FuncUti::SendPBNoLoop(player, sendMsg, CLIENT_TYPE_MAIN, LOGIN_SUB_LOGIN_RET);
+				break;
 			}
 			}
 			break;

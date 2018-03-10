@@ -67,6 +67,10 @@ bool CClientAuth::Init()
 void CClientAuth::Destroy()
 {
 	m_Secret.clear();
+	for (auto &i : m_ClientAuthInfoSet)
+	{
+		clientauthinfo_release(i);
+	}
 	m_ClientAuthInfoSet.clear();
 }
 

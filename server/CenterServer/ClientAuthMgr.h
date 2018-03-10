@@ -44,8 +44,6 @@ public:
 	int32 GetClientLoginSvr(int32 clientid);
 	// 发送认证信息到逻辑服
 	void SendAuthInfoToLogic(Msg *pMsg, int32 clientid);
-	// 发送加载玩家数据到逻辑服
-	void SendLoadPlayerDataToLogic(Msg *pMsg, int32 clientid);
 private:
 	// id,info
 	std::vector<ClientAuthInfo *> m_ClientInfoSet;

@@ -88,6 +88,7 @@ message LoginRet
 		EC_FAIL = 2;
 	};
 	int32 nCode = 1;
+	int32 nTempID = 2;
 }
 
 message PlayerLite
@@ -147,7 +148,13 @@ message SelectPlayerRet
 		EC_OTHER = 0;
 		EC_SUCC = 1;
 		EC_FAIL = 2;
+		EC_SERVER = 3;	// 服务器未开启
+		EC_AUTH = 4;	// 未认证
 	};
 	int32 nCode = 1;
-	int32 nMapID = 2;		// 要加载的地图ID
+	int32 nMapID = 2;	// 要加载的地图ID
+	int32 nServerID = 3;// 服务器ID
+	int32 nLineID = 4;	// 线路ID
+	int32 nPort = 5;	// 服务器端口
+	string sIP = 6;		// 需要去连接的服务器ip
 }

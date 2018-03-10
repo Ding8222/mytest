@@ -219,10 +219,10 @@ void CClientLogin::SelectPlayer(task *tk, Msg *pMsg)
 				CTimer::GetTime(), msg.guid()).c_str());
 			if (res)
 			{
-				sendMsg.set_ncode(netData::SelectPlayerRet::EC_SUCC);
 				MessagePack pk;
 				pk.Pack(&sendMsgToGame, SERVER_TYPE_MAIN, SVR_SUB_LOAD_PLAYERDATA);
 				tk->PushMsg(&pk);
+				return;
 			}
 		}
 		MessagePack pk;

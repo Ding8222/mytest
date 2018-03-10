@@ -94,6 +94,13 @@ void CLoginCenterConnect::ProcessMsg(connector *_con)
 		{
 			switch (pMsg->GetSubType())
 			{
+			case LOGIN_SUB_PLAYER_LIST_RET:
+			case LOGIN_SUB_CREATE_PLAYER_RET:
+			case LOGIN_SUB_SELECT_PLAYER_RET:
+			{
+				CLoginClientMgr::Instance().SendMsg(tl->id, pMsg);
+				break;
+			}
 			case LOGIN_SUB_AUTH_RET:
 			{
 				netData::AuthRet msg;

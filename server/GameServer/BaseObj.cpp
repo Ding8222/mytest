@@ -16,6 +16,9 @@ CBaseObj::CBaseObj(int8 nObjType):m_ObjType(nObjType)
 	else
 		strncpy_s(m_AoiMode, "m", MAX_AOIMODE_LEN);
 
+	m_ObjSex = 0;
+	m_ObjJob = 0;
+	m_ObjLevel = 0;
 	m_AoiMode[MAX_AOIMODE_LEN - 1] = '\0';
 	m_WaitRemoveTime = 0;
 	m_NowMapID = 0;
@@ -29,12 +32,6 @@ CBaseObj::CBaseObj(int8 nObjType):m_ObjType(nObjType)
 
 CBaseObj::~CBaseObj()
 {
-	m_WaitRemoveTime = 0;
-	m_NowMapID = 0;
-	memset(m_NowPos, 0, sizeof(float) * EOP_MAX);
-	m_TempID = 0;
-	m_Scene = nullptr;
-	memset(m_ObjName, 0, MAX_NAME_LEN);
 	m_AoiList.clear();
 	m_AoiListOut.clear();
 }
@@ -99,7 +96,7 @@ void CBaseObj::AddToAoiList(CBaseObj * p)
 #ifdef _DEBUG
 	float _Pos[EOP_MAX] = { 0 };
 	p->GetNowPos(_Pos[EOP_X], _Pos[EOP_Y], _Pos[EOP_Z]);
-	//RunStateLog("[%d]进入[%d]视野,DIST2:%0.01f", p->GetTempID(), GetTempID(), DIST2(_Pos, m_NowPos));
+	RunStateLog("[%d]进入[%d]视野,DIST2:%0.01f", p->GetTempID(), GetTempID(), DIST2(_Pos, m_NowPos));
 #endif
 }
 
