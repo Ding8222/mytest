@@ -77,13 +77,20 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 		netData::ChangeMap msg;
 		_CHECK_PARSE_(pMsg, msg);
 
+		netData::ChangeMapRet SendMsg;
+		SendMsg.set_bchangeip(false);
 		int32 nMapID = msg.nmapid();
 		CScene *scene = CSceneMgr::Instance().FindScene(nMapID);
 		if (scene)
 		{
 			// 本线路存在的地图
 			if (pPlayer->LeaveScene())
-				scene->AddObj(pPlayer);
+			{
+				if (scene->AddObj(pPlayer))
+				{
+					SendMsg.set_ncode(netData::ChangeMapRet::EC_SUCC);
+				}
+			}
 			else
 			{
 				RunStateError("玩家[%s][%d]离开地图[%d]失败，下线!", 
@@ -91,6 +98,7 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 					pPlayer->GetScene() == nullptr ? -1 : pPlayer->GetScene()->GetMapID()
 				);
 				pPlayer->OffLine();
+				SendMsg.set_ncode(netData::ChangeMapRet::EC_FAIL);
 			}
 		}
 		else
@@ -103,11 +111,14 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 				svrData::ChangeLine SendMsg;
 				SendMsg.set_nlineid(0);
 				SendMsg.set_nmapid(nMapID);
+				SendMsg.set_setoken(msg.setoken());
+				SendMsg.set_ssecret(msg.ssecret());
 				svrData::LoadPlayerData *pData = SendMsg.mutable_data();
 				if (pData)
 				{
 					if (pPlayer->PackData(pData))
 					{
+						pData->set_mapid(nMapID);
 #ifdef _DEBUG
 						RunStateError("玩家[%s]离开地图[%d]，换线!目标地图[%d]",
 							pPlayer->GetName(), pPlayer->GetScene() == nullptr ? -1 : pPlayer->GetScene()->GetMapID(),
@@ -115,13 +126,16 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 						);
 #endif
 						FuncUti::SendMsgToCenter(pPlayer, SendMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE);
+						return;
 					}
 				}
 			}
 			else
 			{
 				// 不存在的地图ID
+				SendMsg.set_ncode(netData::ChangeMapRet::EC_MAP);
 			}
+			FuncUti::SendPBNoLoop(pPlayer, SendMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE);
 		}
 		break;
 	}

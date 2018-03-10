@@ -48,4 +48,25 @@ message PlayerMoveRet
 message ChangeMap
 {
 	int32 nMapID = 1;
+	string sEtoken = 2;	// 账号信息,前端不用填写
+	bytes sSecret = 3;	// 秘钥,前端不用填写
+}
+
+// 3-7 切换地图返回
+message ChangeMapRet
+{
+	enum EC
+	{
+		EC_OTHER = 0;
+		EC_SUCC = 1;
+		EC_FAIL = 2;
+		EC_LINE = 4;	//线路不存在
+		EC_MAP = 5;		//地图不存在
+	};
+	int32 nCode = 1;		// 返回的信息
+	bool bChangeIP = 2;		// 是否需要改变服务器地址
+	int32 nServerID = 3;	// 返回要连接的服务器ID
+	string sIP = 4;			// 返回要去连接的ip地址
+	int32 nPort = 5;		// 返回要去连接的port
+	int32 nMapID = 6;		// 要加载的地图ID
 }

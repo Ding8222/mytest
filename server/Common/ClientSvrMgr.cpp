@@ -64,7 +64,7 @@ void CClientSvrMgr::AddClientSvr(int32 clientid, int32 serverid, int32 gateid)
 		return;
 
 	ClientSvr *cl = m_ClientSvrSet[clientid];
-	assert(!cl);
+//	assert(!cl);
 	if(!cl)
 	{
 		ClientSvr *newclientsvr = clientsvr_create();
@@ -78,6 +78,11 @@ void CClientSvrMgr::AddClientSvr(int32 clientid, int32 serverid, int32 gateid)
 		newclientsvr->nGateID = gateid;
 
 		m_ClientSvrSet[clientid] = newclientsvr;
+	}
+	else
+	{
+		cl->nGameServerID = serverid;
+		cl->nGateID = gateid;
 	}
 }
 

@@ -229,37 +229,54 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 
 				if (msg.ntempid() == _con->GetTempID())
 				{
-					netData::PlayerMove sendMsg;
-					int x = msg.x();
-					int y = msg.y();
-					int nRand = rand() % 10000;
-					if (nRand > 5000)
-						x += 10;
-					else
-						x -= 10;
+// 					netData::PlayerMove sendMsg;
+// 					int x = msg.x();
+// 					int y = msg.y();
+// 					int nRand = rand() % 10000;
+// 					if (nRand > 5000)
+// 						x += 10;
+// 					else
+// 						x -= 10;
+// 
+// 					if (x > 1000)
+// 						x = 1000;
+// 					else if (x < 0)
+// 						x = 0;
+// 
+// 					nRand = rand() % 10000;
+// 					if (nRand > 5000)
+// 						y += 10;
+// 					else
+// 						y -= 10;
+// 
+// 					if (y > 1000)
+// 						y = 1000;
+// 					else if (y < 0)
+// 						y = 0;
+// 
+// 					sendMsg.set_x(x);
+// 					sendMsg.set_y(y);
+// 					sendMsg.set_z(0);
+// 					_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
 
-					if (x > 1000)
-						x = 1000;
-					else if (x < 0)
-						x = 0;
-
-					nRand = rand() % 10000;
-					if (nRand > 5000)
-						y += 10;
-					else
-						y -= 10;
-
-					if (y > 1000)
-						y = 1000;
-					else if (y < 0)
-						y = 0;
-
-					sendMsg.set_x(x);
-					sendMsg.set_y(y);
-					sendMsg.set_z(0);
-					_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
+					netData::ChangeMap SendMsg;
+					SendMsg.set_nmapid(10);
+					_con->SendMsg(SendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_CHANGEMAP);
 				}
 				break;
+			}
+			case CLIENT_SUB_CHANGEMAP_RET:
+			{
+				netData::ChangeMapRet msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				if (msg.ncode() == netData::ChangeMapRet::EC_SUCC)
+				{
+					if (msg.bchangeip())
+					{
+						_con->ChangeConnect(msg.sip().c_str(), msg.nport(), msg.nserverid(), true);
+					}
+				}
 			}
 			}
 			break;

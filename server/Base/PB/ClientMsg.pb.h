@@ -37,7 +37,7 @@ namespace protobuf_ClientMsg_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[6];
+  static const ::google::protobuf::internal::ParseTable schema[7];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -55,6 +55,8 @@ void InitDefaultsPlayerMoveRetImpl();
 void InitDefaultsPlayerMoveRet();
 void InitDefaultsChangeMapImpl();
 void InitDefaultsChangeMap();
+void InitDefaultsChangeMapRetImpl();
+void InitDefaultsChangeMapRet();
 inline void InitDefaults() {
   InitDefaultsPing();
   InitDefaultsLoadPlayerDataFinish();
@@ -62,12 +64,16 @@ inline void InitDefaults() {
   InitDefaultsPlayerMove();
   InitDefaultsPlayerMoveRet();
   InitDefaultsChangeMap();
+  InitDefaultsChangeMapRet();
 }
 }  // namespace protobuf_ClientMsg_2eproto
 namespace netData {
 class ChangeMap;
 class ChangeMapDefaultTypeInternal;
 extern ChangeMapDefaultTypeInternal _ChangeMap_default_instance_;
+class ChangeMapRet;
+class ChangeMapRetDefaultTypeInternal;
+extern ChangeMapRetDefaultTypeInternal _ChangeMapRet_default_instance_;
 class LoadMapFinish;
 class LoadMapFinishDefaultTypeInternal;
 extern LoadMapFinishDefaultTypeInternal _LoadMapFinish_default_instance_;
@@ -87,6 +93,7 @@ extern PlayerMoveRetDefaultTypeInternal _PlayerMoveRet_default_instance_;
 namespace google {
 namespace protobuf {
 template<> ::netData::ChangeMap* Arena::Create< ::netData::ChangeMap>(Arena*);
+template<> ::netData::ChangeMapRet* Arena::Create< ::netData::ChangeMapRet>(Arena*);
 template<> ::netData::LoadMapFinish* Arena::Create< ::netData::LoadMapFinish>(Arena*);
 template<> ::netData::LoadPlayerDataFinish* Arena::Create< ::netData::LoadPlayerDataFinish>(Arena*);
 template<> ::netData::Ping* Arena::Create< ::netData::Ping>(Arena*);
@@ -117,6 +124,30 @@ inline bool LoadPlayerDataFinish_EC_Parse(
     const ::std::string& name, LoadPlayerDataFinish_EC* value) {
   return ::google::protobuf::internal::ParseNamedEnum<LoadPlayerDataFinish_EC>(
     LoadPlayerDataFinish_EC_descriptor(), name, value);
+}
+enum ChangeMapRet_EC {
+  ChangeMapRet_EC_EC_OTHER = 0,
+  ChangeMapRet_EC_EC_SUCC = 1,
+  ChangeMapRet_EC_EC_FAIL = 2,
+  ChangeMapRet_EC_EC_LINE = 4,
+  ChangeMapRet_EC_EC_MAP = 5,
+  ChangeMapRet_EC_ChangeMapRet_EC_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  ChangeMapRet_EC_ChangeMapRet_EC_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool ChangeMapRet_EC_IsValid(int value);
+const ChangeMapRet_EC ChangeMapRet_EC_EC_MIN = ChangeMapRet_EC_EC_OTHER;
+const ChangeMapRet_EC ChangeMapRet_EC_EC_MAX = ChangeMapRet_EC_EC_MAP;
+const int ChangeMapRet_EC_EC_ARRAYSIZE = ChangeMapRet_EC_EC_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* ChangeMapRet_EC_descriptor();
+inline const ::std::string& ChangeMapRet_EC_Name(ChangeMapRet_EC value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    ChangeMapRet_EC_descriptor(), value);
+}
+inline bool ChangeMapRet_EC_Parse(
+    const ::std::string& name, ChangeMapRet_EC* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ChangeMapRet_EC>(
+    ChangeMapRet_EC_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -784,6 +815,34 @@ class ChangeMap : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   // accessors -------------------------------------------------------
 
+  // string sEtoken = 2;
+  void clear_setoken();
+  static const int kSEtokenFieldNumber = 2;
+  const ::std::string& setoken() const;
+  void set_setoken(const ::std::string& value);
+  #if LANG_CXX11
+  void set_setoken(::std::string&& value);
+  #endif
+  void set_setoken(const char* value);
+  void set_setoken(const char* value, size_t size);
+  ::std::string* mutable_setoken();
+  ::std::string* release_setoken();
+  void set_allocated_setoken(::std::string* setoken);
+
+  // bytes sSecret = 3;
+  void clear_ssecret();
+  static const int kSSecretFieldNumber = 3;
+  const ::std::string& ssecret() const;
+  void set_ssecret(const ::std::string& value);
+  #if LANG_CXX11
+  void set_ssecret(::std::string&& value);
+  #endif
+  void set_ssecret(const char* value);
+  void set_ssecret(const void* value, size_t size);
+  ::std::string* mutable_ssecret();
+  ::std::string* release_ssecret();
+  void set_allocated_ssecret(::std::string* ssecret);
+
   // int32 nMapID = 1;
   void clear_nmapid();
   static const int kNMapIDFieldNumber = 1;
@@ -794,10 +853,190 @@ class ChangeMap : public ::google::protobuf::Message /* @@protoc_insertion_point
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr setoken_;
+  ::google::protobuf::internal::ArenaStringPtr ssecret_;
   ::google::protobuf::int32 nmapid_;
   mutable int _cached_size_;
   friend struct ::protobuf_ClientMsg_2eproto::TableStruct;
   friend void ::protobuf_ClientMsg_2eproto::InitDefaultsChangeMapImpl();
+};
+// -------------------------------------------------------------------
+
+class ChangeMapRet : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:netData.ChangeMapRet) */ {
+ public:
+  ChangeMapRet();
+  virtual ~ChangeMapRet();
+
+  ChangeMapRet(const ChangeMapRet& from);
+
+  inline ChangeMapRet& operator=(const ChangeMapRet& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ChangeMapRet(ChangeMapRet&& from) noexcept
+    : ChangeMapRet() {
+    *this = ::std::move(from);
+  }
+
+  inline ChangeMapRet& operator=(ChangeMapRet&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChangeMapRet& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ChangeMapRet* internal_default_instance() {
+    return reinterpret_cast<const ChangeMapRet*>(
+               &_ChangeMapRet_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    6;
+
+  void Swap(ChangeMapRet* other);
+  friend void swap(ChangeMapRet& a, ChangeMapRet& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ChangeMapRet* New() const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<ChangeMapRet>(NULL);
+  }
+
+  ChangeMapRet* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<ChangeMapRet>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const ChangeMapRet& from);
+  void MergeFrom(const ChangeMapRet& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(ChangeMapRet* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  typedef ChangeMapRet_EC EC;
+  static const EC EC_OTHER =
+    ChangeMapRet_EC_EC_OTHER;
+  static const EC EC_SUCC =
+    ChangeMapRet_EC_EC_SUCC;
+  static const EC EC_FAIL =
+    ChangeMapRet_EC_EC_FAIL;
+  static const EC EC_LINE =
+    ChangeMapRet_EC_EC_LINE;
+  static const EC EC_MAP =
+    ChangeMapRet_EC_EC_MAP;
+  static inline bool EC_IsValid(int value) {
+    return ChangeMapRet_EC_IsValid(value);
+  }
+  static const EC EC_MIN =
+    ChangeMapRet_EC_EC_MIN;
+  static const EC EC_MAX =
+    ChangeMapRet_EC_EC_MAX;
+  static const int EC_ARRAYSIZE =
+    ChangeMapRet_EC_EC_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  EC_descriptor() {
+    return ChangeMapRet_EC_descriptor();
+  }
+  static inline const ::std::string& EC_Name(EC value) {
+    return ChangeMapRet_EC_Name(value);
+  }
+  static inline bool EC_Parse(const ::std::string& name,
+      EC* value) {
+    return ChangeMapRet_EC_Parse(name, value);
+  }
+
+  // accessors -------------------------------------------------------
+
+  // string sIP = 4;
+  void clear_sip();
+  static const int kSIPFieldNumber = 4;
+  const ::std::string& sip() const;
+  void set_sip(const ::std::string& value);
+  #if LANG_CXX11
+  void set_sip(::std::string&& value);
+  #endif
+  void set_sip(const char* value);
+  void set_sip(const char* value, size_t size);
+  ::std::string* mutable_sip();
+  ::std::string* release_sip();
+  void set_allocated_sip(::std::string* sip);
+
+  // int32 nCode = 1;
+  void clear_ncode();
+  static const int kNCodeFieldNumber = 1;
+  ::google::protobuf::int32 ncode() const;
+  void set_ncode(::google::protobuf::int32 value);
+
+  // bool bChangeIP = 2;
+  void clear_bchangeip();
+  static const int kBChangeIPFieldNumber = 2;
+  bool bchangeip() const;
+  void set_bchangeip(bool value);
+
+  // int32 nServerID = 3;
+  void clear_nserverid();
+  static const int kNServerIDFieldNumber = 3;
+  ::google::protobuf::int32 nserverid() const;
+  void set_nserverid(::google::protobuf::int32 value);
+
+  // int32 nPort = 5;
+  void clear_nport();
+  static const int kNPortFieldNumber = 5;
+  ::google::protobuf::int32 nport() const;
+  void set_nport(::google::protobuf::int32 value);
+
+  // int32 nMapID = 6;
+  void clear_nmapid();
+  static const int kNMapIDFieldNumber = 6;
+  ::google::protobuf::int32 nmapid() const;
+  void set_nmapid(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:netData.ChangeMapRet)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr sip_;
+  ::google::protobuf::int32 ncode_;
+  bool bchangeip_;
+  ::google::protobuf::int32 nserverid_;
+  ::google::protobuf::int32 nport_;
+  ::google::protobuf::int32 nmapid_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_ClientMsg_2eproto::TableStruct;
+  friend void ::protobuf_ClientMsg_2eproto::InitDefaultsChangeMapRetImpl();
 };
 // ===================================================================
 
@@ -984,9 +1223,244 @@ inline void ChangeMap::set_nmapid(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:netData.ChangeMap.nMapID)
 }
 
+// string sEtoken = 2;
+inline void ChangeMap::clear_setoken() {
+  setoken_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ChangeMap::setoken() const {
+  // @@protoc_insertion_point(field_get:netData.ChangeMap.sEtoken)
+  return setoken_.GetNoArena();
+}
+inline void ChangeMap::set_setoken(const ::std::string& value) {
+  
+  setoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:netData.ChangeMap.sEtoken)
+}
+#if LANG_CXX11
+inline void ChangeMap::set_setoken(::std::string&& value) {
+  
+  setoken_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:netData.ChangeMap.sEtoken)
+}
+#endif
+inline void ChangeMap::set_setoken(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  setoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:netData.ChangeMap.sEtoken)
+}
+inline void ChangeMap::set_setoken(const char* value, size_t size) {
+  
+  setoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:netData.ChangeMap.sEtoken)
+}
+inline ::std::string* ChangeMap::mutable_setoken() {
+  
+  // @@protoc_insertion_point(field_mutable:netData.ChangeMap.sEtoken)
+  return setoken_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ChangeMap::release_setoken() {
+  // @@protoc_insertion_point(field_release:netData.ChangeMap.sEtoken)
+  
+  return setoken_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ChangeMap::set_allocated_setoken(::std::string* setoken) {
+  if (setoken != NULL) {
+    
+  } else {
+    
+  }
+  setoken_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), setoken);
+  // @@protoc_insertion_point(field_set_allocated:netData.ChangeMap.sEtoken)
+}
+
+// bytes sSecret = 3;
+inline void ChangeMap::clear_ssecret() {
+  ssecret_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ChangeMap::ssecret() const {
+  // @@protoc_insertion_point(field_get:netData.ChangeMap.sSecret)
+  return ssecret_.GetNoArena();
+}
+inline void ChangeMap::set_ssecret(const ::std::string& value) {
+  
+  ssecret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:netData.ChangeMap.sSecret)
+}
+#if LANG_CXX11
+inline void ChangeMap::set_ssecret(::std::string&& value) {
+  
+  ssecret_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:netData.ChangeMap.sSecret)
+}
+#endif
+inline void ChangeMap::set_ssecret(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  ssecret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:netData.ChangeMap.sSecret)
+}
+inline void ChangeMap::set_ssecret(const void* value, size_t size) {
+  
+  ssecret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:netData.ChangeMap.sSecret)
+}
+inline ::std::string* ChangeMap::mutable_ssecret() {
+  
+  // @@protoc_insertion_point(field_mutable:netData.ChangeMap.sSecret)
+  return ssecret_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ChangeMap::release_ssecret() {
+  // @@protoc_insertion_point(field_release:netData.ChangeMap.sSecret)
+  
+  return ssecret_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ChangeMap::set_allocated_ssecret(::std::string* ssecret) {
+  if (ssecret != NULL) {
+    
+  } else {
+    
+  }
+  ssecret_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ssecret);
+  // @@protoc_insertion_point(field_set_allocated:netData.ChangeMap.sSecret)
+}
+
+// -------------------------------------------------------------------
+
+// ChangeMapRet
+
+// int32 nCode = 1;
+inline void ChangeMapRet::clear_ncode() {
+  ncode_ = 0;
+}
+inline ::google::protobuf::int32 ChangeMapRet::ncode() const {
+  // @@protoc_insertion_point(field_get:netData.ChangeMapRet.nCode)
+  return ncode_;
+}
+inline void ChangeMapRet::set_ncode(::google::protobuf::int32 value) {
+  
+  ncode_ = value;
+  // @@protoc_insertion_point(field_set:netData.ChangeMapRet.nCode)
+}
+
+// bool bChangeIP = 2;
+inline void ChangeMapRet::clear_bchangeip() {
+  bchangeip_ = false;
+}
+inline bool ChangeMapRet::bchangeip() const {
+  // @@protoc_insertion_point(field_get:netData.ChangeMapRet.bChangeIP)
+  return bchangeip_;
+}
+inline void ChangeMapRet::set_bchangeip(bool value) {
+  
+  bchangeip_ = value;
+  // @@protoc_insertion_point(field_set:netData.ChangeMapRet.bChangeIP)
+}
+
+// int32 nServerID = 3;
+inline void ChangeMapRet::clear_nserverid() {
+  nserverid_ = 0;
+}
+inline ::google::protobuf::int32 ChangeMapRet::nserverid() const {
+  // @@protoc_insertion_point(field_get:netData.ChangeMapRet.nServerID)
+  return nserverid_;
+}
+inline void ChangeMapRet::set_nserverid(::google::protobuf::int32 value) {
+  
+  nserverid_ = value;
+  // @@protoc_insertion_point(field_set:netData.ChangeMapRet.nServerID)
+}
+
+// string sIP = 4;
+inline void ChangeMapRet::clear_sip() {
+  sip_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ChangeMapRet::sip() const {
+  // @@protoc_insertion_point(field_get:netData.ChangeMapRet.sIP)
+  return sip_.GetNoArena();
+}
+inline void ChangeMapRet::set_sip(const ::std::string& value) {
+  
+  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:netData.ChangeMapRet.sIP)
+}
+#if LANG_CXX11
+inline void ChangeMapRet::set_sip(::std::string&& value) {
+  
+  sip_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:netData.ChangeMapRet.sIP)
+}
+#endif
+inline void ChangeMapRet::set_sip(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:netData.ChangeMapRet.sIP)
+}
+inline void ChangeMapRet::set_sip(const char* value, size_t size) {
+  
+  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:netData.ChangeMapRet.sIP)
+}
+inline ::std::string* ChangeMapRet::mutable_sip() {
+  
+  // @@protoc_insertion_point(field_mutable:netData.ChangeMapRet.sIP)
+  return sip_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ChangeMapRet::release_sip() {
+  // @@protoc_insertion_point(field_release:netData.ChangeMapRet.sIP)
+  
+  return sip_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ChangeMapRet::set_allocated_sip(::std::string* sip) {
+  if (sip != NULL) {
+    
+  } else {
+    
+  }
+  sip_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), sip);
+  // @@protoc_insertion_point(field_set_allocated:netData.ChangeMapRet.sIP)
+}
+
+// int32 nPort = 5;
+inline void ChangeMapRet::clear_nport() {
+  nport_ = 0;
+}
+inline ::google::protobuf::int32 ChangeMapRet::nport() const {
+  // @@protoc_insertion_point(field_get:netData.ChangeMapRet.nPort)
+  return nport_;
+}
+inline void ChangeMapRet::set_nport(::google::protobuf::int32 value) {
+  
+  nport_ = value;
+  // @@protoc_insertion_point(field_set:netData.ChangeMapRet.nPort)
+}
+
+// int32 nMapID = 6;
+inline void ChangeMapRet::clear_nmapid() {
+  nmapid_ = 0;
+}
+inline ::google::protobuf::int32 ChangeMapRet::nmapid() const {
+  // @@protoc_insertion_point(field_get:netData.ChangeMapRet.nMapID)
+  return nmapid_;
+}
+inline void ChangeMapRet::set_nmapid(::google::protobuf::int32 value) {
+  
+  nmapid_ = value;
+  // @@protoc_insertion_point(field_set:netData.ChangeMapRet.nMapID)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -1009,6 +1483,11 @@ template <> struct is_proto_enum< ::netData::LoadPlayerDataFinish_EC> : ::google
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::netData::LoadPlayerDataFinish_EC>() {
   return ::netData::LoadPlayerDataFinish_EC_descriptor();
+}
+template <> struct is_proto_enum< ::netData::ChangeMapRet_EC> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::netData::ChangeMapRet_EC>() {
+  return ::netData::ChangeMapRet_EC_descriptor();
 }
 
 }  // namespace protobuf

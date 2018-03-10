@@ -44,7 +44,7 @@ void CBaseObj::Run()
 void CBaseObj::SetScene(CScene *_Scene)
 {
 	m_Scene = _Scene;
-	SetMapID(_Scene->GetMapID());
+	SetMapID(_Scene == nullptr ? 0:_Scene->GetMapID());
 }
 
 // 离开当前场景

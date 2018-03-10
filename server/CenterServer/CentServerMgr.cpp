@@ -464,7 +464,6 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 					SendMsg.set_ncode(netData::SelectPlayerRet::EC_AUTH);
 
 				CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER_RET, ServerEnum::EST_LOGIN, tl->id);
-
 				break;
 			}
 			case SVR_SUB_CHANGELINE:
@@ -473,25 +472,28 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 				svrData::ChangeLine msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-// 				svrData::ChangeLineRet SendMsg;
-// 				ServerStatusInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByMapID(msg.nmapid(), msg.nlineid());
-// 				if (_pInfo)
-// 				{
-// 					SendMsg.set_nretcode(netData::ChangeLineRet::EC_SUCC);
-// 					SendMsg.set_nserverid(_pInfo->nServerID);
-// 					SendMsg.set_sip(_pInfo->chIP);
-// 					SendMsg.set_nport(_pInfo->nPort);
-// 					SendMsg.set_nmapid(msg.nmapid());
-// 
-// 					svrData::ClientToken sendMsg;
-// 					msg.set_allocated_data(sendMsg.mutable_data());
-// 					sendMsg.set_setoken(msg.setoken());
-// 					sendMsg.set_ssecret(msg.ssecret());
-// 
-// 					CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GATE, 0, _pInfo->nServerID);
-// 				}
-// 				else
-// 					SendMsg.set_nretcode(netData::ChangeLineRet::EC_SERVER);
+				svrData::ChangeLineRet SendMsg;
+				ServerStatusInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByMapID(msg.nmapid(), msg.nlineid());
+				if (_pInfo)
+				{
+					// 返回loginsvr，通知client选角成功，登陆gamegateway
+					SendMsg.set_ncode(netData::SelectPlayerRet::EC_SUCC);
+					SendMsg.set_nserverid(_pInfo->nServerID);
+					SendMsg.set_sip(_pInfo->chIP);
+					SendMsg.set_nport(_pInfo->nPort);
+					SendMsg.set_nmapid(msg.nmapid());
+
+					// 将角色数据和认证信息发送到gamegateway
+					svrData::ClientToken sendMsg;
+					sendMsg.mutable_data()->MergeFrom(msg.data());
+					sendMsg.set_setoken(msg.setoken());
+					sendMsg.set_ssecret(msg.ssecret());
+					CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GATE, 0, _pInfo->nServerID);
+				}
+				else
+					SendMsg.set_ncode(netData::SelectPlayerRet::EC_SERVER);
+
+				CCentServerMgr::Instance().SendMsgToServer(SendMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE_RET, ServerEnum::EST_GAME, tl->id);
 				break;
 			}
 			default:

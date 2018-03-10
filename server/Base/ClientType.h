@@ -16,3 +16,6 @@
 
 // 切换地图
 #define CLIENT_SUB_CHANGEMAP 5
+
+// 切换地图返回
+#define CLIENT_SUB_CHANGEMAP_RET 6

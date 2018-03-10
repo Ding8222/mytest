@@ -3,7 +3,7 @@
 	lineid	0:不分线，其他为线路id
 -->
 <maplist>
-	<maps mapid = "1" 	lineid = "0"	bar_filename = "./data/bar/bar_map001.xml" birth_point_x = "2" birth_point_Y = "2"/>
+	<maps mapid = "1" 	lineid = "1"	bar_filename = "./data/bar/bar_map001.xml" birth_point_x = "2" birth_point_Y = "2"/>
 	<maps mapid = "2" 	lineid = "0"	bar_filename = "./data/bar/bar_map002.xml" birth_point_x = "2" birth_point_Y = "2"/>
 	<maps mapid = "3" 	lineid = "1"	bar_filename = "./data/bar/bar_map003.xml" birth_point_x = "2" birth_point_Y = "2"/>
 	<maps mapid = "4" 	lineid = "1"	bar_filename = "./data/bar/bar_map004.xml" birth_point_x = "2" birth_point_Y = "2"/>

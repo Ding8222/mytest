@@ -44,8 +44,7 @@ public:
 	void Offline(int32 clientid);
 	// 返回当前Client数量
 	int GetClientSize() { return m_ClientSecretInfo.size(); }
-private:
-	ClientAuthInfo * FindAuthInfo(int32 clientid);
+	ClientAuthInfo *FindAuthInfo(int32 clientid);
 private:
 	// Token,authinfo
 	std::unordered_map<std::string, ClientAuthInfo *> m_ClientSecretInfo;

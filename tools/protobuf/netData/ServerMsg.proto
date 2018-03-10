@@ -90,17 +90,6 @@ message LoadPlayerData
 	bytes data = 14;
 }
 
-// 0-10 加载玩家数据返回
-message LoadPlayerDataRet
-{
-	enum EC
-	{
-		EC_OTHER = 0;
-		EC_SUCC = 1;
-	};
-	int32 nRetCode = 1;		// 返回的信息
-}
-
 // 0-11 切换线路
 message ChangeLine
 {
@@ -118,11 +107,12 @@ message ChangeLineRet
 	{
 		EC_OTHER = 0;
 		EC_SUCC = 1;	
-		EC_SERVER = 2;	//分配server失败
+		EC_FAIL = 2;
+		EC_SERVER = 3;	//分配server失败
 	};
-	int32 nRetCode = 1;		// 返回的信息
+	int32 nCode = 1;		// 返回的信息
 	int32 nServerID = 2;	// 返回要连接的服务器ID
 	string sIP = 3;			// 返回要去连接的ip地址
-	int32 nPort = 4;			// 返回要去连接的port
+	int32 nPort = 4;		// 返回要去连接的port
 	int32 nMapID = 5;		// 要加载的地图ID
 }
