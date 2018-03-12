@@ -1,5 +1,5 @@
-﻿
-#include <vector>
+﻿#include <vector>
+#include "idmgr.c"
 #include "msgbase.h"
 #include "ClientSvrMgr.h"
 #include "objectpool.h"
@@ -35,6 +35,7 @@ static void clientsvr_release(ClientSvr *self)
 CClientSvrMgr::CClientSvrMgr()
 {
 	m_ClientSvrSet.clear();
+	m_IDPool = nullptr;
 }
 
 CClientSvrMgr::~CClientSvrMgr()
@@ -44,8 +45,20 @@ CClientSvrMgr::~CClientSvrMgr()
 
 bool CClientSvrMgr::Init()
 {
+	m_IDPool = idmgr_create(CLIENT_ID_MAX + 1, CLIENT_ID_MAX);
+	if (!m_IDPool)
+	{
+		log_error("创建IDMgr失败!");
+		return false;
+	}
+
 	m_ClientSvrSet.resize(CLIENT_ID_MAX + 1, nullptr);
 	return true;
+}
+
+void CClientSvrMgr::Run()
+{
+	idmgr_run(m_IDPool);
 }
 
 void CClientSvrMgr::Destroy()
@@ -56,34 +69,53 @@ void CClientSvrMgr::Destroy()
 		i = nullptr;
 	}
 	m_ClientSvrSet.clear();
+
+	if (m_IDPool)
+	{
+		idmgr_release(m_IDPool);
+		m_IDPool = nullptr;
+	}
 }
 
-void CClientSvrMgr::AddClientSvr(int32 clientid, int32 serverid, int32 gateid)
+int32 CClientSvrMgr::AddClientSvr(int32 clientid, int32 serverid, int32 gateid)
 {
-	if (clientid <= 0 || clientid >= static_cast<int>(m_ClientSvrSet.size()))
-		return;
-
-	ClientSvr *cl = m_ClientSvrSet[clientid];
-//	assert(!cl);
-	if(!cl)
+	int id = idmgr_allocid(m_IDPool);
+	if (id <= 0)
+	{
+		log_error("为新ClientSvr分配ID失败!, id:%d", id);
+		return 0;
+	}
+	
+	ClientSvr *cl = m_ClientSvrSet[id];
+	assert(!cl);
+	if (!cl)
 	{
 		ClientSvr *newclientsvr = clientsvr_create();
 		if (!newclientsvr)
 		{
+			if (!idmgr_freeid(m_IDPool, id))
+			{
+				log_error("释放ID错误, ID:%d", id);
+			}
 			log_error("创建ClientSvr失败!");
-			return;
+			return 0;
 		}
 
+		newclientsvr->nClientID = clientid;
 		newclientsvr->nGameServerID = serverid;
 		newclientsvr->nGateID = gateid;
 
-		m_ClientSvrSet[clientid] = newclientsvr;
+		m_ClientSvrSet[id] = newclientsvr;
 	}
 	else
 	{
-		cl->nGameServerID = serverid;
-		cl->nGateID = gateid;
+		if (!idmgr_freeid(m_IDPool, id))
+		{
+			log_error("释放ID错误, ID:%d", id);
+		}
+		return 0;
 	}
+	return id;
 }
 
 void CClientSvrMgr::DelClientSvr(int32 clientid)
@@ -93,6 +125,12 @@ void CClientSvrMgr::DelClientSvr(int32 clientid)
 		log_error("要释放的ClientSvr的ID错误!");
 		return;
 	}
+
+	if (!idmgr_freeid(m_IDPool, clientid))
+	{
+		log_error("释放ID错误, ID:%d", clientid);
+	}
+
 	clientsvr_release(m_ClientSvrSet[clientid]);
 	m_ClientSvrSet[clientid] = nullptr;
 }

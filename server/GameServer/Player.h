@@ -26,6 +26,8 @@ public:
 public:
 	void SetGateInfo(serverinfo * info) { m_GateInfo = info; }
 	serverinfo * GetGateInfo() { return m_GateInfo; }
+	void SetCenterClientID(int32 id) { m_CenterClientID = id; }
+	int32 GetCenterClientID() { return m_CenterClientID; }
 	void SetClientID(int32 id) { m_ClientID = id; }
 	int32 GetClientID() { return m_ClientID; }
 	void SetAccount(const std::string &account) { m_Account = std::move(account); }
@@ -40,6 +42,7 @@ public:
 	char *GetData() { return m_Data; }
 private:
 	serverinfo * m_GateInfo;
+	int32 m_CenterClientID;
 	int32 m_ClientID;
 	std::string m_Account;
 	int64 m_Guid;

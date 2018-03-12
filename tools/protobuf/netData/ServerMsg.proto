@@ -50,20 +50,25 @@ message UpdateServerLoad
 	int32 nClientCountMax = 2;	// 服务器最大client数量
 }
 
-// 0-6 新的client连接上来了
+// 0-6 新的client连接
 message AddNewClient
 {
-	int32 nGateID = 1;
-	int32 nTempID = 2;
+	int32 nGameID = 1;
 }
 
-// 0-7 client断开
+// 0-7 新的client连接返回
+message AddNewClientRet
+{
+	int32 nCenterClientID = 1;
+}
+
+// 0-8 client断开
 message DelClient
 {
 	int32 nClientID = 1;
 }
 
-// 0-8 ClientToken
+// 0-9 ClientToken
 message ClientToken
 {
 	string sEtoken = 1;	// 账号信息
@@ -71,10 +76,10 @@ message ClientToken
 	LoadPlayerData data = 4;// 玩家数据
 }
 
-// 0-9 通知game加载玩家数据
+// 0-10 通知game加载玩家数据
 message LoadPlayerData
 {
-	int32 clientid = 1;
+	int32 nCenterClientID = 1;
 	string account = 2;
 	string name = 3;
 	int64 guid = 4;

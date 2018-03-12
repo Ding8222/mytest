@@ -7,15 +7,18 @@
 #include <vector>
 #include "msgbase.h"
 
+struct idmgr;
 struct ClientAuthInfo
 {
 	ClientAuthInfo()
 	{
+		nClientID = 0;
 		nLoginSvrID = 0;
 		Token.clear();
 		Secret.clear();
 	}
 	
+	int32 nClientID;
 	int32 nLoginSvrID;
 	std::string Token;	// 账号
 	std::string Secret;	// 秘钥
@@ -34,6 +37,7 @@ public:
 	}
 
 	bool Init();
+	void Run();
 	void Destroy(bool bLoginDisconnect = false);
 
 	// Client请求认证,loginSvr调用
@@ -42,9 +46,9 @@ public:
 	void DelClientAuthInfo(int32 clientid);
 	ClientAuthInfo *FindClientAuthInfo(int32 clientid);
 	int32 GetClientLoginSvr(int32 clientid);
-	// 发送认证信息到逻辑服
-	void SendAuthInfoToLogic(Msg *pMsg, int32 clientid);
 private:
 	// id,info
 	std::vector<ClientAuthInfo *> m_ClientInfoSet;
+	idmgr *m_IDPool;
+
 };

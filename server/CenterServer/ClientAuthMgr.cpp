@@ -1,8 +1,10 @@
-﻿#include "ClientAuthMgr.h"
+﻿#include "idmgr.c"
+#include "ClientAuthMgr.h"
 #include "CentServerMgr.h"
 #include "ServerStatusMgr.h"
 #include "objectpool.h"
 #include "ServerLog.h"
+#include "Config.h"
 
 #include "MainType.h"
 #include "ServerType.h"
@@ -39,6 +41,7 @@ static void clientauthinfo_release(ClientAuthInfo *self)
 CClientAuthMgr::CClientAuthMgr()
 {
 	m_ClientInfoSet.clear();
+	m_IDPool = nullptr;
 }
 
 CClientAuthMgr::~CClientAuthMgr()
@@ -48,36 +51,59 @@ CClientAuthMgr::~CClientAuthMgr()
 
 bool CClientAuthMgr::Init()
 {
+	m_IDPool = idmgr_create(CLIENT_ID_MAX + 1, CLIENT_ID_MAX);
+	if (!m_IDPool)
+	{
+		RunStateError("创建IDMgr失败!");
+		return false;
+	}
+
 	m_ClientInfoSet.resize(CLIENT_ID_MAX + 1, nullptr);
 
 	return true;
 }
 
+void CClientAuthMgr::Run()
+{
+	idmgr_run(m_IDPool);
+}
+
 void CClientAuthMgr::Destroy(bool bLoginDisconnect)
 {
-	for (auto &i : m_ClientInfoSet)
+	for (size_t i = 0; i < m_ClientInfoSet.size(); ++i)
 	{
-		clientauthinfo_release(i);
-		i = nullptr;
+		DelClientAuthInfo(i);
 	}
+
 	if(!bLoginDisconnect)
 		m_ClientInfoSet.clear();
+
+	if (!bLoginDisconnect && m_IDPool)
+	{
+		idmgr_release(m_IDPool);
+		m_IDPool = nullptr;
+	}
 }
 
 // 添加认证信息
 void CClientAuthMgr::AddClientAuthInfo(Msg *pMsg, int32 clientid, int32 serverid)
 {
-	if (clientid <= 0 || clientid >= static_cast<int>(m_ClientInfoSet.size()))
+	int id = idmgr_allocid(m_IDPool);
+	if (id <= 0)
 	{
-		RunStateError("要添加的ClientAuthInfo的ID错误!");
-		return;
+		RunStateError("为新Instance分配ID失败!, id:%d", id);
+		return ;
 	}
 
-	assert(m_ClientInfoSet[clientid] == nullptr);
+	assert(m_ClientInfoSet[id] == nullptr);
 
 	ClientAuthInfo *newinfo = clientauthinfo_create();
 	if (!newinfo)
 	{
+		if (!idmgr_freeid(m_IDPool, id))
+		{
+			log_error("释放ID错误, ID:%d", id);
+		}
 		log_error("创建ClientAuthInfo失败!");
 		return;
 	}
@@ -85,13 +111,14 @@ void CClientAuthMgr::AddClientAuthInfo(Msg *pMsg, int32 clientid, int32 serverid
 	netData::Auth msg;
 	_CHECK_PARSE_(pMsg, msg);
 	
+	newinfo->nClientID = clientid;
 	newinfo->nLoginSvrID = serverid;
 	newinfo->Token = msg.setoken();
 	newinfo->Secret = msg.ssecret();
 
-	m_ClientInfoSet[clientid] = newinfo;
+	m_ClientInfoSet[id] = newinfo;
 
-	CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_DB, clientid);
+	CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_DB, id, CConfig::Instance().GetDBID());
 	return ;
 }
 
@@ -102,6 +129,11 @@ void CClientAuthMgr::DelClientAuthInfo(int32 clientid)
 	{
 		log_error("要释放的ClientAuthInfo的ID错误!");
 		return;
+	}
+
+	if (!idmgr_freeid(m_IDPool, clientid))
+	{
+		log_error("释放ID错误, ID:%d", clientid);
 	}
 
 	clientauthinfo_release(m_ClientInfoSet[clientid]);
@@ -130,10 +162,4 @@ int32 CClientAuthMgr::GetClientLoginSvr(int32 clientid)
 
 	assert(m_ClientInfoSet[clientid]);
 	return m_ClientInfoSet[clientid]->nLoginSvrID;
-}
-
-// 发送认证信息到逻辑服
-void CClientAuthMgr::SendAuthInfoToLogic(Msg *pMsg, int32 clientid)
-{
-
 }

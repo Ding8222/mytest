@@ -160,8 +160,11 @@ void CClientAuth::AddNewClient(Msg *pMsg, CClient *cl)
 			_pData->ClientID = cl->GetClientID();
 			m_ClientAuthInfo.insert(std::make_pair(cl->GetClientID(), _pData));
 			ClientConnectLog("新的客户端认证成功！token:%s", msg.stoken().c_str());
+			
+			svrData::AddNewClient SendMsg;
+			SendMsg.set_ngameid(CConfig::Instance().GetGameServerID());
+			CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), SendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT, cl->GetClientID());
 
-			CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), _pData->Data, SERVER_TYPE_MAIN, SVR_SUB_LOAD_PLAYERDATA, cl->GetClientID());
 			cl->SetAlreadyAuth();
 			return;
 		}

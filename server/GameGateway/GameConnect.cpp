@@ -8,9 +8,11 @@
 
 #include "MainType.h"
 #include "ServerType.h"
+#include "LoginType.h"
 #include "ClientType.h"
 #include "ServerMsg.pb.h"
 #include "ClientMsg.pb.h"
+#include "Login.pb.h"
 
 extern int64 g_currenttime;
 
@@ -111,6 +113,21 @@ void CGameConnect::ProcessMsg(connector *_con)
 		{
 			switch (pMsg->GetSubType())
 			{
+			}
+			break;
+		}
+		case LOGIN_TYPE_MAIN:
+		{
+			switch (pMsg->GetSubType())
+			{
+			case LOGIN_SUB_LOGIN_RET:
+			{
+				netData::LoginRet msg;
+				_CHECK_PARSE_(pMsg, msg);
+				if (msg.ncode() == netData::LoginRet::EC_SUCC)
+					CGateClientMgr::Instance().SetClientAlreadyLogin(tl->id, true);
+				break;
+			}
 			}
 			break;
 		}

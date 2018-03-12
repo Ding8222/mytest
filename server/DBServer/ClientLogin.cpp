@@ -200,7 +200,7 @@ void CClientLogin::SelectPlayer(task *tk, Msg *pMsg)
 		if (res && res->IsOpen() && !res->IsEnd())
 		{
 			svrData::LoadPlayerData sendMsgToGame;
-			sendMsgToGame.set_clientid(tk->GetClientID());
+			sendMsgToGame.set_ncenterclientid(tk->GetClientID());
 			sendMsgToGame.set_account(res->GetChar("account"));
 			sendMsgToGame.set_name(res->GetChar("name"));
 			sendMsgToGame.set_guid(res->GetInt64("guid"));

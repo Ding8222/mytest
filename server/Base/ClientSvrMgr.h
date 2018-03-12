@@ -6,13 +6,17 @@
 #pragma once
 
 #include <list>
+struct idmgr;
 struct ClientSvr
 {
 	ClientSvr()
 	{
+		nClientID = 0;
 		nGateID = 0;
 		nGameServerID = 0;
 	}
+
+	int nClientID;
 	int nGateID;
 	int nGameServerID;
 };
@@ -30,12 +34,14 @@ public:
 		return m;
 	}
 	bool Init();
+	void Run();
 	void Destroy();
 
-	void AddClientSvr(int32 clientid, int32 serverid, int32 gateid);
+	int32 AddClientSvr(int32 clientid, int32 serverid, int32 gateid);
 	void DelClientSvr(int32 clientid);
 	ClientSvr *GetClientSvr(int32 id);
 private:
 
 	std::vector<ClientSvr *> m_ClientSvrSet;
+	idmgr *m_IDPool;
 };

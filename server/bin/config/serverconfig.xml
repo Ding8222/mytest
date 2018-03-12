@@ -44,6 +44,8 @@ SQL_Log				是否开启SQL查询日志
 	Server_ID = "1000"
 	Listen_Port = "10001"
 	Server_IP = "127.0.0.1"
+	
+	DBID = "2000"
 	>
 </CenterServer>
 

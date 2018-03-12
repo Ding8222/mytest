@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <string>
-#include"BaseConfig.h"
+#include "BaseConfig.h"
+#include "platform_config.h"
 
 class CConfig:public CBaseConfig
 {
@@ -15,6 +16,7 @@ public:
 	}
 
 	bool Init(const char *servername = "");
-
+	int32 GetDBID() { return m_DBID; }
 private:
+	int32 m_DBID;
 };

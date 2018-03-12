@@ -5,12 +5,10 @@
 #include "ServerStatusMgr.h"
 #include "ClientSvrMgr.h"
 #include "serverlog.h"
-
-#include "MainType.h"
-#include "LoginType.h"
-#include "ServerType.h"
-#include "ServerMsg.pb.h"
-#include "Login.pb.h"
+#include "ProcessGameMsg.h"
+#include "ProcessLoginMsg.h"
+#include "ProcessGateMsg.h"
+#include "ProcessDBMsg.h"
 
 extern int64 g_currenttime;
 
@@ -42,6 +40,13 @@ bool CCentServerMgr::Init(const char *ip, int serverid, int port, int overtime)
 	}
 
 	return CServerMgr::Init(ip, serverid, port, overtime);
+}
+
+void CCentServerMgr::Run()
+{
+	CClientAuthMgr::Instance().Run();
+	CClientSvrMgr::Instance().Run();
+	CServerMgr::Run();
 }
 
 void CCentServerMgr::Destroy()
@@ -141,6 +146,7 @@ const char *CCentServerMgr::GetMsgNumInfo()
 
 void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int32 nClientID, int nServerID, bool bBroad)
 {
+	msgtail tail;
 	std::map<int, serverinfo *> *iterList = nullptr;
 	switch (nType)
 	{
@@ -151,9 +157,11 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int32 nClientID, int 
 			ClientSvr *_pData = CClientSvrMgr::Instance().GetClientSvr(nClientID);
 			if (_pData)
 			{
+				tail.id = _pData->nClientID;
 				nServerID = _pData->nGateID;
-				assert(nServerID);
 			}
+			assert(nServerID);
+			assert(tail.id);
 		}
 		iterList = &m_GateList;
 		break;
@@ -165,10 +173,13 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int32 nClientID, int 
 			ClientSvr *_pData = CClientSvrMgr::Instance().GetClientSvr(nClientID);
 			if (_pData)
 			{
+				tail.id = _pData->nClientID;
 				nServerID = _pData->nGameServerID;
-				assert(nServerID);
 			}
+			assert(nServerID);
+			assert(tail.id);
 		}
+		tail.id = nClientID;
 		iterList = &m_GameList;
 		break;
 	}
@@ -176,14 +187,21 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int32 nClientID, int 
 	{
 		if (!bBroad && nServerID == 0)
 		{
-			nServerID = CClientAuthMgr::Instance().GetClientLoginSvr(nClientID);
+			ClientAuthInfo *_pAuthInfo = CClientAuthMgr::Instance().FindClientAuthInfo(nClientID);
+			if (_pAuthInfo)
+			{
+				tail.id = _pAuthInfo->nClientID;
+				nServerID = _pAuthInfo->nLoginSvrID;
+			}
 			assert(nServerID);
+			assert(tail.id);
 		}
 		iterList = &m_LoginList;
 		break;
 	}
 	case ServerEnum::EST_DB:
 	{
+		tail.id = nClientID;
 		iterList = &m_DBList;
 		bBroad = true;
 		break;
@@ -200,8 +218,6 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int32 nClientID, int 
 			std::map<int, serverinfo *>::iterator iterFind = iterList->find(nServerID);
 			if (iterFind != iterList->end())
 			{
-				msgtail tail;
-				tail.id = nClientID;
 				SendMsg(iterFind->second, pMsg, &tail, sizeof(tail));
 			}
 			else
@@ -209,7 +225,6 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int32 nClientID, int 
 		}
 		else
 		{
-			msgtail tail;
 			tail.id = nClientID;
 			for (std::map<int, serverinfo *>::iterator itr = iterList->begin(); itr != iterList->end(); ++itr)
 			{
@@ -221,6 +236,8 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int32 nClientID, int 
 
 void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int32 nClientID, int nServerID, bool bBroad)
 {
+	msgtail tail;
+	tail.id = 0;
 	std::map<int, serverinfo *> *iterList = nullptr;
 	switch (nType)
 	{
@@ -231,9 +248,11 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 			ClientSvr *_pData = CClientSvrMgr::Instance().GetClientSvr(nClientID);
 			if (_pData)
 			{
+				tail.id = _pData->nClientID;
 				nServerID = _pData->nGateID;
-				assert(nServerID);
 			}
+			assert(nServerID);
+			assert(tail.id);
 		}
 		iterList = &m_GateList;
 		break;
@@ -245,9 +264,11 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 			ClientSvr *_pData = CClientSvrMgr::Instance().GetClientSvr(nClientID);
 			if (_pData)
 			{
+				tail.id = _pData->nClientID;
 				nServerID = _pData->nGameServerID;
-				assert(nServerID);
 			}
+			assert(nServerID);
+			assert(tail.id);
 		}
 		iterList = &m_GameList;
 		break;
@@ -256,14 +277,21 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 	{
 		if (!bBroad && nServerID == 0)
 		{
-			nServerID = CClientAuthMgr::Instance().GetClientLoginSvr(nClientID);
+			ClientAuthInfo *_pAuthInfo = CClientAuthMgr::Instance().FindClientAuthInfo(nClientID);
+			if (_pAuthInfo)
+			{
+				tail.id = _pAuthInfo->nClientID;
+				nServerID = _pAuthInfo->nLoginSvrID;
+			}
 			assert(nServerID);
+			assert(tail.id);
 		}
 		iterList = &m_LoginList;
 		break;
 	}
 	case ServerEnum::EST_DB:
 	{
+		tail.id = nClientID;
 		iterList = &m_DBList;
 		bBroad = true;
 		break;
@@ -280,8 +308,6 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 			std::map<int, serverinfo *>::iterator iterFind = iterList->find(nServerID);
 			if (iterFind != iterList->end())
 			{
-				msgtail tail;
-				tail.id = nClientID;
 				SendMsg(iterFind->second, pMsg, maintype, subtype, &tail, sizeof(tail));
 			}
 			else
@@ -289,8 +315,6 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 		}
 		else
 		{
-			msgtail tail;
-			tail.id = nClientID;
 			for (std::map<int, serverinfo *>::iterator itr = iterList->begin(); itr != iterList->end(); ++itr)
 			{
 				SendMsg(itr->second, pMsg, maintype, subtype, &tail, sizeof(tail));
@@ -366,275 +390,33 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 		msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
 		pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
 
-		switch (pMsg->GetMainType())
+		switch (info->GetServerType())
 		{
-		case SERVER_TYPE_MAIN:
+		case ServerEnum::EST_GAME:
+		{
+			// 来自GameSvr的消息
+			ProcessGameMsg(info, pMsg, tl);
+			break;
+		}
+		case ServerEnum::EST_LOGIN:
 		{
 			// 来自LoginSvr的消息
-			switch (pMsg->GetSubType())
-			{
-			case SVR_SUB_PING:
-			{
-				info->SendMsg(pMsg);
-				info->SetPingTime(g_currenttime);
-				break;
-			}
-			case SVR_SUB_SERVER_LOADINFO:
-			{
-				// 添加服务器负载信息
-				CServerStatusMgr::Instance().AddNewServer(info, pMsg);
-				break;
-			}
-			case SVR_SUB_UPDATE_LOAD:
-			{
-				// 更新服务器负载信息
-				svrData::UpdateServerLoad msg;
-				_CHECK_PARSE_(pMsg, msg);
-
-				CServerStatusMgr::Instance().UpdateServerLoad(info->GetServerID(), msg.nclientcountnow(), msg.nclientcountmax());
-				break;
-			}
-			case SVR_SUB_NEW_CLIENT:
-			{
-				svrData::AddNewClient msg;
-				_CHECK_PARSE_(pMsg, msg);
-
-				CClientSvrMgr::Instance().AddClientSvr(tl->id, info->GetServerID(), msg.ngateid());
-
-				//通知CLient登录成功
-				netData::LoginRet sendMsg;
-				sendMsg.set_ntempid(msg.ntempid());
-				sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
-				CCentServerMgr::Instance().SendMsgToServer(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, ServerEnum::EST_GATE, tl->id);
-				break;
-			}
-
-			case SVR_SUB_DEL_CLIENT:
-			{
-				// client断开
-				svrData::DelClient msg;
-				_CHECK_PARSE_(pMsg, msg);
-
-				switch (info->GetServerType())
-				{
-				case ServerEnum::EST_GATE:
-				{
-					CClientSvrMgr::Instance().DelClientSvr(tl->id);
-					break;
-				}
-				case ServerEnum::EST_LOGIN:
-				{
-					CClientAuthMgr::Instance().DelClientAuthInfo(msg.nclientid());
-				}
-				default:
-					break;
-				}
-				break;
-			}
-			case SVR_SUB_LOAD_PLAYERDATA:
-			{
-				svrData::LoadPlayerData msg;
-				_CHECK_PARSE_(pMsg, msg);
-
-				netData::SelectPlayerRet SendMsg;
-				ClientAuthInfo *_pAuthInfo = CClientAuthMgr::Instance().FindClientAuthInfo(tl->id);
-				if (_pAuthInfo)
-				{
-					ServerStatusInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByMapID(msg.mapid());
-					if (_pInfo)
-					{
-						// 返回loginsvr，通知client选角成功，登陆gamegateway
-						SendMsg.set_ncode(netData::SelectPlayerRet::EC_SUCC);
-						SendMsg.set_nserverid(_pInfo->nServerID);
-						SendMsg.set_sip(_pInfo->chIP);
-						SendMsg.set_nport(_pInfo->nPort);
-						SendMsg.set_nmapid(msg.mapid());
-
-						// 将角色数据和认证信息发送到gamegateway
-						svrData::ClientToken sendMsg;
-						sendMsg.mutable_data()->MergeFrom(msg);
-						sendMsg.set_setoken(_pAuthInfo->Token);
-						sendMsg.set_ssecret(_pAuthInfo->Secret);
-						CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GATE, 0, _pInfo->nServerID);
-					}
-					else
-						SendMsg.set_ncode(netData::SelectPlayerRet::EC_SERVER);
-				}
-				else
-					SendMsg.set_ncode(netData::SelectPlayerRet::EC_AUTH);
-
-				CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER_RET, ServerEnum::EST_LOGIN, tl->id);
-				break;
-			}
-			case SVR_SUB_CHANGELINE:
-			{
-				// client换线切图
-				svrData::ChangeLine msg;
-				_CHECK_PARSE_(pMsg, msg);
-
-				svrData::ChangeLineRet SendMsg;
-				ServerStatusInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByMapID(msg.nmapid(), msg.nlineid());
-				if (_pInfo)
-				{
-					// 返回loginsvr，通知client选角成功，登陆gamegateway
-					SendMsg.set_ncode(netData::SelectPlayerRet::EC_SUCC);
-					SendMsg.set_nserverid(_pInfo->nServerID);
-					SendMsg.set_sip(_pInfo->chIP);
-					SendMsg.set_nport(_pInfo->nPort);
-					SendMsg.set_nmapid(msg.nmapid());
-
-					// 将角色数据和认证信息发送到gamegateway
-					svrData::ClientToken sendMsg;
-					sendMsg.mutable_data()->MergeFrom(msg.data());
-					sendMsg.set_setoken(msg.setoken());
-					sendMsg.set_ssecret(msg.ssecret());
-					CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GATE, 0, _pInfo->nServerID);
-				}
-				else
-					SendMsg.set_ncode(netData::SelectPlayerRet::EC_SERVER);
-
-				CCentServerMgr::Instance().SendMsgToServer(SendMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE_RET, ServerEnum::EST_GAME, tl->id);
-				break;
-			}
-			default:
-				break;
-			}
+			ProcessLoginMsg(info, pMsg, tl);
 			break;
 		}
-		default:
+		case ServerEnum::EST_DB:
 		{
-			switch (info->GetServerType())
-			{
-			case ServerEnum::EST_GAME:
-			{
-				// 来自GameSvr的消息
-				ProcessGameMsg(info, pMsg, tl);
-				break;
-			}
-			case ServerEnum::EST_LOGIN:
-			{
-				// 来自LoginSvr的消息
-				ProcessLoginMsg(info, pMsg, tl);
-				break;
-			}
-			case ServerEnum::EST_DB:
-			{
-				// 来自DBSvr的消息
-				ProcessDBMsg(info, pMsg, tl);
-				break;
-			}
-			case ServerEnum::EST_GATE:
-			{
-				// 来自GateSvr的消息
-				ProcessGateMsg(info, pMsg, tl);
-				break;
-			}
-			default:
-			{
-				break;
-			}
-			}
+			// 来自DBSvr的消息
+			ProcessDBMsg(info, pMsg, tl);
+			break;
+		}
+		case ServerEnum::EST_GATE:
+		{
+			// 来自GateSvr的消息
+			ProcessGateMsg(info, pMsg, tl);
 			break;
 		}
 		}
-	}
-}
-
-void CCentServerMgr::ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
-{
-	switch (pMsg->GetMainType())
-	{
-	case 1:
-	{
-		break;
-	}
-	default:
-		break;
-	}
-}
-
-void CCentServerMgr::ProcessLoginMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
-{
-	switch (pMsg->GetMainType())
-	{
-	case LOGIN_TYPE_MAIN:
-	{
-		switch (pMsg->GetSubType())
-		{
-		case LOGIN_SUB_AUTH:
-		{
-			CClientAuthMgr::Instance().AddClientAuthInfo(pMsg,tl->id, info->GetServerID());
-			break;
-		}
-		case LOGIN_SUB_PLAYER_LIST:
-		case LOGIN_SUB_CREATE_PLAYER:
-		case LOGIN_SUB_SELECT_PLAYER:
-		{
-			CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_DB, tl->id);
-			break;
-		}
-		default:
-			break;
-		}
-		break;
-	}
-	default:
-		break;
-	}
-}
-
-void CCentServerMgr::ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
-{
-	switch (pMsg->GetMainType())
-	{
-	case LOGIN_TYPE_MAIN:
-	{
-		switch (pMsg->GetSubType())
-		{
-		case LOGIN_SUB_AUTH_RET:
-		{
-			netData::AuthRet msg;
-			_CHECK_PARSE_(pMsg, msg);
-			msg.set_ncode(netData::AuthRet::EC_AUTHINFO);
-
-			ClientAuthInfo *clientinfo = CClientAuthMgr::Instance().FindClientAuthInfo(tl->id);
-			if (clientinfo)
-			{
-				msg.set_stoken(clientinfo->Token);
-				msg.set_ncode(netData::AuthRet::EC_SUCC);
-			}
-
-			CCentServerMgr::Instance().SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, tl->id);
-
-			break;
-		}
-		case LOGIN_SUB_PLAYER_LIST_RET:
-		case LOGIN_SUB_CREATE_PLAYER_RET:
-		case LOGIN_SUB_SELECT_PLAYER_RET:
-		{
-			CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_LOGIN, tl->id);
-			break;
-		}
-		}
-		break;
-	}
-	}
-}
-
-void CCentServerMgr::ProcessGateMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
-{
-	switch (pMsg->GetMainType())
-	{
-	case LOGIN_TYPE_MAIN:
-	{
-		switch (pMsg->GetSubType())
-		{
-		default:
-			break;
-		}
-		break;
-	}
-	default:
 		break;
 	}
 }

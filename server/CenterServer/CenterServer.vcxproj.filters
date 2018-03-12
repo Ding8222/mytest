@@ -42,6 +42,18 @@
     <ClCompile Include="ServerStatusMgr.cpp">
       <Filter>逻辑服管理</Filter>
     </ClCompile>
+    <ClCompile Include="ProcessLoginMsg.cpp">
+      <Filter>消息处理</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessDBMsg.cpp">
+      <Filter>消息处理</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessGameMsg.cpp">
+      <Filter>消息处理</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessGateMsg.cpp">
+      <Filter>消息处理</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CenterServer.h">
@@ -58,6 +70,18 @@
     </ClInclude>
     <ClInclude Include="ServerStatusMgr.h">
       <Filter>逻辑服管理</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcessLoginMsg.h">
+      <Filter>消息处理</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcessDBMsg.h">
+      <Filter>消息处理</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcessGameMsg.h">
+      <Filter>消息处理</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcessGateMsg.h">
+      <Filter>消息处理</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

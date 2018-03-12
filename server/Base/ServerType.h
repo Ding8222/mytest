@@ -17,20 +17,20 @@
 //服务器负载更新
 #define SVR_SUB_UPDATE_LOAD 5
 
-// 新的client连接上来了
+// 新的client连接
 #define SVR_SUB_NEW_CLIENT 6
 
+// 新的client连接返回
+#define SVR_SUB_NEW_CLIENT_RET 7
+
 // client断开
-#define SVR_SUB_DEL_CLIENT 7
+#define SVR_SUB_DEL_CLIENT 8
 
 // 通知game玩家的token
-#define SVR_SUB_CLIENT_TOKEN 8
+#define SVR_SUB_CLIENT_TOKEN 9
 
 // 通知game加载数据
-#define SVR_SUB_LOAD_PLAYERDATA 9
-
-// 返回加载数据结果
-#define SVR_SUB_LOAD_PLAYERDATA_RET 10
+#define SVR_SUB_LOAD_PLAYERDATA 10
 
 // 切换线路
 #define  SVR_SUB_CHANGELINE 11

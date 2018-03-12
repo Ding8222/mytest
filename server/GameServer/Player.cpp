@@ -10,6 +10,7 @@ CPlayer::CPlayer():CBaseObj(EOT_PLAYER)
 {
 	m_GateInfo = nullptr;
 	m_ClientID = 0;
+	m_CenterClientID = 0;
 	m_Guid = 0;
 	m_CreateTime = 0;
 	m_LoginTime = 0;
@@ -32,7 +33,7 @@ bool CPlayer::LoadData(Msg *pMsg)
 	svrData::LoadPlayerData msg;
 	_CHECK_PARSE_(pMsg, msg) false;
 
-	SetClientID(msg.clientid());
+	SetCenterClientID(msg.ncenterclientid());
 	SetAccount(msg.account());
 	SetName(msg.name().c_str());
 	SetGuid(msg.guid());
@@ -72,7 +73,7 @@ bool CPlayer::PackData(google::protobuf::Message *pPB)
 
 	svrData::LoadPlayerData *pMsg = (svrData::LoadPlayerData *)pPB;
 
-	pMsg->set_clientid(GetClientID());
+	pMsg->set_ncenterclientid(GetClientID());
 	pMsg->set_account(GetAccount());
 	pMsg->set_name(GetName());
 	pMsg->set_guid(GetGuid());

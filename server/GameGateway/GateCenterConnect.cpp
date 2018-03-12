@@ -5,6 +5,7 @@
 #include "config.h"
 #include "serverlog.h"
 #include "msgbase.h"
+#include "GameConnect.h"
 
 #include "MainType.h"
 #include "ServerType.h"
@@ -91,6 +92,30 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 				_con->SetRecvPingTime(g_currenttime);
 				break;
 			}
+			case SVR_SUB_NEW_CLIENT_RET:
+			{
+				svrData::AddNewClientRet msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				netData::LoginRet sendMsg;
+				if (msg.ncenterclientid() > 0)
+				{
+					ClientAuthInfo *info = CClientAuth::Instance().FindAuthInfo(tl->id);
+					if (info)
+					{
+						info->Data.set_ncenterclientid(msg.ncenterclientid());
+						CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), info->Data, SERVER_TYPE_MAIN, SVR_SUB_LOAD_PLAYERDATA, tl->id);
+						return;
+					}
+					else
+						sendMsg.set_ncode(netData::LoginRet::EC_FAIL);
+				}
+				else
+					sendMsg.set_ncode(netData::LoginRet::EC_FAIL);
+
+				CGateClientMgr::Instance().SendMsg(tl->id, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET);
+				break;
+			}
 			case SVR_SUB_CLIENT_TOKEN:
 			{
 				CClientAuth::Instance().AddAuthInfo(pMsg);
@@ -107,15 +132,6 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 			case LOGIN_SUB_CREATE_PLAYER_RET:
 			case LOGIN_SUB_SELECT_PLAYER_RET:
 			{
-				CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
-				break;
-			}
-			case LOGIN_SUB_LOGIN_RET:
-			{
-				netData::LoginRet msg;
-				_CHECK_PARSE_(pMsg, msg);
-				if (msg.ncode() == netData::LoginRet::EC_SUCC)
-					CGateClientMgr::Instance().SetClientAlreadyLogin(tl->id, true);
 				CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
 				break;
 			}

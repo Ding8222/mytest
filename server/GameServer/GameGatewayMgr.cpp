@@ -194,11 +194,8 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				{
 					if (player->LoadData(pMsg))
 					{
-						svrData::AddNewClient SendMsgToCenter;
-						SendMsgToCenter.set_ntempid(player->GetTempID());
-						SendMsgToCenter.set_ngateid(info->GetServerID());
-						CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), SendMsgToCenter, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT, tl->id);
-						return;
+						sendMsg.set_ntempid(player->GetTempID());
+						sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
 					}
 					else
 						sendMsg.set_ncode(netData::LoginRet::EC_FAIL);
@@ -206,7 +203,7 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				else
 					sendMsg.set_ncode(netData::LoginRet::EC_FAIL);
 
-				FuncUti::SendPBNoLoop(player, sendMsg, CLIENT_TYPE_MAIN, LOGIN_SUB_LOGIN_RET);
+				FuncUti::SendPBNoLoop(player, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET);
 				break;
 			}
 			}

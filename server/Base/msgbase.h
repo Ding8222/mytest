@@ -561,7 +561,27 @@ struct msgtail
 	{
 		id = 0;
 	}
-	int32 id;	//此id根据情况，含义不同，可能是gate的客户端id，也可能是逻辑服的id
+
+	int32 id;	//clientid
+
+// 	// 前8位作为serverid，最大id：255 后24位作为clientid，最大id：16777215
+// 	inline void SetServerIDAndClientID(int8 serverid,int32 clientid)
+// 	{
+// 		id = serverid;
+// 		id <<= 24;
+// 		id |= clientid;
+// 	}
+// 
+// 	inline int8 GetServerID()
+// 	{
+// 		return id >> 24;
+// 	}
+// 
+// 	// center中的id需要从此获取
+// 	inline int32 GetClientID()
+// 	{
+// 		return id & 0x00ffffff;
+// 	}
 };
 
 #pragma pack(pop)

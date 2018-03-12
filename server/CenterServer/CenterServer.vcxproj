@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>..\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;..\Common\;$(IncludePath)</IncludePath>
     <OutDir>..\bin\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -130,6 +130,10 @@
     <ClCompile Include="CenterServer.cpp" />
     <ClCompile Include="ClientAuthMgr.cpp" />
     <ClCompile Include="Config.cpp" />
+    <ClCompile Include="ProcessDBMsg.cpp" />
+    <ClCompile Include="ProcessGameMsg.cpp" />
+    <ClCompile Include="ProcessGateMsg.cpp" />
+    <ClCompile Include="ProcessLoginMsg.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CentServerMgr.cpp" />
     <ClCompile Include="ServerStatusMgr.cpp" />
@@ -139,6 +143,10 @@
     <ClInclude Include="ClientAuthMgr.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="CentServerMgr.h" />
+    <ClInclude Include="ProcessDBMsg.h" />
+    <ClInclude Include="ProcessGameMsg.h" />
+    <ClInclude Include="ProcessGateMsg.h" />
+    <ClInclude Include="ProcessLoginMsg.h" />
     <ClInclude Include="ServerStatusMgr.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
