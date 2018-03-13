@@ -64,6 +64,8 @@ message AuthRet
 		EC_ADDTOKEN = 4;	// Login添加Token失败
 		EC_DB = 5;			// 数据库查询失败
 		EC_AUTHINFO = 6;	// 没有找到认证信息
+		EC_AUTHING = 7;		// 正在认证中，稍后再试
+		EC_KICK = 8;		// 已经将在线玩家踢下线，请重试
 	};
 	int32 nCode = 1;
 	string sToken = 2;	//账号

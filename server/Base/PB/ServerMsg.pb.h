@@ -37,7 +37,7 @@ namespace protobuf_ServerMsg_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[12];
+  static const ::google::protobuf::internal::ParseTable schema[13];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -67,6 +67,8 @@ void InitDefaultsChangeLineImpl();
 void InitDefaultsChangeLine();
 void InitDefaultsChangeLineRetImpl();
 void InitDefaultsChangeLineRet();
+void InitDefaultsKickClientImpl();
+void InitDefaultsKickClient();
 inline void InitDefaults() {
   InitDefaultsPing();
   InitDefaultsServerRegister();
@@ -80,6 +82,7 @@ inline void InitDefaults() {
   InitDefaultsLoadPlayerData();
   InitDefaultsChangeLine();
   InitDefaultsChangeLineRet();
+  InitDefaultsKickClient();
 }
 }  // namespace protobuf_ServerMsg_2eproto
 namespace svrData {
@@ -101,6 +104,9 @@ extern ClientTokenDefaultTypeInternal _ClientToken_default_instance_;
 class DelClient;
 class DelClientDefaultTypeInternal;
 extern DelClientDefaultTypeInternal _DelClient_default_instance_;
+class KickClient;
+class KickClientDefaultTypeInternal;
+extern KickClientDefaultTypeInternal _KickClient_default_instance_;
 class LoadPlayerData;
 class LoadPlayerDataDefaultTypeInternal;
 extern LoadPlayerDataDefaultTypeInternal _LoadPlayerData_default_instance_;
@@ -128,6 +134,7 @@ template<> ::svrData::ChangeLine* Arena::Create< ::svrData::ChangeLine>(Arena*);
 template<> ::svrData::ChangeLineRet* Arena::Create< ::svrData::ChangeLineRet>(Arena*);
 template<> ::svrData::ClientToken* Arena::Create< ::svrData::ClientToken>(Arena*);
 template<> ::svrData::DelClient* Arena::Create< ::svrData::DelClient>(Arena*);
+template<> ::svrData::KickClient* Arena::Create< ::svrData::KickClient>(Arena*);
 template<> ::svrData::LoadPlayerData* Arena::Create< ::svrData::LoadPlayerData>(Arena*);
 template<> ::svrData::Ping* Arena::Create< ::svrData::Ping>(Arena*);
 template<> ::svrData::ServerLoadInfo* Arena::Create< ::svrData::ServerLoadInfo>(Arena*);
@@ -917,6 +924,20 @@ class AddNewClient : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // accessors -------------------------------------------------------
 
+  // string Account = 2;
+  void clear_account();
+  static const int kAccountFieldNumber = 2;
+  const ::std::string& account() const;
+  void set_account(const ::std::string& value);
+  #if LANG_CXX11
+  void set_account(::std::string&& value);
+  #endif
+  void set_account(const char* value);
+  void set_account(const char* value, size_t size);
+  ::std::string* mutable_account();
+  ::std::string* release_account();
+  void set_allocated_account(::std::string* account);
+
   // int32 nGameID = 1;
   void clear_ngameid();
   static const int kNGameIDFieldNumber = 1;
@@ -927,6 +948,7 @@ class AddNewClient : public ::google::protobuf::Message /* @@protoc_insertion_po
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr account_;
   ::google::protobuf::int32 ngameid_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
@@ -1123,17 +1145,32 @@ class DelClient : public ::google::protobuf::Message /* @@protoc_insertion_point
 
   // accessors -------------------------------------------------------
 
-  // int32 nClientID = 1;
-  void clear_nclientid();
-  static const int kNClientIDFieldNumber = 1;
-  ::google::protobuf::int32 nclientid() const;
-  void set_nclientid(::google::protobuf::int32 value);
+  // string Account = 1;
+  void clear_account();
+  static const int kAccountFieldNumber = 1;
+  const ::std::string& account() const;
+  void set_account(const ::std::string& value);
+  #if LANG_CXX11
+  void set_account(::std::string&& value);
+  #endif
+  void set_account(const char* value);
+  void set_account(const char* value, size_t size);
+  ::std::string* mutable_account();
+  ::std::string* release_account();
+  void set_allocated_account(::std::string* account);
+
+  // bool bChangeLine = 2;
+  void clear_bchangeline();
+  static const int kBChangeLineFieldNumber = 2;
+  bool bchangeline() const;
+  void set_bchangeline(bool value);
 
   // @@protoc_insertion_point(class_scope:svrData.DelClient)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::int32 nclientid_;
+  ::google::protobuf::internal::ArenaStringPtr account_;
+  bool bchangeline_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsDelClientImpl();
@@ -1811,6 +1848,109 @@ class ChangeLineRet : public ::google::protobuf::Message /* @@protoc_insertion_p
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsChangeLineRetImpl();
 };
+// -------------------------------------------------------------------
+
+class KickClient : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:svrData.KickClient) */ {
+ public:
+  KickClient();
+  virtual ~KickClient();
+
+  KickClient(const KickClient& from);
+
+  inline KickClient& operator=(const KickClient& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  KickClient(KickClient&& from) noexcept
+    : KickClient() {
+    *this = ::std::move(from);
+  }
+
+  inline KickClient& operator=(KickClient&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const KickClient& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const KickClient* internal_default_instance() {
+    return reinterpret_cast<const KickClient*>(
+               &_KickClient_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    12;
+
+  void Swap(KickClient* other);
+  friend void swap(KickClient& a, KickClient& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline KickClient* New() const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<KickClient>(NULL);
+  }
+
+  KickClient* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<KickClient>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const KickClient& from);
+  void MergeFrom(const KickClient& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(KickClient* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // bool bChangeLine = 1;
+  void clear_bchangeline();
+  static const int kBChangeLineFieldNumber = 1;
+  bool bchangeline() const;
+  void set_bchangeline(bool value);
+
+  // @@protoc_insertion_point(class_scope:svrData.KickClient)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  bool bchangeline_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
+  friend void ::protobuf_ServerMsg_2eproto::InitDefaultsKickClientImpl();
+};
 // ===================================================================
 
 
@@ -2174,6 +2314,59 @@ inline void AddNewClient::set_ngameid(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:svrData.AddNewClient.nGameID)
 }
 
+// string Account = 2;
+inline void AddNewClient::clear_account() {
+  account_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddNewClient::account() const {
+  // @@protoc_insertion_point(field_get:svrData.AddNewClient.Account)
+  return account_.GetNoArena();
+}
+inline void AddNewClient::set_account(const ::std::string& value) {
+  
+  account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:svrData.AddNewClient.Account)
+}
+#if LANG_CXX11
+inline void AddNewClient::set_account(::std::string&& value) {
+  
+  account_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:svrData.AddNewClient.Account)
+}
+#endif
+inline void AddNewClient::set_account(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:svrData.AddNewClient.Account)
+}
+inline void AddNewClient::set_account(const char* value, size_t size) {
+  
+  account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:svrData.AddNewClient.Account)
+}
+inline ::std::string* AddNewClient::mutable_account() {
+  
+  // @@protoc_insertion_point(field_mutable:svrData.AddNewClient.Account)
+  return account_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddNewClient::release_account() {
+  // @@protoc_insertion_point(field_release:svrData.AddNewClient.Account)
+  
+  return account_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddNewClient::set_allocated_account(::std::string* account) {
+  if (account != NULL) {
+    
+  } else {
+    
+  }
+  account_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), account);
+  // @@protoc_insertion_point(field_set_allocated:svrData.AddNewClient.Account)
+}
+
 // -------------------------------------------------------------------
 
 // AddNewClientRet
@@ -2196,18 +2389,71 @@ inline void AddNewClientRet::set_ncenterclientid(::google::protobuf::int32 value
 
 // DelClient
 
-// int32 nClientID = 1;
-inline void DelClient::clear_nclientid() {
-  nclientid_ = 0;
+// string Account = 1;
+inline void DelClient::clear_account() {
+  account_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::google::protobuf::int32 DelClient::nclientid() const {
-  // @@protoc_insertion_point(field_get:svrData.DelClient.nClientID)
-  return nclientid_;
+inline const ::std::string& DelClient::account() const {
+  // @@protoc_insertion_point(field_get:svrData.DelClient.Account)
+  return account_.GetNoArena();
 }
-inline void DelClient::set_nclientid(::google::protobuf::int32 value) {
+inline void DelClient::set_account(const ::std::string& value) {
   
-  nclientid_ = value;
-  // @@protoc_insertion_point(field_set:svrData.DelClient.nClientID)
+  account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:svrData.DelClient.Account)
+}
+#if LANG_CXX11
+inline void DelClient::set_account(::std::string&& value) {
+  
+  account_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:svrData.DelClient.Account)
+}
+#endif
+inline void DelClient::set_account(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:svrData.DelClient.Account)
+}
+inline void DelClient::set_account(const char* value, size_t size) {
+  
+  account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:svrData.DelClient.Account)
+}
+inline ::std::string* DelClient::mutable_account() {
+  
+  // @@protoc_insertion_point(field_mutable:svrData.DelClient.Account)
+  return account_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* DelClient::release_account() {
+  // @@protoc_insertion_point(field_release:svrData.DelClient.Account)
+  
+  return account_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void DelClient::set_allocated_account(::std::string* account) {
+  if (account != NULL) {
+    
+  } else {
+    
+  }
+  account_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), account);
+  // @@protoc_insertion_point(field_set_allocated:svrData.DelClient.Account)
+}
+
+// bool bChangeLine = 2;
+inline void DelClient::clear_bchangeline() {
+  bchangeline_ = false;
+}
+inline bool DelClient::bchangeline() const {
+  // @@protoc_insertion_point(field_get:svrData.DelClient.bChangeLine)
+  return bchangeline_;
+}
+inline void DelClient::set_bchangeline(bool value) {
+  
+  bchangeline_ = value;
+  // @@protoc_insertion_point(field_set:svrData.DelClient.bChangeLine)
 }
 
 // -------------------------------------------------------------------
@@ -2990,9 +3236,29 @@ inline void ChangeLineRet::set_nmapid(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:svrData.ChangeLineRet.nMapID)
 }
 
+// -------------------------------------------------------------------
+
+// KickClient
+
+// bool bChangeLine = 1;
+inline void KickClient::clear_bchangeline() {
+  bchangeline_ = false;
+}
+inline bool KickClient::bchangeline() const {
+  // @@protoc_insertion_point(field_get:svrData.KickClient.bChangeLine)
+  return bchangeline_;
+}
+inline void KickClient::set_bchangeline(bool value) {
+  
+  bchangeline_ = value;
+  // @@protoc_insertion_point(field_set:svrData.KickClient.bChangeLine)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

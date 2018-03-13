@@ -63,9 +63,6 @@
     <ClCompile Include="ConnectMgr.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ClientSvrMgr.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Guid.cpp">
       <Filter>源文件</Filter>
     </ClCompile>

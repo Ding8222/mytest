@@ -37,3 +37,6 @@
 
 // 切换线路返回
 #define  SVR_SUB_CHANGELINE_RET 12
+
+// 踢下client
+#define SVR_SUB_KICKCLIENT 13

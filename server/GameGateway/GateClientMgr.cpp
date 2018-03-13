@@ -54,10 +54,7 @@ void CGateClientMgr::OnClientDisconnect(CClient *cl)
 {
 	if (cl->IsAlreadyAuth())
 	{
-		svrData::DelClient sendMsg;
-		sendMsg.set_nclientid(cl->GetClientID());
-		CClientAuth::Instance().DelClient(cl->GetClientID());
-		CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, cl->GetClientID());
+		CClientAuth::Instance().KickClient(cl->GetClientID(), false);
 	}
 	CClientMgr::OnClientDisconnect(cl);
 }
@@ -164,7 +161,7 @@ void CGateClientMgr::ProcessClientAuth(CClient *cl, Msg *pMsg)
 		{
 		case LOGIN_SUB_LOGIN:
 		{
-			CClientAuth::Instance().AddNewClient(pMsg, cl);
+			CClientAuth::Instance().QueryLogin(pMsg, cl);
 			break;
 		}
 		}

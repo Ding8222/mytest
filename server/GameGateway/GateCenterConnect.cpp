@@ -121,6 +121,10 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 				CClientAuth::Instance().AddAuthInfo(pMsg);
 				break;
 			}
+			case SVR_SUB_KICKCLIENT:
+			{
+				CClientAuth::Instance().KickClient(tl->id);
+			}
 			}
 			break;
 		}

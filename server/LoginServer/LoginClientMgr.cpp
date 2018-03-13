@@ -47,7 +47,6 @@ void CLoginClientMgr::OnClientDisconnect(CClient *cl)
 	{
 		// 通知Center删除认证信息
 		svrData::DelClient sendMsg;
-		sendMsg.set_nclientid(cl->GetClientID());
 		CLoginCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, cl->GetClientID());
 	}
 	// 删除Client中记录的Secret

@@ -190,7 +190,7 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int32 nClientID, int 
 			ClientAuthInfo *_pAuthInfo = CClientAuthMgr::Instance().FindClientAuthInfo(nClientID);
 			if (_pAuthInfo)
 			{
-				tail.id = _pAuthInfo->nClientID;
+				tail.id = nClientID;
 				nServerID = _pAuthInfo->nLoginSvrID;
 			}
 			assert(nServerID);
@@ -280,7 +280,7 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 			ClientAuthInfo *_pAuthInfo = CClientAuthMgr::Instance().FindClientAuthInfo(nClientID);
 			if (_pAuthInfo)
 			{
-				tail.id = _pAuthInfo->nClientID;
+				tail.id = nClientID;
 				nServerID = _pAuthInfo->nLoginSvrID;
 			}
 			assert(nServerID);

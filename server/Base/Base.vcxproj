@@ -130,7 +130,6 @@
     <ClInclude Include="blockbuf.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="ClientMgr.h" />
-    <ClInclude Include="ClientSvrMgr.h" />
     <ClInclude Include="ClientType.h" />
     <ClInclude Include="ConnectMgr.h" />
     <ClInclude Include="connector.h" />

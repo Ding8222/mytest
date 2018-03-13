@@ -45,18 +45,13 @@ void ProcessGateMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			_CHECK_PARSE_(pMsg, msg);
 
 			int32 id = CClientSvrMgr::Instance().AddClientSvr(tl->id, msg.ngameid(), info->GetServerID());
+			if (id > 0)
+			{
+				CClientAuthMgr::Instance().SetCenterClientID(msg.account(), id);
+			}
 			svrData::AddNewClientRet SendMsg;
 			SendMsg.set_ncenterclientid(id);
 			CCentServerMgr::Instance().SendMsgToServer(SendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT_RET, ServerEnum::EST_GATE, id);
-			break;
-		}
-		case SVR_SUB_DEL_CLIENT:
-		{
-			// client断开
-			svrData::DelClient msg;
-			_CHECK_PARSE_(pMsg, msg);
-
-			CClientSvrMgr::Instance().DelClientSvr(tl->id);
 			break;
 		}
 		}

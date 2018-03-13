@@ -5,6 +5,7 @@
 #include "objectpool.h"
 #include "ServerLog.h"
 #include "Config.h"
+#include "ClientSvrMgr.h"
 
 #include "MainType.h"
 #include "ServerType.h"
@@ -41,7 +42,6 @@ static void clientauthinfo_release(ClientAuthInfo *self)
 CClientAuthMgr::CClientAuthMgr()
 {
 	m_ClientInfoSet.clear();
-	m_IDPool = nullptr;
 }
 
 CClientAuthMgr::~CClientAuthMgr()
@@ -51,21 +51,13 @@ CClientAuthMgr::~CClientAuthMgr()
 
 bool CClientAuthMgr::Init()
 {
-	m_IDPool = idmgr_create(CLIENT_ID_MAX + 1, CLIENT_ID_MAX);
-	if (!m_IDPool)
-	{
-		RunStateError("创建IDMgr失败!");
-		return false;
-	}
-
 	m_ClientInfoSet.resize(CLIENT_ID_MAX + 1, nullptr);
-
 	return true;
 }
 
 void CClientAuthMgr::Run()
 {
-	idmgr_run(m_IDPool);
+
 }
 
 void CClientAuthMgr::Destroy(bool bLoginDisconnect)
@@ -77,48 +69,54 @@ void CClientAuthMgr::Destroy(bool bLoginDisconnect)
 
 	if(!bLoginDisconnect)
 		m_ClientInfoSet.clear();
-
-	if (!bLoginDisconnect && m_IDPool)
-	{
-		idmgr_release(m_IDPool);
-		m_IDPool = nullptr;
-	}
 }
 
 // 添加认证信息
-void CClientAuthMgr::AddClientAuthInfo(Msg *pMsg, int32 clientid, int32 serverid)
+void CClientAuthMgr::QueryAuth(Msg *pMsg, int32 clientid, int32 serverid)
 {
-	int id = idmgr_allocid(m_IDPool);
-	if (id <= 0)
-	{
-		RunStateError("为新Instance分配ID失败!, id:%d", id);
-		return ;
-	}
+	netData::Auth msg;
+	_CHECK_PARSE_(pMsg, msg);
 
-	assert(m_ClientInfoSet[id] == nullptr);
+	bool bWaitKick = false;
+	auto iter = m_PlayerOnlineMap.find(msg.setoken());
+	if (iter != m_PlayerOnlineMap.end())
+	{
+		if (iter->second > 0)
+		{
+			//玩家在线，T下线
+			svrData::KickClient SendMsg;
+			CCentServerMgr::Instance().SendMsgToServer(SendMsg, SERVER_TYPE_MAIN, SVR_SUB_KICKCLIENT, ServerEnum::EST_GATE, iter->second);
+			bWaitKick = true;
+		}
+		else
+		{
+			//正在认证中
+			netData::AuthRet SendMsg;
+			SendMsg.set_ncode(netData::AuthRet::EC_AUTHING);
+			CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, clientid, serverid);
+			return;
+		}
+	}
 
 	ClientAuthInfo *newinfo = clientauthinfo_create();
 	if (!newinfo)
 	{
-		if (!idmgr_freeid(m_IDPool, id))
-		{
-			log_error("释放ID错误, ID:%d", id);
-		}
 		log_error("创建ClientAuthInfo失败!");
 		return;
 	}
 
-	netData::Auth msg;
-	_CHECK_PARSE_(pMsg, msg);
-	
-	newinfo->nClientID = clientid;
 	newinfo->nLoginSvrID = serverid;
 	newinfo->Token = msg.setoken();
 	newinfo->Secret = msg.ssecret();
+	m_ClientInfoSet[clientid] = newinfo;
 
-	m_ClientInfoSet[id] = newinfo;
-
-	CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_DB, id, CConfig::Instance().GetDBID());
+	if(bWaitKick)
+		m_PlayerLoginMap[msg.setoken()] = clientid;
+	else
+	{
+		m_PlayerOnlineMap[msg.setoken()] = 0;
+		CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_DB, clientid, CConfig::Instance().GetDBID());
+	}
 	return ;
 }
 
@@ -130,12 +128,7 @@ void CClientAuthMgr::DelClientAuthInfo(int32 clientid)
 		log_error("要释放的ClientAuthInfo的ID错误!");
 		return;
 	}
-
-	if (!idmgr_freeid(m_IDPool, clientid))
-	{
-		log_error("释放ID错误, ID:%d", clientid);
-	}
-
+	
 	clientauthinfo_release(m_ClientInfoSet[clientid]);
 	m_ClientInfoSet[clientid] = nullptr;
 }
@@ -162,4 +155,37 @@ int32 CClientAuthMgr::GetClientLoginSvr(int32 clientid)
 
 	assert(m_ClientInfoSet[clientid]);
 	return m_ClientInfoSet[clientid]->nLoginSvrID;
+}
+
+void CClientAuthMgr::SetCenterClientID(const std::string &token, int32 id)
+{
+	m_PlayerOnlineMap[token] = id;
+// 	auto iter = m_PlayerOnlineMap.find(token);
+// 	assert(iter != m_PlayerOnlineMap.end());
+// 	if (iter != m_PlayerOnlineMap.end())
+// 	{
+// 		iter->second = id;
+// 	}
+}
+
+void CClientAuthMgr::ClientOffline(const std::string &token)
+{
+	auto iter = m_PlayerOnlineMap.find(token);
+	assert(iter != m_PlayerOnlineMap.end());
+	if (iter != m_PlayerOnlineMap.end())
+	{
+		auto iterF = m_PlayerLoginMap.find(token);
+		if (iterF != m_PlayerLoginMap.end())
+		{
+			assert(iterF->second);
+			m_PlayerOnlineMap[token] = 0;
+			netData::Auth SendMsg;
+			SendMsg.set_setoken(token);
+			SendMsg.set_ssecret(token);
+			CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH, ServerEnum::EST_DB, iterF->second, CConfig::Instance().GetDBID());
+			m_PlayerLoginMap.erase(iterF);
+		}
+		else
+			m_PlayerOnlineMap.erase(iter);
+	}
 }

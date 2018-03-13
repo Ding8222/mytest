@@ -181,8 +181,18 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				svrData::DelClient msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				CPlayerMgr::Instance().DelPlayer(msg.nclientid());
-				CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), *pMsg, tl->id);
+				CPlayer *player = CPlayerMgr::Instance().FindPlayerByClientID(tl->id);
+				if (FuncUti::isValidCret(player))
+				{
+					int32 id = player->GetCenterClientID();
+					assert(id);
+					if (id > 0)
+					{
+						msg.set_account(player->GetAccount());
+						CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), msg,SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, id);
+					}
+					CPlayerMgr::Instance().DelPlayer(tl->id);
+				}
 				break;
 			}
 			case SVR_SUB_LOAD_PLAYERDATA:

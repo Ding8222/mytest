@@ -77,6 +77,7 @@ void CClientAuth::AddAuthInfo(Msg *pMsg)
 	svrData::ClientToken msg;
 	_CHECK_PARSE_(pMsg, msg);
 	auto iter = m_ClientSecretInfo.find(msg.setoken());
+	assert(iter == m_ClientSecretInfo.end());
 	if (iter == m_ClientSecretInfo.end())
 	{
 		ClientAuthInfo *_pData = clientauthinfo_create();
@@ -89,53 +90,30 @@ void CClientAuth::AddAuthInfo(Msg *pMsg)
 			m_ClientSecretInfo.insert(std::make_pair(msg.setoken(), _pData));
 		}
 	}
-	else
-	{
-		// T下线并更新 ClientAuthInfo
-		ClientAuthInfo *_pData = iter->second;
-		if (_pData->ClientID > 0)
-		{
-			// 被挤下去的时候，该ClientID大于0
-			KickClient(_pData->ClientID);
-			_pData->ClientID = 0;
-		}
-		_pData->Token = msg.setoken();
-		_pData->Secret = msg.ssecret();
-		_pData->Data.CopyFrom(msg.data());
-	}
 }
 
-// 移除ClientID所属信息,并重置该Token中的ClientID
-void CClientAuth::DelClient(int32 clientid)
+void CClientAuth::KickClient(int32 clientid, bool closeclient, bool changeline)
 {
 	auto iter = m_ClientAuthInfo.find(clientid);
 	assert(iter != m_ClientAuthInfo.end());
 	if (iter != m_ClientAuthInfo.end())
 	{
-		auto iterT = m_ClientSecretInfo.find(iter->second->Token);
-		assert(iterT != m_ClientSecretInfo.end());
-		if (iterT != m_ClientSecretInfo.end())
-		{
-			iterT->second->ClientID = 0;
-		}
+		m_ClientSecretInfo.erase(iter->second->Token);
+		clientauthinfo_release(iter->second);
 		m_ClientAuthInfo.erase(iter);
+
+		// 通知玩家下线处理
+		svrData::DelClient sendMsg;
+		sendMsg.set_bchangeline(changeline);
+		CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, clientid);
+
+		// 通知延迟关闭Client
+		if (closeclient)
+			CGateClientMgr::Instance().DelayCloseClient(clientid);
 	}
 }
 
-void CClientAuth::KickClient(int32 clientid)
-{
-	m_ClientAuthInfo.erase(clientid);
-	
-	// 通知玩家下线处理
-	svrData::DelClient sendMsg;
-	sendMsg.set_nclientid(clientid);
-	CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, clientid);
-
-	// 通知延迟关闭Client
-	CGateClientMgr::Instance().DelayCloseClient(clientid);
-}
-
-void CClientAuth::AddNewClient(Msg *pMsg, CClient *cl)
+void CClientAuth::QueryLogin(Msg *pMsg, CClient *cl)
 {
 	if (!pMsg || !cl)
 		return;
@@ -163,6 +141,7 @@ void CClientAuth::AddNewClient(Msg *pMsg, CClient *cl)
 			
 			svrData::AddNewClient SendMsg;
 			SendMsg.set_ngameid(CConfig::Instance().GetGameServerID());
+			SendMsg.set_account(msg.stoken());
 			CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), SendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT, cl->GetClientID());
 
 			cl->SetAlreadyAuth();
@@ -175,17 +154,6 @@ void CClientAuth::AddNewClient(Msg *pMsg, CClient *cl)
 	CGateClientMgr::Instance().SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET);
 	// 认证失败
 	ClientConnectError("新的客户端认证失败！token:%s", msg.stoken().c_str());
-}
-
-void CClientAuth::Offline(int32 clientid)
-{
-	auto iter = m_ClientAuthInfo.find(clientid);
-	if (iter != m_ClientAuthInfo.end())
-	{
-		m_ClientSecretInfo.erase(iter->second->Token);
-		clientauthinfo_release(iter->second);
-	}
-	KickClient(clientid);
 }
 
 ClientAuthInfo *CClientAuth::FindAuthInfo(int32 clientid)

@@ -2,6 +2,7 @@
 #include "ServerStatusMgr.h"
 #include "ClientSvrMgr.h"
 #include "CentServerMgr.h"
+#include "ClientAuthMgr.h"
 
 #include "MainType.h"
 #include "ServerType.h"
@@ -68,6 +69,19 @@ void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 				SendMsg.set_ncode(netData::SelectPlayerRet::EC_SERVER);
 
 			CCentServerMgr::Instance().SendMsgToServer(SendMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE_RET, ServerEnum::EST_GAME, tl->id);
+			break;
+		}
+		case SVR_SUB_DEL_CLIENT:
+		{
+			// client断开
+			svrData::DelClient msg;
+			_CHECK_PARSE_(pMsg, msg);
+
+			CClientSvrMgr::Instance().DelClientSvr(tl->id);
+			if (!msg.bchangeline())
+			{
+				CClientAuthMgr::Instance().ClientOffline(msg.account());
+			}
 			break;
 		}
 		}

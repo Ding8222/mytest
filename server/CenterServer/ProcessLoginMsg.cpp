@@ -30,7 +30,7 @@ void ProcessLoginMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			svrData::DelClient msg;
 			_CHECK_PARSE_(pMsg, msg);
 
-			CClientAuthMgr::Instance().DelClientAuthInfo(msg.nclientid());
+			CClientAuthMgr::Instance().DelClientAuthInfo(tl->id);
 			break;
 		}
 		}
@@ -42,7 +42,7 @@ void ProcessLoginMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		{
 		case LOGIN_SUB_AUTH:
 		{
-			CClientAuthMgr::Instance().AddClientAuthInfo(pMsg, tl->id, info->GetServerID());
+			CClientAuthMgr::Instance().QueryAuth(pMsg, tl->id, info->GetServerID());
 			break;
 		}
 		case LOGIN_SUB_PLAYER_LIST:

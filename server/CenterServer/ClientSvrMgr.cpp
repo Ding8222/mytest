@@ -63,10 +63,9 @@ void CClientSvrMgr::Run()
 
 void CClientSvrMgr::Destroy()
 {
-	for (auto &i : m_ClientSvrSet)
+	for (size_t i = 0; i < m_ClientSvrSet.size(); ++i)
 	{
-		clientsvr_release(i);
-		i = nullptr;
+		DelClientSvr(i);
 	}
 	m_ClientSvrSet.clear();
 

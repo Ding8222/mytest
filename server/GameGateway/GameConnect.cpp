@@ -106,6 +106,13 @@ void CGameConnect::ProcessMsg(connector *_con)
 				_con->SetRecvPingTime(g_currenttime);
 				break;
 			}
+			case SVR_SUB_KICKCLIENT:
+			{
+				svrData::KickClient msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				CClientAuth::Instance().KickClient(tl->id, msg.bchangeline());
+			}
 			}
 			break;
 		}

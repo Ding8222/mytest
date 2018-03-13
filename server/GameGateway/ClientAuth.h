@@ -34,14 +34,10 @@ public:
 
 	// 中心服务器通知添加token
 	void AddAuthInfo(Msg *pMsg);
-	// 移除Client
-	void DelClient(int32 clientid);
-	// 尝试踢下Client
-	void KickClient(int32 clientid);
-	// client请求认证
-	void AddNewClient(Msg *pMsg, CClient *cl);
-	// client主动退出
-	void Offline(int32 clientid);
+	// 踢下Client
+	void KickClient(int32 clientid, bool closeclient = true, bool changeline = false);
+	// client请求登陆
+	void QueryLogin(Msg *pMsg, CClient *cl);
 	// 返回当前Client数量
 	int GetClientSize() { return m_ClientSecretInfo.size(); }
 	ClientAuthInfo *FindAuthInfo(int32 clientid);

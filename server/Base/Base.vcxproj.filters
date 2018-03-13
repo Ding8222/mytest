@@ -137,9 +137,6 @@
     <ClInclude Include="ConnectMgr.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="ClientSvrMgr.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="Guid.h">
       <Filter>Common</Filter>
     </ClInclude>

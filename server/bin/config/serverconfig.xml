@@ -30,8 +30,8 @@ SQL_Log				是否开启SQL查询日志
 
 -->
 <Base 
-	Over_Time = "500000"
-	Ping_Time = "10000"
+	Over_Time = "5000"
+	Ping_Time = "1000"
 	Elapsed_Log = "true"
 	
 	LogServer_IP = "127.0.0.1"

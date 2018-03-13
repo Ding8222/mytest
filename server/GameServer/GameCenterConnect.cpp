@@ -118,7 +118,10 @@ void CGameCenterConnect::ProcessMsg(connector *_con)
 							SendMsg.set_sip(msg.sip());
 							SendMsg.set_nport(msg.nport());
 							SendMsg.set_nmapid(msg.nmapid());
-							player->OffLine();
+
+							svrData::KickClient SendKickMsg;
+							SendKickMsg.set_bchangeline(true);
+							FuncUti::SendPBNoLoop(player, SendKickMsg, SERVER_TYPE_MAIN, SVR_SUB_KICKCLIENT);
 						}
 						else
 							SendMsg.set_ncode(netData::ChangeMapRet::EC_FAIL);

@@ -73,6 +73,7 @@
     <LibraryPath>..\lib;$(LibraryPath)</LibraryPath>
     <IncludePath>..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;..\Common\;$(IncludePath)</IncludePath>
     <OutDir>..\bin\</OutDir>
+    <TargetName>G_$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;..\Common\;$(IncludePath)</IncludePath>
@@ -129,6 +130,7 @@
   <ItemGroup>
     <ClCompile Include="CenterServer.cpp" />
     <ClCompile Include="ClientAuthMgr.cpp" />
+    <ClCompile Include="ClientSvrMgr.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="ProcessDBMsg.cpp" />
     <ClCompile Include="ProcessGameMsg.cpp" />
@@ -141,6 +143,7 @@
   <ItemGroup>
     <ClInclude Include="CenterServer.h" />
     <ClInclude Include="ClientAuthMgr.h" />
+    <ClInclude Include="ClientSvrMgr.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="CentServerMgr.h" />
     <ClInclude Include="ProcessDBMsg.h" />

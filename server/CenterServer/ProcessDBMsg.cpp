@@ -82,7 +82,6 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			}
 
 			CCentServerMgr::Instance().SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, tl->id);
-
 			break;
 		}
 		case LOGIN_SUB_PLAYER_LIST_RET:

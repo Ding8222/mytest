@@ -5,20 +5,18 @@
 */
 #pragma once
 #include <vector>
+#include <unordered_map>
 #include "msgbase.h"
 
-struct idmgr;
 struct ClientAuthInfo
 {
 	ClientAuthInfo()
 	{
-		nClientID = 0;
 		nLoginSvrID = 0;
 		Token.clear();
 		Secret.clear();
 	}
 	
-	int32 nClientID;
 	int32 nLoginSvrID;
 	std::string Token;	// 账号
 	std::string Secret;	// 秘钥
@@ -41,14 +39,18 @@ public:
 	void Destroy(bool bLoginDisconnect = false);
 
 	// Client请求认证,loginSvr调用
-	void AddClientAuthInfo(Msg *pMsg, int32 clientid, int32 serverid);
+	void QueryAuth(Msg *pMsg, int32 clientid, int32 serverid);
 	// 移除认证信息
 	void DelClientAuthInfo(int32 clientid);
 	ClientAuthInfo *FindClientAuthInfo(int32 clientid);
 	int32 GetClientLoginSvr(int32 clientid);
+	void SetCenterClientID(const std::string &token,int32 id);
+	void ClientOffline(const std::string &token);
 private:
 	// id,info
 	std::vector<ClientAuthInfo *> m_ClientInfoSet;
-	idmgr *m_IDPool;
-
+	// account,clientid
+	std::unordered_map<std::string, int32> m_PlayerOnlineMap;
+	// account,clientid
+	std::unordered_map<std::string, int32> m_PlayerLoginMap;
 };
