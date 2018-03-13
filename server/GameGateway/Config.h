@@ -1,6 +1,22 @@
 ﻿#pragma once
 #include <string>
-#include"BaseConfig.h"
+#include <list>
+#include "BaseConfig.h"
+#include "platform_config.h"
+
+struct GameSvr
+{
+	GameSvr()
+	{
+		id = 0;
+		port = 0;
+		ip.clear();
+	}
+
+	int32 id;
+	int32 port;
+	std::string ip;
+};
 
 class CConfig :public CBaseConfig
 {
@@ -20,27 +36,23 @@ public:
 	std::string GetCenterServerIP() { return s_CenterServerIP; }
 	int GetCenterServerPort() { return m_CenterServerPort; }
 	int GetCenterServerID() { return m_CenterServerID; }
-	std::string GetGameServerIP() { return s_GameServerIP; }
-	int GetGameServerPort() { return m_GameServerPort; }
-	int GetGameServerID() { return m_GameServerID; }
 	int GetMaxClientNum() { return m_MaxClientNum; }
 	int GetRecvDataLimt() { return m_RecvDataLimt; }
 	int GetSendDataLimt() { return m_SendDataLimt; }
 	bool IsOpenClientConnectLog() { return m_IsOpenClientConnectLog; }
 
+	std::list<GameSvr> &GetGameSvrList() { return m_GameSvrList; }
 private:
 	int m_LineID;
 
 	std::string s_CenterServerIP;
 	int m_CenterServerPort;
 	int m_CenterServerID;
-
-	std::string s_GameServerIP;
-	int m_GameServerPort;
-	int m_GameServerID;
-
+	
 	int m_MaxClientNum;
 	int m_RecvDataLimt;
 	int m_SendDataLimt;
 	bool m_IsOpenClientConnectLog;
+
+	std::list<GameSvr> m_GameSvrList;
 };

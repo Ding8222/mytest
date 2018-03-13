@@ -34,13 +34,12 @@ message ServerRegisterRet
 // 0-4 发送服务器负载
 message ServerLoadInfo
 {
-	int32 nLineID = 1;
+	int32 nLineID = 1;		// 线路ID
 	int32 nMaxClient = 2;   // 最大Client
 	int32 nNowClient = 3;   // 当前Client
 	int32 nPort = 4;        // 端口
 	string sIP = 5;			// IP
-	int32 nSubServerID = 6;	// 并联的ServerID
-	repeated int32 mapid = 7;// 加载了哪些地图
+	repeated int32 mapid = 6;// 加载了哪些地图
 }
 
 // 0-5 服务器负载更新
@@ -73,9 +72,10 @@ message DelClient
 // 0-9 ClientToken
 message ClientToken
 {
-	string sEtoken = 1;	// 账号信息
-	bytes sSecret = 2;	// 秘钥
-	LoadPlayerData data = 4;// 玩家数据
+	int32 nGameID = 1;			//要去的逻辑服ID
+	string Account = 2;			// 账号信息
+	bytes Secret = 3;			// 秘钥
+	LoadPlayerData Data = 4;	// 玩家数据
 }
 
 // 0-10 通知game加载玩家数据
@@ -100,11 +100,10 @@ message LoadPlayerData
 // 0-11 切换线路
 message ChangeLine
 {
-	int32 nMapID = 1;	//目标地图ID
-	int32 nLineID = 2;	// 目标线路ID
-	string sEtoken = 3;	// 账号信息
-	bytes sSecret = 4;	// 秘钥
-	LoadPlayerData data = 5;// 玩家数据
+	int32 nMapID = 1;			// 目标地图ID
+	int32 nLineID = 2;			// 目标线路ID
+	int32 nGameID = 3;			// 返回的逻辑ID
+	LoadPlayerData Data = 4;	// 玩家数据
 }
 
 // 0-12 切换线路返回
@@ -118,10 +117,8 @@ message ChangeLineRet
 		EC_SERVER = 3;	//分配server失败
 	};
 	int32 nCode = 1;		// 返回的信息
-	int32 nServerID = 2;	// 返回要连接的服务器ID
-	string sIP = 3;			// 返回要去连接的ip地址
-	int32 nPort = 4;		// 返回要去连接的port
-	int32 nMapID = 5;		// 要加载的地图ID
+	int32 nGameID = 2;		// 返回要连接的服务器ID
+	int32 nMapID = 3;		// 要加载的地图ID
 }
 
 // 0-13 踢下玩家

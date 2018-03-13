@@ -14,21 +14,17 @@ struct ServerStatusInfo
 	{
 		nLineID = 0;
 		nServerID = 0;
-		nServerType = 0;
-		nMaxClient = 0;
-		nNowClient = 0;
 		memset(chIP, 0, MAX_IP_LEN);
 		nPort = 0;
-		nSubServerID = 0;
+		nMaxClient = 0;
+		nNowClient = 0;
 	}
 	int32 nLineID;
 	int32 nServerID;
-	int32 nServerType;
-	int32 nMaxClient;
-	int32 nNowClient;
 	char chIP[MAX_IP_LEN];
 	int32 nPort;
-	int32 nSubServerID;
+	int32 nMaxClient;
+	int32 nNowClient;
 };
 
 struct stServerInfo
@@ -57,21 +53,21 @@ public:
 
 	void Destroy();
 
-	void AddNewServer(serverinfo *info, Msg *pMsg);
-	void UpdateServerLoad(int32 id, int32 clientcountnow, int32 clientcountmax);
-	void DelServerID(int32 serverid);
-
-	// 根据Server返回Gate的信息
-	ServerStatusInfo *GetGateInfoByServerID(int32 id);
-	// 根据负载返回玩家应该进去的服务器
-	// 传入的为申请的MapID,线路ID（为0的时候，自动分配）
-	ServerStatusInfo *GetGateInfoByMapID(int32 id, int32 lineid = 0);
+	void AddGameServer(serverinfo *info, Msg *pMsg);
+	void AddGateServer(serverinfo *info, Msg *pMsg);
+	void UpdateGameServerLoad(int32 id, int32 clientcountnow, int32 clientcountmax);
+	void UpdateGateServerLoad(int32 id, int32 clientcountnow, int32 clientcountmax);
+	void DelGameServer(int32 serverid);
+	void DelGateServer(int32 serverid);
+	
+	ServerStatusInfo *GetGameServerInfo(int32 id, int32 lineid = 0);
+	ServerStatusInfo *GetGateServerInfo();
 private:
 
-	// <gameid,info>
-	std::unordered_map<int32, ServerStatusInfo *> m_ServerInfo;
+	// 注册了的服务器的信息
 	// <serverid,gateid>
-	std::unordered_map<int32, int32> m_GateServerInfo;
+	std::unordered_map<int32, ServerStatusInfo *> m_GameServerInfo;
+	std::unordered_map<int32, ServerStatusInfo *> m_GateServerInfo;
 	// <mapid,serverid>
 	std::unordered_map<int32, std::list<stServerInfo>> m_ServerMapInfo;
 };

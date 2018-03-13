@@ -38,6 +38,7 @@ public:
 	void Destroy();
 
 	int32 AddClientSvr(int32 clientid, int32 serverid, int32 gateid);
+	void UpdateClientGameSvr(int32 clientid, int32 serverid);
 	void DelClientSvr(int32 clientid);
 	ClientSvr *GetClientSvr(int32 id);
 private:

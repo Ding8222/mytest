@@ -35,22 +35,24 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			ClientAuthInfo *_pAuthInfo = CClientAuthMgr::Instance().FindClientAuthInfo(tl->id);
 			if (_pAuthInfo)
 			{
-				ServerStatusInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByMapID(msg.mapid());
-				if (_pInfo)
+				ServerStatusInfo *_pGameInfo = CServerStatusMgr::Instance().GetGameServerInfo(msg.mapid());
+				ServerStatusInfo *_pGateInfo = CServerStatusMgr::Instance().GetGateServerInfo();
+				if (_pGameInfo && _pGateInfo)
 				{
 					// 返回loginsvr，通知client选角成功，登陆gamegateway
 					SendMsg.set_ncode(netData::SelectPlayerRet::EC_SUCC);
-					SendMsg.set_nserverid(_pInfo->nServerID);
-					SendMsg.set_sip(_pInfo->chIP);
-					SendMsg.set_nport(_pInfo->nPort);
+					SendMsg.set_nserverid(_pGateInfo->nServerID);
+					SendMsg.set_sip(_pGateInfo->chIP);
+					SendMsg.set_nport(_pGateInfo->nPort);
 					SendMsg.set_nmapid(msg.mapid());
 
 					// 将角色数据和认证信息发送到gamegateway
 					svrData::ClientToken sendMsg;
 					sendMsg.mutable_data()->MergeFrom(msg);
-					sendMsg.set_setoken(_pAuthInfo->Token);
-					sendMsg.set_ssecret(_pAuthInfo->Secret);
-					CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GATE, 0, _pInfo->nServerID);
+					sendMsg.set_account(_pAuthInfo->Token);
+					sendMsg.set_secret(_pAuthInfo->Secret);
+					sendMsg.set_ngameid(_pGameInfo->nServerID);
+					CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GATE, 0, _pGateInfo->nServerID);
 				}
 				else
 					SendMsg.set_ncode(netData::SelectPlayerRet::EC_SERVER);

@@ -117,6 +117,18 @@ int32 CClientSvrMgr::AddClientSvr(int32 clientid, int32 serverid, int32 gateid)
 	return id;
 }
 
+void CClientSvrMgr::UpdateClientGameSvr(int32 clientid, int32 serverid)
+{
+	if (clientid <= 0 || clientid >= static_cast<int>(m_ClientSvrSet.size()))
+	{
+		log_error("要释放的ClientSvr的ID错误!");
+		return;
+	}
+
+	assert(m_ClientSvrSet[clientid]);
+	m_ClientSvrSet[clientid]->nGameServerID = serverid;
+}
+
 void CClientSvrMgr::DelClientSvr(int32 clientid)
 {
 	if (clientid <= 0 || clientid >= static_cast<int>(m_ClientSvrSet.size()))

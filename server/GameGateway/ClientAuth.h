@@ -12,6 +12,7 @@ struct ClientAuthInfo
 	}
 	
 	int32 ClientID;
+	int32 GameServerID;
 	std::string Token;	// 账号
 	std::string Secret;	// 秘钥
 	svrData::LoadPlayerData Data;//玩家数据

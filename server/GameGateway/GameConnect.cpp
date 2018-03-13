@@ -28,14 +28,14 @@ CGameConnect::~CGameConnect()
 
 bool CGameConnect::Init()
 {
-	if (!CConnectMgr::AddNewConnect(
-		CConfig::Instance().GetGameServerIP().c_str(),
-		CConfig::Instance().GetGameServerPort(),
-		CConfig::Instance().GetGameServerID()
-	))
+	std::list<GameSvr> List = CConfig::Instance().GetGameSvrList();
+	for (auto &i : List)
 	{
-		RunStateError("添加逻辑服务器失败!");
-		return false;
+		if (!CConnectMgr::AddNewConnect(i.ip.c_str(),i.port,i.id))
+		{
+			RunStateError("添加逻辑服务器失败!");
+			return false;
+		}
 	}
 
 	return CConnectMgr::Init(

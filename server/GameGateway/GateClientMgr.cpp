@@ -32,9 +32,6 @@ void CGateClientMgr::Destroy()
 
 int32 CGateClientMgr::OnNewClient()
 {
-	if (!CGameConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetGameServerID()))
-		return 0;
-
 	if (!CGateCenterConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetCenterServerID()))
 		return 0;
 
@@ -88,33 +85,12 @@ void CGateClientMgr::ProcessClientMsg(CClient *cl)
 					cl->SetPingTime(g_currenttime);
 					break;
 				}
-				case CLIENT_SUB_CHANGEMAP:
-				{
-					netData::ChangeMap msg;
-					_CHECK_PARSE_(pMsg, msg);
-
-					ClientAuthInfo *authinfo = CClientAuth::Instance().FindAuthInfo(cl->GetClientID());
-					if (authinfo)
-					{
-						msg.set_setoken(authinfo->Token);
-						msg.set_ssecret(authinfo->Secret);
-						CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), msg, CLIENT_TYPE_MAIN, CLIENT_SUB_CHANGEMAP,cl->GetClientID());
-						return;
-					}
-					else
-					{
-						netData::ChangeMapRet SendMsg;
-						SendMsg.set_ncode(netData::ChangeMapRet::EC_FAIL);
-						CGateClientMgr::Instance().SendMsg(cl, SendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_CHANGEMAP_RET);
-					}
-					break;
-				}
 				default:
 				{
 					// 登录成功的,转发至GameServer
-					if (CGameConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetGameServerID()))
+					if (CGameConnect::Instance().IsAlreadyRegister(cl->GetLogicServer()))
 					{
-						CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), *pMsg, cl->GetClientID());
+						CGameConnect::Instance().SendMsgToServer(cl->GetLogicServer(), *pMsg, cl->GetClientID());
 					}
 				}
 				}
@@ -123,9 +99,9 @@ void CGateClientMgr::ProcessClientMsg(CClient *cl)
 			default:
 			{
 				// 登录成功的,转发至GameServer
-				if (CGameConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetGameServerID()))
+				if (CGameConnect::Instance().IsAlreadyRegister(cl->GetLogicServer()))
 				{
-					CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), *pMsg, cl->GetClientID());
+					CGameConnect::Instance().SendMsgToServer(cl->GetLogicServer(), *pMsg, cl->GetClientID());
 				}
 			}
 			}

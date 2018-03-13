@@ -6,6 +6,7 @@
 #include "serverlog.h"
 #include "msgbase.h"
 #include "GameConnect.h"
+#include "Client.h"
 
 #include "MainType.h"
 #include "ServerType.h"
@@ -60,7 +61,6 @@ void CGateCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
 	sendMsg.set_nnowclient(CClientAuth::Instance().GetClientSize());
 	sendMsg.set_nport(CConfig::Instance().GetListenPort());
 	sendMsg.set_sip(CConfig::Instance().GetServerIP());
-	sendMsg.set_nsubserverid(CConfig::Instance().GetGameServerID());
 	SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_LOADINFO);
 }
 
@@ -104,7 +104,7 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 					if (info)
 					{
 						info->Data.set_ncenterclientid(msg.ncenterclientid());
-						CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), info->Data, SERVER_TYPE_MAIN, SVR_SUB_LOAD_PLAYERDATA, tl->id);
+						CGameConnect::Instance().SendMsgToServer(info->GameServerID, info->Data, SERVER_TYPE_MAIN, SVR_SUB_LOAD_PLAYERDATA, tl->id);
 						return;
 					}
 					else
@@ -124,6 +124,24 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 			case SVR_SUB_KICKCLIENT:
 			{
 				CClientAuth::Instance().KickClient(tl->id);
+			}
+			case SVR_SUB_CHANGELINE_RET:
+			{
+				CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
+			}
+			case SERVER_TYPE_MAIN:
+			{
+				svrData::ChangeLine msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				CClient *cl = CGateClientMgr::Instance().FindClientByClientID(tl->id);
+				if(cl)
+				{
+					cl->SetLogicServerID(msg.ngameid());
+					svrData::LoadPlayerData Data;
+					Data.CopyFrom(msg.data());
+					CGameConnect::Instance().SendMsgToServer(msg.ngameid(), Data, SERVER_TYPE_MAIN, SVR_SUB_LOAD_PLAYERDATA, tl->id);
+				}
 			}
 			}
 			break;

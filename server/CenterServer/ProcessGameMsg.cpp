@@ -29,7 +29,7 @@ void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		case SVR_SUB_SERVER_LOADINFO:
 		{
 			// 添加服务器负载信息
-			CServerStatusMgr::Instance().AddNewServer(info, pMsg);
+			CServerStatusMgr::Instance().AddGameServer(info, pMsg);
 			break;
 		}
 		case SVR_SUB_UPDATE_LOAD:
@@ -38,7 +38,7 @@ void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			svrData::UpdateServerLoad msg;
 			_CHECK_PARSE_(pMsg, msg);
 
-			CServerStatusMgr::Instance().UpdateServerLoad(info->GetServerID(), msg.nclientcountnow(), msg.nclientcountmax());
+			CServerStatusMgr::Instance().UpdateGameServerLoad(info->GetServerID(), msg.nclientcountnow(), msg.nclientcountmax());
 			break;
 		}
 		case SVR_SUB_CHANGELINE:
@@ -48,27 +48,18 @@ void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			_CHECK_PARSE_(pMsg, msg);
 
 			svrData::ChangeLineRet SendMsg;
-			ServerStatusInfo *_pInfo = CServerStatusMgr::Instance().GetGateInfoByMapID(msg.nmapid(), msg.nlineid());
-			if (_pInfo)
+			ServerStatusInfo *_pGameInfo = CServerStatusMgr::Instance().GetGameServerInfo(msg.nmapid());
+			if (_pGameInfo)
 			{
-				// 返回loginsvr，通知client选角成功，登陆gamegateway
-				SendMsg.set_ncode(netData::SelectPlayerRet::EC_SUCC);
-				SendMsg.set_nserverid(_pInfo->nServerID);
-				SendMsg.set_sip(_pInfo->chIP);
-				SendMsg.set_nport(_pInfo->nPort);
-				SendMsg.set_nmapid(msg.nmapid());
-
-				// 将角色数据和认证信息发送到gamegateway
-				svrData::ClientToken sendMsg;
-				sendMsg.mutable_data()->MergeFrom(msg.data());
-				sendMsg.set_setoken(msg.setoken());
-				sendMsg.set_ssecret(msg.ssecret());
-				CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_TOKEN, ServerEnum::EST_GATE, 0, _pInfo->nServerID);
+				msg.set_ngameid(_pGameInfo->nServerID);
+				CClientSvrMgr::Instance().UpdateClientGameSvr(tl->id, _pGameInfo->nServerID);
+				CCentServerMgr::Instance().SendMsgToServer(msg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE, ServerEnum::EST_GATE, tl->id);
+				return;
 			}
 			else
 				SendMsg.set_ncode(netData::SelectPlayerRet::EC_SERVER);
 
-			CCentServerMgr::Instance().SendMsgToServer(SendMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE_RET, ServerEnum::EST_GAME, tl->id);
+			CCentServerMgr::Instance().SendMsgToServer(SendMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE_RET, ServerEnum::EST_GATE, tl->id);
 			break;
 		}
 		case SVR_SUB_DEL_CLIENT:

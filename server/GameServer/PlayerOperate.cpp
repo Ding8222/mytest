@@ -111,8 +111,6 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 				svrData::ChangeLine SendMsg;
 				SendMsg.set_nlineid(0);
 				SendMsg.set_nmapid(nMapID);
-				SendMsg.set_setoken(msg.setoken());
-				SendMsg.set_ssecret(msg.ssecret());
 				svrData::LoadPlayerData *pData = SendMsg.mutable_data();
 				if (pData)
 				{

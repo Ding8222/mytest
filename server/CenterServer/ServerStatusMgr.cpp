@@ -36,7 +36,7 @@ static void serverstatusinfo_release(ServerStatusInfo *self)
 
 CServerStatusMgr::CServerStatusMgr()
 {
-	m_ServerInfo.clear();
+	m_GameServerInfo.clear();
 	m_GateServerInfo.clear();
 	m_ServerMapInfo.clear();
 }
@@ -48,46 +48,45 @@ CServerStatusMgr::~CServerStatusMgr()
 
 void CServerStatusMgr::Destroy()
 {
-	for (auto &i : m_ServerInfo)
+	for (auto &i : m_GameServerInfo)
 	{
 		serverstatusinfo_release(i.second);
 	}
-	m_ServerInfo.clear();
+	m_GameServerInfo.clear();
+
+	for (auto &i : m_GateServerInfo)
+	{
+		serverstatusinfo_release(i.second);
+	}
 	m_GateServerInfo.clear();
 	m_ServerMapInfo.clear();
 }
 
-void CServerStatusMgr::AddNewServer(serverinfo *info, Msg *pMsg)
+void CServerStatusMgr::AddGameServer(serverinfo *info, Msg *pMsg)
 {
 	svrData::ServerLoadInfo msg;
 	_CHECK_PARSE_(pMsg, msg);
-	
+
 	int32 nServerID = info->GetServerID();
-	auto iter = m_ServerInfo.find(nServerID);
-	assert(iter == m_ServerInfo.end());
-	if (iter == m_ServerInfo.end())
+	auto iter = m_GameServerInfo.find(nServerID);
+	assert(iter == m_GameServerInfo.end());
+	if (iter == m_GameServerInfo.end())
 	{
 		ServerStatusInfo *_pInfo = serverstatusinfo_create();
 		if (_pInfo)
 		{
 			_pInfo->nServerID = nServerID;
-			_pInfo->nServerType = info->GetServerType();
 			_pInfo->nMaxClient = msg.nmaxclient();
 			_pInfo->nNowClient = msg.nnowclient();
 			strncpy_s(_pInfo->chIP, MAX_IP_LEN, msg.sip().c_str(), msg.sip().size());
 			_pInfo->nPort = msg.nport();
-			_pInfo->nSubServerID = msg.nsubserverid();
 
-			m_ServerInfo[_pInfo->nServerID] = _pInfo;
-			RunStateLog("新的服务器注册到服务器状态管理器：ID[%d]，类型：[%d]", _pInfo->nServerID, _pInfo->nServerType);
-			if (_pInfo->nSubServerID > 0)
-			{
-				m_GateServerInfo[_pInfo->nSubServerID] = _pInfo->nServerID;
-			}
+			m_GameServerInfo[_pInfo->nServerID] = _pInfo;
+			RunStateLog("新的逻辑服务器注册：ID[%d]", _pInfo->nServerID);
 		}
 	}
 
-	for (auto &i: msg.mapid())
+	for (auto &i : msg.mapid())
 	{
 		auto iter = m_ServerMapInfo.find(i);
 		if (iter != m_ServerMapInfo.end())
@@ -114,54 +113,72 @@ void CServerStatusMgr::AddNewServer(serverinfo *info, Msg *pMsg)
 	}
 }
 
-void CServerStatusMgr::UpdateServerLoad(int32 id, int32 clientcountnow, int32 clientcountmax)
+void CServerStatusMgr::AddGateServer(serverinfo *info, Msg *pMsg)
 {
-	auto iter = m_ServerInfo.find(id);
-	if (iter != m_ServerInfo.end())
+	svrData::ServerLoadInfo msg;
+	_CHECK_PARSE_(pMsg, msg);
+
+	int32 nServerID = info->GetServerID();
+	auto iter = m_GateServerInfo.find(nServerID);
+	assert(iter == m_GateServerInfo.end());
+	if (iter == m_GateServerInfo.end())
+	{
+		ServerStatusInfo *_pInfo = serverstatusinfo_create();
+		if (_pInfo)
+		{
+			_pInfo->nServerID = nServerID;
+			_pInfo->nMaxClient = msg.nmaxclient();
+			_pInfo->nNowClient = msg.nnowclient();
+			strncpy_s(_pInfo->chIP, MAX_IP_LEN, msg.sip().c_str(), msg.sip().size());
+			_pInfo->nPort = msg.nport();
+
+			m_GateServerInfo[_pInfo->nServerID] = _pInfo;
+			RunStateLog("新的逻辑服务器注册：ID[%d]", _pInfo->nServerID);
+		}
+	}
+}
+
+void CServerStatusMgr::UpdateGameServerLoad(int32 id, int32 clientcountnow, int32 clientcountmax)
+{
+	auto iter = m_GameServerInfo.find(id);
+	if (iter != m_GameServerInfo.end())
 	{
 		iter->second->nNowClient = clientcountnow;
 		iter->second->nMaxClient = clientcountmax;
 	}
 }
 
-void CServerStatusMgr::DelServerID(int32 serverid)
+void CServerStatusMgr::UpdateGateServerLoad(int32 id, int32 clientcountnow, int32 clientcountmax)
 {
-	auto iter = m_ServerInfo.find(serverid);
-	if (iter != m_ServerInfo.end())
+	auto iter = m_GateServerInfo.find(id);
+	if (iter != m_GateServerInfo.end())
 	{
-		ServerStatusInfo *info = iter->second;
-		if (info->nSubServerID > 0)
-		{
-#ifdef _DEBUG
-			auto iterF = m_GateServerInfo.find(info->nSubServerID);
-			assert(iterF != m_GateServerInfo.end());
-#endif // _DEBUG
-			m_GateServerInfo.erase(info->nSubServerID);
-		}
-		serverstatusinfo_release(info);
-		m_ServerInfo.erase(iter);
+		iter->second->nNowClient = clientcountnow;
+		iter->second->nMaxClient = clientcountmax;
 	}
 }
 
-ServerStatusInfo *CServerStatusMgr::GetGateInfoByServerID(int32 id)
+void CServerStatusMgr::DelGameServer(int32 serverid)
 {
-	auto iterGame = m_ServerInfo.find(id);
-	if (iterGame != m_ServerInfo.end())
+	auto iter = m_GameServerInfo.find(serverid);
+	if (iter != m_GameServerInfo.end())
 	{
-		auto iterGate = m_GateServerInfo.find(id);
-		if (iterGate != m_GateServerInfo.end())
-		{
-			auto iterRet = m_ServerInfo.find(iterGate->second);
-			if (iterRet != m_ServerInfo.end())
-			{
-				return iterRet->second;
-			}
-		}
+		serverstatusinfo_release(iter->second);
+		m_GameServerInfo.erase(iter);
 	}
-	return nullptr;
 }
 
-ServerStatusInfo *CServerStatusMgr::GetGateInfoByMapID(int32 id, int32 lineid)
+void CServerStatusMgr::DelGateServer(int32 serverid)
+{
+	auto iter = m_GateServerInfo.find(serverid);
+	if (iter != m_GateServerInfo.end())
+	{
+		serverstatusinfo_release(iter->second);
+		m_GateServerInfo.erase(iter);
+	}
+}
+
+ServerStatusInfo *CServerStatusMgr::GetGameServerInfo(int32 id, int32 lineid)
 {
 	auto iter = m_ServerMapInfo.find(id);
 	if (iter != m_ServerMapInfo.end())
@@ -174,9 +191,25 @@ ServerStatusInfo *CServerStatusMgr::GetGateInfoByMapID(int32 id, int32 lineid)
 			for (auto &i : serverset)
 			{
 				if (lineid == 0 || i.nLineiD == lineid)
-					return GetGateInfoByServerID(i.nServerID);
+				{
+					auto iterG = m_GameServerInfo.find(i.nServerID);
+					if (iterG != m_GameServerInfo.end())
+					{
+						return iterG->second;
+					}
+				}
 			}
 		}
 	}
+	return nullptr;
+}
+
+ServerStatusInfo *CServerStatusMgr::GetGateServerInfo()
+{
+	for (auto &i : m_GateServerInfo)
+	{
+		return i.second;
+	}
+
 	return nullptr;
 }

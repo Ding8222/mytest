@@ -11,15 +11,13 @@ CConfig::CConfig()
 	s_CenterServerIP.clear();
 	m_CenterServerPort = 0;
 	m_CenterServerID = 0;
-
-	s_GameServerIP.clear();
-	m_GameServerPort = 0;
-	m_GameServerID = 0;
-
+	
 	m_MaxClientNum = 0;
 	m_RecvDataLimt = 0;
 	m_SendDataLimt = 0;
 	m_IsOpenClientConnectLog = false;
+
+	m_GameSvrList.clear();
 }
 CConfig::~CConfig()
 {
@@ -28,14 +26,12 @@ CConfig::~CConfig()
 	m_CenterServerPort = 0;
 	m_CenterServerID = 0;
 
-	s_GameServerIP.clear();
-	m_GameServerPort = 0;
-	m_GameServerID = 0;
-
 	m_MaxClientNum = 0;
 	m_RecvDataLimt = 0;
 	m_SendDataLimt = 0;
 	m_IsOpenClientConnectLog = false;
+
+	m_GameSvrList.clear();
 }
 
 bool CConfig::Init(const char *servername, int lineid)
@@ -46,7 +42,7 @@ bool CConfig::Init(const char *servername, int lineid)
 	SetServerType(ServerEnum::EST_GATE);
 	SetLineID(lineid);
 
-	const char *filename = "./config/serverconfig.xml";
+	const char *filename = "./config/gatewayconfig.xml";
 	XMLDocument doc;
 	if (doc.LoadFile(filename) != XML_SUCCESS)
 	{
@@ -79,30 +75,7 @@ bool CConfig::Init(const char *servername, int lineid)
 		log_error("没有找到字段： 'CenterServer_ID'");
 		return false;
 	}
-
-	s_GameServerIP = pinfo->Attribute("GameServer_IP");
-	if (s_GameServerIP.empty())
-	{
-		log_error("没有找到字段： 'GameServer_IP'");
-		return false;
-	}
-
-	if (pinfo->QueryIntAttribute("GameServer_Port", &m_GameServerPort) != XML_SUCCESS)
-	{
-		log_error("没有找到字段： 'GameServer_Port'");
-		return false;
-	}
-
-	m_GameServerPort += lineid;
-
-	if (pinfo->QueryIntAttribute("GameServer_ID", &m_GameServerID) != XML_SUCCESS)
-	{
-		log_error("没有找到字段： 'GameServer_ID'");
-		return false;
-	}
-
-	m_GameServerID += lineid;
-
+	
 	if (pinfo->QueryIntAttribute("ClientNum_Max", &m_MaxClientNum) != XML_SUCCESS)
 	{
 		log_error("没有找到字段： 'ClientNum_Max'");
@@ -125,6 +98,55 @@ bool CConfig::Init(const char *servername, int lineid)
 	{
 		log_error("没有找到字段： 'ClientConnect_Log'");
 		return false;
+	}
+
+	pinfo = doc.FirstChildElement("GameSvrList");
+	if (!pinfo)
+	{
+		log_error("没有找到节点：'GameSvrList'");
+		return false;
+	}
+
+	pinfo = pinfo->FirstChildElement("GameSvr");
+	if (!pinfo)
+	{
+		log_error("没有找到字段： 'GameSvr'");
+		return false;
+	}
+
+	while (pinfo)
+	{
+		GameSvr server;
+
+		const char *ip = pinfo->Attribute("IP");
+		if (!ip)
+		{
+			log_error("没有找到字段： 'IP'");
+			return false;
+		}
+
+		server.ip = ip;
+		if (server.ip.empty())
+		{
+			log_error("IP 填写错误：%s");
+			return false;
+		}
+
+		if (pinfo->QueryIntAttribute("PORT", &server.port) != XML_SUCCESS)
+		{
+			log_error("没有找到字段： 'PORT'");
+			return false;
+		}
+
+		if (pinfo->QueryIntAttribute("ID", &server.id) != XML_SUCCESS)
+		{
+			log_error("没有找到字段： 'ID'");
+			return false;
+		}
+
+		m_GameSvrList.push_back(server);
+
+		pinfo = pinfo->NextSiblingElement("GameSvr");
 	}
 
 	return true;

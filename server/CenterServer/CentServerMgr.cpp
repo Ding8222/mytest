@@ -329,7 +329,7 @@ void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	{
 	case ServerEnum::EST_GATE:
 	{
-		CServerStatusMgr::Instance().DelServerID(info->GetServerID());
+		CServerStatusMgr::Instance().DelGateServer(info->GetServerID());
 		m_GateList.erase(info->GetServerID());
 		if (overtime)
 			RunStateError("网关服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
@@ -339,7 +339,7 @@ void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	}
 	case ServerEnum::EST_GAME:
 	{
-		CServerStatusMgr::Instance().DelServerID(info->GetServerID());
+		CServerStatusMgr::Instance().DelGameServer(info->GetServerID());
 		m_GameList.erase(info->GetServerID());
 		if (overtime)
 			RunStateError("逻辑服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());

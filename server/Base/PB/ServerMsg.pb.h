@@ -654,10 +654,10 @@ class ServerLoadInfo : public ::google::protobuf::Message /* @@protoc_insertion_
 
   // accessors -------------------------------------------------------
 
-  // repeated int32 mapid = 7;
+  // repeated int32 mapid = 6;
   int mapid_size() const;
   void clear_mapid();
-  static const int kMapidFieldNumber = 7;
+  static const int kMapidFieldNumber = 6;
   ::google::protobuf::int32 mapid(int index) const;
   void set_mapid(int index, ::google::protobuf::int32 value);
   void add_mapid(::google::protobuf::int32 value);
@@ -704,12 +704,6 @@ class ServerLoadInfo : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::int32 nport() const;
   void set_nport(::google::protobuf::int32 value);
 
-  // int32 nSubServerID = 6;
-  void clear_nsubserverid();
-  static const int kNSubServerIDFieldNumber = 6;
-  ::google::protobuf::int32 nsubserverid() const;
-  void set_nsubserverid(::google::protobuf::int32 value);
-
   // @@protoc_insertion_point(class_scope:svrData.ServerLoadInfo)
  private:
 
@@ -721,7 +715,6 @@ class ServerLoadInfo : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::int32 nmaxclient_;
   ::google::protobuf::int32 nnowclient_;
   ::google::protobuf::int32 nport_;
-  ::google::protobuf::int32 nsubserverid_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsServerLoadInfoImpl();
@@ -1263,35 +1256,35 @@ class ClientToken : public ::google::protobuf::Message /* @@protoc_insertion_poi
 
   // accessors -------------------------------------------------------
 
-  // string sEtoken = 1;
-  void clear_setoken();
-  static const int kSEtokenFieldNumber = 1;
-  const ::std::string& setoken() const;
-  void set_setoken(const ::std::string& value);
+  // string Account = 2;
+  void clear_account();
+  static const int kAccountFieldNumber = 2;
+  const ::std::string& account() const;
+  void set_account(const ::std::string& value);
   #if LANG_CXX11
-  void set_setoken(::std::string&& value);
+  void set_account(::std::string&& value);
   #endif
-  void set_setoken(const char* value);
-  void set_setoken(const char* value, size_t size);
-  ::std::string* mutable_setoken();
-  ::std::string* release_setoken();
-  void set_allocated_setoken(::std::string* setoken);
+  void set_account(const char* value);
+  void set_account(const char* value, size_t size);
+  ::std::string* mutable_account();
+  ::std::string* release_account();
+  void set_allocated_account(::std::string* account);
 
-  // bytes sSecret = 2;
-  void clear_ssecret();
-  static const int kSSecretFieldNumber = 2;
-  const ::std::string& ssecret() const;
-  void set_ssecret(const ::std::string& value);
+  // bytes Secret = 3;
+  void clear_secret();
+  static const int kSecretFieldNumber = 3;
+  const ::std::string& secret() const;
+  void set_secret(const ::std::string& value);
   #if LANG_CXX11
-  void set_ssecret(::std::string&& value);
+  void set_secret(::std::string&& value);
   #endif
-  void set_ssecret(const char* value);
-  void set_ssecret(const void* value, size_t size);
-  ::std::string* mutable_ssecret();
-  ::std::string* release_ssecret();
-  void set_allocated_ssecret(::std::string* ssecret);
+  void set_secret(const char* value);
+  void set_secret(const void* value, size_t size);
+  ::std::string* mutable_secret();
+  ::std::string* release_secret();
+  void set_allocated_secret(::std::string* secret);
 
-  // .svrData.LoadPlayerData data = 4;
+  // .svrData.LoadPlayerData Data = 4;
   bool has_data() const;
   void clear_data();
   static const int kDataFieldNumber = 4;
@@ -1300,13 +1293,20 @@ class ClientToken : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::svrData::LoadPlayerData* mutable_data();
   void set_allocated_data(::svrData::LoadPlayerData* data);
 
+  // int32 nGameID = 1;
+  void clear_ngameid();
+  static const int kNGameIDFieldNumber = 1;
+  ::google::protobuf::int32 ngameid() const;
+  void set_ngameid(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:svrData.ClientToken)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr setoken_;
-  ::google::protobuf::internal::ArenaStringPtr ssecret_;
+  ::google::protobuf::internal::ArenaStringPtr account_;
+  ::google::protobuf::internal::ArenaStringPtr secret_;
   ::svrData::LoadPlayerData* data_;
+  ::google::protobuf::int32 ngameid_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsClientTokenImpl();
@@ -1617,38 +1617,10 @@ class ChangeLine : public ::google::protobuf::Message /* @@protoc_insertion_poin
 
   // accessors -------------------------------------------------------
 
-  // string sEtoken = 3;
-  void clear_setoken();
-  static const int kSEtokenFieldNumber = 3;
-  const ::std::string& setoken() const;
-  void set_setoken(const ::std::string& value);
-  #if LANG_CXX11
-  void set_setoken(::std::string&& value);
-  #endif
-  void set_setoken(const char* value);
-  void set_setoken(const char* value, size_t size);
-  ::std::string* mutable_setoken();
-  ::std::string* release_setoken();
-  void set_allocated_setoken(::std::string* setoken);
-
-  // bytes sSecret = 4;
-  void clear_ssecret();
-  static const int kSSecretFieldNumber = 4;
-  const ::std::string& ssecret() const;
-  void set_ssecret(const ::std::string& value);
-  #if LANG_CXX11
-  void set_ssecret(::std::string&& value);
-  #endif
-  void set_ssecret(const char* value);
-  void set_ssecret(const void* value, size_t size);
-  ::std::string* mutable_ssecret();
-  ::std::string* release_ssecret();
-  void set_allocated_ssecret(::std::string* ssecret);
-
-  // .svrData.LoadPlayerData data = 5;
+  // .svrData.LoadPlayerData Data = 4;
   bool has_data() const;
   void clear_data();
-  static const int kDataFieldNumber = 5;
+  static const int kDataFieldNumber = 4;
   const ::svrData::LoadPlayerData& data() const;
   ::svrData::LoadPlayerData* release_data();
   ::svrData::LoadPlayerData* mutable_data();
@@ -1666,15 +1638,20 @@ class ChangeLine : public ::google::protobuf::Message /* @@protoc_insertion_poin
   ::google::protobuf::int32 nlineid() const;
   void set_nlineid(::google::protobuf::int32 value);
 
+  // int32 nGameID = 3;
+  void clear_ngameid();
+  static const int kNGameIDFieldNumber = 3;
+  ::google::protobuf::int32 ngameid() const;
+  void set_ngameid(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:svrData.ChangeLine)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr setoken_;
-  ::google::protobuf::internal::ArenaStringPtr ssecret_;
   ::svrData::LoadPlayerData* data_;
   ::google::protobuf::int32 nmapid_;
   ::google::protobuf::int32 nlineid_;
+  ::google::protobuf::int32 ngameid_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsChangeLineImpl();
@@ -1797,41 +1774,21 @@ class ChangeLineRet : public ::google::protobuf::Message /* @@protoc_insertion_p
 
   // accessors -------------------------------------------------------
 
-  // string sIP = 3;
-  void clear_sip();
-  static const int kSIPFieldNumber = 3;
-  const ::std::string& sip() const;
-  void set_sip(const ::std::string& value);
-  #if LANG_CXX11
-  void set_sip(::std::string&& value);
-  #endif
-  void set_sip(const char* value);
-  void set_sip(const char* value, size_t size);
-  ::std::string* mutable_sip();
-  ::std::string* release_sip();
-  void set_allocated_sip(::std::string* sip);
-
   // int32 nCode = 1;
   void clear_ncode();
   static const int kNCodeFieldNumber = 1;
   ::google::protobuf::int32 ncode() const;
   void set_ncode(::google::protobuf::int32 value);
 
-  // int32 nServerID = 2;
-  void clear_nserverid();
-  static const int kNServerIDFieldNumber = 2;
-  ::google::protobuf::int32 nserverid() const;
-  void set_nserverid(::google::protobuf::int32 value);
+  // int32 nGameID = 2;
+  void clear_ngameid();
+  static const int kNGameIDFieldNumber = 2;
+  ::google::protobuf::int32 ngameid() const;
+  void set_ngameid(::google::protobuf::int32 value);
 
-  // int32 nPort = 4;
-  void clear_nport();
-  static const int kNPortFieldNumber = 4;
-  ::google::protobuf::int32 nport() const;
-  void set_nport(::google::protobuf::int32 value);
-
-  // int32 nMapID = 5;
+  // int32 nMapID = 3;
   void clear_nmapid();
-  static const int kNMapIDFieldNumber = 5;
+  static const int kNMapIDFieldNumber = 3;
   ::google::protobuf::int32 nmapid() const;
   void set_nmapid(::google::protobuf::int32 value);
 
@@ -1839,10 +1796,8 @@ class ChangeLineRet : public ::google::protobuf::Message /* @@protoc_insertion_p
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr sip_;
   ::google::protobuf::int32 ncode_;
-  ::google::protobuf::int32 nserverid_;
-  ::google::protobuf::int32 nport_;
+  ::google::protobuf::int32 ngameid_;
   ::google::protobuf::int32 nmapid_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
@@ -2220,21 +2175,7 @@ inline void ServerLoadInfo::set_allocated_sip(::std::string* sip) {
   // @@protoc_insertion_point(field_set_allocated:svrData.ServerLoadInfo.sIP)
 }
 
-// int32 nSubServerID = 6;
-inline void ServerLoadInfo::clear_nsubserverid() {
-  nsubserverid_ = 0;
-}
-inline ::google::protobuf::int32 ServerLoadInfo::nsubserverid() const {
-  // @@protoc_insertion_point(field_get:svrData.ServerLoadInfo.nSubServerID)
-  return nsubserverid_;
-}
-inline void ServerLoadInfo::set_nsubserverid(::google::protobuf::int32 value) {
-  
-  nsubserverid_ = value;
-  // @@protoc_insertion_point(field_set:svrData.ServerLoadInfo.nSubServerID)
-}
-
-// repeated int32 mapid = 7;
+// repeated int32 mapid = 6;
 inline int ServerLoadInfo::mapid_size() const {
   return mapid_.size();
 }
@@ -2460,113 +2401,127 @@ inline void DelClient::set_bchangeline(bool value) {
 
 // ClientToken
 
-// string sEtoken = 1;
-inline void ClientToken::clear_setoken() {
-  setoken_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// int32 nGameID = 1;
+inline void ClientToken::clear_ngameid() {
+  ngameid_ = 0;
 }
-inline const ::std::string& ClientToken::setoken() const {
-  // @@protoc_insertion_point(field_get:svrData.ClientToken.sEtoken)
-  return setoken_.GetNoArena();
+inline ::google::protobuf::int32 ClientToken::ngameid() const {
+  // @@protoc_insertion_point(field_get:svrData.ClientToken.nGameID)
+  return ngameid_;
 }
-inline void ClientToken::set_setoken(const ::std::string& value) {
+inline void ClientToken::set_ngameid(::google::protobuf::int32 value) {
   
-  setoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:svrData.ClientToken.sEtoken)
+  ngameid_ = value;
+  // @@protoc_insertion_point(field_set:svrData.ClientToken.nGameID)
+}
+
+// string Account = 2;
+inline void ClientToken::clear_account() {
+  account_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ClientToken::account() const {
+  // @@protoc_insertion_point(field_get:svrData.ClientToken.Account)
+  return account_.GetNoArena();
+}
+inline void ClientToken::set_account(const ::std::string& value) {
+  
+  account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:svrData.ClientToken.Account)
 }
 #if LANG_CXX11
-inline void ClientToken::set_setoken(::std::string&& value) {
+inline void ClientToken::set_account(::std::string&& value) {
   
-  setoken_.SetNoArena(
+  account_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:svrData.ClientToken.sEtoken)
+  // @@protoc_insertion_point(field_set_rvalue:svrData.ClientToken.Account)
 }
 #endif
-inline void ClientToken::set_setoken(const char* value) {
+inline void ClientToken::set_account(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
-  setoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:svrData.ClientToken.sEtoken)
+  account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:svrData.ClientToken.Account)
 }
-inline void ClientToken::set_setoken(const char* value, size_t size) {
+inline void ClientToken::set_account(const char* value, size_t size) {
   
-  setoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:svrData.ClientToken.sEtoken)
+  // @@protoc_insertion_point(field_set_pointer:svrData.ClientToken.Account)
 }
-inline ::std::string* ClientToken::mutable_setoken() {
+inline ::std::string* ClientToken::mutable_account() {
   
-  // @@protoc_insertion_point(field_mutable:svrData.ClientToken.sEtoken)
-  return setoken_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  // @@protoc_insertion_point(field_mutable:svrData.ClientToken.Account)
+  return account_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* ClientToken::release_setoken() {
-  // @@protoc_insertion_point(field_release:svrData.ClientToken.sEtoken)
+inline ::std::string* ClientToken::release_account() {
+  // @@protoc_insertion_point(field_release:svrData.ClientToken.Account)
   
-  return setoken_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return account_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void ClientToken::set_allocated_setoken(::std::string* setoken) {
-  if (setoken != NULL) {
+inline void ClientToken::set_allocated_account(::std::string* account) {
+  if (account != NULL) {
     
   } else {
     
   }
-  setoken_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), setoken);
-  // @@protoc_insertion_point(field_set_allocated:svrData.ClientToken.sEtoken)
+  account_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), account);
+  // @@protoc_insertion_point(field_set_allocated:svrData.ClientToken.Account)
 }
 
-// bytes sSecret = 2;
-inline void ClientToken::clear_ssecret() {
-  ssecret_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// bytes Secret = 3;
+inline void ClientToken::clear_secret() {
+  secret_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& ClientToken::ssecret() const {
-  // @@protoc_insertion_point(field_get:svrData.ClientToken.sSecret)
-  return ssecret_.GetNoArena();
+inline const ::std::string& ClientToken::secret() const {
+  // @@protoc_insertion_point(field_get:svrData.ClientToken.Secret)
+  return secret_.GetNoArena();
 }
-inline void ClientToken::set_ssecret(const ::std::string& value) {
+inline void ClientToken::set_secret(const ::std::string& value) {
   
-  ssecret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:svrData.ClientToken.sSecret)
+  secret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:svrData.ClientToken.Secret)
 }
 #if LANG_CXX11
-inline void ClientToken::set_ssecret(::std::string&& value) {
+inline void ClientToken::set_secret(::std::string&& value) {
   
-  ssecret_.SetNoArena(
+  secret_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:svrData.ClientToken.sSecret)
+  // @@protoc_insertion_point(field_set_rvalue:svrData.ClientToken.Secret)
 }
 #endif
-inline void ClientToken::set_ssecret(const char* value) {
+inline void ClientToken::set_secret(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
-  ssecret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:svrData.ClientToken.sSecret)
+  secret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:svrData.ClientToken.Secret)
 }
-inline void ClientToken::set_ssecret(const void* value, size_t size) {
+inline void ClientToken::set_secret(const void* value, size_t size) {
   
-  ssecret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+  secret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:svrData.ClientToken.sSecret)
+  // @@protoc_insertion_point(field_set_pointer:svrData.ClientToken.Secret)
 }
-inline ::std::string* ClientToken::mutable_ssecret() {
+inline ::std::string* ClientToken::mutable_secret() {
   
-  // @@protoc_insertion_point(field_mutable:svrData.ClientToken.sSecret)
-  return ssecret_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  // @@protoc_insertion_point(field_mutable:svrData.ClientToken.Secret)
+  return secret_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* ClientToken::release_ssecret() {
-  // @@protoc_insertion_point(field_release:svrData.ClientToken.sSecret)
+inline ::std::string* ClientToken::release_secret() {
+  // @@protoc_insertion_point(field_release:svrData.ClientToken.Secret)
   
-  return ssecret_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  return secret_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void ClientToken::set_allocated_ssecret(::std::string* ssecret) {
-  if (ssecret != NULL) {
+inline void ClientToken::set_allocated_secret(::std::string* secret) {
+  if (secret != NULL) {
     
   } else {
     
   }
-  ssecret_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ssecret);
-  // @@protoc_insertion_point(field_set_allocated:svrData.ClientToken.sSecret)
+  secret_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), secret);
+  // @@protoc_insertion_point(field_set_allocated:svrData.ClientToken.Secret)
 }
 
-// .svrData.LoadPlayerData data = 4;
+// .svrData.LoadPlayerData Data = 4;
 inline bool ClientToken::has_data() const {
   return this != internal_default_instance() && data_ != NULL;
 }
@@ -2578,12 +2533,12 @@ inline void ClientToken::clear_data() {
 }
 inline const ::svrData::LoadPlayerData& ClientToken::data() const {
   const ::svrData::LoadPlayerData* p = data_;
-  // @@protoc_insertion_point(field_get:svrData.ClientToken.data)
+  // @@protoc_insertion_point(field_get:svrData.ClientToken.Data)
   return p != NULL ? *p : *reinterpret_cast<const ::svrData::LoadPlayerData*>(
       &::svrData::_LoadPlayerData_default_instance_);
 }
 inline ::svrData::LoadPlayerData* ClientToken::release_data() {
-  // @@protoc_insertion_point(field_release:svrData.ClientToken.data)
+  // @@protoc_insertion_point(field_release:svrData.ClientToken.Data)
   
   ::svrData::LoadPlayerData* temp = data_;
   data_ = NULL;
@@ -2595,7 +2550,7 @@ inline ::svrData::LoadPlayerData* ClientToken::mutable_data() {
     data_ = ::google::protobuf::Arena::Create< ::svrData::LoadPlayerData >(
         GetArenaNoVirtual());
   }
-  // @@protoc_insertion_point(field_mutable:svrData.ClientToken.data)
+  // @@protoc_insertion_point(field_mutable:svrData.ClientToken.Data)
   return data_;
 }
 inline void ClientToken::set_allocated_data(::svrData::LoadPlayerData* data) {
@@ -2614,7 +2569,7 @@ inline void ClientToken::set_allocated_data(::svrData::LoadPlayerData* data) {
     
   }
   data_ = data;
-  // @@protoc_insertion_point(field_set_allocated:svrData.ClientToken.data)
+  // @@protoc_insertion_point(field_set_allocated:svrData.ClientToken.Data)
 }
 
 // -------------------------------------------------------------------
@@ -2966,113 +2921,21 @@ inline void ChangeLine::set_nlineid(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:svrData.ChangeLine.nLineID)
 }
 
-// string sEtoken = 3;
-inline void ChangeLine::clear_setoken() {
-  setoken_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+// int32 nGameID = 3;
+inline void ChangeLine::clear_ngameid() {
+  ngameid_ = 0;
 }
-inline const ::std::string& ChangeLine::setoken() const {
-  // @@protoc_insertion_point(field_get:svrData.ChangeLine.sEtoken)
-  return setoken_.GetNoArena();
+inline ::google::protobuf::int32 ChangeLine::ngameid() const {
+  // @@protoc_insertion_point(field_get:svrData.ChangeLine.nGameID)
+  return ngameid_;
 }
-inline void ChangeLine::set_setoken(const ::std::string& value) {
+inline void ChangeLine::set_ngameid(::google::protobuf::int32 value) {
   
-  setoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:svrData.ChangeLine.sEtoken)
-}
-#if LANG_CXX11
-inline void ChangeLine::set_setoken(::std::string&& value) {
-  
-  setoken_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:svrData.ChangeLine.sEtoken)
-}
-#endif
-inline void ChangeLine::set_setoken(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  setoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:svrData.ChangeLine.sEtoken)
-}
-inline void ChangeLine::set_setoken(const char* value, size_t size) {
-  
-  setoken_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:svrData.ChangeLine.sEtoken)
-}
-inline ::std::string* ChangeLine::mutable_setoken() {
-  
-  // @@protoc_insertion_point(field_mutable:svrData.ChangeLine.sEtoken)
-  return setoken_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* ChangeLine::release_setoken() {
-  // @@protoc_insertion_point(field_release:svrData.ChangeLine.sEtoken)
-  
-  return setoken_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void ChangeLine::set_allocated_setoken(::std::string* setoken) {
-  if (setoken != NULL) {
-    
-  } else {
-    
-  }
-  setoken_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), setoken);
-  // @@protoc_insertion_point(field_set_allocated:svrData.ChangeLine.sEtoken)
+  ngameid_ = value;
+  // @@protoc_insertion_point(field_set:svrData.ChangeLine.nGameID)
 }
 
-// bytes sSecret = 4;
-inline void ChangeLine::clear_ssecret() {
-  ssecret_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& ChangeLine::ssecret() const {
-  // @@protoc_insertion_point(field_get:svrData.ChangeLine.sSecret)
-  return ssecret_.GetNoArena();
-}
-inline void ChangeLine::set_ssecret(const ::std::string& value) {
-  
-  ssecret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:svrData.ChangeLine.sSecret)
-}
-#if LANG_CXX11
-inline void ChangeLine::set_ssecret(::std::string&& value) {
-  
-  ssecret_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:svrData.ChangeLine.sSecret)
-}
-#endif
-inline void ChangeLine::set_ssecret(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  ssecret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:svrData.ChangeLine.sSecret)
-}
-inline void ChangeLine::set_ssecret(const void* value, size_t size) {
-  
-  ssecret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:svrData.ChangeLine.sSecret)
-}
-inline ::std::string* ChangeLine::mutable_ssecret() {
-  
-  // @@protoc_insertion_point(field_mutable:svrData.ChangeLine.sSecret)
-  return ssecret_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* ChangeLine::release_ssecret() {
-  // @@protoc_insertion_point(field_release:svrData.ChangeLine.sSecret)
-  
-  return ssecret_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void ChangeLine::set_allocated_ssecret(::std::string* ssecret) {
-  if (ssecret != NULL) {
-    
-  } else {
-    
-  }
-  ssecret_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ssecret);
-  // @@protoc_insertion_point(field_set_allocated:svrData.ChangeLine.sSecret)
-}
-
-// .svrData.LoadPlayerData data = 5;
+// .svrData.LoadPlayerData Data = 4;
 inline bool ChangeLine::has_data() const {
   return this != internal_default_instance() && data_ != NULL;
 }
@@ -3084,12 +2947,12 @@ inline void ChangeLine::clear_data() {
 }
 inline const ::svrData::LoadPlayerData& ChangeLine::data() const {
   const ::svrData::LoadPlayerData* p = data_;
-  // @@protoc_insertion_point(field_get:svrData.ChangeLine.data)
+  // @@protoc_insertion_point(field_get:svrData.ChangeLine.Data)
   return p != NULL ? *p : *reinterpret_cast<const ::svrData::LoadPlayerData*>(
       &::svrData::_LoadPlayerData_default_instance_);
 }
 inline ::svrData::LoadPlayerData* ChangeLine::release_data() {
-  // @@protoc_insertion_point(field_release:svrData.ChangeLine.data)
+  // @@protoc_insertion_point(field_release:svrData.ChangeLine.Data)
   
   ::svrData::LoadPlayerData* temp = data_;
   data_ = NULL;
@@ -3101,7 +2964,7 @@ inline ::svrData::LoadPlayerData* ChangeLine::mutable_data() {
     data_ = ::google::protobuf::Arena::Create< ::svrData::LoadPlayerData >(
         GetArenaNoVirtual());
   }
-  // @@protoc_insertion_point(field_mutable:svrData.ChangeLine.data)
+  // @@protoc_insertion_point(field_mutable:svrData.ChangeLine.Data)
   return data_;
 }
 inline void ChangeLine::set_allocated_data(::svrData::LoadPlayerData* data) {
@@ -3120,7 +2983,7 @@ inline void ChangeLine::set_allocated_data(::svrData::LoadPlayerData* data) {
     
   }
   data_ = data;
-  // @@protoc_insertion_point(field_set_allocated:svrData.ChangeLine.data)
+  // @@protoc_insertion_point(field_set_allocated:svrData.ChangeLine.Data)
 }
 
 // -------------------------------------------------------------------
@@ -3141,88 +3004,21 @@ inline void ChangeLineRet::set_ncode(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:svrData.ChangeLineRet.nCode)
 }
 
-// int32 nServerID = 2;
-inline void ChangeLineRet::clear_nserverid() {
-  nserverid_ = 0;
+// int32 nGameID = 2;
+inline void ChangeLineRet::clear_ngameid() {
+  ngameid_ = 0;
 }
-inline ::google::protobuf::int32 ChangeLineRet::nserverid() const {
-  // @@protoc_insertion_point(field_get:svrData.ChangeLineRet.nServerID)
-  return nserverid_;
+inline ::google::protobuf::int32 ChangeLineRet::ngameid() const {
+  // @@protoc_insertion_point(field_get:svrData.ChangeLineRet.nGameID)
+  return ngameid_;
 }
-inline void ChangeLineRet::set_nserverid(::google::protobuf::int32 value) {
+inline void ChangeLineRet::set_ngameid(::google::protobuf::int32 value) {
   
-  nserverid_ = value;
-  // @@protoc_insertion_point(field_set:svrData.ChangeLineRet.nServerID)
+  ngameid_ = value;
+  // @@protoc_insertion_point(field_set:svrData.ChangeLineRet.nGameID)
 }
 
-// string sIP = 3;
-inline void ChangeLineRet::clear_sip() {
-  sip_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& ChangeLineRet::sip() const {
-  // @@protoc_insertion_point(field_get:svrData.ChangeLineRet.sIP)
-  return sip_.GetNoArena();
-}
-inline void ChangeLineRet::set_sip(const ::std::string& value) {
-  
-  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:svrData.ChangeLineRet.sIP)
-}
-#if LANG_CXX11
-inline void ChangeLineRet::set_sip(::std::string&& value) {
-  
-  sip_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:svrData.ChangeLineRet.sIP)
-}
-#endif
-inline void ChangeLineRet::set_sip(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:svrData.ChangeLineRet.sIP)
-}
-inline void ChangeLineRet::set_sip(const char* value, size_t size) {
-  
-  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:svrData.ChangeLineRet.sIP)
-}
-inline ::std::string* ChangeLineRet::mutable_sip() {
-  
-  // @@protoc_insertion_point(field_mutable:svrData.ChangeLineRet.sIP)
-  return sip_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* ChangeLineRet::release_sip() {
-  // @@protoc_insertion_point(field_release:svrData.ChangeLineRet.sIP)
-  
-  return sip_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void ChangeLineRet::set_allocated_sip(::std::string* sip) {
-  if (sip != NULL) {
-    
-  } else {
-    
-  }
-  sip_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), sip);
-  // @@protoc_insertion_point(field_set_allocated:svrData.ChangeLineRet.sIP)
-}
-
-// int32 nPort = 4;
-inline void ChangeLineRet::clear_nport() {
-  nport_ = 0;
-}
-inline ::google::protobuf::int32 ChangeLineRet::nport() const {
-  // @@protoc_insertion_point(field_get:svrData.ChangeLineRet.nPort)
-  return nport_;
-}
-inline void ChangeLineRet::set_nport(::google::protobuf::int32 value) {
-  
-  nport_ = value;
-  // @@protoc_insertion_point(field_set:svrData.ChangeLineRet.nPort)
-}
-
-// int32 nMapID = 5;
+// int32 nMapID = 3;
 inline void ChangeLineRet::clear_nmapid() {
   nmapid_ = 0;
 }

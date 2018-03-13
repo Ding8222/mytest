@@ -76,7 +76,7 @@ void CClientAuth::AddAuthInfo(Msg *pMsg)
 
 	svrData::ClientToken msg;
 	_CHECK_PARSE_(pMsg, msg);
-	auto iter = m_ClientSecretInfo.find(msg.setoken());
+	auto iter = m_ClientSecretInfo.find(msg.account());
 	assert(iter == m_ClientSecretInfo.end());
 	if (iter == m_ClientSecretInfo.end())
 	{
@@ -84,10 +84,11 @@ void CClientAuth::AddAuthInfo(Msg *pMsg)
 		if (_pData)
 		{
 			_pData->ClientID = 0;
-			_pData->Token = msg.setoken();
-			_pData->Secret = msg.ssecret();
+			_pData->GameServerID = msg.ngameid();
+			_pData->Token = msg.account();
+			_pData->Secret = msg.secret();
 			_pData->Data.CopyFrom(msg.data());
-			m_ClientSecretInfo.insert(std::make_pair(msg.setoken(), _pData));
+			m_ClientSecretInfo.insert(std::make_pair(msg.account(), _pData));
 		}
 	}
 }
@@ -98,15 +99,15 @@ void CClientAuth::KickClient(int32 clientid, bool closeclient, bool changeline)
 	assert(iter != m_ClientAuthInfo.end());
 	if (iter != m_ClientAuthInfo.end())
 	{
-		m_ClientSecretInfo.erase(iter->second->Token);
-		clientauthinfo_release(iter->second);
-		m_ClientAuthInfo.erase(iter);
-
 		// 通知玩家下线处理
 		svrData::DelClient sendMsg;
 		sendMsg.set_bchangeline(changeline);
-		CGameConnect::Instance().SendMsgToServer(CConfig::Instance().GetGameServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, clientid);
+		CGameConnect::Instance().SendMsgToServer(iter->second->GameServerID, sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, clientid);
 
+		m_ClientSecretInfo.erase(iter->second->Token);
+		clientauthinfo_release(iter->second);
+		m_ClientAuthInfo.erase(iter);
+		
 		// 通知延迟关闭Client
 		if (closeclient)
 			CGateClientMgr::Instance().DelayCloseClient(clientid);
@@ -127,23 +128,16 @@ void CClientAuth::QueryLogin(Msg *pMsg, CClient *cl)
 		ClientAuthInfo *_pData = iter->second;
 		if (!_pData->Secret.empty() &&_pData->Secret == msg.ssecret())
 		{
-			if (_pData->ClientID > 0)
-			{
-				// 只有自己进的来，这边应该是上次自己的ClientID
-				// 上次断开的时候,会调用OnClientDisconnect
-				// 这边的ClientID应该始终为0
-				// KickClient(_pData->ClientID);
-			}
 			assert(_pData->ClientID == 0);
 			_pData->ClientID = cl->GetClientID();
 			m_ClientAuthInfo.insert(std::make_pair(cl->GetClientID(), _pData));
 			ClientConnectLog("新的客户端认证成功！token:%s", msg.stoken().c_str());
 			
 			svrData::AddNewClient SendMsg;
-			SendMsg.set_ngameid(CConfig::Instance().GetGameServerID());
+			SendMsg.set_ngameid(cl->GetLogicServer());
 			SendMsg.set_account(msg.stoken());
 			CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), SendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT, cl->GetClientID());
-
+			cl->SetLogicServerID(_pData->GameServerID);
 			cl->SetAlreadyAuth();
 			return;
 		}
