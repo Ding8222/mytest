@@ -100,8 +100,8 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 						pPlayer->GetName(), pPlayer->GetTempID(), 
 						pPlayer->GetScene() == nullptr ? -1 : pPlayer->GetScene()->GetMapID()
 					);
-					pPlayer->OffLine();
-					SendMsg.set_ncode(netData::ChangeMapRet::EC_FAIL);
+					CPlayerMgr::Instance().DelPlayer(pPlayer->GetClientID());
+					SendMsg.set_ncode(netData::ChangeMapRet::EC_LEAVEMAP);
 				}
 			}
 			else
@@ -111,10 +111,10 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 				{
 					// 在其他线路
 					// 向Center请求转移进入其他线路地图
-					svrData::ChangeLine SendMsg;
-					SendMsg.set_nlineid(0);
-					SendMsg.set_nmapid(nMapID);
-					svrData::LoadPlayerData *pData = SendMsg.mutable_data();
+					svrData::ChangeLine ChangeLineMsg;
+					ChangeLineMsg.set_nlineid(0);
+					ChangeLineMsg.set_nmapid(nMapID);
+					svrData::LoadPlayerData *pData = ChangeLineMsg.mutable_data();
 					if (pData)
 					{
 						if (pPlayer->PackData(pData))
@@ -126,15 +126,20 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 								nMapID
 							);
 	#endif
-							FuncUti::SendMsgToCenter(pPlayer, SendMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE);
+							FuncUti::SendMsgToCenter(pPlayer, ChangeLineMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE);
 							CPlayerMgr::Instance().DelPlayer(pPlayer->GetClientID());
 							return;
+						}
+						else
+						{
+							RunStateError("换线！玩家：%s 打包数据失败！", pPlayer->GetName());
+							SendMsg.set_ncode(netData::ChangeMapRet::EC_PACKDATA);
 						}
 					}
 				}
 				else
 				{
-					// 不存在的地图ID
+					RunStateError("玩家：%s 要去的地图：%d 不存在！", pPlayer->GetName(), nMapID);
 					SendMsg.set_ncode(netData::ChangeMapRet::EC_MAP);
 				}
 				FuncUti::SendPBNoLoop(pPlayer, SendMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE);

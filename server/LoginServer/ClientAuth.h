@@ -7,12 +7,12 @@ struct ClientAuthInfo
 	ClientAuthInfo()
 	{
 		ClientID = 0;
-		Token.clear();
+		Account.clear();
 		Secret.clear();
 	}
 
 	int32 ClientID;
-	std::string Token;	// 账号
+	std::string Account;	// 账号
 	std::string Secret;	// 秘钥
 };
 
@@ -37,8 +37,8 @@ public:
 	void Challenge(CClient *cl, Msg *pMsg);
 	// 认证
 	void Auth(CClient *cl, Msg *pMsg);
-	// 认证返回
-	bool AuthRet(int32 clientid, const std::string &token);
+	// 将认证成功的账号和clientid绑定
+	bool AddAccount(int32 clientid, const std::string &account);
 	// 请求角色列表
 	void GetPlayerList(CClient *cl, Msg *pMsg);
 	// 请求创建角色
@@ -50,14 +50,13 @@ public:
 private:
 	// 添加Secret
 	bool AddSecret(int32 clientid, const std::string &secret);
-	bool AddToken(int32 clientid, const std::string &token);
 	// 删除认证信息
 	void DelAutoInfo(int32 clientid);
 	// 验证Secret是否正确
 	bool CheckSecret(int32 clientid, const std::string &secret);
 	// 获取Secret
 	std::string GetSecret(int32 clientid);
-	std::string GetToken(int32 clientid);
+	std::string GetAccount(int32 clientid);
 private:
 
 	// clientid,Secret

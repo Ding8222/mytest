@@ -313,15 +313,16 @@ void AddDescriptorsImpl() {
       "\"P\n\rPlayerMoveRet\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022"
       "\t\n\001z\030\003 \001(\002\022\017\n\007nTempID\030\004 \001(\r\022\r\n\005nCode\030\005 \001"
       "(\005\"=\n\tChangeMap\022\016\n\006nMapID\030\001 \001(\005\022\017\n\007sEtok"
-      "en\030\002 \001(\t\022\017\n\007sSecret\030\003 \001(\014\"\266\001\n\014ChangeMapR"
+      "en\030\002 \001(\t\022\017\n\007sSecret\030\003 \001(\014\"\330\001\n\014ChangeMapR"
       "et\022\r\n\005nCode\030\001 \001(\005\022\021\n\tbChangeIP\030\002 \001(\010\022\021\n\t"
       "nServerID\030\003 \001(\005\022\013\n\003sIP\030\004 \001(\t\022\r\n\005nPort\030\005 "
-      "\001(\005\022\016\n\006nMapID\030\006 \001(\005\"E\n\002EC\022\014\n\010EC_OTHER\020\000\022"
+      "\001(\005\022\016\n\006nMapID\030\006 \001(\005\"g\n\002EC\022\014\n\010EC_OTHER\020\000\022"
       "\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002\022\013\n\007EC_LINE\020\004\022\n"
-      "\n\006EC_MAP\020\005b\006proto3"
+      "\n\006EC_MAP\020\005\022\017\n\013EC_LEAVEMAP\020\006\022\017\n\013EC_PACKDA"
+      "TA\020\007b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 538);
+      descriptor, 572);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "ClientMsg.proto", &protobuf_RegisterTypes);
 }
@@ -372,6 +373,8 @@ bool ChangeMapRet_EC_IsValid(int value) {
     case 2:
     case 4:
     case 5:
+    case 6:
+    case 7:
       return true;
     default:
       return false;
@@ -384,6 +387,8 @@ const ChangeMapRet_EC ChangeMapRet::EC_SUCC;
 const ChangeMapRet_EC ChangeMapRet::EC_FAIL;
 const ChangeMapRet_EC ChangeMapRet::EC_LINE;
 const ChangeMapRet_EC ChangeMapRet::EC_MAP;
+const ChangeMapRet_EC ChangeMapRet::EC_LEAVEMAP;
+const ChangeMapRet_EC ChangeMapRet::EC_PACKDATA;
 const ChangeMapRet_EC ChangeMapRet::EC_MIN;
 const ChangeMapRet_EC ChangeMapRet::EC_MAX;
 const int ChangeMapRet::EC_ARRAYSIZE;

@@ -208,10 +208,10 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 						sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
 					}
 					else
-						sendMsg.set_ncode(netData::LoginRet::EC_FAIL);
+						sendMsg.set_ncode(netData::LoginRet::EC_LOADDATA);
 				}
 				else
-					sendMsg.set_ncode(netData::LoginRet::EC_FAIL);
+					sendMsg.set_ncode(netData::LoginRet::EC_ADDPLAYER);
 
 				FuncUti::SendPBNoLoop(player, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET);
 				break;

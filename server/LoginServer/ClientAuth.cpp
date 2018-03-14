@@ -128,60 +128,60 @@ void CClientAuth::Auth(CClient *cl, Msg *pMsg)
 	const std::string secret = GetSecret(cl->GetClientID());
 	if (!secret.empty())
 	{
-		msg.set_ssecret(secret);
+		msg.set_secret(secret);
 		CLoginCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH, cl->GetClientID());
 	}
 	else
 	{
-		//要求先握手
+		RunStateError("Auth失败！没有握手！clientid：%d，account：%s", cl->GetClientID(), msg.account().c_str());
 		netData::AuthRet sendMsg;
 		sendMsg.set_ncode(netData::AuthRet::EC_HANDSHAKE);
 		CLoginClientMgr::Instance().SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET);
 	}
 }
 
-// 认证返回
-bool CClientAuth::AuthRet(int32 clientid, const std::string &token)
-{
-	return AddToken(clientid, token);
-}
-
 // 请求角色列表
 void CClientAuth::GetPlayerList(CClient *cl, Msg *pMsg)
 {
-	const std::string &token = GetToken(cl->GetClientID());
-	if (!token.empty())
+	const std::string &account = GetAccount(cl->GetClientID());
+	if (!account.empty())
 	{
 		netData::PlayerList sendMsg;
 		_CHECK_PARSE_(pMsg, sendMsg);
-		sendMsg.set_account(token);
+		sendMsg.set_account(account);
 
 		CLoginCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_PLAYER_LIST, cl->GetClientID());
 	}
+	else
+		RunStateError("请求获取角色列表失败！没有认证！clientid：%d",cl->GetClientID());
 }
 
 // 请求创建角色
 void CClientAuth::CreatePlayer(CClient *cl, Msg *pMsg)
 {
-	const std::string &token = GetToken(cl->GetClientID());
-	if (!token.empty())
+	const std::string &account = GetAccount(cl->GetClientID());
+	if (!account.empty())
 	{
 		netData::CreatePlayer sendMsg;
 		_CHECK_PARSE_(pMsg, sendMsg);
-		sendMsg.set_account(token);
+		sendMsg.set_account(account);
 
 		CLoginCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_CREATE_PLAYER, cl->GetClientID());
 	}
+	else
+		RunStateError("请求创建角色失败！没有认证！clientid：%d", cl->GetClientID());
 }
 
 // 请求选择角色
 void CClientAuth::SelectPlayer(CClient *cl, Msg *pMsg)
 {
-	const std::string &token = GetToken(cl->GetClientID());
-	if (!token.empty())
+	const std::string &account = GetAccount(cl->GetClientID());
+	if (!account.empty())
 	{
 		CLoginCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), *pMsg, cl->GetClientID());
 	}
+	else
+		RunStateError("请求选择角色失败！没有认证！clientid：%d", cl->GetClientID());
 }
 
 // Client断开连接
@@ -195,7 +195,7 @@ bool CClientAuth::AddSecret(int32 clientid, const std::string &secret)
 	ClientAuthInfo *newinfo = clientauthinfo_create();
 	if (!newinfo)
 	{
-		log_error("创建ClientAuthInfo失败!");
+		RunStateError("创建ClientAuthInfo失败!");
 		return false;
 	}
 	newinfo->ClientID = clientid;
@@ -203,25 +203,31 @@ bool CClientAuth::AddSecret(int32 clientid, const std::string &secret)
 
 	assert(m_ClientAuthInfoSet[clientid] == nullptr);
 	if (m_ClientAuthInfoSet[clientid])
+	{
+		RunStateError("添加Secret失败，重复的clientid！id：%d，Secret：%s", clientid, secret.c_str());
 		return false;
+	}
 
 	m_ClientAuthInfoSet[clientid] = newinfo;
 	return true;
 }
 
-bool CClientAuth::AddToken(int32 clientid, const std::string &token)
+bool CClientAuth::AddAccount(int32 clientid, const std::string &account)
 {
 	if (clientid <= 0 || clientid >= m_ClientAuthInfoSet.size())
 	{
-		ClientConnectError("AddToken的clientid错误!");
+		ClientConnectError("AddAccount的clientid错误!");
 		return false;
 	}
 
 	assert(m_ClientAuthInfoSet[clientid]);
 	if (!m_ClientAuthInfoSet[clientid])
+	{
+		RunStateError("添加账号：%s失败！clientid：%d已经存在账号信息", account.c_str(), clientid);
 		return false;
+	}
 
-	m_ClientAuthInfoSet[clientid]->Token = std::move(token);
+	m_ClientAuthInfoSet[clientid]->Account = std::move(account);
 	return true;
 }
 
@@ -262,16 +268,16 @@ std::string CClientAuth::GetSecret(int32 clientid)
 	return "";
 }
 
-std::string CClientAuth::GetToken(int32 clientid)
+std::string CClientAuth::GetAccount(int32 clientid)
 {
 	if (clientid <= 0 || clientid >= m_ClientAuthInfoSet.size())
 	{
-		ClientConnectError("GetToken的clientid错误!");
+		ClientConnectError("GetAccount的clientid错误!");
 		return "";
 	}
 
 	if (m_ClientAuthInfoSet[clientid])
-		return m_ClientAuthInfoSet[clientid]->Token;
+		return m_ClientAuthInfoSet[clientid]->Account;
 
 	return "";
 }

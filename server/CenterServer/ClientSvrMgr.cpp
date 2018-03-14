@@ -4,7 +4,7 @@
 #include "ClientSvrMgr.h"
 #include "objectpool.h"
 #include "GlobalDefine.h"
-#include "log.h"
+#include "ServerLog.h"
 
 static objectpool<ClientSvr> &ClientSvrPool()
 {
@@ -17,7 +17,7 @@ static ClientSvr *clientsvr_create()
 	ClientSvr *self = ClientSvrPool().GetObject();
 	if (!self)
 	{
-		log_error("创建 ClientSvr 失败!");
+		RunStateError("创建 ClientSvr 失败!");
 		return NULL;
 	}
 	new(self) ClientSvr();
@@ -48,7 +48,7 @@ bool CClientSvrMgr::Init()
 	m_IDPool = idmgr_create(CLIENT_ID_MAX + 1, CLIENT_ID_MAX);
 	if (!m_IDPool)
 	{
-		log_error("创建IDMgr失败!");
+		RunStateError("创建IDMgr失败!");
 		return false;
 	}
 
@@ -81,7 +81,7 @@ int32 CClientSvrMgr::AddClientSvr(int32 clientid, int32 serverid, int32 gateid)
 	int id = idmgr_allocid(m_IDPool);
 	if (id <= 0)
 	{
-		log_error("为新ClientSvr分配ID失败!, id:%d", id);
+		RunStateError("为新client分配ID失败!, id:%d", id);
 		return 0;
 	}
 	
@@ -94,9 +94,8 @@ int32 CClientSvrMgr::AddClientSvr(int32 clientid, int32 serverid, int32 gateid)
 		{
 			if (!idmgr_freeid(m_IDPool, id))
 			{
-				log_error("释放ID错误, ID:%d", id);
+				RunStateError("释放ID错误, ID:%d", id);
 			}
-			log_error("创建ClientSvr失败!");
 			return 0;
 		}
 
@@ -110,8 +109,9 @@ int32 CClientSvrMgr::AddClientSvr(int32 clientid, int32 serverid, int32 gateid)
 	{
 		if (!idmgr_freeid(m_IDPool, id))
 		{
-			log_error("释放ID错误, ID:%d", id);
+			RunStateError("释放ID错误, ID:%d", id);
 		}
+		RunStateError("为新client分配ID：%d失败！旧的数据没有被移除！", id);
 		return 0;
 	}
 	return id;

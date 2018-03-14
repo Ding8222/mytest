@@ -48,10 +48,17 @@ bool CPlayer::LoadData(Msg *pMsg)
 
 	CScene *_pScene = CSceneMgr::Instance().FindScene(msg.mapid());
 	if (!_pScene)
+	{
+		RunStateLog("没有找到玩家：%s要登陆的地图：%d", GetName(), msg.mapid());
 		return false;
-	_pScene->AddObj(this);
+	}
+	if (!_pScene->AddObj(this))
+	{
+		RunStateLog("添加玩家：%s到地图：%d，失败！", GetName(), msg.mapid());
+		return false;
+	}
 
-	ClientConnectLog("加载玩家数据成功！%s", msg.account().c_str());
+	RunStateLog("加载玩家：%s数据成功！账号：%s", GetName(), msg.account().c_str());
 
 	return true;
 }

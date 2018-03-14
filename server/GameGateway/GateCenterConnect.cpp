@@ -108,17 +108,17 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 						return;
 					}
 					else
-						sendMsg.set_ncode(netData::LoginRet::EC_FAIL);
+						sendMsg.set_ncode(netData::LoginRet::EC_ACCOUNT);
 				}
 				else
-					sendMsg.set_ncode(netData::LoginRet::EC_FAIL);
+					sendMsg.set_ncode(netData::LoginRet::EC_CENTERID);
 
 				CGateClientMgr::Instance().SendMsg(tl->id, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET);
 				break;
 			}
-			case SVR_SUB_CLIENT_TOKEN:
+			case SVR_SUB_CLIENT_ACCOUNT:
 			{
-				CClientAuth::Instance().AddAuthInfo(pMsg);
+				CClientAuth::Instance().AddAccountInfo(pMsg);
 				break;
 			}
 			case SVR_SUB_KICKCLIENT:

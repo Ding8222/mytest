@@ -9,6 +9,7 @@
 #include "DBCenterConnect.h"
 #include "task.h"
 #include "Config.h"
+#include "ServerLog.h"
 
 #include "MainType.h"
 #include "ServerType.h"
@@ -70,28 +71,35 @@ void CClientLogin::ClientAuth(task *tk, Msg *pMsg)
 		_CHECK_PARSE_(pMsg, msg);
 
 		netData::AuthRet sendMsg;
-		sendMsg.set_ncode(netData::AuthRet::EC_FAIL);
+		sendMsg.set_account(msg.account());
 		DataBase::CRecordset *res = dbhand->Execute(fmt::format("select * from account where account = '{0}' limit 1",
-			msg.setoken().c_str()).c_str());
+			msg.account()).c_str());
 		if (res && res->IsOpen() && !res->IsEnd())
 		{
 			// 存在的账号
-			res = dbhand->Execute(fmt::format("update account set logintime ={0} where account = '{1}'", 
-				CTimer::GetTime(), msg.setoken().c_str()).c_str());
+			res = dbhand->Execute(fmt::format("update account set logintime ={0} where account = '{1}'",
+				CTimer::GetTime(), msg.account().c_str()).c_str());
 			if (res)
 				sendMsg.set_ncode(netData::AuthRet::EC_SUCC);
+			else
+			{
+				RunStateError("更新账号:%s登陆时间失败！", msg.account().c_str());
+				sendMsg.set_ncode(netData::AuthRet::EC_LOGINTIME);
+			}
 		}
 		else
 		{
 			// 不存在的账号，创建
-			res = dbhand->Execute(fmt::format("insert into account (account,createtime,logintime) values ('{0}',{1},{2})", 
-				msg.setoken().c_str(), CTimer::GetTime(), CTimer::GetTime()).c_str());
+			res = dbhand->Execute(fmt::format("insert into account (account,createtime,logintime) values ('{0}',{1},{2})",
+				msg.account(), CTimer::GetTime(), CTimer::GetTime()).c_str());
 			if (res)
 			{
 				res = dbhand->Execute("select @@IDENTITY");
 				if (!res || res->IsEnd() || !res->IsOpen())
 				{
 					dbhand->Execute("delete from playerdate where account = ''");
+					sendMsg.set_ncode(netData::AuthRet::EC_CREATE);
+					RunStateError("创建账号:%s失败！", msg.account().c_str());
 				}
 				else
 					sendMsg.set_ncode(netData::AuthRet::EC_SUCC);
@@ -102,6 +110,8 @@ void CClientLogin::ClientAuth(task *tk, Msg *pMsg)
 		pk.Pack(&sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET);
 		tk->PushMsg(&pk);
 	}
+	else
+		RunStateError("获取dbhand失败！");
 }
 
 void CClientLogin::GetPlayerList(task *tk, Msg *pMsg)
@@ -118,7 +128,7 @@ void CClientLogin::GetPlayerList(task *tk, Msg *pMsg)
 		netData::PlayerListRet sendMsg;
 
 		DataBase::CRecordset *res = dbhand->Execute(fmt::format("select * from playerdate where account = '{0}'", 
-			msg.account().c_str()).c_str());
+			msg.account()).c_str());
 		if (res && res->IsOpen() && !res->IsEnd())
 		{
 			// 查询到的角色信息
@@ -127,7 +137,7 @@ void CClientLogin::GetPlayerList(task *tk, Msg *pMsg)
 				netData::PlayerLite *_pInfo = sendMsg.add_list();
 				if (_pInfo)
 				{
-					_pInfo->set_guid(res->GetInt64("guid"));
+					_pInfo->set_nguid(res->GetInt64("guid"));
 					_pInfo->set_sname(res->GetChar("name"));
 					_pInfo->set_njob(res->GetInt("job"));
 					_pInfo->set_nsex(res->GetInt("sex"));
@@ -140,6 +150,8 @@ void CClientLogin::GetPlayerList(task *tk, Msg *pMsg)
 		pk.Pack(&sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_PLAYER_LIST_RET);
 		tk->PushMsg(&pk);
 	}
+	else
+		RunStateError("获取dbhand失败！");
 }
 
 void CClientLogin::CreatePlayer(task *tk, Msg *pMsg)
@@ -157,13 +169,15 @@ void CClientLogin::CreatePlayer(task *tk, Msg *pMsg)
 		netData::CreatePlayerRet sendMsg;
 		sendMsg.set_ncode(netData::CreatePlayerRet::EC_FAIL);
 		DataBase::CRecordset *res = dbhand->Execute(fmt::format("insert into playerdate (account,name,guid,sex,job,level,createtime,logintime,mapid,x,y,z,data) values ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12})",
-			msg.account().c_str(), msg.sname(), guid, msg.nsex(), msg.njob(), 1, CTimer::GetTime(), CTimer::GetTime(), CConfig::Instance().GetBeginMap(), 1, 1, 1, "1").c_str());
+			msg.account(), msg.sname(), guid, msg.nsex(), msg.njob(), 1, CTimer::GetTime(), CTimer::GetTime(), CConfig::Instance().GetBeginMap(), 1, 1, 1, "1").c_str());
 		if (res)
 		{
 			res = dbhand->Execute("select @@IDENTITY");
 			if (!res || res->IsEnd() || !res->IsOpen())
 			{
+				RunStateError("账号：%s创建角色：%s失败！", msg.account().c_str(), msg.sname().c_str());
 				dbhand->Execute("delete from playerdate where guid = 0");
+				sendMsg.set_ncode(netData::CreatePlayerRet::EC_CREATE);
 			}
 			else
 			{
@@ -171,15 +185,25 @@ void CClientLogin::CreatePlayer(task *tk, Msg *pMsg)
 				netData::PlayerLite *_pInfo = sendMsg.mutable_info();
 				if (_pInfo)
 				{
-					_pInfo->set_guid(guid);
+					_pInfo->set_nguid(guid);
+					_pInfo->set_sname(msg.sname());
+					_pInfo->set_njob(msg.njob());
+					_pInfo->set_nsex(msg.nsex());
 				}
 			}
+		}
+		else
+		{
+			RunStateError("账号：%s创建角色：%s失败！", msg.account().c_str(), msg.sname().c_str());
+			sendMsg.set_ncode(netData::CreatePlayerRet::EC_CREATE);
 		}
 
 		MessagePack pk;
 		pk.Pack(&sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_CREATE_PLAYER_RET);
 		tk->PushMsg(&pk);
 	}
+	else
+		RunStateError("获取dbhand失败！");
 }
 
 void CClientLogin::SelectPlayer(task *tk, Msg *pMsg)
@@ -194,9 +218,8 @@ void CClientLogin::SelectPlayer(task *tk, Msg *pMsg)
 		_CHECK_PARSE_(pMsg, msg);
 
 		netData::SelectPlayerRet sendMsg;
-		sendMsg.set_ncode(netData::SelectPlayerRet::EC_FAIL);
 		DataBase::CRecordset *res = dbhand->Execute(fmt::format("select * from playerdate where guid = {0}", 
-			msg.guid()).c_str());
+			msg.nguid()).c_str());
 		if (res && res->IsOpen() && !res->IsEnd())
 		{
 			svrData::LoadPlayerData sendMsgToGame;
@@ -216,7 +239,7 @@ void CClientLogin::SelectPlayer(task *tk, Msg *pMsg)
 			sendMsgToGame.set_data(res->GetChar("data"));
 
 			res = dbhand->Execute(fmt::format("update playerdate set logintime ={0} where guid = '{1}'", 
-				CTimer::GetTime(), msg.guid()).c_str());
+				CTimer::GetTime(), msg.nguid()).c_str());
 			if (res)
 			{
 				MessagePack pk;
@@ -224,9 +247,22 @@ void CClientLogin::SelectPlayer(task *tk, Msg *pMsg)
 				tk->PushMsg(&pk);
 				return;
 			}
+			else
+			{
+				RunStateError("更新角色：%I64d登陆时间失败！", msg.nguid());
+				sendMsg.set_ncode(netData::SelectPlayerRet::EC_LOGINTIME);
+			}
 		}
+		else
+		{
+			RunStateError("查找角色：%I64d失败！", msg.nguid());
+			sendMsg.set_ncode(netData::SelectPlayerRet::EC_NONE);
+		}
+
 		MessagePack pk;
 		pk.Pack(&sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER_RET);
 		tk->PushMsg(&pk);
 	}
+	else
+		RunStateError("获取dbhand失败！");
 }

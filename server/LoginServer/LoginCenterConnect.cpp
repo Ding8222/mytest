@@ -108,10 +108,10 @@ void CLoginCenterConnect::ProcessMsg(connector *_con)
 
 				if (msg.ncode() == netData::AuthRet::EC_SUCC)
 				{
-					if (CClientAuth::Instance().AuthRet(tl->id, msg.stoken()))
+					if (CClientAuth::Instance().AddAccount(tl->id, msg.account()))
 						CLoginClientMgr::Instance().SetClientAuthSucceed(tl->id);
 					else
-						msg.set_ncode(netData::AuthRet::EC_ADDTOKEN);
+						msg.set_ncode(netData::AuthRet::EC_ADDACCOUNT);
 				}
 				CLoginClientMgr::Instance().SendMsg(tl->id, pMsg);
 				break;

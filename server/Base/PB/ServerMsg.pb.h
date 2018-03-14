@@ -59,8 +59,8 @@ void InitDefaultsAddNewClientRetImpl();
 void InitDefaultsAddNewClientRet();
 void InitDefaultsDelClientImpl();
 void InitDefaultsDelClient();
-void InitDefaultsClientTokenImpl();
-void InitDefaultsClientToken();
+void InitDefaultsClientAccountImpl();
+void InitDefaultsClientAccount();
 void InitDefaultsLoadPlayerDataImpl();
 void InitDefaultsLoadPlayerData();
 void InitDefaultsChangeLineImpl();
@@ -78,7 +78,7 @@ inline void InitDefaults() {
   InitDefaultsAddNewClient();
   InitDefaultsAddNewClientRet();
   InitDefaultsDelClient();
-  InitDefaultsClientToken();
+  InitDefaultsClientAccount();
   InitDefaultsLoadPlayerData();
   InitDefaultsChangeLine();
   InitDefaultsChangeLineRet();
@@ -98,9 +98,9 @@ extern ChangeLineDefaultTypeInternal _ChangeLine_default_instance_;
 class ChangeLineRet;
 class ChangeLineRetDefaultTypeInternal;
 extern ChangeLineRetDefaultTypeInternal _ChangeLineRet_default_instance_;
-class ClientToken;
-class ClientTokenDefaultTypeInternal;
-extern ClientTokenDefaultTypeInternal _ClientToken_default_instance_;
+class ClientAccount;
+class ClientAccountDefaultTypeInternal;
+extern ClientAccountDefaultTypeInternal _ClientAccount_default_instance_;
 class DelClient;
 class DelClientDefaultTypeInternal;
 extern DelClientDefaultTypeInternal _DelClient_default_instance_;
@@ -132,7 +132,7 @@ template<> ::svrData::AddNewClient* Arena::Create< ::svrData::AddNewClient>(Aren
 template<> ::svrData::AddNewClientRet* Arena::Create< ::svrData::AddNewClientRet>(Arena*);
 template<> ::svrData::ChangeLine* Arena::Create< ::svrData::ChangeLine>(Arena*);
 template<> ::svrData::ChangeLineRet* Arena::Create< ::svrData::ChangeLineRet>(Arena*);
-template<> ::svrData::ClientToken* Arena::Create< ::svrData::ClientToken>(Arena*);
+template<> ::svrData::ClientAccount* Arena::Create< ::svrData::ClientAccount>(Arena*);
 template<> ::svrData::DelClient* Arena::Create< ::svrData::DelClient>(Arena*);
 template<> ::svrData::KickClient* Arena::Create< ::svrData::KickClient>(Arena*);
 template<> ::svrData::LoadPlayerData* Arena::Create< ::svrData::LoadPlayerData>(Arena*);
@@ -167,6 +167,28 @@ inline bool ServerRegisterRet_EC_Parse(
     const ::std::string& name, ServerRegisterRet_EC* value) {
   return ::google::protobuf::internal::ParseNamedEnum<ServerRegisterRet_EC>(
     ServerRegisterRet_EC_descriptor(), name, value);
+}
+enum AddNewClientRet_EC {
+  AddNewClientRet_EC_EC_OTHER = 0,
+  AddNewClientRet_EC_EC_SUCC = 1,
+  AddNewClientRet_EC_EC_FAIL = 2,
+  AddNewClientRet_EC_AddNewClientRet_EC_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  AddNewClientRet_EC_AddNewClientRet_EC_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool AddNewClientRet_EC_IsValid(int value);
+const AddNewClientRet_EC AddNewClientRet_EC_EC_MIN = AddNewClientRet_EC_EC_OTHER;
+const AddNewClientRet_EC AddNewClientRet_EC_EC_MAX = AddNewClientRet_EC_EC_FAIL;
+const int AddNewClientRet_EC_EC_ARRAYSIZE = AddNewClientRet_EC_EC_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* AddNewClientRet_EC_descriptor();
+inline const ::std::string& AddNewClientRet_EC_Name(AddNewClientRet_EC value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    AddNewClientRet_EC_descriptor(), value);
+}
+inline bool AddNewClientRet_EC_Parse(
+    const ::std::string& name, AddNewClientRet_EC* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<AddNewClientRet_EC>(
+    AddNewClientRet_EC_descriptor(), name, value);
 }
 enum ChangeLineRet_EC {
   ChangeLineRet_EC_EC_OTHER = 0,
@@ -1033,11 +1055,45 @@ class AddNewClientRet : public ::google::protobuf::Message /* @@protoc_insertion
 
   // nested types ----------------------------------------------------
 
+  typedef AddNewClientRet_EC EC;
+  static const EC EC_OTHER =
+    AddNewClientRet_EC_EC_OTHER;
+  static const EC EC_SUCC =
+    AddNewClientRet_EC_EC_SUCC;
+  static const EC EC_FAIL =
+    AddNewClientRet_EC_EC_FAIL;
+  static inline bool EC_IsValid(int value) {
+    return AddNewClientRet_EC_IsValid(value);
+  }
+  static const EC EC_MIN =
+    AddNewClientRet_EC_EC_MIN;
+  static const EC EC_MAX =
+    AddNewClientRet_EC_EC_MAX;
+  static const int EC_ARRAYSIZE =
+    AddNewClientRet_EC_EC_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  EC_descriptor() {
+    return AddNewClientRet_EC_descriptor();
+  }
+  static inline const ::std::string& EC_Name(EC value) {
+    return AddNewClientRet_EC_Name(value);
+  }
+  static inline bool EC_Parse(const ::std::string& name,
+      EC* value) {
+    return AddNewClientRet_EC_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
-  // int32 nCenterClientID = 1;
+  // int32 nCode = 1;
+  void clear_ncode();
+  static const int kNCodeFieldNumber = 1;
+  ::google::protobuf::int32 ncode() const;
+  void set_ncode(::google::protobuf::int32 value);
+
+  // int32 nCenterClientID = 2;
   void clear_ncenterclientid();
-  static const int kNCenterClientIDFieldNumber = 1;
+  static const int kNCenterClientIDFieldNumber = 2;
   ::google::protobuf::int32 ncenterclientid() const;
   void set_ncenterclientid(::google::protobuf::int32 value);
 
@@ -1045,6 +1101,7 @@ class AddNewClientRet : public ::google::protobuf::Message /* @@protoc_insertion
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::int32 ncode_;
   ::google::protobuf::int32 ncenterclientid_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
@@ -1163,24 +1220,24 @@ class DelClient : public ::google::protobuf::Message /* @@protoc_insertion_point
 };
 // -------------------------------------------------------------------
 
-class ClientToken : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:svrData.ClientToken) */ {
+class ClientAccount : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:svrData.ClientAccount) */ {
  public:
-  ClientToken();
-  virtual ~ClientToken();
+  ClientAccount();
+  virtual ~ClientAccount();
 
-  ClientToken(const ClientToken& from);
+  ClientAccount(const ClientAccount& from);
 
-  inline ClientToken& operator=(const ClientToken& from) {
+  inline ClientAccount& operator=(const ClientAccount& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  ClientToken(ClientToken&& from) noexcept
-    : ClientToken() {
+  ClientAccount(ClientAccount&& from) noexcept
+    : ClientAccount() {
     *this = ::std::move(from);
   }
 
-  inline ClientToken& operator=(ClientToken&& from) noexcept {
+  inline ClientAccount& operator=(ClientAccount&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -1190,34 +1247,34 @@ class ClientToken : public ::google::protobuf::Message /* @@protoc_insertion_poi
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const ClientToken& default_instance();
+  static const ClientAccount& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const ClientToken* internal_default_instance() {
-    return reinterpret_cast<const ClientToken*>(
-               &_ClientToken_default_instance_);
+  static inline const ClientAccount* internal_default_instance() {
+    return reinterpret_cast<const ClientAccount*>(
+               &_ClientAccount_default_instance_);
   }
   static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
     8;
 
-  void Swap(ClientToken* other);
-  friend void swap(ClientToken& a, ClientToken& b) {
+  void Swap(ClientAccount* other);
+  friend void swap(ClientAccount& a, ClientAccount& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline ClientToken* New() const PROTOBUF_FINAL {
-    return ::google::protobuf::Arena::Create<ClientToken>(NULL);
+  inline ClientAccount* New() const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<ClientAccount>(NULL);
   }
 
-  ClientToken* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
-    return ::google::protobuf::Arena::Create<ClientToken>(arena);
+  ClientAccount* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<ClientAccount>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
   void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
-  void CopyFrom(const ClientToken& from);
-  void MergeFrom(const ClientToken& from);
+  void CopyFrom(const ClientAccount& from);
+  void MergeFrom(const ClientAccount& from);
   void Clear() PROTOBUF_FINAL;
   bool IsInitialized() const PROTOBUF_FINAL;
 
@@ -1233,7 +1290,7 @@ class ClientToken : public ::google::protobuf::Message /* @@protoc_insertion_poi
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const PROTOBUF_FINAL;
-  void InternalSwap(ClientToken* other);
+  void InternalSwap(ClientAccount* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -1292,7 +1349,7 @@ class ClientToken : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::int32 ngameid() const;
   void set_ngameid(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:svrData.ClientToken)
+  // @@protoc_insertion_point(class_scope:svrData.ClientAccount)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
@@ -1302,7 +1359,7 @@ class ClientToken : public ::google::protobuf::Message /* @@protoc_insertion_poi
   ::google::protobuf::int32 ngameid_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
-  friend void ::protobuf_ServerMsg_2eproto::InitDefaultsClientTokenImpl();
+  friend void ::protobuf_ServerMsg_2eproto::InitDefaultsClientAccountImpl();
 };
 // -------------------------------------------------------------------
 
@@ -2298,7 +2355,21 @@ inline void AddNewClient::set_allocated_account(::std::string* account) {
 
 // AddNewClientRet
 
-// int32 nCenterClientID = 1;
+// int32 nCode = 1;
+inline void AddNewClientRet::clear_ncode() {
+  ncode_ = 0;
+}
+inline ::google::protobuf::int32 AddNewClientRet::ncode() const {
+  // @@protoc_insertion_point(field_get:svrData.AddNewClientRet.nCode)
+  return ncode_;
+}
+inline void AddNewClientRet::set_ncode(::google::protobuf::int32 value) {
+  
+  ncode_ = value;
+  // @@protoc_insertion_point(field_set:svrData.AddNewClientRet.nCode)
+}
+
+// int32 nCenterClientID = 2;
 inline void AddNewClientRet::clear_ncenterclientid() {
   ncenterclientid_ = 0;
 }
@@ -2371,161 +2442,161 @@ inline void DelClient::set_allocated_account(::std::string* account) {
 
 // -------------------------------------------------------------------
 
-// ClientToken
+// ClientAccount
 
 // int32 nGameID = 1;
-inline void ClientToken::clear_ngameid() {
+inline void ClientAccount::clear_ngameid() {
   ngameid_ = 0;
 }
-inline ::google::protobuf::int32 ClientToken::ngameid() const {
-  // @@protoc_insertion_point(field_get:svrData.ClientToken.nGameID)
+inline ::google::protobuf::int32 ClientAccount::ngameid() const {
+  // @@protoc_insertion_point(field_get:svrData.ClientAccount.nGameID)
   return ngameid_;
 }
-inline void ClientToken::set_ngameid(::google::protobuf::int32 value) {
+inline void ClientAccount::set_ngameid(::google::protobuf::int32 value) {
   
   ngameid_ = value;
-  // @@protoc_insertion_point(field_set:svrData.ClientToken.nGameID)
+  // @@protoc_insertion_point(field_set:svrData.ClientAccount.nGameID)
 }
 
 // string Account = 2;
-inline void ClientToken::clear_account() {
+inline void ClientAccount::clear_account() {
   account_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& ClientToken::account() const {
-  // @@protoc_insertion_point(field_get:svrData.ClientToken.Account)
+inline const ::std::string& ClientAccount::account() const {
+  // @@protoc_insertion_point(field_get:svrData.ClientAccount.Account)
   return account_.GetNoArena();
 }
-inline void ClientToken::set_account(const ::std::string& value) {
+inline void ClientAccount::set_account(const ::std::string& value) {
   
   account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:svrData.ClientToken.Account)
+  // @@protoc_insertion_point(field_set:svrData.ClientAccount.Account)
 }
 #if LANG_CXX11
-inline void ClientToken::set_account(::std::string&& value) {
+inline void ClientAccount::set_account(::std::string&& value) {
   
   account_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:svrData.ClientToken.Account)
+  // @@protoc_insertion_point(field_set_rvalue:svrData.ClientAccount.Account)
 }
 #endif
-inline void ClientToken::set_account(const char* value) {
+inline void ClientAccount::set_account(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:svrData.ClientToken.Account)
+  // @@protoc_insertion_point(field_set_char:svrData.ClientAccount.Account)
 }
-inline void ClientToken::set_account(const char* value, size_t size) {
+inline void ClientAccount::set_account(const char* value, size_t size) {
   
   account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:svrData.ClientToken.Account)
+  // @@protoc_insertion_point(field_set_pointer:svrData.ClientAccount.Account)
 }
-inline ::std::string* ClientToken::mutable_account() {
+inline ::std::string* ClientAccount::mutable_account() {
   
-  // @@protoc_insertion_point(field_mutable:svrData.ClientToken.Account)
+  // @@protoc_insertion_point(field_mutable:svrData.ClientAccount.Account)
   return account_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* ClientToken::release_account() {
-  // @@protoc_insertion_point(field_release:svrData.ClientToken.Account)
+inline ::std::string* ClientAccount::release_account() {
+  // @@protoc_insertion_point(field_release:svrData.ClientAccount.Account)
   
   return account_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void ClientToken::set_allocated_account(::std::string* account) {
+inline void ClientAccount::set_allocated_account(::std::string* account) {
   if (account != NULL) {
     
   } else {
     
   }
   account_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), account);
-  // @@protoc_insertion_point(field_set_allocated:svrData.ClientToken.Account)
+  // @@protoc_insertion_point(field_set_allocated:svrData.ClientAccount.Account)
 }
 
 // bytes Secret = 3;
-inline void ClientToken::clear_secret() {
+inline void ClientAccount::clear_secret() {
   secret_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline const ::std::string& ClientToken::secret() const {
-  // @@protoc_insertion_point(field_get:svrData.ClientToken.Secret)
+inline const ::std::string& ClientAccount::secret() const {
+  // @@protoc_insertion_point(field_get:svrData.ClientAccount.Secret)
   return secret_.GetNoArena();
 }
-inline void ClientToken::set_secret(const ::std::string& value) {
+inline void ClientAccount::set_secret(const ::std::string& value) {
   
   secret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:svrData.ClientToken.Secret)
+  // @@protoc_insertion_point(field_set:svrData.ClientAccount.Secret)
 }
 #if LANG_CXX11
-inline void ClientToken::set_secret(::std::string&& value) {
+inline void ClientAccount::set_secret(::std::string&& value) {
   
   secret_.SetNoArena(
     &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:svrData.ClientToken.Secret)
+  // @@protoc_insertion_point(field_set_rvalue:svrData.ClientAccount.Secret)
 }
 #endif
-inline void ClientToken::set_secret(const char* value) {
+inline void ClientAccount::set_secret(const char* value) {
   GOOGLE_DCHECK(value != NULL);
   
   secret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:svrData.ClientToken.Secret)
+  // @@protoc_insertion_point(field_set_char:svrData.ClientAccount.Secret)
 }
-inline void ClientToken::set_secret(const void* value, size_t size) {
+inline void ClientAccount::set_secret(const void* value, size_t size) {
   
   secret_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:svrData.ClientToken.Secret)
+  // @@protoc_insertion_point(field_set_pointer:svrData.ClientAccount.Secret)
 }
-inline ::std::string* ClientToken::mutable_secret() {
+inline ::std::string* ClientAccount::mutable_secret() {
   
-  // @@protoc_insertion_point(field_mutable:svrData.ClientToken.Secret)
+  // @@protoc_insertion_point(field_mutable:svrData.ClientAccount.Secret)
   return secret_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::std::string* ClientToken::release_secret() {
-  // @@protoc_insertion_point(field_release:svrData.ClientToken.Secret)
+inline ::std::string* ClientAccount::release_secret() {
+  // @@protoc_insertion_point(field_release:svrData.ClientAccount.Secret)
   
   return secret_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline void ClientToken::set_allocated_secret(::std::string* secret) {
+inline void ClientAccount::set_allocated_secret(::std::string* secret) {
   if (secret != NULL) {
     
   } else {
     
   }
   secret_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), secret);
-  // @@protoc_insertion_point(field_set_allocated:svrData.ClientToken.Secret)
+  // @@protoc_insertion_point(field_set_allocated:svrData.ClientAccount.Secret)
 }
 
 // .svrData.LoadPlayerData Data = 4;
-inline bool ClientToken::has_data() const {
+inline bool ClientAccount::has_data() const {
   return this != internal_default_instance() && data_ != NULL;
 }
-inline void ClientToken::clear_data() {
+inline void ClientAccount::clear_data() {
   if (GetArenaNoVirtual() == NULL && data_ != NULL) {
     delete data_;
   }
   data_ = NULL;
 }
-inline const ::svrData::LoadPlayerData& ClientToken::data() const {
+inline const ::svrData::LoadPlayerData& ClientAccount::data() const {
   const ::svrData::LoadPlayerData* p = data_;
-  // @@protoc_insertion_point(field_get:svrData.ClientToken.Data)
+  // @@protoc_insertion_point(field_get:svrData.ClientAccount.Data)
   return p != NULL ? *p : *reinterpret_cast<const ::svrData::LoadPlayerData*>(
       &::svrData::_LoadPlayerData_default_instance_);
 }
-inline ::svrData::LoadPlayerData* ClientToken::release_data() {
-  // @@protoc_insertion_point(field_release:svrData.ClientToken.Data)
+inline ::svrData::LoadPlayerData* ClientAccount::release_data() {
+  // @@protoc_insertion_point(field_release:svrData.ClientAccount.Data)
   
   ::svrData::LoadPlayerData* temp = data_;
   data_ = NULL;
   return temp;
 }
-inline ::svrData::LoadPlayerData* ClientToken::mutable_data() {
+inline ::svrData::LoadPlayerData* ClientAccount::mutable_data() {
   
   if (data_ == NULL) {
     data_ = ::google::protobuf::Arena::Create< ::svrData::LoadPlayerData >(
         GetArenaNoVirtual());
   }
-  // @@protoc_insertion_point(field_mutable:svrData.ClientToken.Data)
+  // @@protoc_insertion_point(field_mutable:svrData.ClientAccount.Data)
   return data_;
 }
-inline void ClientToken::set_allocated_data(::svrData::LoadPlayerData* data) {
+inline void ClientAccount::set_allocated_data(::svrData::LoadPlayerData* data) {
   ::google::protobuf::Arena* message_arena = GetArenaNoVirtual();
   if (message_arena == NULL) {
     delete data_;
@@ -2541,7 +2612,7 @@ inline void ClientToken::set_allocated_data(::svrData::LoadPlayerData* data) {
     
   }
   data_ = data;
-  // @@protoc_insertion_point(field_set_allocated:svrData.ClientToken.Data)
+  // @@protoc_insertion_point(field_set_allocated:svrData.ClientAccount.Data)
 }
 
 // -------------------------------------------------------------------
@@ -3047,6 +3118,11 @@ template <> struct is_proto_enum< ::svrData::ServerRegisterRet_EC> : ::google::p
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::svrData::ServerRegisterRet_EC>() {
   return ::svrData::ServerRegisterRet_EC_descriptor();
+}
+template <> struct is_proto_enum< ::svrData::AddNewClientRet_EC> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::svrData::AddNewClientRet_EC>() {
+  return ::svrData::AddNewClientRet_EC_descriptor();
 }
 template <> struct is_proto_enum< ::svrData::ChangeLineRet_EC> : ::google::protobuf::internal::true_type {};
 template <>

@@ -88,8 +88,8 @@ void CRobotMgr::Run()
 				{
 					// 逻辑服
 					netData::Login sendMsg;
-					sendMsg.set_stoken((*tempitr)->GetAccount());
-					sendMsg.set_ssecret((*tempitr)->GetSecret());
+					sendMsg.set_account((*tempitr)->GetAccount());
+					sendMsg.set_secret((*tempitr)->GetSecret());
 
 					(*tempitr)->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN);
 				}
@@ -185,15 +185,16 @@ void CRobotMgr::ProcessRegister(CRobot *con)
 				netData::HandShakeRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-// 				RunStateLog("ServerKey:%s", msg.sserverkey().c_str());
-// 				RunStateLog("ChallengeKey:%s", msg.schallenge().c_str());
-				con->SetSecret(msg.schallenge());
-
-				netData::Auth sendMsg;
-				sendMsg.set_setoken(con->GetAccount());
-
-				con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH);
-				con->SetHandShake(true);
+				if (msg.ncode() == netData::HandShakeRet::EC_SUCC)
+				{
+					con->SetSecret(msg.schallenge());
+					netData::Auth sendMsg;
+					sendMsg.set_account(con->GetAccount());
+					con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH);
+					con->SetHandShake(true);
+				}
+				else
+					RunStateError("HandShake失败!account：%s", con->GetAccount().c_str());
 				break;
 			}
 			}
@@ -309,8 +310,6 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				netData::LoginRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				RunStateLog("LoginRet:%d", msg.ncode());
-
 				if (msg.ncode() == netData::LoginRet::EC_SUCC)
 				{
 					RunStateLog("逻辑服加载数据成功!TempID:%d", msg.ntempid());
@@ -322,9 +321,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 					_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
 				}
 				else
-				{
-					_con->ChangeConnect(s_LoginServerIP.c_str(), m_LoginServerPort, m_LoginServerID, false);
-				}
+					RunStateError("登陆失败！%d", msg.ncode());
 				break;
 			}
 			case LOGIN_SUB_AUTH_RET:
@@ -338,18 +335,13 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 					_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_PLAYER_LIST);
 				}
 				else
-				{
-					netData::Auth sendMsg;
-					sendMsg.set_setoken(_con->GetAccount());
-					_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH);
-				}
+					RunStateError("认证失败！%d", msg.ncode());
 				break;
 			}
 			case LOGIN_SUB_PLAYER_LIST_RET:
 			{
 				netData::PlayerListRet msg;
 				_CHECK_PARSE_(pMsg, msg);
-				RunStateLog("PlayerListRet:%d", msg.list_size());
 
 				if (msg.list_size() == 0)
 				{
@@ -365,7 +357,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				{
 					//有角色选择角色
 					netData::SelectPlayer sendMsg;
-					sendMsg.set_guid(msg.list(0).guid());
+					sendMsg.set_nguid(msg.list(0).nguid());
 
 					_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER);
 				}
@@ -375,14 +367,15 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 			{
 				netData::CreatePlayerRet msg;
 				_CHECK_PARSE_(pMsg, msg);
-				RunStateLog("CreatePlayerRet:%d", msg.ncode());
 				if (msg.ncode() == netData::CreatePlayerRet::EC_SUCC)
 				{
 					netData::SelectPlayer sendMsg;
-					sendMsg.set_guid(msg.info().guid());
+					sendMsg.set_nguid(msg.info().nguid());
 
 					_con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER);
 				}
+				else
+					RunStateError("创建角色失败！%d", msg.ncode());
 				break;
 			}
 			case LOGIN_SUB_SELECT_PLAYER_RET:
@@ -390,9 +383,12 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				netData::SelectPlayerRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				if(msg.ncode() == netData::SelectPlayerRet::EC_SUCC)
+				if (msg.ncode() == netData::SelectPlayerRet::EC_SUCC)
+				{
 					_con->ChangeConnect(msg.sip().c_str(), msg.nport(), msg.nserverid(), true);
-				RunStateLog("SelectPlayerRet:%d", msg.ncode());
+				}
+				else
+					RunStateError("选择角色失败!%d", msg.ncode());
 				break;
 			}
 			}

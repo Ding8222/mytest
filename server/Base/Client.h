@@ -49,15 +49,12 @@ public:
 	int64 GetInLogicServerID() { return m_PlayerOnlyID; }
 	void SetLogicServerID(int serverid) { m_GameServerID = serverid; }
 	int GetLogicServer() { return m_GameServerID; }
-	void SetSecret(const char * str);
-	char *GetSecret() { return s_Secret ; }
 private:
 	int64 m_PlayerOnlyID;//在逻辑服中的角色id
 	int64 m_PingTime;
 	int64 m_RemoveTime;
 	int64 m_ConnectTime;	//何时连接上来
 
-	char s_Secret[MAX_SECRET_LEN];	//秘钥
 	int m_GameServerID;	//逻辑服的服务器id
 	int m_ClientID;
 	lxnet::Socketer *m_con;

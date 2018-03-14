@@ -25,7 +25,7 @@ public:
 	void ReleaseAllClient();
 	void ProcessClientMsg(CClient *cl);
 	void ProcessClientAuth(CClient *cl, Msg *pMsg);
-	void SetClientAlreadyLogin(int32 clientid, bool bLogin);
+	void SetClientAlreadyLogin(int32 clientid, int32 gameserverid);
 private:
 
 };

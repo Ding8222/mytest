@@ -10,7 +10,6 @@ CClient::CClient()
 	m_AlreadyLogin = false;
 	m_AlreadyAuth = false;
 	m_ConnectTime = 0;
-	memset(s_Secret, 0, MAX_SECRET_LEN);
 
 	m_InlistState = enum_inlist_state_unknow;
 	m_ClientID = 0;
@@ -91,9 +90,4 @@ bool CClient::IsEnoughXMNotAlreadyAuth(int64 currenttime)
 	if (m_AlreadyAuth)
 		return false;
 	return currenttime >= m_ConnectTime;
-}
-void CClient::SetSecret(const char * str)
-{ 
-	strncpy_s(s_Secret, str, MAX_SECRET_LEN - 1);
-	s_Secret[MAX_SECRET_LEN - 1] = '\0';
 }

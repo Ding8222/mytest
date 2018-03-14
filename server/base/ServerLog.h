@@ -14,13 +14,23 @@ extern bool g_elapsed_log_flag;
 // client连接log
 #define ClientConnectLog(fmt, ...) \
 do{if(g_client_connectlog && g_client_connectlog_flag)\
-{filelog_write_log(g_client_connectlog, fmt, ##__VA_ARGS__);}\
+{char temp_buf[32] = { 0 };\
+_format_prefix_string_(0, -1, temp_buf, sizeof(temp_buf),\
+0, 0, 0);\
+_log_printf_(enum_debug_print_time,\
+fmt, temp_buf, ##__VA_ARGS__, __END__ARG__FLAG__);\
+filelog_write_log(g_client_connectlog, fmt, ##__VA_ARGS__);}\
 }while(0)
 
 // client连接出错log
 #define ClientConnectError(fmt, ...) \
 do{if(g_client_connectlog && g_client_connectlog_flag)\
-{filelog_write_error(g_client_connectlog, fmt, ##__VA_ARGS__);}\
+{char temp_buf[32] = { 0 };\
+_format_prefix_string_(0, -1, temp_buf, sizeof(temp_buf),\
+0, 0, 0);\
+_log_printf_(enum_debug_print_time,\
+fmt, temp_buf, ##__VA_ARGS__, __END__ARG__FLAG__);\
+filelog_write_error(g_client_connectlog, fmt, ##__VA_ARGS__);}\
 }while(0)
 
 // 运行时log

@@ -131,12 +131,14 @@ enum ChangeMapRet_EC {
   ChangeMapRet_EC_EC_FAIL = 2,
   ChangeMapRet_EC_EC_LINE = 4,
   ChangeMapRet_EC_EC_MAP = 5,
+  ChangeMapRet_EC_EC_LEAVEMAP = 6,
+  ChangeMapRet_EC_EC_PACKDATA = 7,
   ChangeMapRet_EC_ChangeMapRet_EC_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   ChangeMapRet_EC_ChangeMapRet_EC_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool ChangeMapRet_EC_IsValid(int value);
 const ChangeMapRet_EC ChangeMapRet_EC_EC_MIN = ChangeMapRet_EC_EC_OTHER;
-const ChangeMapRet_EC ChangeMapRet_EC_EC_MAX = ChangeMapRet_EC_EC_MAP;
+const ChangeMapRet_EC ChangeMapRet_EC_EC_MAX = ChangeMapRet_EC_EC_PACKDATA;
 const int ChangeMapRet_EC_EC_ARRAYSIZE = ChangeMapRet_EC_EC_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* ChangeMapRet_EC_descriptor();
@@ -957,6 +959,10 @@ class ChangeMapRet : public ::google::protobuf::Message /* @@protoc_insertion_po
     ChangeMapRet_EC_EC_LINE;
   static const EC EC_MAP =
     ChangeMapRet_EC_EC_MAP;
+  static const EC EC_LEAVEMAP =
+    ChangeMapRet_EC_EC_LEAVEMAP;
+  static const EC EC_PACKDATA =
+    ChangeMapRet_EC_EC_PACKDATA;
   static inline bool EC_IsValid(int value) {
     return ChangeMapRet_EC_IsValid(value);
   }

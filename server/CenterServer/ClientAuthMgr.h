@@ -13,12 +13,12 @@ struct ClientAuthInfo
 	ClientAuthInfo()
 	{
 		nLoginSvrID = 0;
-		Token.clear();
+		Account.clear();
 		Secret.clear();
 	}
 	
 	int32 nLoginSvrID;
-	std::string Token;	// 账号
+	std::string Account;	// 账号
 	std::string Secret;	// 秘钥
 };
 
@@ -40,12 +40,12 @@ public:
 
 	// Client请求认证,loginSvr调用
 	void QueryAuth(Msg *pMsg, int32 clientid, int32 serverid);
-	// 移除认证信息
+
 	void DelClientAuthInfo(int32 clientid);
 	ClientAuthInfo *FindClientAuthInfo(int32 clientid);
 	int32 GetClientLoginSvr(int32 clientid);
-	void SetCenterClientID(const std::string &token,int32 id);
-	void ClientOffline(const std::string &token);
+	void SetCenterClientID(const std::string &account,int32 id);
+	void ClientOffline(const std::string &account);
 private:
 	// id,info
 	std::vector<ClientAuthInfo *> m_ClientInfoSet;

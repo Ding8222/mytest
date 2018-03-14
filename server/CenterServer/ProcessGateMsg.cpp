@@ -44,14 +44,18 @@ void ProcessGateMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			svrData::AddNewClient msg;
 			_CHECK_PARSE_(pMsg, msg);
 
+			svrData::AddNewClientRet SendMsg;
 			int32 id = CClientSvrMgr::Instance().AddClientSvr(tl->id, msg.ngameid(), info->GetServerID());
 			if (id > 0)
 			{
+				SendMsg.set_ncode(svrData::AddNewClientRet::EC_SUCC);
+				SendMsg.set_ncenterclientid(id);
 				CClientAuthMgr::Instance().SetCenterClientID(msg.account(), id);
+				CCentServerMgr::Instance().SendMsgToServer(SendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT_RET, ServerEnum::EST_GATE, id);
+				return;
 			}
-			svrData::AddNewClientRet SendMsg;
-			SendMsg.set_ncenterclientid(id);
-			CCentServerMgr::Instance().SendMsgToServer(SendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT_RET, ServerEnum::EST_GATE, id);
+			SendMsg.set_ncode(svrData::AddNewClientRet::EC_FAIL);
+			CCentServerMgr::Instance().SendMsgToServer(SendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT_RET, ServerEnum::EST_GATE, tl->id, info->GetServerID());
 			break;
 		}
 		}

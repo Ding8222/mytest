@@ -51,7 +51,6 @@ void CLoginClientMgr::OnClientDisconnect(CClient *cl)
 	}
 	// 删除Client中记录的Secret
 	CClientAuth::Instance().OnClientDisconnect(cl);
-
 	CClientMgr::OnClientDisconnect(cl);
 }
 
@@ -63,6 +62,7 @@ void CLoginClientMgr::ProcessClientMsg(CClient *cl)
 		pMsg = cl->GetMsg();
 		if (!pMsg)
 			break;
+
 		switch (pMsg->GetMainType())
 		{
 		case CLIENT_TYPE_MAIN:
@@ -74,9 +74,6 @@ void CLoginClientMgr::ProcessClientMsg(CClient *cl)
 				cl->SendMsg(pMsg);
 				cl->SetPingTime(g_currenttime);
 				break;
-			}
-			default:
-			{
 			}
 			}
 			break;

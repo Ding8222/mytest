@@ -125,7 +125,14 @@ void CGameConnect::ProcessMsg(connector *_con)
 				netData::LoginRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 				if (msg.ncode() == netData::LoginRet::EC_SUCC)
-					CGateClientMgr::Instance().SetClientAlreadyLogin(tl->id, true);
+				{
+					ClientAuthInfo *info = CClientAuth::Instance().FindAuthInfo(tl->id);
+					if (info)
+					{
+						CGateClientMgr::Instance().SetClientAlreadyLogin(tl->id, _con->GetConnectID());
+						ClientConnectLog("新的客户端登陆成功！Account:%s，逻辑服务器：%d", info->Account.c_str(), _con->GetConnectID());
+					}
+				}
 				break;
 			}
 			}

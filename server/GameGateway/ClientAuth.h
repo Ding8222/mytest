@@ -8,13 +8,13 @@ struct ClientAuthInfo
 	{
 		ClientID = 0;
 		GameServerID = 0;
-		Token.clear();
+		Account.clear();
 		Secret.clear();
 	}
 	
 	int32 ClientID;
 	int32 GameServerID;
-	std::string Token;	// 账号
+	std::string Account;	// 账号
 	std::string Secret;	// 秘钥
 	svrData::LoadPlayerData Data;//玩家数据
 };
@@ -34,8 +34,8 @@ public:
 
 	void Destroy();
 
-	// 中心服务器通知添加token
-	void AddAuthInfo(Msg *pMsg);
+	// 中心服务器通知添加Account
+	void AddAccountInfo(Msg *pMsg);
 	// 更新Client所在GameSvr
 	void UpdateGameSvrID(int32 clientid, int32 gameid);
 	// 踢下Client
@@ -46,7 +46,7 @@ public:
 	int GetClientSize() { return m_ClientSecretInfo.size(); }
 	ClientAuthInfo *FindAuthInfo(int32 clientid);
 private:
-	// Token,authinfo
+	// account,authinfo
 	std::unordered_map<std::string, ClientAuthInfo *> m_ClientSecretInfo;
 	// clientid,authinfo
 	std::unordered_map<int32, ClientAuthInfo *> m_ClientAuthInfo;

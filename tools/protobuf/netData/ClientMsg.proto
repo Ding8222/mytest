@@ -62,6 +62,8 @@ message ChangeMapRet
 		EC_FAIL = 2;
 		EC_LINE = 4;	//线路不存在
 		EC_MAP = 5;		//地图不存在
+		EC_LEAVEMAP = 6;//离开地图失败
+		EC_PACKDATA = 7;//打包数据失败
 	};
 	int32 nCode = 1;		// 返回的信息
 	bool bChangeIP = 2;		// 是否需要改变服务器地址

@@ -146,14 +146,20 @@ void CGateClientMgr::ProcessClientAuth(CClient *cl, Msg *pMsg)
 	}
 }
 
-void CGateClientMgr::SetClientAlreadyLogin(int32 clientid, bool bLogin)
+void CGateClientMgr::SetClientAlreadyLogin(int32 clientid, int32 gameserverid)
 {
 	CClient *cl = FindClient(clientid);
 	if (cl)
 	{
-		if (bLogin)
+		if (gameserverid > 0)
+		{
+			cl->SetLogicServerID(gameserverid);
 			cl->SetAlreadyLogin();
+		}
 		else
+		{
+			cl->SetLogicServerID(0);
 			cl->SetNotLogin();
+		}
 	}
 }

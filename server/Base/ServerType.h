@@ -26,8 +26,8 @@
 // client断开
 #define SVR_SUB_DEL_CLIENT 8
 
-// 通知game玩家的token
-#define SVR_SUB_CLIENT_TOKEN 9
+// 通知game玩家的账号信息
+#define SVR_SUB_CLIENT_ACCOUNT 9
 
 // 通知game加载数据
 #define SVR_SUB_LOAD_PLAYERDATA 10

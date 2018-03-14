@@ -48,8 +48,8 @@ message ChallengeRet
 message Auth
 {
 	//token:base64encode(账号)@base64encode(要登陆的服务器ID)@base64encode(密码)
-	string sEtoken = 1;	//base64encode(desencode(secret,token))
-	bytes sSecret = 2; //client不用填写
+	string Account = 1;	//base64encode(desencode(secret,token))
+	bytes Secret = 2; 	//client不用填写
 }
 
 // 2-6 认证返回
@@ -61,14 +61,17 @@ message AuthRet
 		EC_SUCC = 1;
 		EC_FAIL = 2;
 		EC_HANDSHAKE = 3;	// 握手失败
-		EC_ADDTOKEN = 4;	// Login添加Token失败
+		EC_ADDACCOUNT = 4;	// Login添加账号失败
 		EC_DB = 5;			// 数据库查询失败
 		EC_AUTHINFO = 6;	// 没有找到认证信息
 		EC_AUTHING = 7;		// 正在认证中，稍后再试
 		EC_KICK = 8;		// 已经将在线玩家踢下线，请重试
+		EC_WATING = 9;		// 系统正在踢在线玩家，请稍微
+		EC_LOGINTIME = 10;	// 更新账号登陆时间失败
+		EC_CREATE = 11;	// 创建账号失败
 	};
 	int32 nCode = 1;
-	string sToken = 2;	//账号
+	string Account = 2;	//账号
 }
 
 // 2-7 登陆
@@ -76,8 +79,8 @@ message Login
 {
 	// handshake = base64encode(token.user)@base64encode(token.server)#base64encode(subid):index)
 	// hmac = hmac64(hashkey(handshake), secret)
-	string sToken = 1;	// handshake:base64encode(hmac)
-	bytes sSecret = 2;
+	string Account = 1;	// handshake:base64encode(hmac)
+	bytes Secret = 2;
 }
 
 // 2-8 登录返回
@@ -88,6 +91,11 @@ message LoginRet
 		EC_OTHER = 0;
 		EC_SUCC = 1;
 		EC_FAIL = 2;
+		EC_ACCOUNT = 3;	//没有账号信息
+		EC_SECRET = 4;	//秘钥错误
+		EC_CENTERID = 5;//中心服务器分配id失败
+		EC_ADDPLAYER = 6;//逻辑服添加玩家失败
+		EC_LOADDATA = 7;//逻辑服加载玩家数据失败
 	};
 	int32 nCode = 1;
 	int32 nTempID = 2;
@@ -95,7 +103,7 @@ message LoginRet
 
 message PlayerLite
 {
-	int64 guid = 1;
+	int64 nGuid = 1;
 	string sName = 2;
 	int32 nJob = 3;
 	int32 nSex = 4;
@@ -105,7 +113,7 @@ message PlayerLite
 message PlayerList
 {
 	// 空消息
-	string account = 1;	//请求不用填写
+	string Account = 1;	//请求不用填写
 }
 
 // 2-10 返回角色列表
@@ -120,7 +128,7 @@ message CreatePlayer
 	string sName = 1;
 	int32 nJob = 2;
 	int32 nSex = 3;
-	string account = 4;//请求不用填写
+	string Account = 4;//请求不用填写
 }
 
 // 2-12 创建角色返回
@@ -131,15 +139,16 @@ message CreatePlayerRet
 		EC_OTHER = 0;
 		EC_SUCC = 1;
 		EC_FAIL = 2;
+		EC_CREATE = 3;
 	};
 	int32 nCode = 1;
-	PlayerLite info = 2;
+	PlayerLite Info = 2;
 }
 
 // 2-13 请求选择角色
 message SelectPlayer
 {
-	int64 guid = 1;
+	int64 nGuid = 1;
 }
 
 // 2-14 选择角色返回
@@ -152,6 +161,8 @@ message SelectPlayerRet
 		EC_FAIL = 2;
 		EC_SERVER = 3;	// 服务器未开启
 		EC_AUTH = 4;	// 未认证
+		EC_NONE = 5;	// 找有找到角色
+		EC_LOGINTIME = 6;	// 更新登陆时间失败
 	};
 	int32 nCode = 1;
 	int32 nMapID = 2;	// 要加载的地图ID

@@ -78,19 +78,31 @@ void CClientAuthMgr::QueryAuth(Msg *pMsg, int32 clientid, int32 serverid)
 	_CHECK_PARSE_(pMsg, msg);
 
 	bool bWaitKick = false;
-	auto iter = m_PlayerOnlineMap.find(msg.setoken());
+	auto iter = m_PlayerOnlineMap.find(msg.account());
 	if (iter != m_PlayerOnlineMap.end())
 	{
 		if (iter->second > 0)
 		{
-			//玩家在线，T下线
-			svrData::KickClient SendMsg;
-			CCentServerMgr::Instance().SendMsgToServer(SendMsg, SERVER_TYPE_MAIN, SVR_SUB_KICKCLIENT, ServerEnum::EST_GATE, iter->second);
-			bWaitKick = true;
+			auto iterW = m_PlayerLoginMap.find(msg.account());
+			if (iterW != m_PlayerLoginMap.end())
+			{
+				RunStateLog("账号%s在线，所在服务器id：%d，尝试连接的clientid：%d，尝试踢下原有玩家", msg.account().c_str(), iter->second, clientid);
+				svrData::KickClient SendMsg;
+				CCentServerMgr::Instance().SendMsgToServer(SendMsg, SERVER_TYPE_MAIN, SVR_SUB_KICKCLIENT, ServerEnum::EST_GATE, iter->second);
+				bWaitKick = true;
+			}
+			else
+			{
+				RunStateLog("正在等待踢出账号%s，操作无效", msg.account().c_str());
+				netData::AuthRet SendMsg;
+				SendMsg.set_ncode(netData::AuthRet::EC_WATING);
+				CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, clientid, serverid);
+				return;
+			}
 		}
 		else
 		{
-			//正在认证中
+			RunStateLog("账号%s正在认证中，操作无效", msg.account().c_str());
 			netData::AuthRet SendMsg;
 			SendMsg.set_ncode(netData::AuthRet::EC_AUTHING);
 			CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, clientid, serverid);
@@ -101,23 +113,22 @@ void CClientAuthMgr::QueryAuth(Msg *pMsg, int32 clientid, int32 serverid)
 	ClientAuthInfo *newinfo = clientauthinfo_create();
 	if (!newinfo)
 	{
-		log_error("创建ClientAuthInfo失败!");
+		RunStateError("创建ClientAuthInfo失败!");
 		return;
 	}
 
 	newinfo->nLoginSvrID = serverid;
-	newinfo->Token = msg.setoken();
-	newinfo->Secret = msg.ssecret();
+	newinfo->Account = msg.account();
+	newinfo->Secret = msg.secret();
 	m_ClientInfoSet[clientid] = newinfo;
 
 	if(bWaitKick)
-		m_PlayerLoginMap[msg.setoken()] = clientid;
+		m_PlayerLoginMap[msg.account()] = clientid;
 	else
 	{
-		m_PlayerOnlineMap[msg.setoken()] = 0;
+		m_PlayerOnlineMap[msg.account()] = 0;
 		CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_DB, clientid, CConfig::Instance().GetDBID());
 	}
-	return ;
 }
 
 // 移除认证信息
@@ -157,31 +168,31 @@ int32 CClientAuthMgr::GetClientLoginSvr(int32 clientid)
 	return m_ClientInfoSet[clientid]->nLoginSvrID;
 }
 
-void CClientAuthMgr::SetCenterClientID(const std::string &token, int32 id)
+void CClientAuthMgr::SetCenterClientID(const std::string &account, int32 id)
 {
-	m_PlayerOnlineMap[token] = id;
-// 	auto iter = m_PlayerOnlineMap.find(token);
-// 	assert(iter != m_PlayerOnlineMap.end());
-// 	if (iter != m_PlayerOnlineMap.end())
-// 	{
-// 		iter->second = id;
-// 	}
-}
-
-void CClientAuthMgr::ClientOffline(const std::string &token)
-{
-	auto iter = m_PlayerOnlineMap.find(token);
+	auto iter = m_PlayerOnlineMap.find(account);
 	assert(iter != m_PlayerOnlineMap.end());
 	if (iter != m_PlayerOnlineMap.end())
 	{
-		auto iterF = m_PlayerLoginMap.find(token);
+		iter->second = id;
+	}
+}
+
+void CClientAuthMgr::ClientOffline(const std::string &account)
+{
+	auto iter = m_PlayerOnlineMap.find(account);
+	assert(iter != m_PlayerOnlineMap.end());
+	if (iter != m_PlayerOnlineMap.end())
+	{
+		auto iterF = m_PlayerLoginMap.find(account);
 		if (iterF != m_PlayerLoginMap.end())
 		{
 			assert(iterF->second);
-			m_PlayerOnlineMap[token] = 0;
+			ClientAuthInfo *info = m_ClientInfoSet[iterF->second];
+			m_PlayerOnlineMap[account] = 0;
 			netData::Auth SendMsg;
-			SendMsg.set_setoken(token);
-			SendMsg.set_ssecret(token);
+			SendMsg.set_account(info->Account);
+			SendMsg.set_secret(info->Secret);
 			CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH, ServerEnum::EST_DB, iterF->second, CConfig::Instance().GetDBID());
 			m_PlayerLoginMap.erase(iterF);
 		}

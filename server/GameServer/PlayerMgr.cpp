@@ -110,6 +110,9 @@ bool CPlayerMgr::AddPlayer(serverinfo * info, int clientid)
 		m_PlayerSet[clientid] = newplayer;
 		return true;
 	}
+	else
+		RunStateError("clienid为：%d的已经存在玩家数据!", clientid);
+
 	return false;
 }
 

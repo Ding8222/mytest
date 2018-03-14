@@ -59,7 +59,14 @@ message AddNewClient
 // 0-7 新的client连接返回
 message AddNewClientRet
 {
-	int32 nCenterClientID = 1;
+	enum EC
+	{
+		EC_OTHER = 0;
+		EC_SUCC = 1;	
+		EC_FAIL = 2;
+	};
+	int32 nCode = 1;			// 返回的信息
+	int32 nCenterClientID = 2;
 }
 
 // 0-8 client断开
@@ -69,7 +76,7 @@ message DelClient
 }
 
 // 0-9 ClientToken
-message ClientToken
+message ClientAccount
 {
 	int32 nGameID = 1;			//要去的逻辑服ID
 	string Account = 2;			// 账号信息

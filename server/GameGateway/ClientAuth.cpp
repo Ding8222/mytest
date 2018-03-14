@@ -69,12 +69,12 @@ void CClientAuth::Destroy()
 	m_ClientAuthInfo.clear();
 }
 
-void CClientAuth::AddAuthInfo(Msg *pMsg)
+void CClientAuth::AddAccountInfo(Msg *pMsg)
 {
 	if (!pMsg)
 		return;
 
-	svrData::ClientToken msg;
+	svrData::ClientAccount msg;
 	_CHECK_PARSE_(pMsg, msg);
 	auto iter = m_ClientSecretInfo.find(msg.account());
 	assert(iter == m_ClientSecretInfo.end());
@@ -85,12 +85,14 @@ void CClientAuth::AddAuthInfo(Msg *pMsg)
 		{
 			_pData->ClientID = 0;
 			_pData->GameServerID = msg.ngameid();
-			_pData->Token = msg.account();
+			_pData->Account = msg.account();
 			_pData->Secret = msg.secret();
 			_pData->Data.CopyFrom(msg.data());
 			m_ClientSecretInfo.insert(std::make_pair(msg.account(), _pData));
 		}
 	}
+	else
+		RunStateError("重复添加账号：%s登陆信息！", msg.account().c_str());
 }
 
 void CClientAuth::UpdateGameSvrID(int32 clientid, int32 gameid)
@@ -113,7 +115,7 @@ void CClientAuth::KickClient(int32 clientid, bool closeclient)
 		svrData::DelClient sendMsg;
 		CGameConnect::Instance().SendMsgToServer(iter->second->GameServerID, sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, clientid);
 
-		m_ClientSecretInfo.erase(iter->second->Token);
+		m_ClientSecretInfo.erase(iter->second->Account);
 		clientauthinfo_release(iter->second);
 		m_ClientAuthInfo.erase(iter);
 		
@@ -131,32 +133,38 @@ void CClientAuth::QueryLogin(Msg *pMsg, CClient *cl)
 	netData::Login msg;
 	_CHECK_PARSE_(pMsg, msg);
 
-	auto iter = m_ClientSecretInfo.find(msg.stoken());
+	netData::LoginRet sendMsg;
+
+	auto iter = m_ClientSecretInfo.find(msg.account());
 	if (iter != m_ClientSecretInfo.end())
 	{
 		ClientAuthInfo *_pData = iter->second;
-		if (!_pData->Secret.empty() &&_pData->Secret == msg.ssecret())
+		if (!_pData->Secret.empty() &&_pData->Secret == msg.secret())
 		{
 			assert(_pData->ClientID == 0);
 			_pData->ClientID = cl->GetClientID();
 			m_ClientAuthInfo.insert(std::make_pair(cl->GetClientID(), _pData));
-			ClientConnectLog("新的客户端认证成功！token:%s", msg.stoken().c_str());
 			
 			svrData::AddNewClient SendMsg;
 			SendMsg.set_ngameid(cl->GetLogicServer());
-			SendMsg.set_account(msg.stoken());
+			SendMsg.set_account(msg.account());
 			CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), SendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT, cl->GetClientID());
-			cl->SetLogicServerID(_pData->GameServerID);
 			cl->SetAlreadyAuth();
 			return;
 		}
+		else
+		{
+			sendMsg.set_ncode(netData::LoginRet::EC_SECRET);
+			ClientConnectError("登陆失败！account:%s，秘钥：%s错误！", msg.account().c_str(), msg.secret().c_str());
+		}
+	}
+	else
+	{
+		sendMsg.set_ncode(netData::LoginRet::EC_ACCOUNT);
+		ClientConnectError("登陆失败！account:%s，没有找到账号信息", msg.account().c_str());
 	}
 
-	netData::LoginRet sendMsg;
-	sendMsg.set_ncode(netData::LoginRet::EC_FAIL);
 	CGateClientMgr::Instance().SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET);
-	// 认证失败
-	ClientConnectError("新的客户端认证失败！token:%s", msg.stoken().c_str());
 }
 
 ClientAuthInfo *CClientAuth::FindAuthInfo(int32 clientid)
