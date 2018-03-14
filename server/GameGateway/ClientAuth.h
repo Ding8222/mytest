@@ -7,6 +7,7 @@ struct ClientAuthInfo
 	ClientAuthInfo()
 	{
 		ClientID = 0;
+		GameServerID = 0;
 		Token.clear();
 		Secret.clear();
 	}
@@ -35,8 +36,10 @@ public:
 
 	// 中心服务器通知添加token
 	void AddAuthInfo(Msg *pMsg);
+	// 更新Client所在GameSvr
+	void UpdateGameSvrID(int32 clientid, int32 gameid);
 	// 踢下Client
-	void KickClient(int32 clientid, bool closeclient = true, bool changeline = false);
+	void KickClient(int32 clientid, bool closeclient = true);
 	// client请求登陆
 	void QueryLogin(Msg *pMsg, CClient *cl);
 	// 返回当前Client数量

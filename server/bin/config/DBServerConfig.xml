@@ -30,8 +30,8 @@ SQL_Log				是否开启SQL查询日志
 
 -->
 <Base 
-	Over_Time = "5000"
-	Ping_Time = "1000"
+	Over_Time = "500000"
+	Ping_Time = "100000"
 	Elapsed_Log = "true"
 	
 	LogServer_IP = "127.0.0.1"
@@ -39,15 +39,6 @@ SQL_Log				是否开启SQL查询日志
 	LogServer_ID = "6000"
 	>
 </Base>
-
-<CenterServer 
-	Server_ID = "1000"
-	Listen_Port = "10001"
-	Server_IP = "127.0.0.1"
-	
-	DBID = "2000"
-	>
-</CenterServer>
 
 <DBServer 
 	Begin_MapID = "1"
@@ -68,66 +59,3 @@ SQL_Log				是否开启SQL查询日志
 	SQL_Log = "true"
 	>
 </DBServer>
-
-<GameGateway 
-	Server_ID = "3000"
-	Listen_Port = "30000"
-	Server_IP = "127.0.0.1"
-	
-	CenterServer_IP = "127.0.0.1"
-	CenterServer_Port = "10001"
-	CenterServer_ID = "1000"
-	
-	GameServer_IP = "127.0.0.1"
-	GameServer_Port = "40000"
-	GameServer_ID = "4000"
-	
-	ClientNum_Max = "2000"
-	DataLimt_Recv = "32768"
-	DataLimt_Send = "173056"
-	
-	ClientConnect_Log = "true"
-	>
-</GameGateway>
-
-<GameServer 
-	Server_ID = "4000"
-	Listen_Port = "40000"
-	Server_IP = "127.0.0.1"
-	
-	CenterServer_IP = "127.0.0.1"
-	CenterServer_Port = "10001"
-	CenterServer_ID = "1000"
-	>
-</GameServer>
-
-<LoginServer 
-	Server_ID = "5000"
-	Listen_Port = "50001"
-	Server_IP = "127.0.0.1"
-	
-	CenterServer_IP = "127.0.0.1"
-	CenterServer_Port = "10001"
-	CenterServer_ID = "1000"
-	
-	ClientNum_Max = "2000"
-	DataLimt_Recv = "32768"
-	DataLimt_Send = "173056"
-	
-	ClientConnect_Log = "true"
-	>
-</LoginServer>
-
-<LogServer 
-	Server_ID = "6000"
-	Listen_Port = "60001"
-	Server_IP = "127.0.0.1"
-	
-	DBName = "test"
-	DBUser = "root"
-	DBPass = "root"
-	DBIP = "127.0.0.1:3306"
-	
-	SQL_Log = "true"
-	>
-</LogServer>

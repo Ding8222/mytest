@@ -227,42 +227,49 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				netData::PlayerMoveRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				if (msg.ntempid() == _con->GetTempID())
+				if (_con->GetChangeMap())
 				{
-// 					netData::PlayerMove sendMsg;
-// 					int x = msg.x();
-// 					int y = msg.y();
-// 					int nRand = rand() % 10000;
-// 					if (nRand > 5000)
-// 						x += 10;
-// 					else
-// 						x -= 10;
-// 
-// 					if (x > 1000)
-// 						x = 1000;
-// 					else if (x < 0)
-// 						x = 0;
-// 
-// 					nRand = rand() % 10000;
-// 					if (nRand > 5000)
-// 						y += 10;
-// 					else
-// 						y -= 10;
-// 
-// 					if (y > 1000)
-// 						y = 1000;
-// 					else if (y < 0)
-// 						y = 0;
-// 
-// 					sendMsg.set_x(x);
-// 					sendMsg.set_y(y);
-// 					sendMsg.set_z(0);
-// 					_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
+					if (msg.ntempid() == _con->GetTempID())
+					{
+						netData::PlayerMove sendMsg;
+						int x = msg.x();
+						int y = msg.y();
+						int nRand = rand() % 10000;
+						if (nRand > 5000)
+							x += 10;
+						else
+							x -= 10;
 
- 					netData::ChangeMap SendMsg;
- 					SendMsg.set_nmapid(10);
- 					_con->SendMsg(SendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_CHANGEMAP);
+						if (x > 1000)
+							x = 1000;
+						else if (x < 0)
+							x = 0;
+
+						nRand = rand() % 10000;
+						if (nRand > 5000)
+							y += 10;
+						else
+							y -= 10;
+
+						if (y > 1000)
+							y = 1000;
+						else if (y < 0)
+							y = 0;
+
+						sendMsg.set_x(x);
+						sendMsg.set_y(y);
+						sendMsg.set_z(0);
+						_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
+					}
 				}
+				else
+				{
+					netData::ChangeMap SendMsg;
+					SendMsg.set_nmapid(10);
+					_con->SendMsg(SendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_CHANGEMAP);
+					_con->SetChangeMap();
+				}
+
 				break;
 			}
 			case CLIENT_SUB_CHANGEMAP_RET:

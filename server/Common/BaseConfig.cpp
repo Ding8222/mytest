@@ -1,7 +1,8 @@
-﻿#include "baseconfig.h"
+﻿#include <string>
+#include "baseconfig.h"
 #include "tinyxml2.h"
 #include "log.h"
-#include <string>
+#include "fmt/ostream.h"
 
 using namespace tinyxml2;
 
@@ -34,20 +35,20 @@ CBaseConfig::~CBaseConfig()
 	memset(s_LogServerIP, 0, sizeof(s_ServerIP));
 }
 
-bool CBaseConfig::Init(const char *servername, int lineid)
+bool CBaseConfig::Init(const std::string &servername, int lineid)
 {
-	const char *filename = "./config/serverconfig.xml";
+	std::string filename = fmt::format("./config/{0}Config.xml", servername);
 	XMLDocument doc;
-	if (doc.LoadFile(filename) != XML_SUCCESS)
+	if (doc.LoadFile(filename.c_str()) != XML_SUCCESS)
 	{
-		log_error("加载 %s 失败!", filename);
+		log_error("加载 %s 失败!", filename.c_str());
 		return false;
 	}
 
 	XMLElement *pBaseInfo = doc.FirstChildElement("Base");
 	if (!pBaseInfo)
 	{
-		log_error("没有找到节点：'%s'", servername);
+		log_error("没有找到节点：'%s'", "Base");
 		return false;
 	}
 
@@ -108,10 +109,10 @@ bool CBaseConfig::Init(const char *servername, int lineid)
 		return false;
 	}
 
-	XMLElement *pServerInfo = doc.FirstChildElement(servername);
+	XMLElement *pServerInfo = doc.FirstChildElement(servername.c_str());
 	if (!pServerInfo)
 	{
-		log_error("没有找到节点：'%s'", servername);
+		log_error("没有找到节点：'%s'", servername.c_str());
 		return false;
 	}
 

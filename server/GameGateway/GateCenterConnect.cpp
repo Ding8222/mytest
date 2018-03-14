@@ -124,12 +124,14 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 			case SVR_SUB_KICKCLIENT:
 			{
 				CClientAuth::Instance().KickClient(tl->id);
+				break;
 			}
 			case SVR_SUB_CHANGELINE_RET:
 			{
 				CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
+				break;
 			}
-			case SERVER_TYPE_MAIN:
+			case SVR_SUB_CHANGELINE:
 			{
 				svrData::ChangeLine msg;
 				_CHECK_PARSE_(pMsg, msg);
@@ -137,11 +139,13 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 				CClient *cl = CGateClientMgr::Instance().FindClientByClientID(tl->id);
 				if(cl)
 				{
+					CClientAuth::Instance().UpdateGameSvrID(tl->id, msg.ngameid());
 					cl->SetLogicServerID(msg.ngameid());
 					svrData::LoadPlayerData Data;
 					Data.CopyFrom(msg.data());
 					CGameConnect::Instance().SendMsgToServer(msg.ngameid(), Data, SERVER_TYPE_MAIN, SVR_SUB_LOAD_PLAYERDATA, tl->id);
 				}
+				break;
 			}
 			}
 			break;

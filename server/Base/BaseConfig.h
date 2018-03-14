@@ -12,7 +12,7 @@ public:
 	CBaseConfig();
 	~CBaseConfig();
 	
-	bool Init(const char *servername = "", int lineid = 0);
+	bool Init(const std::string &servername, int lineid = 0);
 
 	bool IsOpenElapsedLog() { return m_IsOpenElapsedLog; }
 	int GetListenPort() { return m_ListenPort; }

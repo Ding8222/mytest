@@ -2,6 +2,7 @@
 #include "GlobalDefine.h"
 #include "tinyxml2.h"
 #include "log.h"
+#include "fmt/ostream.h"
 
 using namespace tinyxml2;
 
@@ -42,11 +43,11 @@ bool CConfig::Init(const char *servername, int lineid)
 	SetServerType(ServerEnum::EST_GATE);
 	SetLineID(lineid);
 
-	const char *filename = "./config/gatewayconfig.xml";
+	std::string filename = fmt::format("./config/{0}Config.xml", servername);
 	XMLDocument doc;
-	if (doc.LoadFile(filename) != XML_SUCCESS)
+	if (doc.LoadFile(filename.c_str()) != XML_SUCCESS)
 	{
-		log_error("加载 %s 失败!", filename);
+		log_error("加载 %s 失败!", filename.c_str());
 		return false;
 	}
 
@@ -128,7 +129,7 @@ bool CConfig::Init(const char *servername, int lineid)
 		server.ip = ip;
 		if (server.ip.empty())
 		{
-			log_error("IP 填写错误：%s");
+			log_error("IP 填写错误：%s", server.ip.c_str());
 			return false;
 		}
 

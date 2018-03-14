@@ -18,6 +18,7 @@ CRobot::CRobot()
 	m_isAuth = false;
 	m_isHandShake = false;
 	m_TempID = 0;
+	bChangeMap = false;
 }
 
 CRobot::~CRobot()

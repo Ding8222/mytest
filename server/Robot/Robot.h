@@ -39,6 +39,8 @@ public:
 	std::string GetAccount() { return sAccount; }
 	void SetTempID(int32 id) { m_TempID = id; }
 	int32 GetTempID() { return m_TempID; }
+	void SetChangeMap() { bChangeMap = true; }
+	bool GetChangeMap() { return bChangeMap; }
 private:
 	bool m_isHandShake;
 	bool m_isAuth;
@@ -48,4 +50,5 @@ private:
 	std::string sSecret;
 	std::string sAccount;
 	int32 m_TempID;
+	bool bChangeMap;
 };

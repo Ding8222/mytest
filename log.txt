@@ -112,11 +112,14 @@ logsvr，namechecksvr
 --将登陆选角调整到login
 player在center的ClientSvrMgr中的id不能使用clientid了,因为一线、二线都有clientid为1的player
 这边需要center统一分配，看是找个什么方法比较好，其实就是为了解决center发送消息到client
+--已处理
 
 换线的token是由gamegateway填充的，看要不要做到center中去管理分发
+--现在换线不用换gate，所以token留在gate即可
 
 换线这一流程要完整测试，每个步骤要清晰合理，不能乱，log要打足，每个失败的地方要做处理
 
 在当前服务器的下线工作也需要处理。
 
 调整了game和gate的连接逻辑，game这边的clientid可能需要调整
+--不需要，game这边记录的是gate指针

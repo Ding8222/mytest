@@ -93,7 +93,17 @@ void CClientAuth::AddAuthInfo(Msg *pMsg)
 	}
 }
 
-void CClientAuth::KickClient(int32 clientid, bool closeclient, bool changeline)
+void CClientAuth::UpdateGameSvrID(int32 clientid, int32 gameid)
+{
+	auto iter = m_ClientAuthInfo.find(clientid);
+	assert(iter != m_ClientAuthInfo.end());
+	if (iter != m_ClientAuthInfo.end())
+	{
+		iter->second->GameServerID = gameid;
+	}
+}
+
+void CClientAuth::KickClient(int32 clientid, bool closeclient)
 {
 	auto iter = m_ClientAuthInfo.find(clientid);
 	assert(iter != m_ClientAuthInfo.end());
@@ -101,7 +111,6 @@ void CClientAuth::KickClient(int32 clientid, bool closeclient, bool changeline)
 	{
 		// 通知玩家下线处理
 		svrData::DelClient sendMsg;
-		sendMsg.set_bchangeline(changeline);
 		CGameConnect::Instance().SendMsgToServer(iter->second->GameServerID, sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, clientid);
 
 		m_ClientSecretInfo.erase(iter->second->Token);

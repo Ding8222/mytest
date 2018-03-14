@@ -425,7 +425,6 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::DelClient, account_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::DelClient, bchangeline_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::ClientToken, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -476,7 +475,6 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::KickClient, bchangeline_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::svrData::Ping)},
@@ -487,11 +485,11 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 40, -1, sizeof(::svrData::AddNewClient)},
   { 47, -1, sizeof(::svrData::AddNewClientRet)},
   { 53, -1, sizeof(::svrData::DelClient)},
-  { 60, -1, sizeof(::svrData::ClientToken)},
-  { 69, -1, sizeof(::svrData::LoadPlayerData)},
-  { 88, -1, sizeof(::svrData::ChangeLine)},
-  { 97, -1, sizeof(::svrData::ChangeLineRet)},
-  { 105, -1, sizeof(::svrData::KickClient)},
+  { 59, -1, sizeof(::svrData::ClientToken)},
+  { 68, -1, sizeof(::svrData::LoadPlayerData)},
+  { 87, -1, sizeof(::svrData::ChangeLine)},
+  { 96, -1, sizeof(::svrData::ChangeLineRet)},
+  { 104, -1, sizeof(::svrData::KickClient)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -546,26 +544,25 @@ void AddDescriptorsImpl() {
       "w\030\001 \001(\005\022\027\n\017nClientCountMax\030\002 \001(\005\"0\n\014AddN"
       "ewClient\022\017\n\007nGameID\030\001 \001(\005\022\017\n\007Account\030\002 \001"
       "(\t\"*\n\017AddNewClientRet\022\027\n\017nCenterClientID"
-      "\030\001 \001(\005\"1\n\tDelClient\022\017\n\007Account\030\001 \001(\t\022\023\n\013"
-      "bChangeLine\030\002 \001(\010\"f\n\013ClientToken\022\017\n\007nGam"
-      "eID\030\001 \001(\005\022\017\n\007Account\030\002 \001(\t\022\016\n\006Secret\030\003 \001"
-      "(\014\022%\n\004Data\030\004 \001(\0132\027.svrData.LoadPlayerDat"
-      "a\"\344\001\n\016LoadPlayerData\022\027\n\017nCenterClientID\030"
-      "\001 \001(\005\022\017\n\007account\030\002 \001(\t\022\014\n\004name\030\003 \001(\t\022\014\n\004"
-      "guid\030\004 \001(\003\022\013\n\003sex\030\005 \001(\005\022\013\n\003job\030\006 \001(\005\022\r\n\005"
-      "level\030\007 \001(\005\022\022\n\ncreatetime\030\010 \001(\003\022\021\n\tlogin"
-      "time\030\t \001(\003\022\r\n\005mapid\030\n \001(\005\022\t\n\001x\030\013 \001(\002\022\t\n\001"
-      "y\030\014 \001(\002\022\t\n\001z\030\r \001(\002\022\014\n\004data\030\016 \001(\014\"e\n\nChan"
-      "geLine\022\016\n\006nMapID\030\001 \001(\005\022\017\n\007nLineID\030\002 \001(\005\022"
-      "\017\n\007nGameID\030\003 \001(\005\022%\n\004Data\030\004 \001(\0132\027.svrData"
-      ".LoadPlayerData\"|\n\rChangeLineRet\022\r\n\005nCod"
-      "e\030\001 \001(\005\022\017\n\007nGameID\030\002 \001(\005\022\016\n\006nMapID\030\003 \001(\005"
-      "\";\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_"
-      "FAIL\020\002\022\r\n\tEC_SERVER\020\003\"!\n\nKickClient\022\023\n\013b"
-      "ChangeLine\030\001 \001(\010b\006proto3"
+      "\030\001 \001(\005\"\034\n\tDelClient\022\017\n\007Account\030\001 \001(\t\"f\n\013"
+      "ClientToken\022\017\n\007nGameID\030\001 \001(\005\022\017\n\007Account\030"
+      "\002 \001(\t\022\016\n\006Secret\030\003 \001(\014\022%\n\004Data\030\004 \001(\0132\027.sv"
+      "rData.LoadPlayerData\"\344\001\n\016LoadPlayerData\022"
+      "\027\n\017nCenterClientID\030\001 \001(\005\022\017\n\007account\030\002 \001("
+      "\t\022\014\n\004name\030\003 \001(\t\022\014\n\004guid\030\004 \001(\003\022\013\n\003sex\030\005 \001"
+      "(\005\022\013\n\003job\030\006 \001(\005\022\r\n\005level\030\007 \001(\005\022\022\n\ncreate"
+      "time\030\010 \001(\003\022\021\n\tlogintime\030\t \001(\003\022\r\n\005mapid\030\n"
+      " \001(\005\022\t\n\001x\030\013 \001(\002\022\t\n\001y\030\014 \001(\002\022\t\n\001z\030\r \001(\002\022\014\n"
+      "\004data\030\016 \001(\014\"e\n\nChangeLine\022\016\n\006nMapID\030\001 \001("
+      "\005\022\017\n\007nLineID\030\002 \001(\005\022\017\n\007nGameID\030\003 \001(\005\022%\n\004D"
+      "ata\030\004 \001(\0132\027.svrData.LoadPlayerData\"|\n\rCh"
+      "angeLineRet\022\r\n\005nCode\030\001 \001(\005\022\017\n\007nGameID\030\002 "
+      "\001(\005\022\016\n\006nMapID\030\003 \001(\005\";\n\002EC\022\014\n\010EC_OTHER\020\000\022"
+      "\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002\022\r\n\tEC_SERVER\020\003"
+      "\"\014\n\nKickClientb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1224);
+      descriptor, 1182);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "ServerMsg.proto", &protobuf_RegisterTypes);
 }
@@ -2759,7 +2756,6 @@ void DelClient::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int DelClient::kAccountFieldNumber;
-const int DelClient::kBChangeLineFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 DelClient::DelClient()
@@ -2779,13 +2775,11 @@ DelClient::DelClient(const DelClient& from)
   if (from.account().size() > 0) {
     account_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.account_);
   }
-  bchangeline_ = from.bchangeline_;
   // @@protoc_insertion_point(copy_constructor:svrData.DelClient)
 }
 
 void DelClient::SharedCtor() {
   account_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  bchangeline_ = false;
   _cached_size_ = 0;
 }
 
@@ -2821,7 +2815,6 @@ void DelClient::Clear() {
   (void) cached_has_bits;
 
   account_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  bchangeline_ = false;
   _internal_metadata_.Clear();
 }
 
@@ -2845,20 +2838,6 @@ bool DelClient::MergePartialFromCodedStream(
             this->account().data(), static_cast<int>(this->account().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "svrData.DelClient.Account"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // bool bChangeLine = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &bchangeline_)));
         } else {
           goto handle_unusual;
         }
@@ -2901,11 +2880,6 @@ void DelClient::SerializeWithCachedSizes(
       1, this->account(), output);
   }
 
-  // bool bChangeLine = 2;
-  if (this->bchangeline() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->bchangeline(), output);
-  }
-
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -2931,11 +2905,6 @@ void DelClient::SerializeWithCachedSizes(
         1, this->account(), target);
   }
 
-  // bool bChangeLine = 2;
-  if (this->bchangeline() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->bchangeline(), target);
-  }
-
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -2958,11 +2927,6 @@ size_t DelClient::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->account());
-  }
-
-  // bool bChangeLine = 2;
-  if (this->bchangeline() != 0) {
-    total_size += 1 + 1;
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2998,9 +2962,6 @@ void DelClient::MergeFrom(const DelClient& from) {
 
     account_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.account_);
   }
-  if (from.bchangeline() != 0) {
-    set_bchangeline(from.bchangeline());
-  }
 }
 
 void DelClient::CopyFrom(const ::google::protobuf::Message& from) {
@@ -3028,7 +2989,6 @@ void DelClient::Swap(DelClient* other) {
 void DelClient::InternalSwap(DelClient* other) {
   using std::swap;
   account_.Swap(&other->account_);
-  swap(bchangeline_, other->bchangeline_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -4845,7 +4805,6 @@ void ChangeLineRet::InternalSwap(ChangeLineRet* other) {
 void KickClient::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int KickClient::kBChangeLineFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 KickClient::KickClient()
@@ -4861,12 +4820,10 @@ KickClient::KickClient(const KickClient& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  bchangeline_ = from.bchangeline_;
   // @@protoc_insertion_point(copy_constructor:svrData.KickClient)
 }
 
 void KickClient::SharedCtor() {
-  bchangeline_ = false;
   _cached_size_ = 0;
 }
 
@@ -4900,7 +4857,6 @@ void KickClient::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  bchangeline_ = false;
   _internal_metadata_.Clear();
 }
 
@@ -4913,31 +4869,12 @@ bool KickClient::MergePartialFromCodedStream(
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // bool bChangeLine = 1;
-      case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &bchangeline_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
+  handle_unusual:
+    if (tag == 0) {
+      goto success;
     }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, _internal_metadata_.mutable_unknown_fields()));
   }
 success:
   // @@protoc_insertion_point(parse_success:svrData.KickClient)
@@ -4954,11 +4891,6 @@ void KickClient::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // bool bChangeLine = 1;
-  if (this->bchangeline() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->bchangeline(), output);
-  }
-
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -4972,11 +4904,6 @@ void KickClient::SerializeWithCachedSizes(
   // @@protoc_insertion_point(serialize_to_array_start:svrData.KickClient)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
-
-  // bool bChangeLine = 1;
-  if (this->bchangeline() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->bchangeline(), target);
-  }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
@@ -4995,11 +4922,6 @@ size_t KickClient::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // bool bChangeLine = 1;
-  if (this->bchangeline() != 0) {
-    total_size += 1 + 1;
-  }
-
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -5029,9 +4951,6 @@ void KickClient::MergeFrom(const KickClient& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.bchangeline() != 0) {
-    set_bchangeline(from.bchangeline());
-  }
 }
 
 void KickClient::CopyFrom(const ::google::protobuf::Message& from) {
@@ -5058,7 +4977,6 @@ void KickClient::Swap(KickClient* other) {
 }
 void KickClient::InternalSwap(KickClient* other) {
   using std::swap;
-  swap(bchangeline_, other->bchangeline_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }

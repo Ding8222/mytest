@@ -1152,18 +1152,11 @@ class DelClient : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::std::string* release_account();
   void set_allocated_account(::std::string* account);
 
-  // bool bChangeLine = 2;
-  void clear_bchangeline();
-  static const int kBChangeLineFieldNumber = 2;
-  bool bchangeline() const;
-  void set_bchangeline(bool value);
-
   // @@protoc_insertion_point(class_scope:svrData.DelClient)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr account_;
-  bool bchangeline_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsDelClientImpl();
@@ -1891,17 +1884,10 @@ class KickClient : public ::google::protobuf::Message /* @@protoc_insertion_poin
 
   // accessors -------------------------------------------------------
 
-  // bool bChangeLine = 1;
-  void clear_bchangeline();
-  static const int kBChangeLineFieldNumber = 1;
-  bool bchangeline() const;
-  void set_bchangeline(bool value);
-
   // @@protoc_insertion_point(class_scope:svrData.KickClient)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  bool bchangeline_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsKickClientImpl();
@@ -2381,20 +2367,6 @@ inline void DelClient::set_allocated_account(::std::string* account) {
   }
   account_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), account);
   // @@protoc_insertion_point(field_set_allocated:svrData.DelClient.Account)
-}
-
-// bool bChangeLine = 2;
-inline void DelClient::clear_bchangeline() {
-  bchangeline_ = false;
-}
-inline bool DelClient::bchangeline() const {
-  // @@protoc_insertion_point(field_get:svrData.DelClient.bChangeLine)
-  return bchangeline_;
-}
-inline void DelClient::set_bchangeline(bool value) {
-  
-  bchangeline_ = value;
-  // @@protoc_insertion_point(field_set:svrData.DelClient.bChangeLine)
 }
 
 // -------------------------------------------------------------------
@@ -3035,20 +3007,6 @@ inline void ChangeLineRet::set_nmapid(::google::protobuf::int32 value) {
 // -------------------------------------------------------------------
 
 // KickClient
-
-// bool bChangeLine = 1;
-inline void KickClient::clear_bchangeline() {
-  bchangeline_ = false;
-}
-inline bool KickClient::bchangeline() const {
-  // @@protoc_insertion_point(field_get:svrData.KickClient.bChangeLine)
-  return bchangeline_;
-}
-inline void KickClient::set_bchangeline(bool value) {
-  
-  bchangeline_ = value;
-  // @@protoc_insertion_point(field_set:svrData.KickClient.bChangeLine)
-}
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop

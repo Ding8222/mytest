@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+服务器模块参数：
+
+Elapsed_Log			是否开启超时log
+ClientConnect_Log	是否开启client连接log
+
+Server_ID			本服的服务器ID
+Over_Time			服务器超时重连时间
+Ping_Time			服务器Ping时间
+Listen_Port			服务器监听端口
+
+CenterServer_IP		中心服务器IP
+CenterServer_Port	中心服务器端口
+CenterServer_ID		中心服务器ID
+
+GameServer_IP		逻辑服务器IP
+GameServer_Port		逻辑服务器端口
+GameServer_ID		逻辑服务器ID
+
+LogServer_IP		日志服务器IP
+LogServer_Port		日志服务器端口
+LogServer_ID		日志服务器ID
+
+ClientNum_Max		最大Client连接数
+DataLimt_Recv		接收数据大小限制，必须大于等于0，小于等于204857600，若为0则不限制
+DataLimt_Send		发送数据发小限制，必须大于等于0，小于等于204857600，若为0则不限制
+
+SQL_Log				是否开启SQL查询日志
+
+-->
+<Base 
+	Over_Time = "500000"
+	Ping_Time = "100000"
+	Elapsed_Log = "true"
+	
+	LogServer_IP = "127.0.0.1"
+	LogServer_Port = "60001"
+	LogServer_ID = "6000"
+	>
+</Base>
+
+<LoginServer 
+	Server_ID = "5000"
+	Listen_Port = "50001"
+	Server_IP = "127.0.0.1"
+	
+	CenterServer_IP = "127.0.0.1"
+	CenterServer_Port = "10001"
+	CenterServer_ID = "1000"
+	
+	ClientNum_Max = "2000"
+	DataLimt_Recv = "32768"
+	DataLimt_Send = "173056"
+	
+	ClientConnect_Log = "true"
+	>
+</LoginServer>

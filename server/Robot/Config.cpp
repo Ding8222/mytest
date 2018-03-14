@@ -2,6 +2,7 @@
 #include "GlobalDefine.h"
 #include "tinyxml2.h"
 #include "log.h"
+#include "fmt/ostream.h"
 
 using namespace tinyxml2;
 
@@ -26,11 +27,11 @@ CConfig::~CConfig()
 
 bool CConfig::Init(const char *servername)
 {
-	const char *filename = "./config/robotconfig.xml";
+	std::string filename = fmt::format("./config/{0}Config.xml", servername);
 	XMLDocument doc;
-	if (doc.LoadFile(filename) != XML_SUCCESS)
+	if (doc.LoadFile(filename.c_str()) != XML_SUCCESS)
 	{
-		log_error("加载 %s 失败!", filename);
+		log_error("加载 %s 失败!", filename.c_str());
 		return false;
 	}
 

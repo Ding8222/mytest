@@ -66,7 +66,6 @@ message AddNewClientRet
 message DelClient
 {
 	string Account = 1;
-	bool bChangeLine = 2;
 }
 
 // 0-9 ClientToken
@@ -124,5 +123,5 @@ message ChangeLineRet
 // 0-13 踢下玩家
 message KickClient
 {
-	bool bChangeLine = 1;
+
 }

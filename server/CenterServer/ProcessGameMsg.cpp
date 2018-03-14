@@ -69,10 +69,7 @@ void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			_CHECK_PARSE_(pMsg, msg);
 
 			CClientSvrMgr::Instance().DelClientSvr(tl->id);
-			if (!msg.bchangeline())
-			{
-				CClientAuthMgr::Instance().ClientOffline(msg.account());
-			}
+			CClientAuthMgr::Instance().ClientOffline(msg.account());
 			break;
 		}
 		}

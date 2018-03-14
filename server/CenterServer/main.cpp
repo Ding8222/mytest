@@ -11,6 +11,8 @@
 #include "objectpool.h"
 #include "lxnet.h"
 
+#pragma comment(lib,"fmt.lib") 
+
 #ifdef _WIN32
 #include <windows.h>
 #include "MiniDump.h"

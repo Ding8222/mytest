@@ -6,6 +6,7 @@
 #include "MapConfig.h"
 #include "Scene.h"
 #include "serverlog.h"
+#include "PlayerMgr.h"
 
 #include "MainType.h"
 #include "ServerType.h"
@@ -80,60 +81,64 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 		netData::ChangeMapRet SendMsg;
 		SendMsg.set_bchangeip(false);
 		int32 nMapID = msg.nmapid();
-		CScene *scene = CSceneMgr::Instance().FindScene(nMapID);
-		if (scene)
+		if (nMapID != pPlayer->GetMapID())
 		{
-			// 本线路存在的地图
-			if (pPlayer->LeaveScene())
+			CScene *scene = CSceneMgr::Instance().FindScene(nMapID);
+			if (scene)
 			{
-				if (scene->AddObj(pPlayer))
+				// 本线路存在的地图
+				if (pPlayer->LeaveScene())
 				{
-					SendMsg.set_ncode(netData::ChangeMapRet::EC_SUCC);
-				}
-			}
-			else
-			{
-				RunStateError("玩家[%s][%d]离开地图[%d]失败，下线!", 
-					pPlayer->GetName(), pPlayer->GetTempID(), 
-					pPlayer->GetScene() == nullptr ? -1 : pPlayer->GetScene()->GetMapID()
-				);
-				pPlayer->OffLine();
-				SendMsg.set_ncode(netData::ChangeMapRet::EC_FAIL);
-			}
-		}
-		else
-		{
-			// 本线路不存在的地图
-			if (CMapConfig::Instance().isValidMapID(nMapID))
-			{
-				// 在其他线路
-				// 向Center请求转移进入其他线路地图
-				svrData::ChangeLine SendMsg;
-				SendMsg.set_nlineid(0);
-				SendMsg.set_nmapid(nMapID);
-				svrData::LoadPlayerData *pData = SendMsg.mutable_data();
-				if (pData)
-				{
-					if (pPlayer->PackData(pData))
+					if (scene->AddObj(pPlayer))
 					{
-						pData->set_mapid(nMapID);
-#ifdef _DEBUG
-						RunStateError("玩家[%s]离开地图[%d]，换线!目标地图[%d]",
-							pPlayer->GetName(), pPlayer->GetScene() == nullptr ? -1 : pPlayer->GetScene()->GetMapID(),
-							nMapID
-						);
-#endif
-						FuncUti::SendMsgToCenter(pPlayer, SendMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE);
-						return;
+						SendMsg.set_ncode(netData::ChangeMapRet::EC_SUCC);
 					}
 				}
+				else
+				{
+					RunStateError("玩家[%s][%d]离开地图[%d]失败，下线!", 
+						pPlayer->GetName(), pPlayer->GetTempID(), 
+						pPlayer->GetScene() == nullptr ? -1 : pPlayer->GetScene()->GetMapID()
+					);
+					pPlayer->OffLine();
+					SendMsg.set_ncode(netData::ChangeMapRet::EC_FAIL);
+				}
 			}
 			else
 			{
-				// 不存在的地图ID
-				SendMsg.set_ncode(netData::ChangeMapRet::EC_MAP);
+				// 本线路不存在的地图
+				if (CMapConfig::Instance().isValidMapID(nMapID))
+				{
+					// 在其他线路
+					// 向Center请求转移进入其他线路地图
+					svrData::ChangeLine SendMsg;
+					SendMsg.set_nlineid(0);
+					SendMsg.set_nmapid(nMapID);
+					svrData::LoadPlayerData *pData = SendMsg.mutable_data();
+					if (pData)
+					{
+						if (pPlayer->PackData(pData))
+						{
+							pData->set_mapid(nMapID);
+	#ifdef _DEBUG
+							RunStateError("换线!玩家[%s]离开地图[%d]，目标地图[%d]",
+								pPlayer->GetName(), pPlayer->GetScene() == nullptr ? -1 : pPlayer->GetScene()->GetMapID(),
+								nMapID
+							);
+	#endif
+							FuncUti::SendMsgToCenter(pPlayer, SendMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE);
+							CPlayerMgr::Instance().DelPlayer(pPlayer->GetClientID());
+							return;
+						}
+					}
+				}
+				else
+				{
+					// 不存在的地图ID
+					SendMsg.set_ncode(netData::ChangeMapRet::EC_MAP);
+				}
+				FuncUti::SendPBNoLoop(pPlayer, SendMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE);
 			}
-			FuncUti::SendPBNoLoop(pPlayer, SendMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE);
 		}
 		break;
 	}
