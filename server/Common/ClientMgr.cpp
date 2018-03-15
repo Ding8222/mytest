@@ -189,7 +189,7 @@ void CClientMgr::AsLogicServerDisconnect(int logicserverid)
 		if ((*itr)->GetLogicServer() == logicserverid)
 		{
 			(*itr)->SetLogicServerID(0);
-			(*itr)->SetInLogicServerID(0);
+			(*itr)->SetRemove(g_currenttime);
 		}
 	}
 }

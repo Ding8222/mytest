@@ -3,7 +3,6 @@
 #include "log.h"
 #include "GlobalDefine.h"
 
-#include "MainType.h"
 #include "ServerType.h"
 #include "ServerMsg.pb.h"
 

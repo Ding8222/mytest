@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "MainType.h"
 
 // #define LOGIN_TYPE_MAIN 2
 

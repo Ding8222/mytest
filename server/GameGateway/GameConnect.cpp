@@ -6,7 +6,6 @@
 #include "serverlog.h"
 #include "msgbase.h"
 
-#include "MainType.h"
 #include "ServerType.h"
 #include "LoginType.h"
 #include "ClientType.h"
@@ -57,9 +56,10 @@ void CGameConnect::ServerRegisterSucc(int id, const char *ip, int port)
 
 }
 
-void CGameConnect::ConnectDisconnect(connector *)
+void CGameConnect::ConnectDisconnect(connector *con)
 {
-	CGateClientMgr::Instance().ReleaseAllClient();
+	CGateClientMgr::Instance().AsLogicServerDisconnect(con->GetConnectID());
+	CClientAuth::Instance().AsLogicServerDisconnect(con->GetConnectID());
 }
 
 void CGameConnect::ProcessMsg(connector *_con)

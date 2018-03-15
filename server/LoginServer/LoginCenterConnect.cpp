@@ -7,7 +7,6 @@
 #include "GlobalDefine.h"
 #include "ClientAuth.h"
 
-#include "MainType.h"
 #include "ServerType.h"
 #include "DBSvrType.h"
 #include "LoginType.h"

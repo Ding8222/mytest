@@ -7,7 +7,6 @@
 #include "Utilities.h"
 #include "PlayerOperate.h"
 
-#include "MainType.h"
 #include "ServerType.h"
 #include "ClientType.h"
 #include "LoginType.h"
@@ -73,7 +72,7 @@ const char *CGameGatewayMgr::GetMsgNumInfo()
 	return tempbuf;
 }
 
-void CGameGatewayMgr::SendMsgToServer(Msg &pMsg, int nType, int32 nClientID, int nServerID, bool bBroad)
+void CGameGatewayMgr::SendMsgToServer(Msg &pMsg, int nType, int64 nClientID, int nServerID, bool bBroad)
 {
 	if (!bBroad)
 	{
@@ -98,7 +97,7 @@ void CGameGatewayMgr::SendMsgToServer(Msg &pMsg, int nType, int32 nClientID, int
 	}
 }
 
-void CGameGatewayMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int32 nClientID, int nServerID, bool bBroad)
+void CGameGatewayMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int64 nClientID, int nServerID, bool bBroad)
 {
 	if (!bBroad)
 	{
@@ -134,20 +133,13 @@ void CGameGatewayMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	{
 	case ServerEnum::EST_GATE:
 	{
-		CPlayerMgr::Instance().DelAllPlayer();
+		CPlayerMgr::Instance().AsGateServerDisconnect(info->GetServerID());
 		m_GateList.erase(info->GetServerID());
 		if (overtime)
 			RunStateError("网关服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		else
 			RunStateError("网关服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		break;
-	}
-	default:
-	{
-		if (overtime)
-			RunStateError("未注册的服务器超时移除, ip:[%s]", info->GetIP());
-		else
-			RunStateError("未注册的服务器关闭移除, ip:[%s]", info->GetIP());
 	}
 	}
 }
@@ -184,18 +176,13 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				CPlayer *player = CPlayerMgr::Instance().FindPlayerByClientID(tl->id);
 				if (FuncUti::isValidCret(player))
 				{
-					int32 id = player->GetCenterClientID();
-					assert(id);
-					if (id > 0)
-					{
-						msg.set_account(player->GetAccount());
-						CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), msg,SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, id);
-					}
+					msg.set_account(player->GetAccount());
+					FuncUti::SendMsgToCenter(player, msg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT);
 					CPlayerMgr::Instance().DelPlayer(tl->id);
 				}
 				break;
 			}
-			case SVR_SUB_LOAD_PLAYERDATA:
+			case SVR_SUB_PLAYERDATA:
 			{
 				CPlayerMgr::Instance().AddPlayer(info, tl->id);
 				CPlayer *player = CPlayerMgr::Instance().FindPlayerByClientID(tl->id);

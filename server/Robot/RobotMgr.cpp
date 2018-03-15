@@ -14,7 +14,6 @@
 #include "GlobalDefine.h"
 #include "fmt/ostream.h"
 
-#include "MainType.h"
 #include "ServerType.h"
 
 #pragma comment(lib,"fmt.lib") 

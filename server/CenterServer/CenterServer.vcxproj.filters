@@ -57,7 +57,7 @@
     <ClCompile Include="ProcessGateMsg.cpp">
       <Filter>消息处理</Filter>
     </ClCompile>
-    <ClCompile Include="ClientSvrMgr.cpp">
+    <ClCompile Include="CenterPlayerMgr.cpp">
       <Filter>在线玩家</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,7 +89,7 @@
     <ClInclude Include="ProcessGateMsg.h">
       <Filter>消息处理</Filter>
     </ClInclude>
-    <ClInclude Include="ClientSvrMgr.h">
+    <ClInclude Include="CenterPlayerMgr.h">
       <Filter>在线玩家</Filter>
     </ClInclude>
   </ItemGroup>

@@ -37,6 +37,7 @@ public:
 	bool Init();
 	void Run();
 	void Destroy(bool bLoginDisconnect = false);
+	void AsLoginServerDisconnect();
 
 	// Client请求认证,loginSvr调用
 	void QueryAuth(Msg *pMsg, int32 clientid, int32 serverid);
@@ -49,7 +50,7 @@ public:
 private:
 	// id,info
 	std::vector<ClientAuthInfo *> m_ClientInfoSet;
-	// account,clientid
+	// account,centerclientid
 	std::unordered_map<std::string, int32> m_PlayerOnlineMap;
 	// account,clientid
 	std::unordered_map<std::string, int32> m_PlayerLoginMap;

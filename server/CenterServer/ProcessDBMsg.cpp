@@ -5,7 +5,6 @@
 #include "ServerStatusMgr.h"
 #include "ServerLog.h"
 
-#include "MainType.h"
 #include "LoginType.h"
 #include "ServerType.h"
 #include "ServerMsg.pb.h"
@@ -27,7 +26,7 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			info->SetPingTime(g_currenttime);
 			break;
 		}
-		case SVR_SUB_LOAD_PLAYERDATA:
+		case SVR_SUB_PLAYERDATA:
 		{
 			svrData::LoadPlayerData msg;
 			_CHECK_PARSE_(pMsg, msg);
@@ -36,7 +35,7 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			ClientAuthInfo *_pAuthInfo = CClientAuthMgr::Instance().FindClientAuthInfo(tl->id);
 			if (_pAuthInfo)
 			{
-				ServerStatusInfo *_pGameInfo = CServerStatusMgr::Instance().GetGameServerInfo(msg.mapid());
+				ServerStatusInfo *_pGameInfo = CServerStatusMgr::Instance().GetGameServerInfo(msg.nmapid());
 				ServerStatusInfo *_pGateInfo = CServerStatusMgr::Instance().GetGateServerInfo();
 				if (_pGameInfo && _pGateInfo)
 				{
@@ -45,7 +44,7 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 					SendMsg.set_nserverid(_pGateInfo->nServerID);
 					SendMsg.set_sip(_pGateInfo->chIP);
 					SendMsg.set_nport(_pGateInfo->nPort);
-					SendMsg.set_nmapid(msg.mapid());
+					SendMsg.set_nmapid(msg.nmapid());
 
 					// 将角色数据和认证信息发送到gamegateway
 					svrData::ClientAccount sendMsg;
@@ -58,7 +57,7 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 				else
 				{
 					if (!_pGameInfo)
-						RunStateError("没有找到地图：%d所在的逻辑服务器！", msg.mapid());
+						RunStateError("没有找到地图：%d所在的逻辑服务器！", msg.nmapid());
 					if (!_pGateInfo)
 						RunStateError("为账号：%s分配网关失败！", msg.account().c_str());
 					SendMsg.set_ncode(netData::SelectPlayerRet::EC_SERVER);

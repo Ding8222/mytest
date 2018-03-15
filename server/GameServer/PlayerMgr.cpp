@@ -1,7 +1,6 @@
 ﻿#include "PlayerMgr.h"
 #include "GameCenterConnect.h"
 #include "Config.h"
-#include "idmgr.c"
 #include "serverlog.h"
 #include "objectpool.h"
 #include "serverinfo.h"
@@ -57,6 +56,29 @@ bool CPlayerMgr::init()
 void CPlayerMgr::Destroy()
 {
 	DelAllPlayer();
+}
+
+void CPlayerMgr::AsGateServerDisconnect(int gateserverid)
+{
+	std::list<CPlayer*>::iterator iter, tempiter;
+	for (iter = m_PlayerList.begin(); iter != m_PlayerList.end();)
+	{
+		tempiter = iter;
+		++iter;
+
+		serverinfo *gate = (*tempiter)->GetGateInfo();
+		if (gate)
+		{
+			if (gate->GetServerID() == gateserverid)
+			{
+				if (!(*tempiter)->IsWaitRemove())
+				{
+					(*tempiter)->OffLine();
+					(*tempiter)->SetWaitRemove();
+				}
+			}
+		}
+	}
 }
 
 void CPlayerMgr::Run()
@@ -134,8 +156,8 @@ void CPlayerMgr::DelPlayer(int clientid)
 			assert(!pPlayer->IsWaitRemove());
 			if (!pPlayer->IsWaitRemove())
 			{
-				pPlayer->SetWaitRemove();
 				pPlayer->OffLine();
+				pPlayer->SetWaitRemove();
 			}
 		}
 	}
@@ -146,13 +168,13 @@ void CPlayerMgr::DelAllPlayer()
 	for (std::list<CPlayer *>::iterator itr = m_PlayerList.begin(); itr != m_PlayerList.end(); ++itr)
 	{
 		(*itr)->OffLine();
-		ReleasePlayerAndID(*itr);
+		ReleasePlayer(*itr);
 	}
 	m_PlayerList.clear();
 
 	for (std::list<CPlayer*>::iterator itr = m_WaitRemove.begin(); itr != m_WaitRemove.end(); ++itr)
 	{
-		ReleasePlayerAndID(*itr);
+		ReleasePlayer(*itr);
 	}
 	m_WaitRemove.clear();
 }
@@ -165,12 +187,12 @@ void CPlayerMgr::CheckAndRemove()
 		player = m_WaitRemove.front();
 		if (player && !player->CanRemove(g_currenttime))
 			break;
-		ReleasePlayerAndID(player);
+		ReleasePlayer(player);
 		m_WaitRemove.pop_front();
 	}
 }
 
-void CPlayerMgr::ReleasePlayerAndID(CPlayer * player)
+void CPlayerMgr::ReleasePlayer(CPlayer * player)
 {
 	if (!player)
 		return;
@@ -182,7 +204,6 @@ void CPlayerMgr::ReleasePlayerAndID(CPlayer * player)
 	}
 
 	m_PlayerSet[player->GetClientID()] = NULL;
-
 	player_release(player);
 }
 

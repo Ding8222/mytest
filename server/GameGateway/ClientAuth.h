@@ -33,6 +33,7 @@ public:
 	}
 
 	void Destroy();
+	void AsLogicServerDisconnect(int logicserverid);
 
 	// 中心服务器通知添加Account
 	void AddAccountInfo(Msg *pMsg);

@@ -9,7 +9,6 @@
 #include "GlobalDefine.h"
 #include "msgbase.h"
 
-#include "MainType.h"
 #include "ServerType.h"
 #include "LoginType.h"
 #include "Login.pb.h"
@@ -61,12 +60,28 @@ void CClientAuth::Destroy()
 		if (i.second)
 		{
 			clientauthinfo_release(i.second);
-			i.second = nullptr;
 		}
 	}
 
 	m_ClientSecretInfo.clear();
 	m_ClientAuthInfo.clear();
+}
+
+void CClientAuth::AsLogicServerDisconnect(int logicserverid)
+{
+	auto iterB = m_ClientSecretInfo.begin();
+	for (; iterB != m_ClientSecretInfo.end(); )
+	{
+		ClientAuthInfo *info = iterB->second;
+		if (info->GameServerID == logicserverid)
+		{
+			m_ClientAuthInfo.erase(info->ClientID);
+			clientauthinfo_release(info);
+			iterB = m_ClientSecretInfo.erase(iterB);
+		}
+		else
+			++iterB;
+	}
 }
 
 void CClientAuth::AddAccountInfo(Msg *pMsg)
@@ -135,6 +150,7 @@ void CClientAuth::QueryLogin(Msg *pMsg, CClient *cl)
 
 	netData::LoginRet sendMsg;
 
+	int nClientID = cl->GetClientID();
 	auto iter = m_ClientSecretInfo.find(msg.account());
 	if (iter != m_ClientSecretInfo.end())
 	{
@@ -142,13 +158,10 @@ void CClientAuth::QueryLogin(Msg *pMsg, CClient *cl)
 		if (!_pData->Secret.empty() &&_pData->Secret == msg.secret())
 		{
 			assert(_pData->ClientID == 0);
-			_pData->ClientID = cl->GetClientID();
-			m_ClientAuthInfo.insert(std::make_pair(cl->GetClientID(), _pData));
-			
-			svrData::AddNewClient SendMsg;
-			SendMsg.set_ngameid(cl->GetLogicServer());
-			SendMsg.set_account(msg.account());
-			CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), SendMsg, SERVER_TYPE_MAIN, SVR_SUB_NEW_CLIENT, cl->GetClientID());
+			_pData->ClientID = nClientID;
+			m_ClientAuthInfo.insert(std::make_pair(nClientID, _pData));
+			_pData->Data.set_bchangeline(false);
+			CGameConnect::Instance().SendMsgToServer(_pData->GameServerID, _pData->Data, SERVER_TYPE_MAIN, SVR_SUB_PLAYERDATA, nClientID);
 			cl->SetAlreadyAuth();
 			return;
 		}

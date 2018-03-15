@@ -19,18 +19,18 @@ public:
 
 	bool init();
 	void Destroy();
+	void AsGateServerDisconnect(int gateserverid);
 
 	void Run();
-
 	void ProcessAllPlayer();
 
 	bool AddPlayer(serverinfo * info,int clientid);
 	void DelPlayer(int clientid);
 	void DelAllPlayer();
-	void ReleasePlayerAndID(CPlayer *player);
+	void ReleasePlayer(CPlayer *player);
 	int GetPlayerSize() { return m_PlayerList.size(); }
-
 	CPlayer *FindPlayerByClientID(int clientid);
+	std::list<CPlayer *> &GetPlayerList() { return m_PlayerList; }
 private:
 	void CheckAndRemove();
 	bool InitIdMgrAndPlayerSet();

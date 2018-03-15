@@ -8,7 +8,6 @@
 #include "datahand.h"
 #include "DBCenterConnect.h"
 
-#include "MainType.h"
 #include "ServerType.h"
 #include "DBSvrType.h"
 

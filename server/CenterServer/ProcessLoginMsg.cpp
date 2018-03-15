@@ -2,7 +2,6 @@
 #include "ClientAuthMgr.h"
 #include "CentServerMgr.h"
 
-#include "MainType.h"
 #include "LoginType.h"
 #include "ServerType.h"
 #include "ServerMsg.pb.h"

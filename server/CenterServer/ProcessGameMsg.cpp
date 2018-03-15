@@ -1,10 +1,9 @@
 ﻿#include "ProcessGameMsg.h"
 #include "ServerStatusMgr.h"
-#include "ClientSvrMgr.h"
+#include "CenterPlayerMgr.h"
 #include "CentServerMgr.h"
 #include "ClientAuthMgr.h"
 
-#include "MainType.h"
 #include "ServerType.h"
 #include "LoginType.h"
 #include "ServerMsg.pb.h"
@@ -41,6 +40,14 @@ void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			CServerStatusMgr::Instance().UpdateGameServerLoad(info->GetServerID(), msg.nclientcountnow(), msg.nclientcountmax());
 			break;
 		}
+		case SVR_SUB_ADD_PLAYER_TO_CENTER:
+		{
+			svrData::AddPlayerToCenter msg;
+			_CHECK_PARSE_(pMsg, msg);
+
+			CCenterPlayerMgr::Instance().AddPlayer(msg.nguid(), msg.nclientid(), info->GetServerID(), msg.ngateid());
+			break;
+		}
 		case SVR_SUB_CHANGELINE:
 		{
 			// client换线切图
@@ -52,7 +59,7 @@ void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			if (_pGameInfo)
 			{
 				msg.set_ngameid(_pGameInfo->nServerID);
-				CClientSvrMgr::Instance().UpdateClientGameSvr(tl->id, _pGameInfo->nServerID);
+				CCenterPlayerMgr::Instance().UpdatePlayerGameSvr(tl->id, _pGameInfo->nServerID);
 				CCentServerMgr::Instance().SendMsgToServer(msg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE, ServerEnum::EST_GATE, tl->id);
 				return;
 			}
@@ -68,7 +75,7 @@ void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			svrData::DelClient msg;
 			_CHECK_PARSE_(pMsg, msg);
 
-			CClientSvrMgr::Instance().DelClientSvr(tl->id);
+			CCenterPlayerMgr::Instance().DelPlayer(tl->id);
 			CClientAuthMgr::Instance().ClientOffline(msg.account());
 			break;
 		}

@@ -5,7 +5,6 @@
 #include "ClientAuth.h"
 
 #include "msgbase.h"
-#include "MainType.h"
 #include "ServerType.h"
 #include "ClientType.h"
 #include "LoginType.h"

@@ -17,7 +17,6 @@ CClient::CClient()
 	m_RemoveTime = 0;
 	m_con = NULL;
 
-	m_PlayerOnlyID = 0;
 	m_GameServerID = 0;
 }
 

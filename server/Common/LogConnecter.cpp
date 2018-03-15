@@ -3,7 +3,6 @@
 #include "msgbase.h"
 #include "LogConnecter.h"
 
-#include "MainType.h"
 #include "ServerType.h"
 #include "ServerMsg.pb.h"
 

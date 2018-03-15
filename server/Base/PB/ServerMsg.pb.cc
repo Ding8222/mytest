@@ -45,16 +45,11 @@ class UpdateServerLoadDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<UpdateServerLoad>
       _instance;
 } _UpdateServerLoad_default_instance_;
-class AddNewClientDefaultTypeInternal {
+class AddPlayerToCenterDefaultTypeInternal {
  public:
-  ::google::protobuf::internal::ExplicitlyConstructed<AddNewClient>
+  ::google::protobuf::internal::ExplicitlyConstructed<AddPlayerToCenter>
       _instance;
-} _AddNewClient_default_instance_;
-class AddNewClientRetDefaultTypeInternal {
- public:
-  ::google::protobuf::internal::ExplicitlyConstructed<AddNewClientRet>
-      _instance;
-} _AddNewClientRet_default_instance_;
+} _AddPlayerToCenter_default_instance_;
 class DelClientDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<DelClient>
@@ -158,6 +153,7 @@ void InitDefaultsServerLoadInfoImpl() {
 #else
   ::google::protobuf::internal::InitProtobufDefaults();
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  protobuf_ServerMsg_2eproto::InitDefaultsAddPlayerToCenter();
   {
     void* ptr = &::svrData::_ServerLoadInfo_default_instance_;
     new (ptr) ::svrData::ServerLoadInfo();
@@ -192,7 +188,7 @@ void InitDefaultsUpdateServerLoad() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsUpdateServerLoadImpl);
 }
 
-void InitDefaultsAddNewClientImpl() {
+void InitDefaultsAddPlayerToCenterImpl() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
 #ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
@@ -201,37 +197,16 @@ void InitDefaultsAddNewClientImpl() {
   ::google::protobuf::internal::InitProtobufDefaults();
 #endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
   {
-    void* ptr = &::svrData::_AddNewClient_default_instance_;
-    new (ptr) ::svrData::AddNewClient();
+    void* ptr = &::svrData::_AddPlayerToCenter_default_instance_;
+    new (ptr) ::svrData::AddPlayerToCenter();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::svrData::AddNewClient::InitAsDefaultInstance();
+  ::svrData::AddPlayerToCenter::InitAsDefaultInstance();
 }
 
-void InitDefaultsAddNewClient() {
+void InitDefaultsAddPlayerToCenter() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
-  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsAddNewClientImpl);
-}
-
-void InitDefaultsAddNewClientRetImpl() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
-  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
-#else
-  ::google::protobuf::internal::InitProtobufDefaults();
-#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
-  {
-    void* ptr = &::svrData::_AddNewClientRet_default_instance_;
-    new (ptr) ::svrData::AddNewClientRet();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::svrData::AddNewClientRet::InitAsDefaultInstance();
-}
-
-void InitDefaultsAddNewClientRet() {
-  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
-  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsAddNewClientRetImpl);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsAddPlayerToCenterImpl);
 }
 
 void InitDefaultsDelClientImpl() {
@@ -362,8 +337,8 @@ void InitDefaultsKickClient() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsKickClientImpl);
 }
 
-::google::protobuf::Metadata file_level_metadata[13];
-const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[3];
+::google::protobuf::Metadata file_level_metadata[12];
+const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[2];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
@@ -399,6 +374,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::ServerLoadInfo, nport_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::ServerLoadInfo, sip_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::ServerLoadInfo, mapid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::ServerLoadInfo, info_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::UpdateServerLoad, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -407,19 +383,13 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::UpdateServerLoad, nclientcountnow_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::UpdateServerLoad, nclientcountmax_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::AddNewClient, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::AddPlayerToCenter, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::AddNewClient, ngameid_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::AddNewClient, account_),
-  ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::AddNewClientRet, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::AddNewClientRet, ncode_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::AddNewClientRet, ncenterclientid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::AddPlayerToCenter, nguid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::AddPlayerToCenter, nclientid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::AddPlayerToCenter, ngateid_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::DelClient, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -440,19 +410,19 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, ncenterclientid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, account_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, name_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, guid_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, sex_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, job_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, level_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, createtime_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, logintime_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, mapid_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, x_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, y_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, z_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, nguid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, nsex_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, njob_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, nlevel_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, ncreatetime_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, nlogintime_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, nmapid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, nx_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, ny_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, nz_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, bchangeline_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::LoadPlayerData, data_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::ChangeLine, _internal_metadata_),
@@ -482,15 +452,14 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 5, -1, sizeof(::svrData::ServerRegister)},
   { 14, -1, sizeof(::svrData::ServerRegisterRet)},
   { 22, -1, sizeof(::svrData::ServerLoadInfo)},
-  { 33, -1, sizeof(::svrData::UpdateServerLoad)},
-  { 40, -1, sizeof(::svrData::AddNewClient)},
-  { 47, -1, sizeof(::svrData::AddNewClientRet)},
-  { 54, -1, sizeof(::svrData::DelClient)},
-  { 60, -1, sizeof(::svrData::ClientAccount)},
-  { 69, -1, sizeof(::svrData::LoadPlayerData)},
-  { 88, -1, sizeof(::svrData::ChangeLine)},
-  { 97, -1, sizeof(::svrData::ChangeLineRet)},
-  { 105, -1, sizeof(::svrData::KickClient)},
+  { 34, -1, sizeof(::svrData::UpdateServerLoad)},
+  { 41, -1, sizeof(::svrData::AddPlayerToCenter)},
+  { 49, -1, sizeof(::svrData::DelClient)},
+  { 55, -1, sizeof(::svrData::ClientAccount)},
+  { 64, -1, sizeof(::svrData::LoadPlayerData)},
+  { 83, -1, sizeof(::svrData::ChangeLine)},
+  { 92, -1, sizeof(::svrData::ChangeLineRet)},
+  { 100, -1, sizeof(::svrData::KickClient)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -499,8 +468,7 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::svrData::_ServerRegisterRet_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::svrData::_ServerLoadInfo_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::svrData::_UpdateServerLoad_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::svrData::_AddNewClient_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::svrData::_AddNewClientRet_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::svrData::_AddPlayerToCenter_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::svrData::_DelClient_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::svrData::_ClientAccount_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::svrData::_LoadPlayerData_default_instance_),
@@ -525,7 +493,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 13);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 12);
 }
 
 void AddDescriptorsImpl() {
@@ -538,34 +506,33 @@ void AddDescriptorsImpl() {
       "e\030\001 \001(\005\022\013\n\003sIP\030\002 \001(\t\022\r\n\005nPort\030\003 \001(\005\"W\n\002E"
       "C\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\026\n\022EC_SERVE"
       "R_ID_EXIST\020\002\022\036\n\032EC_TO_CONNECT_ID_NOT_EQU"
-      "AL\020\003\"t\n\016ServerLoadInfo\022\017\n\007nLineID\030\001 \001(\005\022"
-      "\022\n\nnMaxClient\030\002 \001(\005\022\022\n\nnNowClient\030\003 \001(\005\022"
-      "\r\n\005nPort\030\004 \001(\005\022\013\n\003sIP\030\005 \001(\t\022\r\n\005mapid\030\006 \003"
-      "(\005\"D\n\020UpdateServerLoad\022\027\n\017nClientCountNo"
-      "w\030\001 \001(\005\022\027\n\017nClientCountMax\030\002 \001(\005\"0\n\014AddN"
-      "ewClient\022\017\n\007nGameID\030\001 \001(\005\022\017\n\007Account\030\002 \001"
-      "(\t\"g\n\017AddNewClientRet\022\r\n\005nCode\030\001 \001(\005\022\027\n\017"
-      "nCenterClientID\030\002 \001(\005\",\n\002EC\022\014\n\010EC_OTHER\020"
-      "\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002\"\034\n\tDelClient"
+      "AL\020\003\"\236\001\n\016ServerLoadInfo\022\017\n\007nLineID\030\001 \001(\005"
+      "\022\022\n\nnMaxClient\030\002 \001(\005\022\022\n\nnNowClient\030\003 \001(\005"
+      "\022\r\n\005nPort\030\004 \001(\005\022\013\n\003sIP\030\005 \001(\t\022\r\n\005mapid\030\006 "
+      "\003(\005\022(\n\004info\030\007 \003(\0132\032.svrData.AddPlayerToC"
+      "enter\"D\n\020UpdateServerLoad\022\027\n\017nClientCoun"
+      "tNow\030\001 \001(\005\022\027\n\017nClientCountMax\030\002 \001(\005\"F\n\021A"
+      "ddPlayerToCenter\022\r\n\005nGuid\030\001 \001(\003\022\021\n\tnClie"
+      "ntID\030\002 \001(\005\022\017\n\007nGateID\030\003 \001(\005\"\034\n\tDelClient"
       "\022\017\n\007Account\030\001 \001(\t\"h\n\rClientAccount\022\017\n\007nG"
       "ameID\030\001 \001(\005\022\017\n\007Account\030\002 \001(\t\022\016\n\006Secret\030\003"
       " \001(\014\022%\n\004Data\030\004 \001(\0132\027.svrData.LoadPlayerD"
-      "ata\"\344\001\n\016LoadPlayerData\022\027\n\017nCenterClientI"
-      "D\030\001 \001(\005\022\017\n\007account\030\002 \001(\t\022\014\n\004name\030\003 \001(\t\022\014"
-      "\n\004guid\030\004 \001(\003\022\013\n\003sex\030\005 \001(\005\022\013\n\003job\030\006 \001(\005\022\r"
-      "\n\005level\030\007 \001(\005\022\022\n\ncreatetime\030\010 \001(\003\022\021\n\tlog"
-      "intime\030\t \001(\003\022\r\n\005mapid\030\n \001(\005\022\t\n\001x\030\013 \001(\002\022\t"
-      "\n\001y\030\014 \001(\002\022\t\n\001z\030\r \001(\002\022\014\n\004data\030\016 \001(\014\"e\n\nCh"
-      "angeLine\022\016\n\006nMapID\030\001 \001(\005\022\017\n\007nLineID\030\002 \001("
-      "\005\022\017\n\007nGameID\030\003 \001(\005\022%\n\004Data\030\004 \001(\0132\027.svrDa"
-      "ta.LoadPlayerData\"|\n\rChangeLineRet\022\r\n\005nC"
-      "ode\030\001 \001(\005\022\017\n\007nGameID\030\002 \001(\005\022\016\n\006nMapID\030\003 \001"
-      "(\005\";\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007E"
-      "C_FAIL\020\002\022\r\n\tEC_SERVER\020\003\"\014\n\nKickClientb\006p"
-      "roto3"
+      "ata\"\352\001\n\016LoadPlayerData\022\017\n\007Account\030\001 \001(\t\022"
+      "\014\n\004Name\030\002 \001(\t\022\r\n\005nGuid\030\003 \001(\003\022\014\n\004nSex\030\004 \001"
+      "(\005\022\014\n\004nJob\030\005 \001(\005\022\016\n\006nLevel\030\006 \001(\005\022\023\n\013nCre"
+      "ateTime\030\007 \001(\003\022\022\n\nnLoginTime\030\010 \001(\003\022\016\n\006nMa"
+      "pID\030\t \001(\005\022\n\n\002nX\030\n \001(\002\022\n\n\002nY\030\013 \001(\002\022\n\n\002nZ\030"
+      "\014 \001(\002\022\023\n\013bChangeLine\030\r \001(\010\022\014\n\004Data\030\016 \001(\014"
+      "\"e\n\nChangeLine\022\016\n\006nMapID\030\001 \001(\005\022\017\n\007nLineI"
+      "D\030\002 \001(\005\022\017\n\007nGameID\030\003 \001(\005\022%\n\004Data\030\004 \001(\0132\027"
+      ".svrData.LoadPlayerData\"|\n\rChangeLineRet"
+      "\022\r\n\005nCode\030\001 \001(\005\022\017\n\007nGameID\030\002 \001(\005\022\016\n\006nMap"
+      "ID\030\003 \001(\005\";\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020"
+      "\001\022\013\n\007EC_FAIL\020\002\022\r\n\tEC_SERVER\020\003\"\014\n\nKickCli"
+      "entb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1245);
+      descriptor, 1211);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "ServerMsg.proto", &protobuf_RegisterTypes);
 }
@@ -607,32 +574,9 @@ const ServerRegisterRet_EC ServerRegisterRet::EC_MIN;
 const ServerRegisterRet_EC ServerRegisterRet::EC_MAX;
 const int ServerRegisterRet::EC_ARRAYSIZE;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-const ::google::protobuf::EnumDescriptor* AddNewClientRet_EC_descriptor() {
-  protobuf_ServerMsg_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_ServerMsg_2eproto::file_level_enum_descriptors[1];
-}
-bool AddNewClientRet_EC_IsValid(int value) {
-  switch (value) {
-    case 0:
-    case 1:
-    case 2:
-      return true;
-    default:
-      return false;
-  }
-}
-
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const AddNewClientRet_EC AddNewClientRet::EC_OTHER;
-const AddNewClientRet_EC AddNewClientRet::EC_SUCC;
-const AddNewClientRet_EC AddNewClientRet::EC_FAIL;
-const AddNewClientRet_EC AddNewClientRet::EC_MIN;
-const AddNewClientRet_EC AddNewClientRet::EC_MAX;
-const int AddNewClientRet::EC_ARRAYSIZE;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 const ::google::protobuf::EnumDescriptor* ChangeLineRet_EC_descriptor() {
   protobuf_ServerMsg_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_ServerMsg_2eproto::file_level_enum_descriptors[2];
+  return protobuf_ServerMsg_2eproto::file_level_enum_descriptors[1];
 }
 bool ChangeLineRet_EC_IsValid(int value) {
   switch (value) {
@@ -1529,6 +1473,7 @@ const int ServerLoadInfo::kNNowClientFieldNumber;
 const int ServerLoadInfo::kNPortFieldNumber;
 const int ServerLoadInfo::kSIPFieldNumber;
 const int ServerLoadInfo::kMapidFieldNumber;
+const int ServerLoadInfo::kInfoFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ServerLoadInfo::ServerLoadInfo()
@@ -1543,6 +1488,7 @@ ServerLoadInfo::ServerLoadInfo(const ServerLoadInfo& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       mapid_(from.mapid_),
+      info_(from.info_),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   sip_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
@@ -1595,6 +1541,7 @@ void ServerLoadInfo::Clear() {
   (void) cached_has_bits;
 
   mapid_.Clear();
+  info_.Clear();
   sip_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&nlineid_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&nport_) -
@@ -1703,6 +1650,18 @@ bool ServerLoadInfo::MergePartialFromCodedStream(
         break;
       }
 
+      // repeated .svrData.AddPlayerToCenter info = 7;
+      case 7: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(58u /* 58 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+                input, add_info()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -1770,6 +1729,15 @@ void ServerLoadInfo::SerializeWithCachedSizes(
       this->mapid(i), output);
   }
 
+  // repeated .svrData.AddPlayerToCenter info = 7;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->info_size()); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      7,
+      this->info(static_cast<int>(i)),
+      output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -1828,6 +1796,14 @@ void ServerLoadInfo::SerializeWithCachedSizes(
       WriteInt32NoTagToArray(this->mapid_, target);
   }
 
+  // repeated .svrData.AddPlayerToCenter info = 7;
+  for (unsigned int i = 0,
+      n = static_cast<unsigned int>(this->info_size()); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageToArray(
+        7, this->info(static_cast<int>(i)), deterministic, target);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -1859,6 +1835,17 @@ size_t ServerLoadInfo::ByteSizeLong() const {
     _mapid_cached_byte_size_ = cached_size;
     GOOGLE_SAFE_CONCURRENT_WRITES_END();
     total_size += data_size;
+  }
+
+  // repeated .svrData.AddPlayerToCenter info = 7;
+  {
+    unsigned int count = static_cast<unsigned int>(this->info_size());
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSize(
+          this->info(static_cast<int>(i)));
+    }
   }
 
   // string sIP = 5;
@@ -1926,6 +1913,7 @@ void ServerLoadInfo::MergeFrom(const ServerLoadInfo& from) {
   (void) cached_has_bits;
 
   mapid_.MergeFrom(from.mapid_);
+  info_.MergeFrom(from.info_);
   if (from.sip().size() > 0) {
 
     sip_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.sip_);
@@ -1969,6 +1957,7 @@ void ServerLoadInfo::Swap(ServerLoadInfo* other) {
 void ServerLoadInfo::InternalSwap(ServerLoadInfo* other) {
   using std::swap;
   mapid_.InternalSwap(&other->mapid_);
+  CastToBase(&info_)->InternalSwap(CastToBase(&other->info_));
   sip_.Swap(&other->sip_);
   swap(nlineid_, other->nlineid_);
   swap(nmaxclient_, other->nmaxclient_);
@@ -2259,395 +2248,122 @@ void UpdateServerLoad::InternalSwap(UpdateServerLoad* other) {
 
 // ===================================================================
 
-void AddNewClient::InitAsDefaultInstance() {
+void AddPlayerToCenter::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int AddNewClient::kNGameIDFieldNumber;
-const int AddNewClient::kAccountFieldNumber;
+const int AddPlayerToCenter::kNGuidFieldNumber;
+const int AddPlayerToCenter::kNClientIDFieldNumber;
+const int AddPlayerToCenter::kNGateIDFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-AddNewClient::AddNewClient()
+AddPlayerToCenter::AddPlayerToCenter()
   : ::google::protobuf::Message(), _internal_metadata_(NULL) {
   if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
-    ::protobuf_ServerMsg_2eproto::InitDefaultsAddNewClient();
+    ::protobuf_ServerMsg_2eproto::InitDefaultsAddPlayerToCenter();
   }
   SharedCtor();
-  // @@protoc_insertion_point(constructor:svrData.AddNewClient)
+  // @@protoc_insertion_point(constructor:svrData.AddPlayerToCenter)
 }
-AddNewClient::AddNewClient(const AddNewClient& from)
+AddPlayerToCenter::AddPlayerToCenter(const AddPlayerToCenter& from)
   : ::google::protobuf::Message(),
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  account_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  if (from.account().size() > 0) {
-    account_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.account_);
-  }
-  ngameid_ = from.ngameid_;
-  // @@protoc_insertion_point(copy_constructor:svrData.AddNewClient)
+  ::memcpy(&nguid_, &from.nguid_,
+    static_cast<size_t>(reinterpret_cast<char*>(&ngateid_) -
+    reinterpret_cast<char*>(&nguid_)) + sizeof(ngateid_));
+  // @@protoc_insertion_point(copy_constructor:svrData.AddPlayerToCenter)
 }
 
-void AddNewClient::SharedCtor() {
-  account_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ngameid_ = 0;
+void AddPlayerToCenter::SharedCtor() {
+  ::memset(&nguid_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&ngateid_) -
+      reinterpret_cast<char*>(&nguid_)) + sizeof(ngateid_));
   _cached_size_ = 0;
 }
 
-AddNewClient::~AddNewClient() {
-  // @@protoc_insertion_point(destructor:svrData.AddNewClient)
+AddPlayerToCenter::~AddPlayerToCenter() {
+  // @@protoc_insertion_point(destructor:svrData.AddPlayerToCenter)
   SharedDtor();
 }
 
-void AddNewClient::SharedDtor() {
-  account_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+void AddPlayerToCenter::SharedDtor() {
 }
 
-void AddNewClient::SetCachedSize(int size) const {
+void AddPlayerToCenter::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* AddNewClient::descriptor() {
+const ::google::protobuf::Descriptor* AddPlayerToCenter::descriptor() {
   ::protobuf_ServerMsg_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_ServerMsg_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
 }
 
-const AddNewClient& AddNewClient::default_instance() {
-  ::protobuf_ServerMsg_2eproto::InitDefaultsAddNewClient();
+const AddPlayerToCenter& AddPlayerToCenter::default_instance() {
+  ::protobuf_ServerMsg_2eproto::InitDefaultsAddPlayerToCenter();
   return *internal_default_instance();
 }
 
 
-void AddNewClient::Clear() {
-// @@protoc_insertion_point(message_clear_start:svrData.AddNewClient)
+void AddPlayerToCenter::Clear() {
+// @@protoc_insertion_point(message_clear_start:svrData.AddPlayerToCenter)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  account_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ngameid_ = 0;
+  ::memset(&nguid_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&ngateid_) -
+      reinterpret_cast<char*>(&nguid_)) + sizeof(ngateid_));
   _internal_metadata_.Clear();
 }
 
-bool AddNewClient::MergePartialFromCodedStream(
+bool AddPlayerToCenter::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:svrData.AddNewClient)
+  // @@protoc_insertion_point(parse_start:svrData.AddPlayerToCenter)
   for (;;) {
     ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // int32 nGameID = 1;
+      // int64 nGuid = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &ngameid_)));
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &nguid_)));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // string Account = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_account()));
-          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-            this->account().data(), static_cast<int>(this->account().length()),
-            ::google::protobuf::internal::WireFormatLite::PARSE,
-            "svrData.AddNewClient.Account"));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      default: {
-      handle_unusual:
-        if (tag == 0) {
-          goto success;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, _internal_metadata_.mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-success:
-  // @@protoc_insertion_point(parse_success:svrData.AddNewClient)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:svrData.AddNewClient)
-  return false;
-#undef DO_
-}
-
-void AddNewClient::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:svrData.AddNewClient)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // int32 nGameID = 1;
-  if (this->ngameid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->ngameid(), output);
-  }
-
-  // string Account = 2;
-  if (this->account().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->account().data(), static_cast<int>(this->account().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "svrData.AddNewClient.Account");
-    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->account(), output);
-  }
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
-  }
-  // @@protoc_insertion_point(serialize_end:svrData.AddNewClient)
-}
-
-::google::protobuf::uint8* AddNewClient::InternalSerializeWithCachedSizesToArray(
-    bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:svrData.AddNewClient)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // int32 nGameID = 1;
-  if (this->ngameid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->ngameid(), target);
-  }
-
-  // string Account = 2;
-  if (this->account().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
-      this->account().data(), static_cast<int>(this->account().length()),
-      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "svrData.AddNewClient.Account");
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->account(), target);
-  }
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:svrData.AddNewClient)
-  return target;
-}
-
-size_t AddNewClient::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:svrData.AddNewClient)
-  size_t total_size = 0;
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
-  }
-  // string Account = 2;
-  if (this->account().size() > 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::StringSize(
-        this->account());
-  }
-
-  // int32 nGameID = 1;
-  if (this->ngameid() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->ngameid());
-  }
-
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = cached_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void AddNewClient::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:svrData.AddNewClient)
-  GOOGLE_DCHECK_NE(&from, this);
-  const AddNewClient* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const AddNewClient>(
-          &from);
-  if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:svrData.AddNewClient)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:svrData.AddNewClient)
-    MergeFrom(*source);
-  }
-}
-
-void AddNewClient::MergeFrom(const AddNewClient& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:svrData.AddNewClient)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if (from.account().size() > 0) {
-
-    account_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.account_);
-  }
-  if (from.ngameid() != 0) {
-    set_ngameid(from.ngameid());
-  }
-}
-
-void AddNewClient::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:svrData.AddNewClient)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void AddNewClient::CopyFrom(const AddNewClient& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:svrData.AddNewClient)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool AddNewClient::IsInitialized() const {
-  return true;
-}
-
-void AddNewClient::Swap(AddNewClient* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
-void AddNewClient::InternalSwap(AddNewClient* other) {
-  using std::swap;
-  account_.Swap(&other->account_);
-  swap(ngameid_, other->ngameid_);
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(_cached_size_, other->_cached_size_);
-}
-
-::google::protobuf::Metadata AddNewClient::GetMetadata() const {
-  protobuf_ServerMsg_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_ServerMsg_2eproto::file_level_metadata[kIndexInFileMessages];
-}
-
-
-// ===================================================================
-
-void AddNewClientRet::InitAsDefaultInstance() {
-}
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int AddNewClientRet::kNCodeFieldNumber;
-const int AddNewClientRet::kNCenterClientIDFieldNumber;
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
-AddNewClientRet::AddNewClientRet()
-  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
-  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
-    ::protobuf_ServerMsg_2eproto::InitDefaultsAddNewClientRet();
-  }
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:svrData.AddNewClientRet)
-}
-AddNewClientRet::AddNewClientRet(const AddNewClientRet& from)
-  : ::google::protobuf::Message(),
-      _internal_metadata_(NULL),
-      _cached_size_(0) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::memcpy(&ncode_, &from.ncode_,
-    static_cast<size_t>(reinterpret_cast<char*>(&ncenterclientid_) -
-    reinterpret_cast<char*>(&ncode_)) + sizeof(ncenterclientid_));
-  // @@protoc_insertion_point(copy_constructor:svrData.AddNewClientRet)
-}
-
-void AddNewClientRet::SharedCtor() {
-  ::memset(&ncode_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&ncenterclientid_) -
-      reinterpret_cast<char*>(&ncode_)) + sizeof(ncenterclientid_));
-  _cached_size_ = 0;
-}
-
-AddNewClientRet::~AddNewClientRet() {
-  // @@protoc_insertion_point(destructor:svrData.AddNewClientRet)
-  SharedDtor();
-}
-
-void AddNewClientRet::SharedDtor() {
-}
-
-void AddNewClientRet::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* AddNewClientRet::descriptor() {
-  ::protobuf_ServerMsg_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_ServerMsg_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
-}
-
-const AddNewClientRet& AddNewClientRet::default_instance() {
-  ::protobuf_ServerMsg_2eproto::InitDefaultsAddNewClientRet();
-  return *internal_default_instance();
-}
-
-
-void AddNewClientRet::Clear() {
-// @@protoc_insertion_point(message_clear_start:svrData.AddNewClientRet)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  ::memset(&ncode_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&ncenterclientid_) -
-      reinterpret_cast<char*>(&ncode_)) + sizeof(ncenterclientid_));
-  _internal_metadata_.Clear();
-}
-
-bool AddNewClientRet::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:svrData.AddNewClientRet)
-  for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // int32 nCode = 1;
-      case 1: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &ncode_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // int32 nCenterClientID = 2;
+      // int32 nClientID = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &ncenterclientid_)));
+                 input, &nclientid_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 nGateID = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &ngateid_)));
         } else {
           goto handle_unusual;
         }
@@ -2666,64 +2382,74 @@ bool AddNewClientRet::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:svrData.AddNewClientRet)
+  // @@protoc_insertion_point(parse_success:svrData.AddPlayerToCenter)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:svrData.AddNewClientRet)
+  // @@protoc_insertion_point(parse_failure:svrData.AddPlayerToCenter)
   return false;
 #undef DO_
 }
 
-void AddNewClientRet::SerializeWithCachedSizes(
+void AddPlayerToCenter::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:svrData.AddNewClientRet)
+  // @@protoc_insertion_point(serialize_start:svrData.AddPlayerToCenter)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int32 nCode = 1;
-  if (this->ncode() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->ncode(), output);
+  // int64 nGuid = 1;
+  if (this->nguid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->nguid(), output);
   }
 
-  // int32 nCenterClientID = 2;
-  if (this->ncenterclientid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->ncenterclientid(), output);
+  // int32 nClientID = 2;
+  if (this->nclientid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->nclientid(), output);
+  }
+
+  // int32 nGateID = 3;
+  if (this->ngateid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->ngateid(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:svrData.AddNewClientRet)
+  // @@protoc_insertion_point(serialize_end:svrData.AddPlayerToCenter)
 }
 
-::google::protobuf::uint8* AddNewClientRet::InternalSerializeWithCachedSizesToArray(
+::google::protobuf::uint8* AddPlayerToCenter::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:svrData.AddNewClientRet)
+  // @@protoc_insertion_point(serialize_to_array_start:svrData.AddPlayerToCenter)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int32 nCode = 1;
-  if (this->ncode() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->ncode(), target);
+  // int64 nGuid = 1;
+  if (this->nguid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->nguid(), target);
   }
 
-  // int32 nCenterClientID = 2;
-  if (this->ncenterclientid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->ncenterclientid(), target);
+  // int32 nClientID = 2;
+  if (this->nclientid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->nclientid(), target);
+  }
+
+  // int32 nGateID = 3;
+  if (this->ngateid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->ngateid(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:svrData.AddNewClientRet)
+  // @@protoc_insertion_point(serialize_to_array_end:svrData.AddPlayerToCenter)
   return target;
 }
 
-size_t AddNewClientRet::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:svrData.AddNewClientRet)
+size_t AddPlayerToCenter::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:svrData.AddPlayerToCenter)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -2731,18 +2457,25 @@ size_t AddNewClientRet::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // int32 nCode = 1;
-  if (this->ncode() != 0) {
+  // int64 nGuid = 1;
+  if (this->nguid() != 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->ncode());
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->nguid());
   }
 
-  // int32 nCenterClientID = 2;
-  if (this->ncenterclientid() != 0) {
+  // int32 nClientID = 2;
+  if (this->nclientid() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->ncenterclientid());
+        this->nclientid());
+  }
+
+  // int32 nGateID = 3;
+  if (this->ngateid() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->ngateid());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2752,67 +2485,71 @@ size_t AddNewClientRet::ByteSizeLong() const {
   return total_size;
 }
 
-void AddNewClientRet::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:svrData.AddNewClientRet)
+void AddPlayerToCenter::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:svrData.AddPlayerToCenter)
   GOOGLE_DCHECK_NE(&from, this);
-  const AddNewClientRet* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const AddNewClientRet>(
+  const AddPlayerToCenter* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const AddPlayerToCenter>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:svrData.AddNewClientRet)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:svrData.AddPlayerToCenter)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:svrData.AddNewClientRet)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:svrData.AddPlayerToCenter)
     MergeFrom(*source);
   }
 }
 
-void AddNewClientRet::MergeFrom(const AddNewClientRet& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:svrData.AddNewClientRet)
+void AddPlayerToCenter::MergeFrom(const AddPlayerToCenter& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:svrData.AddPlayerToCenter)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.ncode() != 0) {
-    set_ncode(from.ncode());
+  if (from.nguid() != 0) {
+    set_nguid(from.nguid());
   }
-  if (from.ncenterclientid() != 0) {
-    set_ncenterclientid(from.ncenterclientid());
+  if (from.nclientid() != 0) {
+    set_nclientid(from.nclientid());
+  }
+  if (from.ngateid() != 0) {
+    set_ngateid(from.ngateid());
   }
 }
 
-void AddNewClientRet::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:svrData.AddNewClientRet)
+void AddPlayerToCenter::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:svrData.AddPlayerToCenter)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void AddNewClientRet::CopyFrom(const AddNewClientRet& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:svrData.AddNewClientRet)
+void AddPlayerToCenter::CopyFrom(const AddPlayerToCenter& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:svrData.AddPlayerToCenter)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool AddNewClientRet::IsInitialized() const {
+bool AddPlayerToCenter::IsInitialized() const {
   return true;
 }
 
-void AddNewClientRet::Swap(AddNewClientRet* other) {
+void AddPlayerToCenter::Swap(AddPlayerToCenter* other) {
   if (other == this) return;
   InternalSwap(other);
 }
-void AddNewClientRet::InternalSwap(AddNewClientRet* other) {
+void AddPlayerToCenter::InternalSwap(AddPlayerToCenter* other) {
   using std::swap;
-  swap(ncode_, other->ncode_);
-  swap(ncenterclientid_, other->ncenterclientid_);
+  swap(nguid_, other->nguid_);
+  swap(nclientid_, other->nclientid_);
+  swap(ngateid_, other->ngateid_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
 
-::google::protobuf::Metadata AddNewClientRet::GetMetadata() const {
+::google::protobuf::Metadata AddPlayerToCenter::GetMetadata() const {
   protobuf_ServerMsg_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_ServerMsg_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -3456,19 +3193,19 @@ void ClientAccount::InternalSwap(ClientAccount* other) {
 void LoadPlayerData::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
-const int LoadPlayerData::kNCenterClientIDFieldNumber;
 const int LoadPlayerData::kAccountFieldNumber;
 const int LoadPlayerData::kNameFieldNumber;
-const int LoadPlayerData::kGuidFieldNumber;
-const int LoadPlayerData::kSexFieldNumber;
-const int LoadPlayerData::kJobFieldNumber;
-const int LoadPlayerData::kLevelFieldNumber;
-const int LoadPlayerData::kCreatetimeFieldNumber;
-const int LoadPlayerData::kLogintimeFieldNumber;
-const int LoadPlayerData::kMapidFieldNumber;
-const int LoadPlayerData::kXFieldNumber;
-const int LoadPlayerData::kYFieldNumber;
-const int LoadPlayerData::kZFieldNumber;
+const int LoadPlayerData::kNGuidFieldNumber;
+const int LoadPlayerData::kNSexFieldNumber;
+const int LoadPlayerData::kNJobFieldNumber;
+const int LoadPlayerData::kNLevelFieldNumber;
+const int LoadPlayerData::kNCreateTimeFieldNumber;
+const int LoadPlayerData::kNLoginTimeFieldNumber;
+const int LoadPlayerData::kNMapIDFieldNumber;
+const int LoadPlayerData::kNXFieldNumber;
+const int LoadPlayerData::kNYFieldNumber;
+const int LoadPlayerData::kNZFieldNumber;
+const int LoadPlayerData::kBChangeLineFieldNumber;
 const int LoadPlayerData::kDataFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
@@ -3497,9 +3234,9 @@ LoadPlayerData::LoadPlayerData(const LoadPlayerData& from)
   if (from.data().size() > 0) {
     data_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.data_);
   }
-  ::memcpy(&ncenterclientid_, &from.ncenterclientid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&z_) -
-    reinterpret_cast<char*>(&ncenterclientid_)) + sizeof(z_));
+  ::memcpy(&nguid_, &from.nguid_,
+    static_cast<size_t>(reinterpret_cast<char*>(&bchangeline_) -
+    reinterpret_cast<char*>(&nguid_)) + sizeof(bchangeline_));
   // @@protoc_insertion_point(copy_constructor:svrData.LoadPlayerData)
 }
 
@@ -3507,9 +3244,9 @@ void LoadPlayerData::SharedCtor() {
   account_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   data_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&ncenterclientid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&z_) -
-      reinterpret_cast<char*>(&ncenterclientid_)) + sizeof(z_));
+  ::memset(&nguid_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&bchangeline_) -
+      reinterpret_cast<char*>(&nguid_)) + sizeof(bchangeline_));
   _cached_size_ = 0;
 }
 
@@ -3549,9 +3286,9 @@ void LoadPlayerData::Clear() {
   account_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   data_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-  ::memset(&ncenterclientid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&z_) -
-      reinterpret_cast<char*>(&ncenterclientid_)) + sizeof(z_));
+  ::memset(&nguid_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&bchangeline_) -
+      reinterpret_cast<char*>(&nguid_)) + sizeof(bchangeline_));
   _internal_metadata_.Clear();
 }
 
@@ -3565,193 +3302,193 @@ bool LoadPlayerData::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // int32 nCenterClientID = 1;
+      // string Account = 1;
       case 1: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &ncenterclientid_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // string account = 2;
-      case 2: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_account()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->account().data(), static_cast<int>(this->account().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "svrData.LoadPlayerData.account"));
+            "svrData.LoadPlayerData.Account"));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // string name = 3;
-      case 3: {
+      // string Name = 2;
+      case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_name()));
           DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
             this->name().data(), static_cast<int>(this->name().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "svrData.LoadPlayerData.name"));
+            "svrData.LoadPlayerData.Name"));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // int64 guid = 4;
+      // int64 nGuid = 3;
+      case 3: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &nguid_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // int32 nSex = 4;
       case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(32u /* 32 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &guid_)));
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &nsex_)));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // int32 sex = 5;
+      // int32 nJob = 5;
       case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &sex_)));
+                 input, &njob_)));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // int32 job = 6;
+      // int32 nLevel = 6;
       case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(48u /* 48 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &job_)));
+                 input, &nlevel_)));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // int32 level = 7;
+      // int64 nCreateTime = 7;
       case 7: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(56u /* 56 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &level_)));
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &ncreatetime_)));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // int64 createtime = 8;
+      // int64 nLoginTime = 8;
       case 8: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(64u /* 64 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &createtime_)));
+                 input, &nlogintime_)));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // int64 logintime = 9;
+      // int32 nMapID = 9;
       case 9: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(72u /* 72 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
-                 input, &logintime_)));
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &nmapid_)));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // int32 mapid = 10;
+      // float nX = 10;
       case 10: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(80u /* 80 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(85u /* 85 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &mapid_)));
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &nx_)));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // float x = 11;
+      // float nY = 11;
       case 11: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(93u /* 93 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &x_)));
+                 input, &ny_)));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // float y = 12;
+      // float nZ = 12;
       case 12: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(101u /* 101 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &y_)));
+                 input, &nz_)));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // float z = 13;
+      // bool bChangeLine = 13;
       case 13: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(109u /* 109 & 0xFF */)) {
+            static_cast< ::google::protobuf::uint8>(104u /* 104 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
-                 input, &z_)));
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &bchangeline_)));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // bytes data = 14;
+      // bytes Data = 14;
       case 14: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(114u /* 114 & 0xFF */)) {
@@ -3789,82 +3526,82 @@ void LoadPlayerData::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int32 nCenterClientID = 1;
-  if (this->ncenterclientid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->ncenterclientid(), output);
-  }
-
-  // string account = 2;
+  // string Account = 1;
   if (this->account().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->account().data(), static_cast<int>(this->account().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "svrData.LoadPlayerData.account");
+      "svrData.LoadPlayerData.Account");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      2, this->account(), output);
+      1, this->account(), output);
   }
 
-  // string name = 3;
+  // string Name = 2;
   if (this->name().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->name().data(), static_cast<int>(this->name().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "svrData.LoadPlayerData.name");
+      "svrData.LoadPlayerData.Name");
     ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
-      3, this->name(), output);
+      2, this->name(), output);
   }
 
-  // int64 guid = 4;
-  if (this->guid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(4, this->guid(), output);
+  // int64 nGuid = 3;
+  if (this->nguid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(3, this->nguid(), output);
   }
 
-  // int32 sex = 5;
-  if (this->sex() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->sex(), output);
+  // int32 nSex = 4;
+  if (this->nsex() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->nsex(), output);
   }
 
-  // int32 job = 6;
-  if (this->job() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->job(), output);
+  // int32 nJob = 5;
+  if (this->njob() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->njob(), output);
   }
 
-  // int32 level = 7;
-  if (this->level() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->level(), output);
+  // int32 nLevel = 6;
+  if (this->nlevel() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->nlevel(), output);
   }
 
-  // int64 createtime = 8;
-  if (this->createtime() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(8, this->createtime(), output);
+  // int64 nCreateTime = 7;
+  if (this->ncreatetime() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(7, this->ncreatetime(), output);
   }
 
-  // int64 logintime = 9;
-  if (this->logintime() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(9, this->logintime(), output);
+  // int64 nLoginTime = 8;
+  if (this->nlogintime() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(8, this->nlogintime(), output);
   }
 
-  // int32 mapid = 10;
-  if (this->mapid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(10, this->mapid(), output);
+  // int32 nMapID = 9;
+  if (this->nmapid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(9, this->nmapid(), output);
   }
 
-  // float x = 11;
-  if (this->x() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(11, this->x(), output);
+  // float nX = 10;
+  if (this->nx() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(10, this->nx(), output);
   }
 
-  // float y = 12;
-  if (this->y() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(12, this->y(), output);
+  // float nY = 11;
+  if (this->ny() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(11, this->ny(), output);
   }
 
-  // float z = 13;
-  if (this->z() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteFloat(13, this->z(), output);
+  // float nZ = 12;
+  if (this->nz() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(12, this->nz(), output);
   }
 
-  // bytes data = 14;
+  // bool bChangeLine = 13;
+  if (this->bchangeline() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(13, this->bchangeline(), output);
+  }
+
+  // bytes Data = 14;
   if (this->data().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
       14, this->data(), output);
@@ -3884,84 +3621,84 @@ void LoadPlayerData::SerializeWithCachedSizes(
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int32 nCenterClientID = 1;
-  if (this->ncenterclientid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->ncenterclientid(), target);
-  }
-
-  // string account = 2;
+  // string Account = 1;
   if (this->account().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->account().data(), static_cast<int>(this->account().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "svrData.LoadPlayerData.account");
+      "svrData.LoadPlayerData.Account");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->account(), target);
+        1, this->account(), target);
   }
 
-  // string name = 3;
+  // string Name = 2;
   if (this->name().size() > 0) {
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->name().data(), static_cast<int>(this->name().length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "svrData.LoadPlayerData.name");
+      "svrData.LoadPlayerData.Name");
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->name(), target);
+        2, this->name(), target);
   }
 
-  // int64 guid = 4;
-  if (this->guid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(4, this->guid(), target);
+  // int64 nGuid = 3;
+  if (this->nguid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(3, this->nguid(), target);
   }
 
-  // int32 sex = 5;
-  if (this->sex() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->sex(), target);
+  // int32 nSex = 4;
+  if (this->nsex() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->nsex(), target);
   }
 
-  // int32 job = 6;
-  if (this->job() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->job(), target);
+  // int32 nJob = 5;
+  if (this->njob() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->njob(), target);
   }
 
-  // int32 level = 7;
-  if (this->level() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->level(), target);
+  // int32 nLevel = 6;
+  if (this->nlevel() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->nlevel(), target);
   }
 
-  // int64 createtime = 8;
-  if (this->createtime() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(8, this->createtime(), target);
+  // int64 nCreateTime = 7;
+  if (this->ncreatetime() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(7, this->ncreatetime(), target);
   }
 
-  // int64 logintime = 9;
-  if (this->logintime() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(9, this->logintime(), target);
+  // int64 nLoginTime = 8;
+  if (this->nlogintime() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(8, this->nlogintime(), target);
   }
 
-  // int32 mapid = 10;
-  if (this->mapid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(10, this->mapid(), target);
+  // int32 nMapID = 9;
+  if (this->nmapid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(9, this->nmapid(), target);
   }
 
-  // float x = 11;
-  if (this->x() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(11, this->x(), target);
+  // float nX = 10;
+  if (this->nx() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(10, this->nx(), target);
   }
 
-  // float y = 12;
-  if (this->y() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(12, this->y(), target);
+  // float nY = 11;
+  if (this->ny() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(11, this->ny(), target);
   }
 
-  // float z = 13;
-  if (this->z() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(13, this->z(), target);
+  // float nZ = 12;
+  if (this->nz() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(12, this->nz(), target);
   }
 
-  // bytes data = 14;
+  // bool bChangeLine = 13;
+  if (this->bchangeline() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(13, this->bchangeline(), target);
+  }
+
+  // bytes Data = 14;
   if (this->data().size() > 0) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
@@ -3985,96 +3722,94 @@ size_t LoadPlayerData::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // string account = 2;
+  // string Account = 1;
   if (this->account().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->account());
   }
 
-  // string name = 3;
+  // string Name = 2;
   if (this->name().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->name());
   }
 
-  // bytes data = 14;
+  // bytes Data = 14;
   if (this->data().size() > 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::BytesSize(
         this->data());
   }
 
-  // int32 nCenterClientID = 1;
-  if (this->ncenterclientid() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->ncenterclientid());
-  }
-
-  // int32 sex = 5;
-  if (this->sex() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->sex());
-  }
-
-  // int64 guid = 4;
-  if (this->guid() != 0) {
+  // int64 nGuid = 3;
+  if (this->nguid() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->guid());
+        this->nguid());
   }
 
-  // int32 job = 6;
-  if (this->job() != 0) {
+  // int32 nSex = 4;
+  if (this->nsex() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->job());
+        this->nsex());
   }
 
-  // int32 level = 7;
-  if (this->level() != 0) {
+  // int32 nJob = 5;
+  if (this->njob() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->level());
+        this->njob());
   }
 
-  // int64 createtime = 8;
-  if (this->createtime() != 0) {
+  // int64 nCreateTime = 7;
+  if (this->ncreatetime() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->createtime());
+        this->ncreatetime());
   }
 
-  // int64 logintime = 9;
-  if (this->logintime() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int64Size(
-        this->logintime());
-  }
-
-  // int32 mapid = 10;
-  if (this->mapid() != 0) {
+  // int32 nLevel = 6;
+  if (this->nlevel() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->mapid());
+        this->nlevel());
   }
 
-  // float x = 11;
-  if (this->x() != 0) {
+  // int32 nMapID = 9;
+  if (this->nmapid() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->nmapid());
+  }
+
+  // int64 nLoginTime = 8;
+  if (this->nlogintime() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int64Size(
+        this->nlogintime());
+  }
+
+  // float nX = 10;
+  if (this->nx() != 0) {
     total_size += 1 + 4;
   }
 
-  // float y = 12;
-  if (this->y() != 0) {
+  // float nY = 11;
+  if (this->ny() != 0) {
     total_size += 1 + 4;
   }
 
-  // float z = 13;
-  if (this->z() != 0) {
+  // float nZ = 12;
+  if (this->nz() != 0) {
     total_size += 1 + 4;
+  }
+
+  // bool bChangeLine = 13;
+  if (this->bchangeline() != 0) {
+    total_size += 1 + 1;
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -4118,38 +3853,38 @@ void LoadPlayerData::MergeFrom(const LoadPlayerData& from) {
 
     data_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.data_);
   }
-  if (from.ncenterclientid() != 0) {
-    set_ncenterclientid(from.ncenterclientid());
+  if (from.nguid() != 0) {
+    set_nguid(from.nguid());
   }
-  if (from.sex() != 0) {
-    set_sex(from.sex());
+  if (from.nsex() != 0) {
+    set_nsex(from.nsex());
   }
-  if (from.guid() != 0) {
-    set_guid(from.guid());
+  if (from.njob() != 0) {
+    set_njob(from.njob());
   }
-  if (from.job() != 0) {
-    set_job(from.job());
+  if (from.ncreatetime() != 0) {
+    set_ncreatetime(from.ncreatetime());
   }
-  if (from.level() != 0) {
-    set_level(from.level());
+  if (from.nlevel() != 0) {
+    set_nlevel(from.nlevel());
   }
-  if (from.createtime() != 0) {
-    set_createtime(from.createtime());
+  if (from.nmapid() != 0) {
+    set_nmapid(from.nmapid());
   }
-  if (from.logintime() != 0) {
-    set_logintime(from.logintime());
+  if (from.nlogintime() != 0) {
+    set_nlogintime(from.nlogintime());
   }
-  if (from.mapid() != 0) {
-    set_mapid(from.mapid());
+  if (from.nx() != 0) {
+    set_nx(from.nx());
   }
-  if (from.x() != 0) {
-    set_x(from.x());
+  if (from.ny() != 0) {
+    set_ny(from.ny());
   }
-  if (from.y() != 0) {
-    set_y(from.y());
+  if (from.nz() != 0) {
+    set_nz(from.nz());
   }
-  if (from.z() != 0) {
-    set_z(from.z());
+  if (from.bchangeline() != 0) {
+    set_bchangeline(from.bchangeline());
   }
 }
 
@@ -4180,17 +3915,17 @@ void LoadPlayerData::InternalSwap(LoadPlayerData* other) {
   account_.Swap(&other->account_);
   name_.Swap(&other->name_);
   data_.Swap(&other->data_);
-  swap(ncenterclientid_, other->ncenterclientid_);
-  swap(sex_, other->sex_);
-  swap(guid_, other->guid_);
-  swap(job_, other->job_);
-  swap(level_, other->level_);
-  swap(createtime_, other->createtime_);
-  swap(logintime_, other->logintime_);
-  swap(mapid_, other->mapid_);
-  swap(x_, other->x_);
-  swap(y_, other->y_);
-  swap(z_, other->z_);
+  swap(nguid_, other->nguid_);
+  swap(nsex_, other->nsex_);
+  swap(njob_, other->njob_);
+  swap(ncreatetime_, other->ncreatetime_);
+  swap(nlevel_, other->nlevel_);
+  swap(nmapid_, other->nmapid_);
+  swap(nlogintime_, other->nlogintime_);
+  swap(nx_, other->nx_);
+  swap(ny_, other->ny_);
+  swap(nz_, other->nz_);
+  swap(bchangeline_, other->bchangeline_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }
@@ -5074,11 +4809,8 @@ template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::svrData::ServerLoadInfo* Arena::
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::svrData::UpdateServerLoad* Arena::Create< ::svrData::UpdateServerLoad >(Arena* arena) {
   return Arena::CreateInternal< ::svrData::UpdateServerLoad >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::svrData::AddNewClient* Arena::Create< ::svrData::AddNewClient >(Arena* arena) {
-  return Arena::CreateInternal< ::svrData::AddNewClient >(arena);
-}
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::svrData::AddNewClientRet* Arena::Create< ::svrData::AddNewClientRet >(Arena* arena) {
-  return Arena::CreateInternal< ::svrData::AddNewClientRet >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::svrData::AddPlayerToCenter* Arena::Create< ::svrData::AddPlayerToCenter >(Arena* arena) {
+  return Arena::CreateInternal< ::svrData::AddPlayerToCenter >(arena);
 }
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::svrData::DelClient* Arena::Create< ::svrData::DelClient >(Arena* arena) {
   return Arena::CreateInternal< ::svrData::DelClient >(arena);

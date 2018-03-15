@@ -48,5 +48,7 @@ SQL_Log				是否开启SQL查询日志
 	CenterServer_IP = "127.0.0.1"
 	CenterServer_Port = "10001"
 	CenterServer_ID = "1000"
+	
+	ClientNum_Max = "2000"
 	>
 </GameServer>

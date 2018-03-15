@@ -8,7 +8,6 @@
 #include "serverlog.h"
 #include "PlayerMgr.h"
 
-#include "MainType.h"
 #include "ServerType.h"
 #include "ClientType.h"
 #include "LoginType.h"
@@ -119,7 +118,7 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 					{
 						if (pPlayer->PackData(pData))
 						{
-							pData->set_mapid(nMapID);
+							pData->set_nmapid(nMapID);
 	#ifdef _DEBUG
 							RunStateError("换线!玩家[%s]离开地图[%d]，目标地图[%d]",
 								pPlayer->GetName(), pPlayer->GetScene() == nullptr ? -1 : pPlayer->GetScene()->GetMapID(),

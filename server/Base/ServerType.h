@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "MainType.h"
 
 //#define SERVER_TYPE_MAIN 0
 
@@ -17,20 +18,17 @@
 //服务器负载更新
 #define SVR_SUB_UPDATE_LOAD 5
 
-// 新的client连接
-#define SVR_SUB_NEW_CLIENT 6
+// 新的玩家
+#define SVR_SUB_ADD_PLAYER_TO_CENTER 6
 
-// 新的client连接返回
-#define SVR_SUB_NEW_CLIENT_RET 7
-
-// client断开
+// 玩家断开
 #define SVR_SUB_DEL_CLIENT 8
 
 // 通知game玩家的账号信息
 #define SVR_SUB_CLIENT_ACCOUNT 9
 
-// 通知game加载数据
-#define SVR_SUB_LOAD_PLAYERDATA 10
+// 玩家数据
+#define SVR_SUB_PLAYERDATA 10
 
 // 切换线路
 #define  SVR_SUB_CHANGELINE 11

@@ -5,7 +5,6 @@
 #include "google/protobuf/message.h"
 #include "Robot.h"
 
-#include "MainType.h"
 #include "ServerType.h"
 #include "ServerMsg.pb.h"
 

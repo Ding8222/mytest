@@ -11,7 +11,6 @@
 #include "Config.h"
 #include "ServerLog.h"
 
-#include "MainType.h"
 #include "ServerType.h"
 #include "LoginType.h"
 #include "Login.pb.h"
@@ -223,19 +222,18 @@ void CClientLogin::SelectPlayer(task *tk, Msg *pMsg)
 		if (res && res->IsOpen() && !res->IsEnd())
 		{
 			svrData::LoadPlayerData sendMsgToGame;
-			sendMsgToGame.set_ncenterclientid(tk->GetClientID());
 			sendMsgToGame.set_account(res->GetChar("account"));
 			sendMsgToGame.set_name(res->GetChar("name"));
-			sendMsgToGame.set_guid(res->GetInt64("guid"));
-			sendMsgToGame.set_sex(res->GetInt("sex"));
-			sendMsgToGame.set_job(res->GetInt("job"));
-			sendMsgToGame.set_level(res->GetInt("level"));
-			sendMsgToGame.set_createtime(res->GetInt("createtime"));
-			sendMsgToGame.set_logintime(res->GetInt("logintime"));
-			sendMsgToGame.set_mapid(res->GetInt("mapid"));
-			sendMsgToGame.set_x(res->GetFloat("x"));
-			sendMsgToGame.set_y(res->GetFloat("y"));
-			sendMsgToGame.set_z(res->GetFloat("z"));
+			sendMsgToGame.set_nguid(res->GetInt64("guid"));
+			sendMsgToGame.set_nsex(res->GetInt("sex"));
+			sendMsgToGame.set_njob(res->GetInt("job"));
+			sendMsgToGame.set_nlevel(res->GetInt("level"));
+			sendMsgToGame.set_ncreatetime(res->GetInt("createtime"));
+			sendMsgToGame.set_nlogintime(res->GetInt("logintime"));
+			sendMsgToGame.set_nmapid(res->GetInt("mapid"));
+			sendMsgToGame.set_nx(res->GetFloat("x"));
+			sendMsgToGame.set_ny(res->GetFloat("y"));
+			sendMsgToGame.set_nz(res->GetFloat("z"));
 			sendMsgToGame.set_data(res->GetChar("data"));
 
 			res = dbhand->Execute(fmt::format("update playerdate set logintime ={0} where guid = '{1}'", 
@@ -243,7 +241,7 @@ void CClientLogin::SelectPlayer(task *tk, Msg *pMsg)
 			if (res)
 			{
 				MessagePack pk;
-				pk.Pack(&sendMsgToGame, SERVER_TYPE_MAIN, SVR_SUB_LOAD_PLAYERDATA);
+				pk.Pack(&sendMsgToGame, SERVER_TYPE_MAIN, SVR_SUB_PLAYERDATA);
 				tk->PushMsg(&pk);
 				return;
 			}

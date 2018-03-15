@@ -10,7 +10,6 @@
 #include "MapInfo.h"
 #include "SceneMgr.h"
 
-#include "MainType.h"
 #include "ServerType.h"
 #include "ClientType.h"
 #include "ClientMsg.pb.h"
@@ -58,7 +57,7 @@ void CGameCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
 	// 发送负载信息给Center
 	svrData::ServerLoadInfo sendMsg;
 	sendMsg.set_nlineid(CConfig::Instance().GetLineID());
-	sendMsg.set_nmaxclient(0);
+	sendMsg.set_nmaxclient(CConfig::Instance().GetMaxClientNum());
 	sendMsg.set_nnowclient(CPlayerMgr::Instance().GetPlayerSize());
 	sendMsg.set_nport(CConfig::Instance().GetListenPort());
 	sendMsg.set_sip(CConfig::Instance().GetServerIP());
@@ -67,11 +66,25 @@ void CGameCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
 	{
 		sendMsg.add_mapid(iter->GetMapID());
 	}
-
+	std::list<CPlayer *> &temp = CPlayerMgr::Instance().GetPlayerList();
+	for (auto &i : temp)
+	{
+		CPlayer *player = i;
+		if (FuncUti::isValidCret(player))
+		{
+			svrData::AddPlayerToCenter *info = sendMsg.add_info();
+			if (info)
+			{
+				info->set_nguid(player->GetGuid());
+				info->set_nclientid(player->GetClientID());
+				info->set_ngateid(player->GetGateID());
+			}
+		}
+	}
 	SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_LOADINFO);
 }
 
-void CGameCenterConnect::ConnectDisconnect(connector *)
+void CGameCenterConnect::ConnectDisconnect(connector *_con)
 {
 
 }

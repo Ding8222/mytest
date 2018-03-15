@@ -3,7 +3,7 @@
 #include "Config.h"
 #include "ClientAuthMgr.h"
 #include "ServerStatusMgr.h"
-#include "ClientSvrMgr.h"
+#include "CenterPlayerMgr.h"
 #include "serverlog.h"
 #include "ProcessGameMsg.h"
 #include "ProcessLoginMsg.h"
@@ -22,17 +22,11 @@ CCentServerMgr::CCentServerMgr()
 
 CCentServerMgr::~CCentServerMgr()
 {
-
+	Destroy();
 }
 
 bool CCentServerMgr::Init(const char *ip, int serverid, int port, int overtime)
 {
-	if (!CClientSvrMgr::Instance().Init())
-	{
-		RunStateError("初始化 ClientSvrMgr 失败!");
-		return false;
-	}
-
 	if (!CClientAuthMgr::Instance().Init())
 	{
 		RunStateError("初始化 ClientAuthMgr 失败!");
@@ -45,7 +39,6 @@ bool CCentServerMgr::Init(const char *ip, int serverid, int port, int overtime)
 void CCentServerMgr::Run()
 {
 	CClientAuthMgr::Instance().Run();
-	CClientSvrMgr::Instance().Run();
 	CServerMgr::Run();
 }
 
@@ -56,7 +49,6 @@ void CCentServerMgr::Destroy()
 	m_LoginList.clear();
 	m_DBList.clear();
 	m_GateList.clear();
-	CClientSvrMgr::Instance().Destroy();
 }
 
 void CCentServerMgr::GetCurrentInfo(char *buf, size_t buflen)
@@ -144,7 +136,7 @@ const char *CCentServerMgr::GetMsgNumInfo()
 	return tempbuf;
 }
 
-void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int32 nClientID, int nServerID, bool bBroad)
+void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int64 nClientID, int nServerID, bool bBroad)
 {
 	msgtail tail;
 	std::map<int, serverinfo *> *iterList = nullptr;
@@ -154,7 +146,7 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int32 nClientID, int 
 	{
 		if (!bBroad && nServerID == 0)
 		{
-			ClientSvr *_pData = CClientSvrMgr::Instance().GetClientSvr(nClientID);
+			stCenterPlayer *_pData = CCenterPlayerMgr::Instance().FindPlayerByGuid(nClientID);
 			if (_pData)
 			{
 				tail.id = _pData->nClientID;
@@ -170,11 +162,11 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int32 nClientID, int 
 	{
 		if (!bBroad && nServerID == 0)
 		{
-			ClientSvr *_pData = CClientSvrMgr::Instance().GetClientSvr(nClientID);
+			stCenterPlayer *_pData = CCenterPlayerMgr::Instance().FindPlayerByGuid(nClientID);
 			if (_pData)
 			{
 				tail.id = _pData->nClientID;
-				nServerID = _pData->nGameServerID;
+				nServerID = _pData->nGameID;
 			}
 			assert(nServerID);
 			assert(tail.id);
@@ -234,7 +226,7 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int32 nClientID, int 
 	}
 }
 
-void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int32 nClientID, int nServerID, bool bBroad)
+void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maintype, int subtype, int nType, int64 nClientID, int nServerID, bool bBroad)
 {
 	msgtail tail;
 	tail.id = 0;
@@ -245,7 +237,7 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 	{
 		if (!bBroad && nServerID == 0)
 		{
-			ClientSvr *_pData = CClientSvrMgr::Instance().GetClientSvr(nClientID);
+			stCenterPlayer *_pData = CCenterPlayerMgr::Instance().FindPlayerByGuid(nClientID);
 			if (_pData)
 			{
 				tail.id = _pData->nClientID;
@@ -261,11 +253,11 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 	{
 		if (!bBroad && nServerID == 0)
 		{
-			ClientSvr *_pData = CClientSvrMgr::Instance().GetClientSvr(nClientID);
+			stCenterPlayer *_pData = CCenterPlayerMgr::Instance().FindPlayerByGuid(nClientID);
 			if (_pData)
 			{
 				tail.id = _pData->nClientID;
-				nServerID = _pData->nGameServerID;
+				nServerID = _pData->nGameID;
 			}
 			assert(nServerID);
 			assert(tail.id);
@@ -325,46 +317,49 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 
 void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 {
+	int nServerID = info->GetServerID();
 	switch (info->GetServerType())
 	{
 	case ServerEnum::EST_GATE:
 	{
-		CServerStatusMgr::Instance().DelGateServer(info->GetServerID());
-		m_GateList.erase(info->GetServerID());
+		CCenterPlayerMgr::Instance().AsGateServerDisconnect(nServerID);
+		CServerStatusMgr::Instance().DelGateServer(nServerID);
+		m_GateList.erase(nServerID);
 		if (overtime)
-			RunStateError("网关服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("网关服器超时移除:[%d], ip:[%s]", nServerID, info->GetIP());
 		else
-			RunStateError("网关服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("网关服器关闭移除:[%d], ip:[%s]", nServerID, info->GetIP());
 		break;
 	}
 	case ServerEnum::EST_GAME:
 	{
-		CServerStatusMgr::Instance().DelGameServer(info->GetServerID());
-		m_GameList.erase(info->GetServerID());
+		CCenterPlayerMgr::Instance().AsGameServerDisconnect(nServerID);
+		CServerStatusMgr::Instance().DelGameServer(nServerID);
+		m_GameList.erase(nServerID);
 		if (overtime)
-			RunStateError("逻辑服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("逻辑服器超时移除:[%d], ip:[%s]", nServerID, info->GetIP());
 		else
-			RunStateError("逻辑服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("逻辑服器关闭移除:[%d], ip:[%s]", nServerID, info->GetIP());
 		break;
 	}
 	case ServerEnum::EST_LOGIN:
 	{
-		CClientAuthMgr::Instance().Destroy(true);
-		m_LoginList.erase(info->GetServerID());
+		CClientAuthMgr::Instance().AsLoginServerDisconnect();
+		m_LoginList.erase(nServerID);
 		if (overtime)
-			RunStateError("登陆服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("登陆服器超时移除:[%d], ip:[%s]", nServerID, info->GetIP());
 		else
-			RunStateError("登陆服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("登陆服器关闭移除:[%d], ip:[%s]", nServerID, info->GetIP());
 
 		break;
 	}
 	case ServerEnum::EST_DB:
 	{
-		m_DBList.erase(info->GetServerID());
+		m_DBList.erase(nServerID);
 		if (overtime)
-			RunStateError("数据服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("数据服器超时移除:[%d], ip:[%s]", nServerID, info->GetIP());
 		else
-			RunStateError("数据服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("数据服器关闭移除:[%d], ip:[%s]", nServerID, info->GetIP());
 
 		break;
 	}

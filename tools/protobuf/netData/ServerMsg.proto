@@ -40,6 +40,7 @@ message ServerLoadInfo
 	int32 nPort = 4;        // 端口
 	string sIP = 5;			// IP
 	repeated int32 mapid = 6;// 加载了哪些地图
+	repeated AddPlayerToCenter info = 7;
 }
 
 // 0-5 服务器负载更新
@@ -50,23 +51,11 @@ message UpdateServerLoad
 }
 
 // 0-6 新的client连接
-message AddNewClient
+message AddPlayerToCenter
 {
-	int32 nGameID = 1;
-	string Account = 2;
-}
-
-// 0-7 新的client连接返回
-message AddNewClientRet
-{
-	enum EC
-	{
-		EC_OTHER = 0;
-		EC_SUCC = 1;	
-		EC_FAIL = 2;
-	};
-	int32 nCode = 1;			// 返回的信息
-	int32 nCenterClientID = 2;
+	int64 nGuid = 1;        // 玩家唯一id
+	int32 nClientID = 2;    // clientid
+	int32 nGateID = 3;      // 所属网关
 }
 
 // 0-8 client断开
@@ -87,20 +76,20 @@ message ClientAccount
 // 0-10 通知game加载玩家数据
 message LoadPlayerData
 {
-	int32 nCenterClientID = 1;
-	string account = 2;
-	string name = 3;
-	int64 guid = 4;
-	int32 sex = 5;
-	int32 job = 6;
-	int32 level = 7;
-	int64 createtime = 8;
-	int64 logintime = 9;
-	int32 mapid = 10;
-	float x = 11;
-	float y = 12;
-	float z = 13;
-	bytes data = 14;
+	string Account = 1;
+	string Name = 2;
+	int64 nGuid = 3;
+	int32 nSex = 4;
+	int32 nJob = 5;
+	int32 nLevel = 6;
+	int64 nCreateTime = 7;
+	int64 nLoginTime = 8;
+	int32 nMapID = 9;
+	float nX = 10;
+	float nY = 11;
+	float nZ = 12;
+	bool bChangeLine = 13;
+	bytes Data = 14;
 }
 
 // 0-11 切换线路

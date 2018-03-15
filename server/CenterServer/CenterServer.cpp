@@ -7,6 +7,7 @@
 #include "ServerStatusMgr.h"
 #include "ClientAuthMgr.h"
 #include "LogConnecter.h"
+#include "CenterPlayerMgr.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -80,6 +81,7 @@ bool CCenterServer::Init()
 	CLogConnecter::Instance().Destroy();
 	CClientAuthMgr::Instance().Destroy();
 	CServerStatusMgr::Instance().Destroy();
+	CCenterPlayerMgr::Instance().Destroy();
 	Destroy();
 
 	return false;
@@ -121,6 +123,7 @@ void CCenterServer::Run()
 	CLogConnecter::Instance().Destroy();
 	CClientAuthMgr::Instance().Destroy();
 	CServerStatusMgr::Instance().Destroy();
+	CCenterPlayerMgr::Instance().Destroy();
 
 	Destroy();
 }

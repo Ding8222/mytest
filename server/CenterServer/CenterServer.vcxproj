@@ -130,8 +130,8 @@
   <ItemGroup>
     <ClCompile Include="CenterServer.cpp" />
     <ClCompile Include="ClientAuthMgr.cpp" />
-    <ClCompile Include="ClientSvrMgr.cpp" />
     <ClCompile Include="Config.cpp" />
+    <ClCompile Include="CenterPlayerMgr.cpp" />
     <ClCompile Include="ProcessDBMsg.cpp" />
     <ClCompile Include="ProcessGameMsg.cpp" />
     <ClCompile Include="ProcessGateMsg.cpp" />
@@ -143,9 +143,9 @@
   <ItemGroup>
     <ClInclude Include="CenterServer.h" />
     <ClInclude Include="ClientAuthMgr.h" />
-    <ClInclude Include="ClientSvrMgr.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="CentServerMgr.h" />
+    <ClInclude Include="CenterPlayerMgr.h" />
     <ClInclude Include="ProcessDBMsg.h" />
     <ClInclude Include="ProcessGameMsg.h" />
     <ClInclude Include="ProcessGateMsg.h" />

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "MainType.h"
 
 // #define CLIENT_TYPE_MAIN 1
 

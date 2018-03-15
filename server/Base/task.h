@@ -25,16 +25,16 @@ public:
 	 static void DestroyPools ();
 
 	 //设置一些必须的附带信息
-	 void SetInfo (DataBase::CConnection *con, int serverid, int clientid = 0);
+	 void SetInfo (DataBase::CConnection *con, int32 serverid, int64 clientid = 0);
 
 	 //获取数据库操作句柄
 	 DataBase::CConnection *GetDBHand () { return m_con; }
 
 	 //获取此任务来自哪个服务器
-	 int GetServerID () { return m_serverid; }
+	 int32 GetServerID () { return m_serverid; }
 
 	 //获取此任务来自哪个client
-	 int GetClientID() { return m_clientid; }
+	 int64 GetClientID() { return m_clientid; }
 
 	 //设置是否需要发送
 	 void SetAsNeedSend (bool flag);
@@ -77,16 +77,16 @@ private:
 private:
 	DataBase::CConnection *m_con;
 
-	int m_tasktype;
+	int8 m_tasktype;
 	bool m_needsend;
 	bool m_sendtoall;
-	int m_serverid;
-	int m_clientid;
+	int32 m_serverid;
 
 ///////////////////////////////////////
 	blockbuf *m_head;
 	blockbuf *m_currentforpush;
 	blockbuf *m_currentforget;
+	int64 m_clientid;
 };
 
 task *task_create ();

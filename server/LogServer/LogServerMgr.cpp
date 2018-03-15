@@ -11,7 +11,6 @@
 #include "datahand.h"
 #include "LogServerMgr.h"
 
-#include "MainType.h"
 #include "LoginType.h"
 #include "ServerType.h"
 

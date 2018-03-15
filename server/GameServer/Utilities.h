@@ -17,10 +17,10 @@ namespace FuncUti
 	void SendMsg(CPlayer *player, Msg &pMsg, bool bRef = false);
 	inline void SendMsgToCenter(CPlayer *player, google::protobuf::Message &pMsg, int maintype, int subtype)
 	{
-		CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), pMsg, maintype, subtype, player->GetCenterClientID());
+		CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), pMsg, maintype, subtype, player->GetGuid());
 	}
 	inline void SendMsgToCenter(CPlayer *player, Msg &pMsg, bool bRef)
 	{
-		CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), pMsg, player->GetCenterClientID());
+		CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), pMsg, player->GetGuid());
 	}
 }

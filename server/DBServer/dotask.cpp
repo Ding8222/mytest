@@ -8,7 +8,6 @@
 #include "msgbase.h"
 #include "ClientLogin.h"
 
-#include "MainType.h"
 #include "ServerType.h"
 #include "LoginType.h"
 #include "Login.pb.h"

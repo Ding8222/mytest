@@ -45,12 +45,9 @@ public:
 	void SetNotLogin() { m_AlreadyLogin = false; }
 	void SetAlreadyLogin() { m_AlreadyLogin = true; }
 	bool IsAlreadyLogin() { return m_AlreadyLogin; }
-	void SetInLogicServerID(int64 id) { m_PlayerOnlyID = id; }
-	int64 GetInLogicServerID() { return m_PlayerOnlyID; }
 	void SetLogicServerID(int serverid) { m_GameServerID = serverid; }
 	int GetLogicServer() { return m_GameServerID; }
 private:
-	int64 m_PlayerOnlyID;//在逻辑服中的角色id
 	int64 m_PingTime;
 	int64 m_RemoveTime;
 	int64 m_ConnectTime;	//何时连接上来

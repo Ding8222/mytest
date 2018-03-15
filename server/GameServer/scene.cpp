@@ -182,6 +182,7 @@ bool CScene::DelObj(CBaseObj * obj)
 	{
 		RunStateError("释放ID错误, ID:%d", id);
 	}
+
 	obj->LeaveAoi();
 	obj->SetTempID(0);
 	obj->SetScene(nullptr);

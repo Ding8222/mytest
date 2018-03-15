@@ -12,6 +12,8 @@ CConfig::CConfig()
 	s_CenterServerIP.clear();
 	m_CenterServerPort = 0;
 	m_CenterServerID = 0;
+
+	m_MaxClientNum = 0;
 }
 CConfig::~CConfig()
 {
@@ -19,6 +21,8 @@ CConfig::~CConfig()
 	s_CenterServerIP.clear();
 	m_CenterServerPort = 0;
 	m_CenterServerID = 0;
+
+	m_MaxClientNum = 0;
 }
 
 bool CConfig::Init(const char *servername, int lineid)
@@ -62,5 +66,12 @@ bool CConfig::Init(const char *servername, int lineid)
 		log_error("没有找到字段： 'CenterServer_ID'");
 		return false;
 	}
+
+	if (pinfo->QueryIntAttribute("ClientNum_Max", &m_MaxClientNum) != XML_SUCCESS)
+	{
+		log_error("没有找到字段： 'ClientNum_Max'");
+		return false;
+	}
+
 	return true;
 }

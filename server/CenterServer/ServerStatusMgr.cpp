@@ -3,6 +3,7 @@
 #include "serverlog.h"
 #include "objectpool.h"
 #include "msgbase.h"
+#include "CenterPlayerMgr.h"
 
 #include "ServerMsg.pb.h"
 
@@ -110,6 +111,11 @@ void CServerStatusMgr::AddGameServer(serverinfo *info, Msg *pMsg)
 
 			m_ServerMapInfo.insert(std::make_pair(i, maplist));
 		}
+	}
+
+	for (auto &i : msg.info())
+	{
+		CCenterPlayerMgr::Instance().AddPlayer(i.nguid(), i.nclientid(), nServerID, i.ngateid());
 	}
 }
 

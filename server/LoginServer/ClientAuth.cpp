@@ -12,7 +12,6 @@
 #include "des.h"
 #include <string>
 
-#include "MainType.h"
 #include "LoginType.h"
 #include "DBSvrType.h"
 #include "ClientMsg.pb.h"

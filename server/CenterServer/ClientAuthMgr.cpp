@@ -5,9 +5,7 @@
 #include "objectpool.h"
 #include "ServerLog.h"
 #include "Config.h"
-#include "ClientSvrMgr.h"
 
-#include "MainType.h"
 #include "ServerType.h"
 #include "LoginType.h"
 #include "Login.pb.h"
@@ -64,11 +62,23 @@ void CClientAuthMgr::Destroy(bool bLoginDisconnect)
 {
 	for (size_t i = 0; i < m_ClientInfoSet.size(); ++i)
 	{
-		DelClientAuthInfo(i);
+		clientauthinfo_release(m_ClientInfoSet[i]);
+		m_ClientInfoSet[i] = nullptr;
 	}
 
 	if(!bLoginDisconnect)
 		m_ClientInfoSet.clear();
+}
+
+void CClientAuthMgr::AsLoginServerDisconnect()
+{
+	for (size_t i = 0; i < m_ClientInfoSet.size(); ++i)
+	{
+		clientauthinfo_release(m_ClientInfoSet[i]);
+		m_ClientInfoSet[i] = nullptr;
+	}
+
+	m_PlayerLoginMap.clear();
 }
 
 // 添加认证信息
@@ -136,7 +146,7 @@ void CClientAuthMgr::DelClientAuthInfo(int32 clientid)
 {
 	if (clientid <= 0 || clientid >= static_cast<int>(m_ClientInfoSet.size()))
 	{
-		log_error("要释放的ClientAuthInfo的ID错误!");
+		log_error("要释放的ClientAuthInfo的ID错误!%d", clientid);
 		return;
 	}
 	

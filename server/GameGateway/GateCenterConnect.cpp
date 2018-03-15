@@ -8,7 +8,6 @@
 #include "GameConnect.h"
 #include "Client.h"
 
-#include "MainType.h"
 #include "ServerType.h"
 #include "ClientAuth.h"
 #include "LoginType.h"
@@ -57,7 +56,7 @@ void CGateCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
 	// 发送负载信息给Center
 	svrData::ServerLoadInfo sendMsg;
 	sendMsg.set_nlineid(CConfig::Instance().GetLineID());
-	sendMsg.set_nmaxclient(0);
+	sendMsg.set_nmaxclient(CConfig::Instance().GetMaxClientNum());
 	sendMsg.set_nnowclient(CClientAuth::Instance().GetClientSize());
 	sendMsg.set_nport(CConfig::Instance().GetListenPort());
 	sendMsg.set_sip(CConfig::Instance().GetServerIP());
@@ -92,30 +91,6 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 				_con->SetRecvPingTime(g_currenttime);
 				break;
 			}
-			case SVR_SUB_NEW_CLIENT_RET:
-			{
-				svrData::AddNewClientRet msg;
-				_CHECK_PARSE_(pMsg, msg);
-
-				netData::LoginRet sendMsg;
-				if (msg.ncenterclientid() > 0)
-				{
-					ClientAuthInfo *info = CClientAuth::Instance().FindAuthInfo(tl->id);
-					if (info)
-					{
-						info->Data.set_ncenterclientid(msg.ncenterclientid());
-						CGameConnect::Instance().SendMsgToServer(info->GameServerID, info->Data, SERVER_TYPE_MAIN, SVR_SUB_LOAD_PLAYERDATA, tl->id);
-						return;
-					}
-					else
-						sendMsg.set_ncode(netData::LoginRet::EC_ACCOUNT);
-				}
-				else
-					sendMsg.set_ncode(netData::LoginRet::EC_CENTERID);
-
-				CGateClientMgr::Instance().SendMsg(tl->id, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET);
-				break;
-			}
 			case SVR_SUB_CLIENT_ACCOUNT:
 			{
 				CClientAuth::Instance().AddAccountInfo(pMsg);
@@ -143,7 +118,8 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 					cl->SetLogicServerID(msg.ngameid());
 					svrData::LoadPlayerData Data;
 					Data.CopyFrom(msg.data());
-					CGameConnect::Instance().SendMsgToServer(msg.ngameid(), Data, SERVER_TYPE_MAIN, SVR_SUB_LOAD_PLAYERDATA, tl->id);
+					Data.set_bchangeline(true);
+					CGameConnect::Instance().SendMsgToServer(msg.ngameid(), Data, SERVER_TYPE_MAIN, SVR_SUB_PLAYERDATA, tl->id);
 				}
 				break;
 			}

@@ -254,7 +254,7 @@ void task::DestroyPools ()
 }
 
 //设置一些必须的附带信息
-void task::SetInfo (DataBase::CConnection *con, int serverid, int clientid)
+void task::SetInfo (DataBase::CConnection *con, int32 serverid, int64 clientid)
 {
 	m_con = con;
 	m_serverid = serverid;
