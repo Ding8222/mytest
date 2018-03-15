@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>..\lib\</OutDir>
-    <IncludePath>..\3rd\fmtlib\;..\3rd\json\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\3rd\mysql\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\zlib\;..\3rd\fmtlib\;..\3rd\json\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\3rd\mysql\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>..\3rd\fmtlib\;..\3rd\json\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\3rd\mysql\;$(IncludePath)</IncludePath>
@@ -82,7 +82,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>/wd4146 /source-charset:.65001 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -138,6 +138,8 @@
     <ClCompile Include="MiniDump.cpp" />
     <ClCompile Include="NetConfig.cpp" />
     <ClCompile Include="pool.c" />
+    <ClCompile Include="ProtobufCode.cpp" />
+    <ClCompile Include="ProtobufDispatcher.h" />
     <ClCompile Include="RandomPool.cpp" />
     <ClCompile Include="SendMail.cpp" />
     <ClCompile Include="serverinfo.cpp" />

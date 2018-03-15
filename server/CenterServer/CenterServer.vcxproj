@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>..\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;..\Common\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\zlib\;..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;..\Common\;$(IncludePath)</IncludePath>
     <OutDir>..\bin\</OutDir>
     <TargetName>G_$(ProjectName)</TargetName>
   </PropertyGroup>
@@ -79,13 +79,14 @@
     <IncludePath>..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;..\Common\;$(IncludePath)</IncludePath>
     <LibraryPath>..\lib;$(LibraryPath)</LibraryPath>
     <OutDir>..\bin</OutDir>
+    <TargetName>G_$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>/wd4146 /source-charset:.65001 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>

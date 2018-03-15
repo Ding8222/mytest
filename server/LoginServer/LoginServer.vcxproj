@@ -79,6 +79,7 @@
     <IncludePath>..\3rd\fmtlib\;..\3rd\cryptopp\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\Common\;$(IncludePath)</IncludePath>
     <LibraryPath>..\lib;$(LibraryPath)</LibraryPath>
     <OutDir>..\bin</OutDir>
+    <TargetName>G_$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

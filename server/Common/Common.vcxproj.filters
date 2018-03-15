@@ -96,5 +96,11 @@
     <ClCompile Include="CSVParser.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ProtobufCode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ProtobufDispatcher.h">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

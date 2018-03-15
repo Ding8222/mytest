@@ -79,6 +79,7 @@
     <OutDir>..\bin</OutDir>
     <IncludePath>..\3rd\mysql\;..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;$(IncludePath)</IncludePath>
     <LibraryPath>..\lib;$(LibraryPath)</LibraryPath>
+    <TargetName>G_$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

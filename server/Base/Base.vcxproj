@@ -158,6 +158,7 @@
     <ClInclude Include="PB\ServerMsg.pb.h" />
     <ClInclude Include="platform_config.h" />
     <ClInclude Include="pool.h" />
+    <ClInclude Include="ProtobufCode.h" />
     <ClInclude Include="RandomPool.h" />
     <ClInclude Include="SendMail.h" />
     <ClInclude Include="serverinfo.h" />
