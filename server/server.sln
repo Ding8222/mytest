@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2026
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lxnet", "3rd\lxnet\lib\lxnet\lxnet.vcxproj", "{CB583C72-DDA2-4F0B-9838-21F853F4CF3A}"
 EndProject
@@ -108,6 +108,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LogServer", "LogServer\LogS
 		{D1C528B6-AA02-4D29-9D61-DC08E317A70D} = {D1C528B6-AA02-4D29-9D61-DC08E317A70D}
 		{0B71D9E0-A92E-4BC5-828D-79F402674807} = {0B71D9E0-A92E-4BC5-828D-79F402674807}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NameCheckServer", "NameCheckServer\NameCheckServer.vcxproj", "{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -855,6 +857,46 @@ Global
 		{A34F896C-CDB2-408E-BB13-1F501829B412}.RelWithDebInfo|x64.Build.0 = Release|x64
 		{A34F896C-CDB2-408E-BB13-1F501829B412}.RelWithDebInfo|x86.ActiveCfg = Release|Win32
 		{A34F896C-CDB2-408E-BB13-1F501829B412}.RelWithDebInfo|x86.Build.0 = Release|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Debug|x64.ActiveCfg = Debug|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Debug|x64.Build.0 = Debug|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Debug|x86.ActiveCfg = Debug|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Debug|x86.Build.0 = Debug|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Debug-Dll|x64.ActiveCfg = Debug|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Debug-Dll|x64.Build.0 = Debug|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Debug-Dll|x86.ActiveCfg = Debug|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Debug-Dll|x86.Build.0 = Debug|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Debug-Lib|x64.ActiveCfg = Debug|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Debug-Lib|x64.Build.0 = Debug|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Debug-Lib|x86.ActiveCfg = Debug|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Debug-Lib|x86.Build.0 = Debug|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.DLL-Import Debug|x64.ActiveCfg = Debug|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.DLL-Import Debug|x64.Build.0 = Debug|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.DLL-Import Debug|x86.ActiveCfg = Debug|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.DLL-Import Debug|x86.Build.0 = Debug|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.DLL-Import Release|x64.ActiveCfg = Release|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.DLL-Import Release|x64.Build.0 = Release|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.DLL-Import Release|x86.ActiveCfg = Release|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.DLL-Import Release|x86.Build.0 = Release|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.MinSizeRel|x64.ActiveCfg = Release|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.MinSizeRel|x64.Build.0 = Release|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.MinSizeRel|x86.ActiveCfg = Release|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.MinSizeRel|x86.Build.0 = Release|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Release|x64.ActiveCfg = Release|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Release|x64.Build.0 = Release|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Release|x86.ActiveCfg = Release|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Release|x86.Build.0 = Release|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Release-Dll|x64.ActiveCfg = Release|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Release-Dll|x64.Build.0 = Release|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Release-Dll|x86.ActiveCfg = Release|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Release-Dll|x86.Build.0 = Release|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Release-Lib|x64.ActiveCfg = Release|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Release-Lib|x64.Build.0 = Release|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Release-Lib|x86.ActiveCfg = Release|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.Release-Lib|x86.Build.0 = Release|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.RelWithDebInfo|x64.ActiveCfg = Release|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.RelWithDebInfo|x64.Build.0 = Release|x64
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.RelWithDebInfo|x86.ActiveCfg = Release|Win32
+		{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}.RelWithDebInfo|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
