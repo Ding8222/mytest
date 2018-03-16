@@ -1,9 +1,10 @@
-#include "NameCheckServer.h"
+Ôªø#include "NameCheckServer.h"
 #include "NameCheckServerMgr.h"
 #include "config.h"
 #include "Timer.h"
 #include "ServerLog.h"
 #include "crosslib.h"
+#include "NameSet.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -41,7 +42,7 @@ bool CCheckNameServer::Init()
 #ifdef _WIN32
 		if (!CCtrlHandler::Instance().Init(&cb))
 		{
-			RunStateError("≥ı ºªØCtrlHandler ß∞‹!");
+			RunStateError("ÂàùÂßãÂåñCtrlHandlerÂ§±Ë¥•!");
 			break;
 		}
 #endif
@@ -51,7 +52,7 @@ bool CCheckNameServer::Init()
 			CConfig::Instance().GetListenPort(),
 			CConfig::Instance().GetOverTime()))
 		{
-			RunStateError("≥ı ºªØ ServerMgr  ß∞‹!");
+			RunStateError("ÂàùÂßãÂåñ NameCheckServerMgr Â§±Ë¥•!");
 			break;
 		}
 
@@ -61,6 +62,8 @@ bool CCheckNameServer::Init()
 	} while (true);
 
 	CNameCheckServerMgr::Instance().Destroy();
+	CNameSet::Instance().Destroy();
+
 	Destroy();
 
 	return false;
@@ -90,12 +93,13 @@ void CCheckNameServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			ElapsedLog("‘À––≥¨ ±:%d\n%s", delay, CNameCheckServerMgr::Instance().GetMsgNumInfo());
+			ElapsedLog("ËøêË°åË∂ÖÊó∂:%d\n%s", delay, CNameCheckServerMgr::Instance().GetMsgNumInfo());
 		}
 	}
 	delaytime(300);
 
 	CNameCheckServerMgr::Instance().Destroy();
+	CNameSet::Instance().Destroy();
 
 	Destroy();
 }

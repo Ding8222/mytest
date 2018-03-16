@@ -3,9 +3,9 @@
 #include <list>
 #include"BaseConfig.h"
 
-struct TableInfo 
+struct DBInfo 
 {
-	TableInfo()
+	DBInfo()
 	{
 
 	}
@@ -32,8 +32,8 @@ public:
 
 	bool Init(const char *servername = "");
 
-	std::list<TableInfo *> &GetTableList() { return m_tablelist; }
+	std::list<DBInfo *> &GetTableList() { return m_tablelist; }
 private:
 
-	std::list<TableInfo *> m_tablelist;
+	std::list<DBInfo *> m_tablelist;
 };

@@ -38,3 +38,12 @@
 
 // 踢下client
 #define SVR_SUB_KICKCLIENT 13
+
+// 名称检查
+#define SVR_SUB_NAMECHECK 14
+
+// 名称检查返回
+#define SVR_SUB_NAMECHECK_RET 15
+
+// 服务器log
+#define SVR_SUB_LOG 16

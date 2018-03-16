@@ -1,10 +1,13 @@
-#include <map>
+ï»¿#include <map>
 #include "serverinfo.h"
 #include "Config.h"
 #include "serverlog.h"
 #include "GlobalDefine.h"
 #include "sqlinterface.h"
 #include "NameCheckServerMgr.h"
+#include "NameSet.h"
+
+#include "ServerType.h"
 
 extern int64 g_currenttime;
 
@@ -27,25 +30,25 @@ bool CNameCheckServerMgr::Init(const char *ip, int serverid, int port, int overt
 	const char *tmp;
 	DataBase::CRecordset *res;
 	int num = 0;
-	std::list<TableInfo *> temp = CConfig::Instance().GetTableList();
-	for (std::list<TableInfo *>::iterator itr = temp.begin(); itr != temp.end(); ++itr)
+	std::list<DBInfo *> temp = CConfig::Instance().GetTableList();
+	for (std::list<DBInfo *>::iterator itr = temp.begin(); itr != temp.end(); ++itr)
 	{
 		if (!dbhand.Open((*itr)->dbname.c_str(), (*itr)->dbusername.c_str(), (*itr)->dbpassword.c_str(), (*itr)->dbip.c_str()))
 		{
-			RunStateError("Á¬½ÓÊı¾İ¿âÊ§°Ü! DBName:%s, IP:%s, ÌõÄ¿:%d", (*itr)->dbname.c_str(), (*itr)->dbip.c_str(), num);
+			RunStateError("è¿æ¥æ•°æ®åº“å¤±è´¥! DBName:%s, IP:%s, æ¡ç›®:%d", (*itr)->dbname.c_str(), (*itr)->dbip.c_str(), num);
 			return false;
 		}
 
 		if (!dbhand.SetCharacterSet("utf8"))
 		{
-			RunStateError("ÉèÖÃ±íplayerdateÎªutf8Ä£Ê½Ê§°Ü! DBName:%s, IP:%s, ÌõÄ¿:%d", (*itr)->dbname.c_str(), (*itr)->dbip.c_str(), num);
+			RunStateError("è®¾ç½®è¡¨playerdateä¸ºutf8æ¨¡å¼å¤±è´¥! DBName:%s, IP:%s, æ¡ç›®:%d", (*itr)->dbname.c_str(), (*itr)->dbip.c_str(), num);
 			return false;
 		}
 
 		res = dbhand.Execute((*itr)->sqlstr.c_str());
 		if (!res || !res->IsOpen())
 		{
-			RunStateError("SQLÓï¾ä²éÑ¯Ê§°Ü! DBName:%s, IP:%s, ÌõÄ¿:%d", (*itr)->dbname.c_str(), (*itr)->dbip.c_str(), num);
+			RunStateError("SQLè¯­å¥æŸ¥è¯¢å¤±è´¥! DBName:%s, IP:%s, æ¡ç›®:%d", (*itr)->dbname.c_str(), (*itr)->dbip.c_str(), num);
 			return false;
 		}
 
@@ -54,10 +57,16 @@ bool CNameCheckServerMgr::Init(const char *ip, int serverid, int port, int overt
 			tmp = res->Get((*itr)->fieldname.c_str());
 			if (!tmp)
 			{
-				RunStateError("»ñÈ¡×Ö¶ÎÊ§°Ü! DBName:%s, IP:%s, ÌõÄ¿:%d", (*itr)->dbname.c_str(), (*itr)->dbip.c_str(), num);
+				RunStateError("è·å–å­—æ®µå¤±è´¥! DBName:%s, IP:%s, æ¡ç›®:%d", (*itr)->dbname.c_str(), (*itr)->dbip.c_str(), num);
 				return false;
 			}
 			
+			if (!CNameSet::Instance().AddName(tmp))
+			{
+				RunStateError("æ·»åŠ åç§°å¤±è´¥å¤±è´¥! DBName:%s, IP:%s, æ¡ç›®:%dï¼Œåç§°:%s", (*itr)->dbname.c_str(), (*itr)->dbip.c_str(), num, tmp);
+				return false;
+			}
+
 			res->NextRow();
 		}
 
@@ -76,7 +85,7 @@ void CNameCheckServerMgr::Destroy()
 
 void CNameCheckServerMgr::GetCurrentInfo(char *buf, size_t buflen)
 {
-	snprintf(buf, buflen - 1, "µ±Ç°×¢²áµÄ·şÎñÆ÷ĞÅÏ¢£º\nµÇÂ½·şÎñÆ÷ÊıÁ¿£º%d\nÖĞĞÄ·şÎñÆ÷ÊıÁ¿£º%d\n",
+	snprintf(buf, buflen - 1, "å½“å‰æ³¨å†Œçš„æœåŠ¡å™¨ä¿¡æ¯ï¼š\nç™»é™†æœåŠ¡å™¨æ•°é‡ï¼š%d\nä¸­å¿ƒæœåŠ¡å™¨æ•°é‡ï¼š%d\n",
 		(int)m_LoginList.size(), (int)m_CenterList.size());
 }
 
@@ -103,7 +112,7 @@ const char *CNameCheckServerMgr::GetMsgNumInfo()
 	for (std::map<int, serverinfo*>::iterator itr = m_LoginList.begin(); itr != m_LoginList.end(); ++itr)
 	{
 		info = itr->second;
-		snprintf(buf, len - 1, "µÇÂ½·şÎñÆ÷: %d, ÊÕµ½ÏûÏ¢ÊıÁ¿:%d, ·¢ËÍÏûÏ¢ÊıÁ¿:%d\n", \
+		snprintf(buf, len - 1, "ç™»é™†æœåŠ¡å™¨: %d, æ”¶åˆ°æ¶ˆæ¯æ•°é‡:%d, å‘é€æ¶ˆæ¯æ•°é‡:%d\n", \
 			info->GetServerID(), info->GetRecvMsgNum(), info->GetSendMsgNum());
 
 		res = strlen(buf);
@@ -114,7 +123,7 @@ const char *CNameCheckServerMgr::GetMsgNumInfo()
 	for (std::map<int, serverinfo*>::iterator itr = m_CenterList.begin(); itr != m_CenterList.end(); ++itr)
 	{
 		info = itr->second;
-		snprintf(buf, len - 1, "ÖĞĞÄ·şÎñÆ÷: %d, ÊÕµ½ÏûÏ¢ÊıÁ¿:%d, ·¢ËÍÏûÏ¢ÊıÁ¿:%d\n", \
+		snprintf(buf, len - 1, "ä¸­å¿ƒæœåŠ¡å™¨: %d, æ”¶åˆ°æ¶ˆæ¯æ•°é‡:%d, å‘é€æ¶ˆæ¯æ•°é‡:%d\n", \
 			info->GetServerID(), info->GetRecvMsgNum(), info->GetSendMsgNum());
 
 		res = strlen(buf);
@@ -135,9 +144,9 @@ void CNameCheckServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	{
 		m_LoginList.erase(info->GetServerID());
 		if (overtime)
-			RunStateError("µÇÂ½·şÆ÷³¬Ê±ÒÆ³ı:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("ç™»é™†æœå™¨è¶…æ—¶ç§»é™¤:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		else
-			RunStateError("µÇÂ½·şÆ÷¹Ø±ÕÒÆ³ı:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("ç™»é™†æœå™¨å…³é—­ç§»é™¤:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 
 		break;
 	}
@@ -145,18 +154,18 @@ void CNameCheckServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	{
 		m_CenterList.erase(info->GetServerID());
 		if (overtime)
-			RunStateError("ÖĞĞÄ·şÆ÷³¬Ê±ÒÆ³ı:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("ä¸­å¿ƒæœå™¨è¶…æ—¶ç§»é™¤:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		else
-			RunStateError("ÖĞĞÄ·şÆ÷¹Ø±ÕÒÆ³ı:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("ä¸­å¿ƒæœå™¨å…³é—­ç§»é™¤:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 
 		break;
 	}
 	default:
 	{
 		if (overtime)
-			RunStateError("Î´×¢²áµÄ·şÎñÆ÷³¬Ê±ÒÆ³ı, ip:[%s]", info->GetIP());
+			RunStateError("æœªæ³¨å†Œçš„æœåŠ¡å™¨è¶…æ—¶ç§»é™¤, ip:[%s]", info->GetIP());
 		else
-			RunStateError("Î´×¢²áµÄ·şÎñÆ÷¹Ø±ÕÒÆ³ı, ip:[%s]", info->GetIP());
+			RunStateError("æœªæ³¨å†Œçš„æœåŠ¡å™¨å…³é—­ç§»é™¤, ip:[%s]", info->GetIP());
 	}
 	}
 }
@@ -173,6 +182,26 @@ void CNameCheckServerMgr::ProcessMsg(serverinfo *info)
 		msgtail *tl = (msgtail *)(&((char *)pMsg)[pMsg->GetLength() - sizeof(msgtail)]);
 		pMsg->SetLength(pMsg->GetLength() - (int)sizeof(msgtail));
 
+		switch (pMsg->GetMainType())
+		{
+		case SERVER_TYPE_MAIN:
+		{
+			switch (pMsg->GetSubType())
+			{
+			case SVR_SUB_PING:
+			{
+				info->SendMsg(pMsg);
+				info->SetPingTime(g_currenttime);
+				break;
+			}
+			case SVR_SUB_NAMECHECK:
+			{
+				break;
+			}
+			}
+			break;
+		}
+		}
 	}
 }
 
@@ -180,7 +209,7 @@ bool CNameCheckServerMgr::AddNewServer(serverinfo *info, int nServerID, int nTyp
 {
 	if (FindServer(nServerID, nType))
 	{
-		RunStateError("Ìí¼Ó·şÎñÆ÷Ê§°Ü£¡ÒÑ¾­´æÔÚµÄ·şÎñÆ÷£¬Ô¶³Ì·şÎñÆ÷ID£º[%d] IP:[%s]", nServerID, info->GetIP());
+		RunStateError("æ·»åŠ æœåŠ¡å™¨å¤±è´¥ï¼å·²ç»å­˜åœ¨çš„æœåŠ¡å™¨ï¼Œè¿œç¨‹æœåŠ¡å™¨IDï¼š[%d] IP:[%s]", nServerID, info->GetIP());
 		return false;
 	}
 
@@ -199,7 +228,7 @@ bool CNameCheckServerMgr::AddNewServer(serverinfo *info, int nServerID, int nTyp
 	}
 	default:
 	{
-		RunStateError("Ìí¼Ó·şÎñÆ÷Ê§°Ü£¡²»´æÔÚµÄ·şÎñÆ÷ÀàĞÍ£¬Ô¶³Ì·şÎñÆ÷ID£º[%d] ÀàĞÍ£º[%d] IP:[%s]", nServerID, nType, info->GetIP());
+		RunStateError("æ·»åŠ æœåŠ¡å™¨å¤±è´¥ï¼ä¸å­˜åœ¨çš„æœåŠ¡å™¨ç±»å‹ï¼Œè¿œç¨‹æœåŠ¡å™¨IDï¼š[%d] ç±»å‹ï¼š[%d] IP:[%s]", nServerID, nType, info->GetIP());
 		return false;
 	}
 	}

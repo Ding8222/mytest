@@ -40,25 +40,19 @@ SQL_Log				是否开启SQL查询日志
 	>
 </Base>
 
-<GameGateway
-	Server_ID = "3000"
-	Listen_Port = "30000"
+<NameCheckServer 
+	Server_ID = "7000"
+	Listen_Port = "70001"
 	Server_IP = "127.0.0.1"
 	
-	CenterServer_IP = "127.0.0.1"
-	CenterServer_Port = "10001"
-	CenterServer_ID = "1000"
-		
-	ClientNum_Max = "2000"
-	DataLimt_Recv = "32768"
-	DataLimt_Send = "173056"
+	DBName = "test"
+	DBUser = "root"
+	DBPass = "root"
+	DBIP = "127.0.0.1:3306"
 	
-	ClientConnect_Log = "true"
 	>
-	
-</GameGateway>
+</NameCheckServer>
 
-<GameSvrList>
-	<GameSvr ID = "4001" IP = "127.0.0.1" PORT = "40001" />
-	<GameSvr ID = "4002" IP = "127.0.0.1" PORT = "40002" />
-</GameSvrList>
+<DBList>
+	<DBInfo DBName = "test" DBUser = "root" DBPass = "root" DBIP = "127.0.0.1" SQL = "select name from playerdate " FieldName = "name"/>
+</DBList>

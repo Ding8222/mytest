@@ -35,7 +35,7 @@ bool init()
 	}
 #endif
 
-	if (!init_log("CheckNameServer_Log"))
+	if (!init_log("NameCheckServer_Log"))
 	{
 		RunStateError("初始化Log失败!");
 		return false;
@@ -50,7 +50,7 @@ bool init()
 	}
 
 	//读取配置文件
-	if (!CConfig::Instance().Init("CheckNameServer"))
+	if (!CConfig::Instance().Init("NameCheckServer"))
 	{
 		RunStateError("初始化Config失败!");
 		system("pause");
@@ -59,7 +59,7 @@ bool init()
 
 	g_elapsed_log_flag = CConfig::Instance().IsOpenElapsedLog();
 
-	RunStateLog("日志服务器开始启动!");
+	RunStateLog("名称检查服务器开始启动!");
 
 	//初始化网络库
 	if (!lxnet::net_init(CNetConfig::Instance().GetBigBufSize(), CNetConfig::Instance().GetBigBufNum(),

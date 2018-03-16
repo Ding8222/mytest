@@ -134,11 +134,13 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NameCheckServer.cpp" />
     <ClCompile Include="NameCheckServerMgr.cpp" />
+    <ClCompile Include="NameSet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h" />
     <ClInclude Include="NameCheckServer.h" />
     <ClInclude Include="NameCheckServerMgr.h" />
+    <ClInclude Include="NameSet.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

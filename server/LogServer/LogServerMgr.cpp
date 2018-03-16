@@ -11,7 +11,6 @@
 #include "datahand.h"
 #include "LogServerMgr.h"
 
-#include "LoginType.h"
 #include "ServerType.h"
 
 DataBase::CConnection g_dbhand;
@@ -285,7 +284,6 @@ void CLogServerMgr::ProcessMsg(serverinfo *info)
 		{
 		case SERVER_TYPE_MAIN:
 		{
-			// 来自LoginSvr的消息
 			switch (pMsg->GetSubType())
 			{
 			case SVR_SUB_PING:
@@ -294,13 +292,8 @@ void CLogServerMgr::ProcessMsg(serverinfo *info)
 				info->SetPingTime(g_currenttime);
 				break;
 			}
-			default:
-				break;
 			}
 			break;
-		}
-		default:
-		{
 		}
 		}
 	}

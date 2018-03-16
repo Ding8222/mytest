@@ -1,5 +1,6 @@
 @echo off
 
+start "NameCheckServer"		"G_NameCheckServer.exe" 
 start "LogServer"			"G_LogServer.exe" 
 start "CenterServer"		"G_CenterServer.exe" 
 start "DBServer"			"G_DBServer.exe" 

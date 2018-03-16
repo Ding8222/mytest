@@ -1,9 +1,10 @@
-/*
-* Log·şÎñ¹ÜÀíÆ÷
+ï»¿/*
+* åç§°æ£€æŸ¥æœåŠ¡ç®¡ç†å™¨
 * Copyright (C) ddl
 * 2018
 */
 #pragma once
+
 #include "ServerMgr.h"
 #include "sqlinterface.h"
 
