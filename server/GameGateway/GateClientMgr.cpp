@@ -50,7 +50,7 @@ void CGateClientMgr::OnClientDisconnect(CClient *cl)
 {
 	if (cl->IsAlreadyAuth())
 	{
-		CClientAuth::Instance().KickClient(cl->GetClientID(),false);
+		CClientAuth::Instance().KickClient(cl->GetClientID(), false);
 	}
 	CClientMgr::OnClientDisconnect(cl);
 }

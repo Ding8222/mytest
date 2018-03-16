@@ -2,6 +2,7 @@
 #include "objectpool.h"
 #include "ServerLog.h"
 #include "GlobalDefine.h"
+#include "ClientAuthMgr.h"
 
 CCenterPlayerMgr::CCenterPlayerMgr()
 {
@@ -49,7 +50,7 @@ void CCenterPlayerMgr::Destroy()
 	m_PlayerMap.clear();
 }
 
-void CCenterPlayerMgr::AddPlayer(int64 guid, int32 nClientID, int32 nGameID, int32 nGateID)
+void CCenterPlayerMgr::AddPlayer(int64 guid, const std::string &account, int32 nClientID, int32 nGameID, int32 nGateID)
 {
 	auto iter = m_PlayerMap.find(guid);
 	assert(iter == m_PlayerMap.end());
@@ -58,6 +59,7 @@ void CCenterPlayerMgr::AddPlayer(int64 guid, int32 nClientID, int32 nGameID, int
 		stCenterPlayer *player = centerplayer_create();
 		if(player)
 		{
+			player->Account = account;
 			player->nClientID = nClientID;
 			player->nGameID = nGameID;
 			player->nGateID = nGateID;
@@ -95,6 +97,7 @@ void CCenterPlayerMgr::AsGateServerDisconnect(int32 gateserverid)
 		stCenterPlayer *player = iterB->second;
 		if (player->nGateID == gateserverid)
 		{
+			CClientAuthMgr::Instance().SetPlayerOffline(player->Account);
 			centerplayer_release(player);
 			iterB = m_PlayerMap.erase(iterB);
 		}
@@ -111,6 +114,7 @@ void CCenterPlayerMgr::AsGameServerDisconnect(int32 gameserverid)
 		stCenterPlayer *player = iterB->second;
 		if (player->nGameID == gameserverid)
 		{
+			CClientAuthMgr::Instance().SetPlayerOffline(player->Account);
 			centerplayer_release(player);
 			iterB = m_PlayerMap.erase(iterB);
 		}

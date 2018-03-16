@@ -109,13 +109,6 @@ void CGameConnect::ProcessMsg(connector *_con)
 			}
 			break;
 		}
-		case CLIENT_TYPE_MAIN:
-		{
-			switch (pMsg->GetSubType())
-			{
-			}
-			break;
-		}
 		case LOGIN_TYPE_MAIN:
 		{
 			switch (pMsg->GetSubType())
@@ -130,7 +123,7 @@ void CGameConnect::ProcessMsg(connector *_con)
 					if (info)
 					{
 						CGateClientMgr::Instance().SetClientAlreadyLogin(tl->id, _con->GetConnectID());
-						ClientConnectLog("新的客户端登陆成功！Account:%s，逻辑服务器：%d", info->Account.c_str(), _con->GetConnectID());
+						ClientConnectLog("账号：%s登陆成功！目标服务器：%d", info->Account.c_str(), _con->GetConnectID());
 					}
 				}
 				break;

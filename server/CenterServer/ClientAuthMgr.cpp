@@ -39,6 +39,7 @@ static void clientauthinfo_release(ClientAuthInfo *self)
 
 CClientAuthMgr::CClientAuthMgr()
 {
+	m_bDBSvrReady = false;
 	m_ClientInfoSet.clear();
 }
 
@@ -86,6 +87,15 @@ void CClientAuthMgr::QueryAuth(Msg *pMsg, int32 clientid, int32 serverid)
 	netData::Auth msg;
 	_CHECK_PARSE_(pMsg, msg);
 
+	if (!GetIsDBSvrReady())
+	{
+		RunStateError("DB服务器没有启动！");
+		netData::AuthRet SendMsg;
+		SendMsg.set_ncode(netData::AuthRet::EC_DBSTAUTS);
+		CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, clientid, serverid);
+		return;
+	}
+
 	bool bWaitKick = false;
 	auto iter = m_PlayerOnlineMap.find(msg.account());
 	if (iter != m_PlayerOnlineMap.end())
@@ -95,7 +105,7 @@ void CClientAuthMgr::QueryAuth(Msg *pMsg, int32 clientid, int32 serverid)
 			auto iterW = m_PlayerLoginMap.find(msg.account());
 			if (iterW == m_PlayerLoginMap.end())
 			{
-				RunStateLog("账号%s在线，所在服务器id：%d，尝试连接的clientid：%d，尝试踢下原有玩家", msg.account().c_str(), iter->second, clientid);
+				RunStateLog("账号%s在线，尝试连接的clientid：%d，尝试踢下原有玩家", msg.account().c_str(), clientid);
 				svrData::KickClient SendMsg;
 				CCentServerMgr::Instance().SendMsgToServer(SendMsg, SERVER_TYPE_MAIN, SVR_SUB_KICKCLIENT, ServerEnum::EST_GATE, iter->second);
 				bWaitKick = true;

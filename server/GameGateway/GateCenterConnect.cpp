@@ -103,6 +103,17 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 			}
 			case SVR_SUB_CHANGELINE_RET:
 			{
+				svrData::ChangeLineRet msg;
+				_CHECK_PARSE_(pMsg, msg);
+				if (msg.ncode() != svrData::ChangeLineRet::EC_SUCC)
+				{
+					ClientAuthInfo *info = CClientAuth::Instance().FindAuthInfo(tl->id);
+					if(info)
+						RunStateError("玩家换线失败！踢下线！账号：%s，目标地图：%d，目标线路：%d", info->Account.c_str(), msg.nmapid(), msg.nlineid());
+					else
+						RunStateError("玩家换线失败！踢下线！目标地图：%d，目标线路：%d", msg.nmapid(), msg.nlineid());
+					CClientAuth::Instance().KickClient(tl->id);
+				}
 				CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
 				break;
 			}

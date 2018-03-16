@@ -68,7 +68,8 @@ message AuthRet
 		EC_KICK = 8;		// 已经将在线玩家踢下线，请重试
 		EC_WATING = 9;		// 系统正在踢在线玩家，请稍微
 		EC_LOGINTIME = 10;	// 更新账号登陆时间失败
-		EC_CREATE = 11;	// 创建账号失败
+		EC_CREATE = 11;		// 创建账号失败
+		EC_DBSTAUTS = 12;	// 数据库没有启动
 	};
 	int32 nCode = 1;
 	string Account = 2;	//账号

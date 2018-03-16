@@ -45,8 +45,8 @@ void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			svrData::AddPlayerToCenter msg;
 			_CHECK_PARSE_(pMsg, msg);
 
-			CCenterPlayerMgr::Instance().AddPlayer(msg.nguid(), msg.nclientid(), info->GetServerID(), msg.ngateid());
-			CClientAuthMgr::Instance().SetGuid(msg.account(),msg.nguid());
+			CCenterPlayerMgr::Instance().AddPlayer(msg.nguid(), msg.account(), msg.nclientid(), info->GetServerID(), msg.ngateid());
+			CClientAuthMgr::Instance().SetGuid(msg.account(), msg.nguid());
 			break;
 		}
 		case SVR_SUB_CHANGELINE:
@@ -56,6 +56,8 @@ void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			_CHECK_PARSE_(pMsg, msg);
 
 			svrData::ChangeLineRet SendMsg;
+			SendMsg.set_nmapid(msg.nmapid());
+			SendMsg.set_nlineid(msg.nlineid());
 			ServerStatusInfo *_pGameInfo = CServerStatusMgr::Instance().GetGameServerInfo(msg.nmapid());
 			if (_pGameInfo)
 			{

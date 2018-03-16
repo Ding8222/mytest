@@ -126,17 +126,23 @@ void CClientAuth::KickClient(int32 clientid, bool closeclient)
 	assert(iter != m_ClientAuthInfo.end());
 	if (iter != m_ClientAuthInfo.end())
 	{
+		ClientAuthInfo *info = iter->second;
 		// 通知玩家下线处理
 		svrData::DelClient sendMsg;
-		CGameConnect::Instance().SendMsgToServer(iter->second->GameServerID, sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, clientid);
+		CGameConnect::Instance().SendMsgToServer(info->GameServerID, sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, clientid);
 
-		m_ClientSecretInfo.erase(iter->second->Account);
-		clientauthinfo_release(iter->second);
-		m_ClientAuthInfo.erase(iter);
-		
 		// 通知延迟关闭Client
 		if (closeclient)
+		{
+			RunStateLog("玩家连接断开！账号：%s", info->Account.c_str());
 			CGateClientMgr::Instance().DelayCloseClient(clientid);
+		}
+		else
+			RunStateLog("玩家被踢下线！账号：%s", info->Account.c_str());
+
+		m_ClientSecretInfo.erase(info->Account);
+		clientauthinfo_release(info);
+		m_ClientAuthInfo.erase(iter);
 	}
 }
 

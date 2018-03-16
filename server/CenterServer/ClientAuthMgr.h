@@ -49,6 +49,9 @@ public:
 	void SetPlayerOnline(const std::string &account, int64 guid);
 	void SetGuid(const std::string &account,int64 guid);
 	void SetPlayerOffline(const std::string &account);
+
+	void SetDBSvrReadyStatus(bool bReady) { m_bDBSvrReady = bReady; }
+	bool GetIsDBSvrReady() { return m_bDBSvrReady; }
 private:
 	// id,info
 	std::vector<ClientAuthInfo *> m_ClientInfoSet;
@@ -56,4 +59,6 @@ private:
 	std::unordered_map<std::string, int64> m_PlayerOnlineMap;
 	// account,guid
 	std::unordered_map<std::string, int64> m_PlayerLoginMap;
+
+	bool m_bDBSvrReady;
 };

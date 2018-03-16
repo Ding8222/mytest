@@ -440,8 +440,8 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::ChangeLineRet, ncode_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::ChangeLineRet, ngameid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::ChangeLineRet, nmapid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::ChangeLineRet, nlineid_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::KickClient, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -527,8 +527,8 @@ void AddDescriptorsImpl() {
       "\001(\010\022\014\n\004Data\030\016 \001(\014\"e\n\nChangeLine\022\016\n\006nMapI"
       "D\030\001 \001(\005\022\017\n\007nLineID\030\002 \001(\005\022\017\n\007nGameID\030\003 \001("
       "\005\022%\n\004Data\030\004 \001(\0132\027.svrData.LoadPlayerData"
-      "\"|\n\rChangeLineRet\022\r\n\005nCode\030\001 \001(\005\022\017\n\007nGam"
-      "eID\030\002 \001(\005\022\016\n\006nMapID\030\003 \001(\005\";\n\002EC\022\014\n\010EC_OT"
+      "\"|\n\rChangeLineRet\022\r\n\005nCode\030\001 \001(\005\022\016\n\006nMap"
+      "ID\030\002 \001(\005\022\017\n\007nLineID\030\003 \001(\005\";\n\002EC\022\014\n\010EC_OT"
       "HER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002\022\r\n\tEC_SE"
       "RVER\020\003\"\014\n\nKickClientb\006proto3"
   };
@@ -4358,8 +4358,8 @@ void ChangeLineRet::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int ChangeLineRet::kNCodeFieldNumber;
-const int ChangeLineRet::kNGameIDFieldNumber;
 const int ChangeLineRet::kNMapIDFieldNumber;
+const int ChangeLineRet::kNLineIDFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ChangeLineRet::ChangeLineRet()
@@ -4376,15 +4376,15 @@ ChangeLineRet::ChangeLineRet(const ChangeLineRet& from)
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&ncode_, &from.ncode_,
-    static_cast<size_t>(reinterpret_cast<char*>(&nmapid_) -
-    reinterpret_cast<char*>(&ncode_)) + sizeof(nmapid_));
+    static_cast<size_t>(reinterpret_cast<char*>(&nlineid_) -
+    reinterpret_cast<char*>(&ncode_)) + sizeof(nlineid_));
   // @@protoc_insertion_point(copy_constructor:svrData.ChangeLineRet)
 }
 
 void ChangeLineRet::SharedCtor() {
   ::memset(&ncode_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&nmapid_) -
-      reinterpret_cast<char*>(&ncode_)) + sizeof(nmapid_));
+      reinterpret_cast<char*>(&nlineid_) -
+      reinterpret_cast<char*>(&ncode_)) + sizeof(nlineid_));
   _cached_size_ = 0;
 }
 
@@ -4419,8 +4419,8 @@ void ChangeLineRet::Clear() {
   (void) cached_has_bits;
 
   ::memset(&ncode_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&nmapid_) -
-      reinterpret_cast<char*>(&ncode_)) + sizeof(nmapid_));
+      reinterpret_cast<char*>(&nlineid_) -
+      reinterpret_cast<char*>(&ncode_)) + sizeof(nlineid_));
   _internal_metadata_.Clear();
 }
 
@@ -4448,28 +4448,28 @@ bool ChangeLineRet::MergePartialFromCodedStream(
         break;
       }
 
-      // int32 nGameID = 2;
+      // int32 nMapID = 2;
       case 2: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &ngameid_)));
+                 input, &nmapid_)));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // int32 nMapID = 3;
+      // int32 nLineID = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(24u /* 24 & 0xFF */)) {
 
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &nmapid_)));
+                 input, &nlineid_)));
         } else {
           goto handle_unusual;
         }
@@ -4507,14 +4507,14 @@ void ChangeLineRet::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->ncode(), output);
   }
 
-  // int32 nGameID = 2;
-  if (this->ngameid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->ngameid(), output);
+  // int32 nMapID = 2;
+  if (this->nmapid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->nmapid(), output);
   }
 
-  // int32 nMapID = 3;
-  if (this->nmapid() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->nmapid(), output);
+  // int32 nLineID = 3;
+  if (this->nlineid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->nlineid(), output);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -4536,14 +4536,14 @@ void ChangeLineRet::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->ncode(), target);
   }
 
-  // int32 nGameID = 2;
-  if (this->ngameid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->ngameid(), target);
+  // int32 nMapID = 2;
+  if (this->nmapid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->nmapid(), target);
   }
 
-  // int32 nMapID = 3;
-  if (this->nmapid() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->nmapid(), target);
+  // int32 nLineID = 3;
+  if (this->nlineid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->nlineid(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -4570,18 +4570,18 @@ size_t ChangeLineRet::ByteSizeLong() const {
         this->ncode());
   }
 
-  // int32 nGameID = 2;
-  if (this->ngameid() != 0) {
-    total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::Int32Size(
-        this->ngameid());
-  }
-
-  // int32 nMapID = 3;
+  // int32 nMapID = 2;
   if (this->nmapid() != 0) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::Int32Size(
         this->nmapid());
+  }
+
+  // int32 nLineID = 3;
+  if (this->nlineid() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->nlineid());
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -4616,11 +4616,11 @@ void ChangeLineRet::MergeFrom(const ChangeLineRet& from) {
   if (from.ncode() != 0) {
     set_ncode(from.ncode());
   }
-  if (from.ngameid() != 0) {
-    set_ngameid(from.ngameid());
-  }
   if (from.nmapid() != 0) {
     set_nmapid(from.nmapid());
+  }
+  if (from.nlineid() != 0) {
+    set_nlineid(from.nlineid());
   }
 }
 
@@ -4649,8 +4649,8 @@ void ChangeLineRet::Swap(ChangeLineRet* other) {
 void ChangeLineRet::InternalSwap(ChangeLineRet* other) {
   using std::swap;
   swap(ncode_, other->ncode_);
-  swap(ngameid_, other->ngameid_);
   swap(nmapid_, other->nmapid_);
+  swap(nlineid_, other->nlineid_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }

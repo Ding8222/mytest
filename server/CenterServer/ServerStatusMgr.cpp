@@ -116,7 +116,7 @@ void CServerStatusMgr::AddGameServer(serverinfo *info, Msg *pMsg)
 
 	for (auto &i : msg.info())
 	{
-		CCenterPlayerMgr::Instance().AddPlayer(i.nguid(), i.nclientid(), nServerID, i.ngateid());
+		CCenterPlayerMgr::Instance().AddPlayer(i.nguid(), i.account(), i.nclientid(), nServerID, i.ngateid());
 		CClientAuthMgr::Instance().SetPlayerOnline(i.account(), i.nguid());
 	}
 }

@@ -61,12 +61,14 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 					if (!_pGateInfo)
 						RunStateError("为账号：%s分配网关失败！", msg.account().c_str());
 					SendMsg.set_ncode(netData::SelectPlayerRet::EC_SERVER);
+					CClientAuthMgr::Instance().SetPlayerOffline(msg.account());
 				}
 			}
 			else
 			{
 				RunStateError("没有找到clientid：%d的认证信息！", tl->id);
 				SendMsg.set_ncode(netData::SelectPlayerRet::EC_AUTH);
+				CClientAuthMgr::Instance().SetPlayerOffline(msg.account());
 			}
 
 			CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER_RET, ServerEnum::EST_LOGIN, tl->id);
@@ -93,7 +95,10 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 				CCentServerMgr::Instance().SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, tl->id);
 			}
 			else
+			{
 				RunStateError("处理DB认证返回失败！没有找到账号%s信息！clientid：%d", msg.account().c_str(), tl->id);
+				CClientAuthMgr::Instance().SetPlayerOffline(msg.account());
+			}
 			break;
 		}
 		case LOGIN_SUB_PLAYER_LIST_RET:

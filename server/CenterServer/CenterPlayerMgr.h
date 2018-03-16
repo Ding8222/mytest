@@ -9,10 +9,12 @@ struct stCenterPlayer
 		nClientID = 0;
 		nGateID = 0;
 		nGameID = 0;
+		Account.clear();
 	}
-	int nClientID;
-	int nGateID;
-	int nGameID;
+	int32 nClientID;
+	int32 nGateID;
+	int32 nGameID;
+	std::string Account;
 };
 
 class CCenterPlayerMgr
@@ -29,7 +31,7 @@ public:
 
 	void Destroy();
 
-	void AddPlayer(int64 guid, int32 nClientID, int32 nGameID, int32 nGateID);
+	void AddPlayer(int64 guid, const std::string &account, int32 nClientID, int32 nGameID, int32 nGateID);
 	void DelPlayer(int64 guid);
 	void UpdatePlayerGameSvr(int64 guid, int32 nGameID);
 

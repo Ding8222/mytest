@@ -178,6 +178,7 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				{
 					msg.set_account(player->GetAccount());
 					FuncUti::SendMsgToCenter(player, msg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT);
+					RunStateLog("玩家连接断开！账号：%s，角色名称：%s", player->GetAccount().c_str(), player->GetName());
 					CPlayerMgr::Instance().DelPlayer(tl->id);
 				}
 				break;

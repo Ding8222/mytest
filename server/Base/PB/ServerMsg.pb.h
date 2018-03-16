@@ -1690,25 +1690,25 @@ class ChangeLineRet : public ::google::protobuf::Message /* @@protoc_insertion_p
   ::google::protobuf::int32 ncode() const;
   void set_ncode(::google::protobuf::int32 value);
 
-  // int32 nGameID = 2;
-  void clear_ngameid();
-  static const int kNGameIDFieldNumber = 2;
-  ::google::protobuf::int32 ngameid() const;
-  void set_ngameid(::google::protobuf::int32 value);
-
-  // int32 nMapID = 3;
+  // int32 nMapID = 2;
   void clear_nmapid();
-  static const int kNMapIDFieldNumber = 3;
+  static const int kNMapIDFieldNumber = 2;
   ::google::protobuf::int32 nmapid() const;
   void set_nmapid(::google::protobuf::int32 value);
+
+  // int32 nLineID = 3;
+  void clear_nlineid();
+  static const int kNLineIDFieldNumber = 3;
+  ::google::protobuf::int32 nlineid() const;
+  void set_nlineid(::google::protobuf::int32 value);
 
   // @@protoc_insertion_point(class_scope:svrData.ChangeLineRet)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::int32 ncode_;
-  ::google::protobuf::int32 ngameid_;
   ::google::protobuf::int32 nmapid_;
+  ::google::protobuf::int32 nlineid_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsChangeLineRetImpl();
@@ -2933,21 +2933,7 @@ inline void ChangeLineRet::set_ncode(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:svrData.ChangeLineRet.nCode)
 }
 
-// int32 nGameID = 2;
-inline void ChangeLineRet::clear_ngameid() {
-  ngameid_ = 0;
-}
-inline ::google::protobuf::int32 ChangeLineRet::ngameid() const {
-  // @@protoc_insertion_point(field_get:svrData.ChangeLineRet.nGameID)
-  return ngameid_;
-}
-inline void ChangeLineRet::set_ngameid(::google::protobuf::int32 value) {
-  
-  ngameid_ = value;
-  // @@protoc_insertion_point(field_set:svrData.ChangeLineRet.nGameID)
-}
-
-// int32 nMapID = 3;
+// int32 nMapID = 2;
 inline void ChangeLineRet::clear_nmapid() {
   nmapid_ = 0;
 }
@@ -2959,6 +2945,20 @@ inline void ChangeLineRet::set_nmapid(::google::protobuf::int32 value) {
   
   nmapid_ = value;
   // @@protoc_insertion_point(field_set:svrData.ChangeLineRet.nMapID)
+}
+
+// int32 nLineID = 3;
+inline void ChangeLineRet::clear_nlineid() {
+  nlineid_ = 0;
+}
+inline ::google::protobuf::int32 ChangeLineRet::nlineid() const {
+  // @@protoc_insertion_point(field_get:svrData.ChangeLineRet.nLineID)
+  return nlineid_;
+}
+inline void ChangeLineRet::set_nlineid(::google::protobuf::int32 value) {
+  
+  nlineid_ = value;
+  // @@protoc_insertion_point(field_set:svrData.ChangeLineRet.nLineID)
 }
 
 // -------------------------------------------------------------------

@@ -355,6 +355,7 @@ void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	}
 	case ServerEnum::EST_DB:
 	{
+		CClientAuthMgr::Instance().SetDBSvrReadyStatus(false);
 		m_DBList.erase(nServerID);
 		if (overtime)
 			RunStateError("数据服器超时移除:[%d], ip:[%s]", nServerID, info->GetIP());
@@ -497,5 +498,8 @@ serverinfo *CCentServerMgr::FindServer(int nServerID, int nType)
 
 void CCentServerMgr::ServerRegisterSucc(int id, int type, const char *ip, int port)
 {
-
+	if (type == ServerEnum::EST_DB)
+	{
+		CClientAuthMgr::Instance().SetDBSvrReadyStatus(true);
+	}
 }
