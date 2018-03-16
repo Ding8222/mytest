@@ -36,7 +36,7 @@ public:
 
 	bool Init();
 	void Run();
-	void Destroy(bool bLoginDisconnect = false);
+	void Destroy();
 	void AsLoginServerDisconnect();
 
 	// Client请求认证,loginSvr调用
@@ -45,13 +45,15 @@ public:
 	void DelClientAuthInfo(int32 clientid);
 	ClientAuthInfo *FindClientAuthInfo(int32 clientid);
 	int32 GetClientLoginSvr(int32 clientid);
-	void SetCenterClientID(const std::string &account,int32 id);
-	void ClientOffline(const std::string &account);
+
+	void SetPlayerOnline(const std::string &account, int64 guid);
+	void SetGuid(const std::string &account,int64 guid);
+	void SetPlayerOffline(const std::string &account);
 private:
 	// id,info
 	std::vector<ClientAuthInfo *> m_ClientInfoSet;
-	// account,centerclientid
-	std::unordered_map<std::string, int32> m_PlayerOnlineMap;
-	// account,clientid
-	std::unordered_map<std::string, int32> m_PlayerLoginMap;
+	// account,guid
+	std::unordered_map<std::string, int64> m_PlayerOnlineMap;
+	// account,guid
+	std::unordered_map<std::string, int64> m_PlayerLoginMap;
 };

@@ -46,6 +46,7 @@ void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			_CHECK_PARSE_(pMsg, msg);
 
 			CCenterPlayerMgr::Instance().AddPlayer(msg.nguid(), msg.nclientid(), info->GetServerID(), msg.ngateid());
+			CClientAuthMgr::Instance().SetGuid(msg.account(),msg.nguid());
 			break;
 		}
 		case SVR_SUB_CHANGELINE:
@@ -76,7 +77,7 @@ void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			_CHECK_PARSE_(pMsg, msg);
 
 			CCenterPlayerMgr::Instance().DelPlayer(tl->id);
-			CClientAuthMgr::Instance().ClientOffline(msg.account());
+			CClientAuthMgr::Instance().SetPlayerOffline(msg.account());
 			break;
 		}
 		}

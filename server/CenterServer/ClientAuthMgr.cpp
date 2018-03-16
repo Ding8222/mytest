@@ -58,7 +58,7 @@ void CClientAuthMgr::Run()
 
 }
 
-void CClientAuthMgr::Destroy(bool bLoginDisconnect)
+void CClientAuthMgr::Destroy()
 {
 	for (size_t i = 0; i < m_ClientInfoSet.size(); ++i)
 	{
@@ -66,8 +66,7 @@ void CClientAuthMgr::Destroy(bool bLoginDisconnect)
 		m_ClientInfoSet[i] = nullptr;
 	}
 
-	if(!bLoginDisconnect)
-		m_ClientInfoSet.clear();
+	m_ClientInfoSet.clear();
 }
 
 void CClientAuthMgr::AsLoginServerDisconnect()
@@ -94,7 +93,7 @@ void CClientAuthMgr::QueryAuth(Msg *pMsg, int32 clientid, int32 serverid)
 		if (iter->second > 0)
 		{
 			auto iterW = m_PlayerLoginMap.find(msg.account());
-			if (iterW != m_PlayerLoginMap.end())
+			if (iterW == m_PlayerLoginMap.end())
 			{
 				RunStateLog("账号%s在线，所在服务器id：%d，尝试连接的clientid：%d，尝试踢下原有玩家", msg.account().c_str(), iter->second, clientid);
 				svrData::KickClient SendMsg;
@@ -178,17 +177,27 @@ int32 CClientAuthMgr::GetClientLoginSvr(int32 clientid)
 	return m_ClientInfoSet[clientid]->nLoginSvrID;
 }
 
-void CClientAuthMgr::SetCenterClientID(const std::string &account, int32 id)
+void CClientAuthMgr::SetGuid(const std::string &account, int64 guid)
 {
 	auto iter = m_PlayerOnlineMap.find(account);
 	assert(iter != m_PlayerOnlineMap.end());
 	if (iter != m_PlayerOnlineMap.end())
 	{
-		iter->second = id;
+		iter->second = guid;
 	}
 }
 
-void CClientAuthMgr::ClientOffline(const std::string &account)
+void CClientAuthMgr::SetPlayerOnline(const std::string &account, int64 guid)
+{
+	auto iter = m_PlayerOnlineMap.find(account);
+	assert(iter == m_PlayerOnlineMap.end());
+	if (iter == m_PlayerOnlineMap.end())
+	{
+		m_PlayerOnlineMap[account] = guid;
+	}
+}
+
+void CClientAuthMgr::SetPlayerOffline(const std::string &account)
 {
 	auto iter = m_PlayerOnlineMap.find(account);
 	assert(iter != m_PlayerOnlineMap.end());

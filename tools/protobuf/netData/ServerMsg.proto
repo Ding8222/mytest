@@ -56,6 +56,7 @@ message AddPlayerToCenter
 	int64 nGuid = 1;        // 玩家唯一id
 	int32 nClientID = 2;    // clientid
 	int32 nGateID = 3;      // 所属网关
+	string Account = 4;		// 账号信息
 }
 
 // 0-8 client断开

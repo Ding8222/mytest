@@ -76,16 +76,16 @@ void CGameConnect::ProcessMsg(connector *_con)
 
 		if (tl->id < 0)
 		{
-			int nClienNum = abs(tl->id);
+			int32 nClienNum = abs(static_cast<int32>(tl->id));
 			if(nClienNum >0)
 			{
 				MessagePack *pkmain = (MessagePack *)pMsg;
 				pkmain->Begin();
-				int pbSize = pkmain->GetInt32();
+				int32 pbSize = pkmain->GetInt32();
 				size_t size = 0;
 				MessagePack *pk = (MessagePack *)pkmain->GetBlockRef(pbSize, &size);
-				int nClientID = 0;
-				for (int i = 0; i < nClienNum; ++i)
+				int32 nClientID = 0;
+				for (int32 i = 0; i < nClienNum; ++i)
 				{
 					nClientID = pkmain->GetInt32();
 					CGateClientMgr::Instance().SendMsg(nClientID, pk);

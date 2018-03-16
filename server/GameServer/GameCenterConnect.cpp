@@ -78,6 +78,7 @@ void CGameCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
 				info->set_nguid(player->GetGuid());
 				info->set_nclientid(player->GetClientID());
 				info->set_ngateid(player->GetGateID());
+				info->set_account(player->GetAccount());
 			}
 		}
 	}

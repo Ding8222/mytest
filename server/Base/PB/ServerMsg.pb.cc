@@ -390,6 +390,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::AddPlayerToCenter, nguid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::AddPlayerToCenter, nclientid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::AddPlayerToCenter, ngateid_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::AddPlayerToCenter, account_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::DelClient, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -454,12 +455,12 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 22, -1, sizeof(::svrData::ServerLoadInfo)},
   { 34, -1, sizeof(::svrData::UpdateServerLoad)},
   { 41, -1, sizeof(::svrData::AddPlayerToCenter)},
-  { 49, -1, sizeof(::svrData::DelClient)},
-  { 55, -1, sizeof(::svrData::ClientAccount)},
-  { 64, -1, sizeof(::svrData::LoadPlayerData)},
-  { 83, -1, sizeof(::svrData::ChangeLine)},
-  { 92, -1, sizeof(::svrData::ChangeLineRet)},
-  { 100, -1, sizeof(::svrData::KickClient)},
+  { 50, -1, sizeof(::svrData::DelClient)},
+  { 56, -1, sizeof(::svrData::ClientAccount)},
+  { 65, -1, sizeof(::svrData::LoadPlayerData)},
+  { 84, -1, sizeof(::svrData::ChangeLine)},
+  { 93, -1, sizeof(::svrData::ChangeLineRet)},
+  { 101, -1, sizeof(::svrData::KickClient)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -511,28 +512,28 @@ void AddDescriptorsImpl() {
       "\022\r\n\005nPort\030\004 \001(\005\022\013\n\003sIP\030\005 \001(\t\022\r\n\005mapid\030\006 "
       "\003(\005\022(\n\004info\030\007 \003(\0132\032.svrData.AddPlayerToC"
       "enter\"D\n\020UpdateServerLoad\022\027\n\017nClientCoun"
-      "tNow\030\001 \001(\005\022\027\n\017nClientCountMax\030\002 \001(\005\"F\n\021A"
+      "tNow\030\001 \001(\005\022\027\n\017nClientCountMax\030\002 \001(\005\"W\n\021A"
       "ddPlayerToCenter\022\r\n\005nGuid\030\001 \001(\003\022\021\n\tnClie"
-      "ntID\030\002 \001(\005\022\017\n\007nGateID\030\003 \001(\005\"\034\n\tDelClient"
-      "\022\017\n\007Account\030\001 \001(\t\"h\n\rClientAccount\022\017\n\007nG"
-      "ameID\030\001 \001(\005\022\017\n\007Account\030\002 \001(\t\022\016\n\006Secret\030\003"
-      " \001(\014\022%\n\004Data\030\004 \001(\0132\027.svrData.LoadPlayerD"
-      "ata\"\352\001\n\016LoadPlayerData\022\017\n\007Account\030\001 \001(\t\022"
-      "\014\n\004Name\030\002 \001(\t\022\r\n\005nGuid\030\003 \001(\003\022\014\n\004nSex\030\004 \001"
-      "(\005\022\014\n\004nJob\030\005 \001(\005\022\016\n\006nLevel\030\006 \001(\005\022\023\n\013nCre"
-      "ateTime\030\007 \001(\003\022\022\n\nnLoginTime\030\010 \001(\003\022\016\n\006nMa"
-      "pID\030\t \001(\005\022\n\n\002nX\030\n \001(\002\022\n\n\002nY\030\013 \001(\002\022\n\n\002nZ\030"
-      "\014 \001(\002\022\023\n\013bChangeLine\030\r \001(\010\022\014\n\004Data\030\016 \001(\014"
-      "\"e\n\nChangeLine\022\016\n\006nMapID\030\001 \001(\005\022\017\n\007nLineI"
-      "D\030\002 \001(\005\022\017\n\007nGameID\030\003 \001(\005\022%\n\004Data\030\004 \001(\0132\027"
-      ".svrData.LoadPlayerData\"|\n\rChangeLineRet"
-      "\022\r\n\005nCode\030\001 \001(\005\022\017\n\007nGameID\030\002 \001(\005\022\016\n\006nMap"
-      "ID\030\003 \001(\005\";\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020"
-      "\001\022\013\n\007EC_FAIL\020\002\022\r\n\tEC_SERVER\020\003\"\014\n\nKickCli"
-      "entb\006proto3"
+      "ntID\030\002 \001(\005\022\017\n\007nGateID\030\003 \001(\005\022\017\n\007Account\030\004"
+      " \001(\t\"\034\n\tDelClient\022\017\n\007Account\030\001 \001(\t\"h\n\rCl"
+      "ientAccount\022\017\n\007nGameID\030\001 \001(\005\022\017\n\007Account\030"
+      "\002 \001(\t\022\016\n\006Secret\030\003 \001(\014\022%\n\004Data\030\004 \001(\0132\027.sv"
+      "rData.LoadPlayerData\"\352\001\n\016LoadPlayerData\022"
+      "\017\n\007Account\030\001 \001(\t\022\014\n\004Name\030\002 \001(\t\022\r\n\005nGuid\030"
+      "\003 \001(\003\022\014\n\004nSex\030\004 \001(\005\022\014\n\004nJob\030\005 \001(\005\022\016\n\006nLe"
+      "vel\030\006 \001(\005\022\023\n\013nCreateTime\030\007 \001(\003\022\022\n\nnLogin"
+      "Time\030\010 \001(\003\022\016\n\006nMapID\030\t \001(\005\022\n\n\002nX\030\n \001(\002\022\n"
+      "\n\002nY\030\013 \001(\002\022\n\n\002nZ\030\014 \001(\002\022\023\n\013bChangeLine\030\r "
+      "\001(\010\022\014\n\004Data\030\016 \001(\014\"e\n\nChangeLine\022\016\n\006nMapI"
+      "D\030\001 \001(\005\022\017\n\007nLineID\030\002 \001(\005\022\017\n\007nGameID\030\003 \001("
+      "\005\022%\n\004Data\030\004 \001(\0132\027.svrData.LoadPlayerData"
+      "\"|\n\rChangeLineRet\022\r\n\005nCode\030\001 \001(\005\022\017\n\007nGam"
+      "eID\030\002 \001(\005\022\016\n\006nMapID\030\003 \001(\005\";\n\002EC\022\014\n\010EC_OT"
+      "HER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002\022\r\n\tEC_SE"
+      "RVER\020\003\"\014\n\nKickClientb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1211);
+      descriptor, 1228);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "ServerMsg.proto", &protobuf_RegisterTypes);
 }
@@ -2254,6 +2255,7 @@ void AddPlayerToCenter::InitAsDefaultInstance() {
 const int AddPlayerToCenter::kNGuidFieldNumber;
 const int AddPlayerToCenter::kNClientIDFieldNumber;
 const int AddPlayerToCenter::kNGateIDFieldNumber;
+const int AddPlayerToCenter::kAccountFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 AddPlayerToCenter::AddPlayerToCenter()
@@ -2269,6 +2271,10 @@ AddPlayerToCenter::AddPlayerToCenter(const AddPlayerToCenter& from)
       _internal_metadata_(NULL),
       _cached_size_(0) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  account_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  if (from.account().size() > 0) {
+    account_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.account_);
+  }
   ::memcpy(&nguid_, &from.nguid_,
     static_cast<size_t>(reinterpret_cast<char*>(&ngateid_) -
     reinterpret_cast<char*>(&nguid_)) + sizeof(ngateid_));
@@ -2276,6 +2282,7 @@ AddPlayerToCenter::AddPlayerToCenter(const AddPlayerToCenter& from)
 }
 
 void AddPlayerToCenter::SharedCtor() {
+  account_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&nguid_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&ngateid_) -
       reinterpret_cast<char*>(&nguid_)) + sizeof(ngateid_));
@@ -2288,6 +2295,7 @@ AddPlayerToCenter::~AddPlayerToCenter() {
 }
 
 void AddPlayerToCenter::SharedDtor() {
+  account_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
 
 void AddPlayerToCenter::SetCachedSize(int size) const {
@@ -2312,6 +2320,7 @@ void AddPlayerToCenter::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  account_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&nguid_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&ngateid_) -
       reinterpret_cast<char*>(&nguid_)) + sizeof(ngateid_));
@@ -2370,6 +2379,22 @@ bool AddPlayerToCenter::MergePartialFromCodedStream(
         break;
       }
 
+      // string Account = 4;
+      case 4: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_account()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->account().data(), static_cast<int>(this->account().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "svrData.AddPlayerToCenter.Account"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -2411,6 +2436,16 @@ void AddPlayerToCenter::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->ngateid(), output);
   }
 
+  // string Account = 4;
+  if (this->account().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->account().data(), static_cast<int>(this->account().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "svrData.AddPlayerToCenter.Account");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->account(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -2440,6 +2475,17 @@ void AddPlayerToCenter::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->ngateid(), target);
   }
 
+  // string Account = 4;
+  if (this->account().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->account().data(), static_cast<int>(this->account().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "svrData.AddPlayerToCenter.Account");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->account(), target);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -2457,6 +2503,13 @@ size_t AddPlayerToCenter::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
+  // string Account = 4;
+  if (this->account().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->account());
+  }
+
   // int64 nGuid = 1;
   if (this->nguid() != 0) {
     total_size += 1 +
@@ -2507,6 +2560,10 @@ void AddPlayerToCenter::MergeFrom(const AddPlayerToCenter& from) {
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (from.account().size() > 0) {
+
+    account_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.account_);
+  }
   if (from.nguid() != 0) {
     set_nguid(from.nguid());
   }
@@ -2542,6 +2599,7 @@ void AddPlayerToCenter::Swap(AddPlayerToCenter* other) {
 }
 void AddPlayerToCenter::InternalSwap(AddPlayerToCenter* other) {
   using std::swap;
+  account_.Swap(&other->account_);
   swap(nguid_, other->nguid_);
   swap(nclientid_, other->nclientid_);
   swap(ngateid_, other->ngateid_);

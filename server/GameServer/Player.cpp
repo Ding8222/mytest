@@ -66,6 +66,7 @@ bool CPlayer::LoadData(Msg *pMsg)
 		SendMsg.set_nguid(GetGuid());
 		SendMsg.set_nclientid(GetClientID());
 		SendMsg.set_ngateid(GetGateID());
+		SendMsg.set_account(GetAccount());
 		FuncUti::SendMsgToCenter(this, SendMsg, SERVER_TYPE_MAIN, SVR_SUB_ADD_PLAYER_TO_CENTER);
 	}
 

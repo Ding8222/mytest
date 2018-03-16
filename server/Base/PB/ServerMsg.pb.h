@@ -923,6 +923,20 @@ class AddPlayerToCenter : public ::google::protobuf::Message /* @@protoc_inserti
 
   // accessors -------------------------------------------------------
 
+  // string Account = 4;
+  void clear_account();
+  static const int kAccountFieldNumber = 4;
+  const ::std::string& account() const;
+  void set_account(const ::std::string& value);
+  #if LANG_CXX11
+  void set_account(::std::string&& value);
+  #endif
+  void set_account(const char* value);
+  void set_account(const char* value, size_t size);
+  ::std::string* mutable_account();
+  ::std::string* release_account();
+  void set_allocated_account(::std::string* account);
+
   // int64 nGuid = 1;
   void clear_nguid();
   static const int kNGuidFieldNumber = 1;
@@ -945,6 +959,7 @@ class AddPlayerToCenter : public ::google::protobuf::Message /* @@protoc_inserti
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr account_;
   ::google::protobuf::int64 nguid_;
   ::google::protobuf::int32 nclientid_;
   ::google::protobuf::int32 ngateid_;
@@ -2199,6 +2214,59 @@ inline void AddPlayerToCenter::set_ngateid(::google::protobuf::int32 value) {
   
   ngateid_ = value;
   // @@protoc_insertion_point(field_set:svrData.AddPlayerToCenter.nGateID)
+}
+
+// string Account = 4;
+inline void AddPlayerToCenter::clear_account() {
+  account_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& AddPlayerToCenter::account() const {
+  // @@protoc_insertion_point(field_get:svrData.AddPlayerToCenter.Account)
+  return account_.GetNoArena();
+}
+inline void AddPlayerToCenter::set_account(const ::std::string& value) {
+  
+  account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:svrData.AddPlayerToCenter.Account)
+}
+#if LANG_CXX11
+inline void AddPlayerToCenter::set_account(::std::string&& value) {
+  
+  account_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:svrData.AddPlayerToCenter.Account)
+}
+#endif
+inline void AddPlayerToCenter::set_account(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:svrData.AddPlayerToCenter.Account)
+}
+inline void AddPlayerToCenter::set_account(const char* value, size_t size) {
+  
+  account_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:svrData.AddPlayerToCenter.Account)
+}
+inline ::std::string* AddPlayerToCenter::mutable_account() {
+  
+  // @@protoc_insertion_point(field_mutable:svrData.AddPlayerToCenter.Account)
+  return account_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* AddPlayerToCenter::release_account() {
+  // @@protoc_insertion_point(field_release:svrData.AddPlayerToCenter.Account)
+  
+  return account_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void AddPlayerToCenter::set_allocated_account(::std::string* account) {
+  if (account != NULL) {
+    
+  } else {
+    
+  }
+  account_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), account);
+  // @@protoc_insertion_point(field_set_allocated:svrData.AddPlayerToCenter.Account)
 }
 
 // -------------------------------------------------------------------
