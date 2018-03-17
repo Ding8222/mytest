@@ -262,17 +262,42 @@ inline bool LoginRet_EC_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<LoginRet_EC>(
     LoginRet_EC_descriptor(), name, value);
 }
+enum CreatePlayer_EC {
+  CreatePlayer_EC_EC_OTHER = 0,
+  CreatePlayer_EC_EC_SUCC = 1,
+  CreatePlayer_EC_EC_FAIL = 2,
+  CreatePlayer_EC_EC_REPEATED = 4,
+  CreatePlayer_EC_CreatePlayer_EC_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  CreatePlayer_EC_CreatePlayer_EC_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool CreatePlayer_EC_IsValid(int value);
+const CreatePlayer_EC CreatePlayer_EC_EC_MIN = CreatePlayer_EC_EC_OTHER;
+const CreatePlayer_EC CreatePlayer_EC_EC_MAX = CreatePlayer_EC_EC_REPEATED;
+const int CreatePlayer_EC_EC_ARRAYSIZE = CreatePlayer_EC_EC_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* CreatePlayer_EC_descriptor();
+inline const ::std::string& CreatePlayer_EC_Name(CreatePlayer_EC value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    CreatePlayer_EC_descriptor(), value);
+}
+inline bool CreatePlayer_EC_Parse(
+    const ::std::string& name, CreatePlayer_EC* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<CreatePlayer_EC>(
+    CreatePlayer_EC_descriptor(), name, value);
+}
 enum CreatePlayerRet_EC {
   CreatePlayerRet_EC_EC_OTHER = 0,
   CreatePlayerRet_EC_EC_SUCC = 1,
   CreatePlayerRet_EC_EC_FAIL = 2,
   CreatePlayerRet_EC_EC_CREATE = 3,
+  CreatePlayerRet_EC_EC_REPEATED = 4,
+  CreatePlayerRet_EC_EC_NAMESVR = 5,
   CreatePlayerRet_EC_CreatePlayerRet_EC_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
   CreatePlayerRet_EC_CreatePlayerRet_EC_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
 };
 bool CreatePlayerRet_EC_IsValid(int value);
 const CreatePlayerRet_EC CreatePlayerRet_EC_EC_MIN = CreatePlayerRet_EC_EC_OTHER;
-const CreatePlayerRet_EC CreatePlayerRet_EC_EC_MAX = CreatePlayerRet_EC_EC_CREATE;
+const CreatePlayerRet_EC CreatePlayerRet_EC_EC_MAX = CreatePlayerRet_EC_EC_NAMESVR;
 const int CreatePlayerRet_EC_EC_ARRAYSIZE = CreatePlayerRet_EC_EC_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* CreatePlayerRet_EC_descriptor();
@@ -1829,6 +1854,36 @@ class CreatePlayer : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // nested types ----------------------------------------------------
 
+  typedef CreatePlayer_EC EC;
+  static const EC EC_OTHER =
+    CreatePlayer_EC_EC_OTHER;
+  static const EC EC_SUCC =
+    CreatePlayer_EC_EC_SUCC;
+  static const EC EC_FAIL =
+    CreatePlayer_EC_EC_FAIL;
+  static const EC EC_REPEATED =
+    CreatePlayer_EC_EC_REPEATED;
+  static inline bool EC_IsValid(int value) {
+    return CreatePlayer_EC_IsValid(value);
+  }
+  static const EC EC_MIN =
+    CreatePlayer_EC_EC_MIN;
+  static const EC EC_MAX =
+    CreatePlayer_EC_EC_MAX;
+  static const int EC_ARRAYSIZE =
+    CreatePlayer_EC_EC_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  EC_descriptor() {
+    return CreatePlayer_EC_descriptor();
+  }
+  static inline const ::std::string& EC_Name(EC value) {
+    return CreatePlayer_EC_Name(value);
+  }
+  static inline bool EC_Parse(const ::std::string& name,
+      EC* value) {
+    return CreatePlayer_EC_Parse(name, value);
+  }
+
   // accessors -------------------------------------------------------
 
   // string sName = 1;
@@ -1871,6 +1926,12 @@ class CreatePlayer : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::int32 nsex() const;
   void set_nsex(::google::protobuf::int32 value);
 
+  // int32 nNameCheckRet = 5;
+  void clear_nnamecheckret();
+  static const int kNNameCheckRetFieldNumber = 5;
+  ::google::protobuf::int32 nnamecheckret() const;
+  void set_nnamecheckret(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:netData.CreatePlayer)
  private:
 
@@ -1879,6 +1940,7 @@ class CreatePlayer : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::internal::ArenaStringPtr account_;
   ::google::protobuf::int32 njob_;
   ::google::protobuf::int32 nsex_;
+  ::google::protobuf::int32 nnamecheckret_;
   mutable int _cached_size_;
   friend struct ::protobuf_Login_2eproto::TableStruct;
   friend void ::protobuf_Login_2eproto::InitDefaultsCreatePlayerImpl();
@@ -1978,6 +2040,10 @@ class CreatePlayerRet : public ::google::protobuf::Message /* @@protoc_insertion
     CreatePlayerRet_EC_EC_FAIL;
   static const EC EC_CREATE =
     CreatePlayerRet_EC_EC_CREATE;
+  static const EC EC_REPEATED =
+    CreatePlayerRet_EC_EC_REPEATED;
+  static const EC EC_NAMESVR =
+    CreatePlayerRet_EC_EC_NAMESVR;
   static inline bool EC_IsValid(int value) {
     return CreatePlayerRet_EC_IsValid(value);
   }
@@ -3225,6 +3291,20 @@ inline void CreatePlayer::set_allocated_account(::std::string* account) {
   // @@protoc_insertion_point(field_set_allocated:netData.CreatePlayer.Account)
 }
 
+// int32 nNameCheckRet = 5;
+inline void CreatePlayer::clear_nnamecheckret() {
+  nnamecheckret_ = 0;
+}
+inline ::google::protobuf::int32 CreatePlayer::nnamecheckret() const {
+  // @@protoc_insertion_point(field_get:netData.CreatePlayer.nNameCheckRet)
+  return nnamecheckret_;
+}
+inline void CreatePlayer::set_nnamecheckret(::google::protobuf::int32 value) {
+  
+  nnamecheckret_ = value;
+  // @@protoc_insertion_point(field_set:netData.CreatePlayer.nNameCheckRet)
+}
+
 // -------------------------------------------------------------------
 
 // CreatePlayerRet
@@ -3497,6 +3577,11 @@ template <> struct is_proto_enum< ::netData::LoginRet_EC> : ::google::protobuf::
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::netData::LoginRet_EC>() {
   return ::netData::LoginRet_EC_descriptor();
+}
+template <> struct is_proto_enum< ::netData::CreatePlayer_EC> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::netData::CreatePlayer_EC>() {
+  return ::netData::CreatePlayer_EC_descriptor();
 }
 template <> struct is_proto_enum< ::netData::CreatePlayerRet_EC> : ::google::protobuf::internal::true_type {};
 template <>

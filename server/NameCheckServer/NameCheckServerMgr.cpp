@@ -8,12 +8,13 @@
 #include "NameSet.h"
 
 #include "ServerType.h"
+#include "LoginType.h"
+#include "Login.pb.h"
 
 extern int64 g_currenttime;
 
 CNameCheckServerMgr::CNameCheckServerMgr()
 {
-	m_LoginList.clear();
 	m_CenterList.clear();
 }
 
@@ -79,23 +80,17 @@ bool CNameCheckServerMgr::Init(const char *ip, int serverid, int port, int overt
 void CNameCheckServerMgr::Destroy()
 {
 	CServerMgr::Destroy();
-	m_LoginList.clear();
 	m_CenterList.clear();
 }
 
 void CNameCheckServerMgr::GetCurrentInfo(char *buf, size_t buflen)
 {
-	snprintf(buf, buflen - 1, "当前注册的服务器信息：\n登陆服务器数量：%d\n中心服务器数量：%d\n",
-		(int)m_LoginList.size(), (int)m_CenterList.size());
+	snprintf(buf, buflen - 1, "当前注册的服务器信息：\n中心服务器数量：%d\n",
+		(int)m_CenterList.size());
 }
 
 void CNameCheckServerMgr::ResetMsgNum()
 {
-	for (std::map<int, serverinfo*>::iterator itr = m_LoginList.begin(); itr != m_LoginList.end(); ++itr)
-	{
-		itr->second->ResetMsgNum();
-	}
-	
 	for (std::map<int, serverinfo*>::iterator itr = m_CenterList.begin(); itr != m_CenterList.end(); ++itr)
 	{
 		itr->second->ResetMsgNum();
@@ -109,16 +104,6 @@ const char *CNameCheckServerMgr::GetMsgNumInfo()
 	size_t len = sizeof(tempbuf);
 	int res = 0;
 	serverinfo *info = nullptr;
-	for (std::map<int, serverinfo*>::iterator itr = m_LoginList.begin(); itr != m_LoginList.end(); ++itr)
-	{
-		info = itr->second;
-		snprintf(buf, len - 1, "登陆服务器: %d, 收到消息数量:%d, 发送消息数量:%d\n", \
-			info->GetServerID(), info->GetRecvMsgNum(), info->GetSendMsgNum());
-
-		res = strlen(buf);
-		buf += res;
-		len -= res;
-	}
 
 	for (std::map<int, serverinfo*>::iterator itr = m_CenterList.begin(); itr != m_CenterList.end(); ++itr)
 	{
@@ -140,16 +125,6 @@ void CNameCheckServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 {
 	switch (info->GetServerType())
 	{
-	case ServerEnum::EST_LOGIN:
-	{
-		m_LoginList.erase(info->GetServerID());
-		if (overtime)
-			RunStateError("登陆服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
-		else
-			RunStateError("登陆服器关闭移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
-
-		break;
-	}
 	case ServerEnum::EST_CENTER:
 	{
 		m_CenterList.erase(info->GetServerID());
@@ -194,8 +169,24 @@ void CNameCheckServerMgr::ProcessMsg(serverinfo *info)
 				info->SetPingTime(g_currenttime);
 				break;
 			}
-			case SVR_SUB_NAMECHECK:
+			}
+			break;
+		}
+		case LOGIN_TYPE_MAIN:
+		{
+			switch (pMsg->GetSubType())
 			{
+			case LOGIN_SUB_CREATE_PLAYER:
+			{
+				netData::CreatePlayer msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				if (!CNameSet::Instance().AddName(msg.sname()))
+					msg.set_nnamecheckret(netData::CreatePlayer::EC_REPEATED);
+				else
+					msg.set_nnamecheckret(netData::CreatePlayer::EC_SUCC);
+
+				SendMsg(info, msg, LOGIN_TYPE_MAIN, LOGIN_SUB_CREATE_PLAYER, tl, sizeof(msgtail));
 				break;
 			}
 			}
@@ -216,11 +207,6 @@ bool CNameCheckServerMgr::AddNewServer(serverinfo *info, int nServerID, int nTyp
 	std::map<int, serverinfo*> *_pList = nullptr;
 	switch (nType)
 	{
-	case ServerEnum::EST_LOGIN:
-	{
-		_pList = &m_LoginList;
-		break;
-	}
 	case ServerEnum::EST_CENTER:
 	{
 		_pList = &m_CenterList;
@@ -245,11 +231,6 @@ serverinfo *CNameCheckServerMgr::FindServer(int nServerID, int nType)
 	std::map<int, serverinfo*> *_pList = nullptr;
 	switch (nType)
 	{
-	case ServerEnum::EST_LOGIN:
-	{
-		_pList = &m_LoginList;
-		break;
-	}
 	case ServerEnum::EST_CENTER:
 	{
 		_pList = &m_CenterList;

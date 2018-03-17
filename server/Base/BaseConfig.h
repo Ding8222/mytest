@@ -26,6 +26,7 @@ public:
 	int GetLogServerID() { return m_LogServerID; }
 	int GetLogServerPort() { return m_LogServerPort; }
 	char *GetLogServerIP() { return s_LogServerIP; }
+
 private:
 	bool m_IsOpenElapsedLog;
 	int m_ListenPort;

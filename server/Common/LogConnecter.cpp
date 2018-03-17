@@ -73,15 +73,7 @@ void CLogConnecter::ProcessMsg(connector *_con)
 				_con->SetRecvPingTime(g_currenttime);
 				break;
 			}
-			default:
-			{
-				break;
 			}
-			}
-			break;
-		}
-		default:
-		{
 			break;
 		}
 		}

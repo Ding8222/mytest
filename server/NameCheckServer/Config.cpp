@@ -24,7 +24,7 @@ bool CConfig::Init(const char *servername)
 	if (!CBaseConfig::Init(servername))
 		return false;
 
-	SetServerType(ServerEnum::EST_LOG);
+	SetServerType(ServerEnum::EST_NAME);
 
 	std::string filename = fmt::format("./config/{0}Config.xml", servername);
 	XMLDocument doc;

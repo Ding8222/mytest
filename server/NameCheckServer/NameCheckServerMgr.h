@@ -38,6 +38,5 @@ private:
 
 private:
 
-	std::map<int, serverinfo *> m_LoginList;
 	std::map<int, serverinfo *> m_CenterList;
 };

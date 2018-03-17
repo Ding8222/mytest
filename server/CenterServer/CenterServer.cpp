@@ -8,6 +8,7 @@
 #include "ClientAuthMgr.h"
 #include "LogConnecter.h"
 #include "CenterPlayerMgr.h"
+#include "NameCheckConnecter.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -72,6 +73,19 @@ bool CCenterServer::Init()
 			break;
 		}
 
+		if (!CNameCheckConnecter::Instance().Init(
+			CConfig::Instance().GetNameCheckServerIP(),
+			CConfig::Instance().GetNameCheckServerPort(),
+			CConfig::Instance().GetNameCheckServerID(),
+			CConfig::Instance().GetServerID(),
+			CConfig::Instance().GetServerType(),
+			CConfig::Instance().GetPingTime(),
+			CConfig::Instance().GetOverTime()))
+		{
+			RunStateError("初始化 NameCheckConnecter 失败!");
+			break;
+		}
+
 		m_Run = true;
 		return true;
 
@@ -79,6 +93,7 @@ bool CCenterServer::Init()
 
 	CCentServerMgr::Instance().Destroy();
 	CLogConnecter::Instance().Destroy();
+	CNameCheckConnecter::Instance().Destroy();
 	CClientAuthMgr::Instance().Destroy();
 	CServerStatusMgr::Instance().Destroy();
 	CCenterPlayerMgr::Instance().Destroy();
@@ -101,6 +116,7 @@ void CCenterServer::Run()
 	{
 		CCentServerMgr::Instance().ResetMsgNum();
 		CLogConnecter::Instance().ResetMsgNum();
+		CNameCheckConnecter::Instance().ResetMsgNum();
 		CTimer::UpdateTime();
 
 		g_currenttime = get_millisecond();
@@ -112,15 +128,17 @@ void CCenterServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			ElapsedLog("运行超时:%d\n%s日志服务器连接：%s", delay, 
+			ElapsedLog("运行超时:%d\n%s日志服务器连接：%s名称检查服务器连接：%s", delay, 
 				CCentServerMgr::Instance().GetMsgNumInfo(), 
-				CLogConnecter::Instance().GetMsgNumInfo());
+				CLogConnecter::Instance().GetMsgNumInfo(),
+				CNameCheckConnecter::Instance().GetMsgNumInfo());
 		}
 	}
 	delaytime(300);
 
 	CCentServerMgr::Instance().Destroy();
 	CLogConnecter::Instance().Destroy();
+	CNameCheckConnecter::Instance().Destroy();
 	CClientAuthMgr::Instance().Destroy();
 	CServerStatusMgr::Instance().Destroy();
 	CCenterPlayerMgr::Instance().Destroy();
@@ -139,9 +157,11 @@ void CCenterServer::RunOnce()
 
 	CCentServerMgr::Instance().Run();
 	CLogConnecter::Instance().Run();
+	CNameCheckConnecter::Instance().Run();
 
 	CCentServerMgr::Instance().EndRun();
 	CLogConnecter::Instance().EndRun();
+	CNameCheckConnecter::Instance().EndRun();
 }
 
 void CCenterServer::Destroy()

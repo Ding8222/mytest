@@ -46,5 +46,9 @@ SQL_Log				是否开启SQL查询日志
 	Server_IP = "127.0.0.1"
 	
 	DBID = "2000"
+	
+	NameCheckServer_IP = "127.0.0.1"
+	NameCheckServer_Port = "70001"
+	NameCheckServer_ID = "7000"
 	>
 </CenterServer>

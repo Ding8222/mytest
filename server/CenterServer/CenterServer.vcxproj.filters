@@ -60,6 +60,9 @@
     <ClCompile Include="CenterPlayerMgr.cpp">
       <Filter>在线玩家</Filter>
     </ClCompile>
+    <ClCompile Include="NameCheckConnecter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CenterServer.h">
@@ -91,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="CenterPlayerMgr.h">
       <Filter>在线玩家</Filter>
+    </ClInclude>
+    <ClInclude Include="NameCheckConnecter.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

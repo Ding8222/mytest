@@ -24,6 +24,7 @@ namespace ServerEnum {
 		EST_LOGIN,		//登陆
 		EST_DB,			//数据库
 		EST_LOG,		//日志
+		EST_NAME,		//名称检查
 
 		EST_END,
 	};

@@ -126,10 +126,18 @@ message PlayerListRet
 // 2-11 请求创建角色
 message CreatePlayer
 {
+	enum EC
+	{
+		EC_OTHER = 0;
+		EC_SUCC = 1;
+		EC_FAIL = 2;
+		EC_REPEATED = 4;//名称重复
+	};
 	string sName = 1;
 	int32 nJob = 2;
 	int32 nSex = 3;
 	string Account = 4;//请求不用填写
+	int32 nNameCheckRet = 5;	//名称检查服务器返回的结果，请求不用填写
 }
 
 // 2-12 创建角色返回
@@ -141,6 +149,8 @@ message CreatePlayerRet
 		EC_SUCC = 1;
 		EC_FAIL = 2;
 		EC_CREATE = 3;
+		EC_REPEATED = 4;//名称重复
+		EC_NAMESVR = 5;//名称检查服务器未连接
 	};
 	int32 nCode = 1;
 	PlayerLite Info = 2;

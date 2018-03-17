@@ -415,7 +415,7 @@ void InitDefaultsSelectPlayerRet() {
 }
 
 ::google::protobuf::Metadata file_level_metadata[15];
-const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[6];
+const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[7];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
@@ -502,6 +502,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::CreatePlayer, njob_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::CreatePlayer, nsex_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::CreatePlayer, account_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::CreatePlayer, nnamecheckret_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::CreatePlayerRet, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -540,9 +541,9 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 63, -1, sizeof(::netData::PlayerList)},
   { 69, -1, sizeof(::netData::PlayerListRet)},
   { 75, -1, sizeof(::netData::CreatePlayer)},
-  { 84, -1, sizeof(::netData::CreatePlayerRet)},
-  { 91, -1, sizeof(::netData::SelectPlayer)},
-  { 97, -1, sizeof(::netData::SelectPlayerRet)},
+  { 85, -1, sizeof(::netData::CreatePlayerRet)},
+  { 92, -1, sizeof(::netData::SelectPlayer)},
+  { 98, -1, sizeof(::netData::SelectPlayerRet)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -608,12 +609,15 @@ void AddDescriptorsImpl() {
       "\n\005nGuid\030\001 \001(\003\022\r\n\005sName\030\002 \001(\t\022\014\n\004nJob\030\003 \001"
       "(\005\022\014\n\004nSex\030\004 \001(\005\"\035\n\nPlayerList\022\017\n\007Accoun"
       "t\030\001 \001(\t\"2\n\rPlayerListRet\022!\n\004list\030\001 \003(\0132\023"
-      ".netData.PlayerLite\"J\n\014CreatePlayer\022\r\n\005s"
-      "Name\030\001 \001(\t\022\014\n\004nJob\030\002 \001(\005\022\014\n\004nSex\030\003 \001(\005\022\017"
-      "\n\007Account\030\004 \001(\t\"\200\001\n\017CreatePlayerRet\022\r\n\005n"
-      "Code\030\001 \001(\005\022!\n\004Info\030\002 \001(\0132\023.netData.Playe"
-      "rLite\";\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013"
-      "\n\007EC_FAIL\020\002\022\r\n\tEC_CREATE\020\003\"\035\n\014SelectPlay"
+      ".netData.PlayerLite\"\240\001\n\014CreatePlayer\022\r\n\005"
+      "sName\030\001 \001(\t\022\014\n\004nJob\030\002 \001(\005\022\014\n\004nSex\030\003 \001(\005\022"
+      "\017\n\007Account\030\004 \001(\t\022\025\n\rnNameCheckRet\030\005 \001(\005\""
+      "=\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_F"
+      "AIL\020\002\022\017\n\013EC_REPEATED\020\004\"\241\001\n\017CreatePlayerR"
+      "et\022\r\n\005nCode\030\001 \001(\005\022!\n\004Info\030\002 \001(\0132\023.netDat"
+      "a.PlayerLite\"\\\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_S"
+      "UCC\020\001\022\013\n\007EC_FAIL\020\002\022\r\n\tEC_CREATE\020\003\022\017\n\013EC_"
+      "REPEATED\020\004\022\016\n\nEC_NAMESVR\020\005\"\035\n\014SelectPlay"
       "er\022\r\n\005nGuid\030\001 \001(\003\"\331\001\n\017SelectPlayerRet\022\r\n"
       "\005nCode\030\001 \001(\005\022\016\n\006nMapID\030\002 \001(\005\022\021\n\tnServerI"
       "D\030\003 \001(\005\022\017\n\007nLineID\030\004 \001(\005\022\r\n\005nPort\030\005 \001(\005\022"
@@ -623,7 +627,7 @@ void AddDescriptorsImpl() {
       "roto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1405);
+      descriptor, 1525);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Login.proto", &protobuf_RegisterTypes);
 }
@@ -762,9 +766,34 @@ const LoginRet_EC LoginRet::EC_MIN;
 const LoginRet_EC LoginRet::EC_MAX;
 const int LoginRet::EC_ARRAYSIZE;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-const ::google::protobuf::EnumDescriptor* CreatePlayerRet_EC_descriptor() {
+const ::google::protobuf::EnumDescriptor* CreatePlayer_EC_descriptor() {
   protobuf_Login_2eproto::protobuf_AssignDescriptorsOnce();
   return protobuf_Login_2eproto::file_level_enum_descriptors[4];
+}
+bool CreatePlayer_EC_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 4:
+      return true;
+    default:
+      return false;
+  }
+}
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const CreatePlayer_EC CreatePlayer::EC_OTHER;
+const CreatePlayer_EC CreatePlayer::EC_SUCC;
+const CreatePlayer_EC CreatePlayer::EC_FAIL;
+const CreatePlayer_EC CreatePlayer::EC_REPEATED;
+const CreatePlayer_EC CreatePlayer::EC_MIN;
+const CreatePlayer_EC CreatePlayer::EC_MAX;
+const int CreatePlayer::EC_ARRAYSIZE;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+const ::google::protobuf::EnumDescriptor* CreatePlayerRet_EC_descriptor() {
+  protobuf_Login_2eproto::protobuf_AssignDescriptorsOnce();
+  return protobuf_Login_2eproto::file_level_enum_descriptors[5];
 }
 bool CreatePlayerRet_EC_IsValid(int value) {
   switch (value) {
@@ -772,6 +801,8 @@ bool CreatePlayerRet_EC_IsValid(int value) {
     case 1:
     case 2:
     case 3:
+    case 4:
+    case 5:
       return true;
     default:
       return false;
@@ -783,13 +814,15 @@ const CreatePlayerRet_EC CreatePlayerRet::EC_OTHER;
 const CreatePlayerRet_EC CreatePlayerRet::EC_SUCC;
 const CreatePlayerRet_EC CreatePlayerRet::EC_FAIL;
 const CreatePlayerRet_EC CreatePlayerRet::EC_CREATE;
+const CreatePlayerRet_EC CreatePlayerRet::EC_REPEATED;
+const CreatePlayerRet_EC CreatePlayerRet::EC_NAMESVR;
 const CreatePlayerRet_EC CreatePlayerRet::EC_MIN;
 const CreatePlayerRet_EC CreatePlayerRet::EC_MAX;
 const int CreatePlayerRet::EC_ARRAYSIZE;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 const ::google::protobuf::EnumDescriptor* SelectPlayerRet_EC_descriptor() {
   protobuf_Login_2eproto::protobuf_AssignDescriptorsOnce();
-  return protobuf_Login_2eproto::file_level_enum_descriptors[5];
+  return protobuf_Login_2eproto::file_level_enum_descriptors[6];
 }
 bool SelectPlayerRet_EC_IsValid(int value) {
   switch (value) {
@@ -3867,6 +3900,7 @@ const int CreatePlayer::kSNameFieldNumber;
 const int CreatePlayer::kNJobFieldNumber;
 const int CreatePlayer::kNSexFieldNumber;
 const int CreatePlayer::kAccountFieldNumber;
+const int CreatePlayer::kNNameCheckRetFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 CreatePlayer::CreatePlayer()
@@ -3891,8 +3925,8 @@ CreatePlayer::CreatePlayer(const CreatePlayer& from)
     account_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.account_);
   }
   ::memcpy(&njob_, &from.njob_,
-    static_cast<size_t>(reinterpret_cast<char*>(&nsex_) -
-    reinterpret_cast<char*>(&njob_)) + sizeof(nsex_));
+    static_cast<size_t>(reinterpret_cast<char*>(&nnamecheckret_) -
+    reinterpret_cast<char*>(&njob_)) + sizeof(nnamecheckret_));
   // @@protoc_insertion_point(copy_constructor:netData.CreatePlayer)
 }
 
@@ -3900,8 +3934,8 @@ void CreatePlayer::SharedCtor() {
   sname_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   account_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&njob_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&nsex_) -
-      reinterpret_cast<char*>(&njob_)) + sizeof(nsex_));
+      reinterpret_cast<char*>(&nnamecheckret_) -
+      reinterpret_cast<char*>(&njob_)) + sizeof(nnamecheckret_));
   _cached_size_ = 0;
 }
 
@@ -3940,8 +3974,8 @@ void CreatePlayer::Clear() {
   sname_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   account_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(&njob_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&nsex_) -
-      reinterpret_cast<char*>(&njob_)) + sizeof(nsex_));
+      reinterpret_cast<char*>(&nnamecheckret_) -
+      reinterpret_cast<char*>(&njob_)) + sizeof(nnamecheckret_));
   _internal_metadata_.Clear();
 }
 
@@ -4015,6 +4049,20 @@ bool CreatePlayer::MergePartialFromCodedStream(
         break;
       }
 
+      // int32 nNameCheckRet = 5;
+      case 5: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(40u /* 40 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &nnamecheckret_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
         if (tag == 0) {
@@ -4071,6 +4119,11 @@ void CreatePlayer::SerializeWithCachedSizes(
       4, this->account(), output);
   }
 
+  // int32 nNameCheckRet = 5;
+  if (this->nnamecheckret() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->nnamecheckret(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -4115,6 +4168,11 @@ void CreatePlayer::SerializeWithCachedSizes(
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         4, this->account(), target);
+  }
+
+  // int32 nNameCheckRet = 5;
+  if (this->nnamecheckret() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->nnamecheckret(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -4162,6 +4220,13 @@ size_t CreatePlayer::ByteSizeLong() const {
         this->nsex());
   }
 
+  // int32 nNameCheckRet = 5;
+  if (this->nnamecheckret() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->nnamecheckret());
+  }
+
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = cached_size;
@@ -4205,6 +4270,9 @@ void CreatePlayer::MergeFrom(const CreatePlayer& from) {
   if (from.nsex() != 0) {
     set_nsex(from.nsex());
   }
+  if (from.nnamecheckret() != 0) {
+    set_nnamecheckret(from.nnamecheckret());
+  }
 }
 
 void CreatePlayer::CopyFrom(const ::google::protobuf::Message& from) {
@@ -4235,6 +4303,7 @@ void CreatePlayer::InternalSwap(CreatePlayer* other) {
   account_.Swap(&other->account_);
   swap(njob_, other->njob_);
   swap(nsex_, other->nsex_);
+  swap(nnamecheckret_, other->nnamecheckret_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }

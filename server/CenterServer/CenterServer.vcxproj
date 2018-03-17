@@ -132,6 +132,7 @@
     <ClCompile Include="ClientAuthMgr.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="CenterPlayerMgr.cpp" />
+    <ClCompile Include="NameCheckConnecter.cpp" />
     <ClCompile Include="ProcessDBMsg.cpp" />
     <ClCompile Include="ProcessGameMsg.cpp" />
     <ClCompile Include="ProcessGateMsg.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="CentServerMgr.h" />
     <ClInclude Include="CenterPlayerMgr.h" />
+    <ClInclude Include="NameCheckConnecter.h" />
     <ClInclude Include="ProcessDBMsg.h" />
     <ClInclude Include="ProcessGameMsg.h" />
     <ClInclude Include="ProcessGateMsg.h" />
