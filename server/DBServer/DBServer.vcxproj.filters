@@ -16,6 +16,9 @@
     <Filter Include="登陆">
       <UniqueIdentifier>{83b01984-cf6f-4664-8c51-848fc972d7cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="消息处理">
+      <UniqueIdentifier>{46b26f62-20cf-4571-825e-a9a3e8aafcad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h">
@@ -32,6 +35,9 @@
     </ClInclude>
     <ClInclude Include="dotask.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcessMsg.h">
+      <Filter>消息处理</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +58,9 @@
     </ClCompile>
     <ClCompile Include="dotask.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessMsg.cpp">
+      <Filter>消息处理</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

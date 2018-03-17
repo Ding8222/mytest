@@ -73,11 +73,13 @@ DB这边在大量玩家同时登陆的时候，耗时非常严重，需要看怎
 看有没有必要将项目编译生成64位程序，至少64位生成的时候不报错
 
 client只需要int32即可，将int64的全部改为int32,并把所有的client查找改为随机访问，server的查找看要不要也改为随机访问
+--有的还是需要用int64，可以用int32的已经都处理了
 
 这里的单例模式的析构函数会在程序退出后调用，但是内存池检测释放是在这之前，所以需要显示的调用一下Destroy，避免内存泄露提示
 这边也需要检查所有的Destroy函数
 
 服务器的config看需不需要拆分一下，现在太多了，集中在一起看起来挺乱的
+--已拆分
 
 player这边消息处理调整一下，简化、避免多余的查询操作
 
@@ -102,7 +104,7 @@ client连接消息顺序，不同情况下重连的处理
 加密处理
 
 logsvr，namechecksvr
---logsvr已添加
+--logsvr已添加，namechecksvr已添加
 
 增加多个gameserver，实现单个gameserver中的地图切换和跨gameserver的地图切换
 --ing
@@ -120,8 +122,6 @@ player在center的ClientSvrMgr中的id不能使用clientid了,因为一线、二
 换线这一流程要完整测试，每个步骤要清晰合理，不能乱，log要打足，每个失败的地方要做处理
 --已处理
 
-在当前服务器的下线工作也需要处理。
-
 调整了game和gate的连接逻辑，game这边的clientid可能需要调整
 --不需要，game这边记录的是gate指针
 
@@ -130,3 +130,6 @@ player在center的ClientSvrMgr中的id不能使用clientid了,因为一线、二
 多个DBserver同时处理请求
 
 玩家下线数据保存
+--已处理
+
+玩家被挤下线的时候，取的数据可能会有新旧问题，需要测试一下。

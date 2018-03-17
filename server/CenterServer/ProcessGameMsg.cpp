@@ -49,6 +49,11 @@ void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			CClientAuthMgr::Instance().SetGuid(msg.account(), msg.nguid());
 			break;
 		}
+		case SVR_SUB_PLAYERDATA:
+		{
+			CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_DB, tl->id);
+			break;
+		}
 		case SVR_SUB_CHANGELINE:
 		{
 			// client换线切图

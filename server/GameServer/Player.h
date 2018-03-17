@@ -47,5 +47,6 @@ private:
 	int64 m_Guid;
 	int64 m_CreateTime;
 	int64 m_LoginTime;
+	int64 m_LastSaveTime;
 	char m_Data[256];
 };

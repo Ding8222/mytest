@@ -19,9 +19,7 @@ public:
 	}
 
 	void Destroy();
-
-	void ProcessLoginMsg(task *tk, Msg *pMsg);
-
+	
 	void ClientAuth(task *tk, Msg *pMsg);
 	void GetPlayerList(task *tk, Msg *pMsg);
 	void CreatePlayer(task *tk, Msg *pMsg);

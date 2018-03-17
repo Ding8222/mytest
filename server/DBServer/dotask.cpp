@@ -6,7 +6,7 @@
 #include "fmt/ostream.h"
 #include "Timer.h"
 #include "msgbase.h"
-#include "ClientLogin.h"
+#include "ProcessMsg.h"
 
 #include "ServerType.h"
 #include "LoginType.h"
@@ -29,6 +29,6 @@ void OnDoTask (void *tk)
 			return;
 		}
 
-		CClientLogin::Instance().ProcessLoginMsg(d, pMsg);
+		ProcessMsg(d, pMsg);
 	}
 }

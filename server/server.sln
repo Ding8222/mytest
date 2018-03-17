@@ -110,6 +110,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LogServer", "LogServer\LogS
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NameCheckServer", "NameCheckServer\NameCheckServer.vcxproj", "{9DDF7AD2-0C98-40AC-A2FC-461C84D8964D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{847E3017-0B22-4481-96BF-C86D39734304} = {847E3017-0B22-4481-96BF-C86D39734304}
+		{0B71D9E0-A92E-4BC5-828D-79F402674807} = {0B71D9E0-A92E-4BC5-828D-79F402674807}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

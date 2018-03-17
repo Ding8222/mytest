@@ -4,6 +4,7 @@
 #include "serverlog.h"
 #include "msgbase.h"
 #include "Utilities.h"
+#include "Timer.h"
 
 #include "ServerType.h"
 #include "ServerMsg.pb.h"
@@ -15,6 +16,7 @@ CPlayer::CPlayer():CBaseObj(EOT_PLAYER)
 	m_Guid = 0;
 	m_CreateTime = 0;
 	m_LoginTime = 0;
+	m_LastSaveTime = 0;
 	memset(m_Data, 0, sizeof(m_Data));
 }
 
@@ -26,6 +28,12 @@ CPlayer::~CPlayer()
 void CPlayer::Run()
 {
 	CBaseObj::Run();
+
+	if (CTimer::GetTime() > m_LastSaveTime + 5 * 30)
+	{
+		// 5分钟保存一次数据
+		SaveData();
+	}
 }
 
 // 加载数据
@@ -76,9 +84,12 @@ bool CPlayer::LoadData(Msg *pMsg)
 // 保存数据
 bool CPlayer::SaveData()
 {
-	svrData::LoadPlayerData msg;
-	PackData(&msg);
+	m_LastSaveTime = CTimer::GetTime();
 
+	svrData::LoadPlayerData SendMsg;
+	PackData(&SendMsg);
+
+	FuncUti::SendMsgToCenter(this, SendMsg, SERVER_TYPE_MAIN, SVR_SUB_PLAYERDATA);
 	return true;
 }
 
@@ -110,5 +121,12 @@ bool CPlayer::PackData(google::protobuf::Message *pPB)
 // 下线
 void CPlayer::OffLine()
 {
+	if (IsWaitRemove())
+		return;
+	int map = GetMapID();
 	LeaveScene();
+	map = GetMapID();
+	SaveData();
+	//放在最后
+	SetWaitRemove();
 }

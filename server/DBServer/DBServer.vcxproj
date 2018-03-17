@@ -133,6 +133,7 @@
     <ClInclude Include="DBServer.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="dotask.h" />
+    <ClInclude Include="ProcessMsg.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientLogin.cpp" />
@@ -141,6 +142,7 @@
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="dotask.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ProcessMsg.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

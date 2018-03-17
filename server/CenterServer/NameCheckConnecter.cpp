@@ -3,6 +3,7 @@
 #include "NameCheckConnecter.h"
 #include "CentServerMgr.h"
 #include "ServerLog.h"
+#include "ClientAuthMgr.h"
 
 #include "LoginType.h"
 #include "ServerType.h"
@@ -96,6 +97,7 @@ void CNameCheckConnecter::ProcessMsg(connector *_con)
 					netData::CreatePlayerRet SendMsg;
 					SendMsg.set_ncode(msg.nnamecheckret());
 					CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_CREATE_PLAYER_RET, ServerEnum::EST_LOGIN, tl->id);
+					CClientAuthMgr::Instance().SetPlayerOffline(msg.account());
 				}
 				break;
 			}

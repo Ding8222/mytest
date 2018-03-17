@@ -98,7 +98,7 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 						pPlayer->GetName(), pPlayer->GetTempID(), 
 						pPlayer->GetScene() == nullptr ? -1 : pPlayer->GetScene()->GetMapID()
 					);
-					CPlayerMgr::Instance().DelPlayer(pPlayer->GetClientID());
+					pPlayer->OffLine();
 					SendMsg.set_ncode(netData::ChangeMapRet::EC_LEAVEMAP);
 				}
 			}
@@ -125,7 +125,7 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 							);
 	#endif
 							FuncUti::SendMsgToCenter(pPlayer, ChangeLineMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE);
-							CPlayerMgr::Instance().DelPlayer(pPlayer->GetClientID());
+							pPlayer->OffLine();
 							return;
 						}
 						else

@@ -173,6 +173,7 @@ void CDBCenterConnect::ProcessMsg(connector *_con)
 			}
 			default:
 			{
+				AddNewTask(pMsg, _con->GetConnectID(), task::tasktype_process);
 				break;
 			}
 			}

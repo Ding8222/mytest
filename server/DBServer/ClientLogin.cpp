@@ -29,40 +29,8 @@ void CClientLogin::Destroy()
 
 }
 
-void CClientLogin::ProcessLoginMsg(task *tk, Msg *pMsg)
-{
-	switch (pMsg->GetSubType())
-	{
-	case LOGIN_SUB_AUTH:
-	{
-		ClientAuth(tk, pMsg);
-		break;
-	}
-	case LOGIN_SUB_PLAYER_LIST:
-	{
-		GetPlayerList(tk, pMsg);
-		break;
-	}
-	case LOGIN_SUB_CREATE_PLAYER:
-	{
-		CreatePlayer(tk, pMsg);
-		break;
-	}
-	case LOGIN_SUB_SELECT_PLAYER:
-	{
-		SelectPlayer(tk, pMsg);
-		break;
-	}
-	default:
-		break;
-	}
-}
-
 void CClientLogin::ClientAuth(task *tk, Msg *pMsg)
 {
-	if (!tk || !pMsg)
-		return;
-
 	DataBase::CConnection *dbhand = tk->GetDBHand();
 	if (dbhand)
 	{
@@ -115,9 +83,6 @@ void CClientLogin::ClientAuth(task *tk, Msg *pMsg)
 
 void CClientLogin::GetPlayerList(task *tk, Msg *pMsg)
 {
-	if (!tk || !pMsg)
-		return;
-
 	DataBase::CConnection *dbhand = tk->GetDBHand();
 	if (dbhand)
 	{
@@ -155,9 +120,6 @@ void CClientLogin::GetPlayerList(task *tk, Msg *pMsg)
 
 void CClientLogin::CreatePlayer(task *tk, Msg *pMsg)
 {
-	if (!tk || !pMsg)
-		return;
-
 	DataBase::CConnection *dbhand = tk->GetDBHand();
 	if (dbhand)
 	{
@@ -207,9 +169,6 @@ void CClientLogin::CreatePlayer(task *tk, Msg *pMsg)
 
 void CClientLogin::SelectPlayer(task *tk, Msg *pMsg)
 {
-	if (!tk || !pMsg)
-		return;
-
 	DataBase::CConnection *dbhand = tk->GetDBHand();
 	if (dbhand)
 	{
@@ -236,7 +195,7 @@ void CClientLogin::SelectPlayer(task *tk, Msg *pMsg)
 			sendMsgToGame.set_nz(res->GetFloat("z"));
 			sendMsgToGame.set_data(res->GetChar("data"));
 
-			res = dbhand->Execute(fmt::format("update playerdate set logintime ={0} where guid = '{1}'", 
+			res = dbhand->Execute(fmt::format("update playerdate set logintime ={0} where guid = {1}", 
 				CTimer::GetTime(), msg.nguid()).c_str());
 			if (res)
 			{

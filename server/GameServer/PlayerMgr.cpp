@@ -71,11 +71,7 @@ void CPlayerMgr::AsGateServerDisconnect(int gateserverid)
 		{
 			if (gate->GetServerID() == gateserverid)
 			{
-				if (!(*tempiter)->IsWaitRemove())
-				{
-					(*tempiter)->OffLine();
-					(*tempiter)->SetWaitRemove();
-				}
+				(*tempiter)->OffLine();
 			}
 		}
 	}
@@ -146,20 +142,11 @@ void CPlayerMgr::DelPlayer(int clientid)
 		return;
 	}
 
-	assert(m_PlayerSet[clientid]);
-	if (m_PlayerSet[clientid])
+	CPlayer *pPlayer = m_PlayerSet[clientid];
+	assert(pPlayer);
+	if (pPlayer)
 	{
-		CPlayer *pPlayer = m_PlayerSet[clientid];
-		assert(pPlayer);
-		if (pPlayer)
-		{
-			assert(!pPlayer->IsWaitRemove());
-			if (!pPlayer->IsWaitRemove())
-			{
-				pPlayer->OffLine();
-				pPlayer->SetWaitRemove();
-			}
-		}
+		pPlayer->OffLine();
 	}
 }
 

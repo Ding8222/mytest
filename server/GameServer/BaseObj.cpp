@@ -52,7 +52,9 @@ bool CBaseObj::LeaveScene()
 {
 	if (m_Scene)
 	{
-		return m_Scene->DelObj(this);
+		if (!m_Scene->DelObj(this))
+			return false;
+		m_Scene = nullptr;
 	}
 	return false;
 }

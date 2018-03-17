@@ -134,11 +134,11 @@ void CClientAuth::KickClient(int32 clientid, bool closeclient)
 		// 通知延迟关闭Client
 		if (closeclient)
 		{
-			RunStateLog("玩家连接断开！账号：%s", info->Account.c_str());
+			RunStateLog("玩家被踢下线！账号：%s", info->Account.c_str());
 			CGateClientMgr::Instance().DelayCloseClient(clientid);
 		}
 		else
-			RunStateLog("玩家被踢下线！账号：%s", info->Account.c_str());
+			RunStateLog("玩家连接断开！账号：%s", info->Account.c_str());
 
 		m_ClientSecretInfo.erase(info->Account);
 		clientauthinfo_release(info);
