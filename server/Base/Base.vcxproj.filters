@@ -176,5 +176,8 @@
     <ClInclude Include="CSVParser.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="BackCommand.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

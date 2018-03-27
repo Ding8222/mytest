@@ -29,7 +29,7 @@ CGateCenterConnect::~CGateCenterConnect()
 bool CGateCenterConnect::Init()
 {
 	if (!CConnectMgr::AddNewConnect(
-		CConfig::Instance().GetCenterServerIP().c_str(),
+		CConfig::Instance().GetCenterServerIP(),
 		CConfig::Instance().GetCenterServerPort(),
 		CConfig::Instance().GetCenterServerID()
 	))

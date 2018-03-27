@@ -5,6 +5,7 @@
 #include "config.h"
 #include "serverlog.h"
 #include "msgbase.h"
+#include "GlobalDefine.h"
 
 #include "ServerType.h"
 #include "LoginType.h"

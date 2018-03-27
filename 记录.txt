@@ -8,3 +8,6 @@ jemalloc
 
 https://owent.net
 http://www.vimer.cn/
+
+protobuf好像可以做到自动解析，不需要1-1这种...有空可以研究研究
+http://blog.csdn.net/solstice/article/details/6300108

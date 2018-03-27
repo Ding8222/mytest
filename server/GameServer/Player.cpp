@@ -123,9 +123,9 @@ void CPlayer::OffLine()
 {
 	if (IsWaitRemove())
 		return;
-	int map = GetMapID();
+
 	LeaveScene();
-	map = GetMapID();
+
 	SaveData();
 	//放在最后
 	SetWaitRemove();

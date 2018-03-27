@@ -9,10 +9,7 @@ using namespace tinyxml2;
 CConfig::CConfig()
 {
 	m_LineID = 0;
-	s_CenterServerIP.clear();
-	m_CenterServerPort = 0;
-	m_CenterServerID = 0;
-	
+
 	m_MaxClientNum = 0;
 	m_RecvDataLimt = 0;
 	m_SendDataLimt = 0;
@@ -23,9 +20,6 @@ CConfig::CConfig()
 CConfig::~CConfig()
 {
 	m_LineID = 0;
-	s_CenterServerIP.clear();
-	m_CenterServerPort = 0;
-	m_CenterServerID = 0;
 
 	m_MaxClientNum = 0;
 	m_RecvDataLimt = 0;
@@ -58,25 +52,6 @@ bool CConfig::Init(const char *servername, int lineid)
 		return false;
 	}
 
-	s_CenterServerIP = pinfo->Attribute("CenterServer_IP");
-	if (s_CenterServerIP.empty())
-	{
-		log_error("没有找到字段： 'CenterServer_IP'");
-		return false;
-	}
-
-	if (pinfo->QueryIntAttribute("CenterServer_Port", &m_CenterServerPort) != XML_SUCCESS)
-	{
-		log_error("没有找到字段： 'CenterServer_Port'");
-		return false;
-	}
-
-	if (pinfo->QueryIntAttribute("CenterServer_ID", &m_CenterServerID) != XML_SUCCESS)
-	{
-		log_error("没有找到字段： 'CenterServer_ID'");
-		return false;
-	}
-	
 	if (pinfo->QueryIntAttribute("ClientNum_Max", &m_MaxClientNum) != XML_SUCCESS)
 	{
 		log_error("没有找到字段： 'ClientNum_Max'");
@@ -139,11 +114,15 @@ bool CConfig::Init(const char *servername, int lineid)
 			return false;
 		}
 
+		server.port += GetGroupID() * 10;
+
 		if (pinfo->QueryIntAttribute("ID", &server.id) != XML_SUCCESS)
 		{
 			log_error("没有找到字段： 'ID'");
 			return false;
 		}
+
+		server.id += GetGroupID() * 10;
 
 		m_GameSvrList.push_back(server);
 

@@ -67,10 +67,10 @@ bool CLogServerMgr::Init(const char *ip, int serverid, int port, int overtime)
 
 	g_dbhand.SetLogDirectory("log_log/LogServer_Log/dbhand_log");
 	g_dbhand.SetEnableLog(CConfig::Instance().GetIsOpenSQLLog());
-	if (!g_dbhand.Open(CConfig::Instance().GetDBName().c_str(),
-		CConfig::Instance().GetDBUser().c_str(),
-		CConfig::Instance().GetDBPass().c_str(),
-		CConfig::Instance().GetDBIP().c_str()))
+	if (!g_dbhand.Open(CConfig::Instance().GetDBName(),
+		CConfig::Instance().GetDBUser(),
+		CConfig::Instance().GetDBPass(),
+		CConfig::Instance().GetDBIP()))
 	{
 		RunStateError("¡¨Ω”Mysql ß∞‹!");
 		return false;

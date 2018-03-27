@@ -88,10 +88,10 @@ bool CDBCenterConnect::Init()
 
 	g_dbhand.SetLogDirectory("log_log/DBServer_Log/dbhand_log");
 	g_dbhand.SetEnableLog(CConfig::Instance().GetIsOpenSQLLog());
-	if (!g_dbhand.Open(CConfig::Instance().GetDBName().c_str(),
-		CConfig::Instance().GetDBUser().c_str(),
-		CConfig::Instance().GetDBPass().c_str(),
-		CConfig::Instance().GetDBIP().c_str()))
+	if (!g_dbhand.Open(CConfig::Instance().GetDBName(),
+		CConfig::Instance().GetDBUser(),
+		CConfig::Instance().GetDBPass(),
+		CConfig::Instance().GetDBIP()))
 	{
 		RunStateError("连接Mysql失败!");
 		return false;
@@ -104,7 +104,7 @@ bool CDBCenterConnect::Init()
 	}
 
 	if (!CConnectMgr::AddNewConnect(
-		CConfig::Instance().GetCenterServerIP().c_str(),
+		CConfig::Instance().GetCenterServerIP(),
 		CConfig::Instance().GetCenterServerPort(),
 		CConfig::Instance().GetCenterServerID()
 		))
