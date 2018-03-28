@@ -9,6 +9,8 @@
 #include "LogConnecter.h"
 #include "CenterPlayerMgr.h"
 #include "NameCheckConnecter.h"
+#include "BackCommand.h"
+#include "objectpool.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -50,6 +52,12 @@ bool CCenterServer::Init()
 			break;
 		}
 #endif
+		if (!InitBackCommand())
+		{
+			RunStateError("初始化 BackCommand 失败!");
+			break;
+		}
+
 		if (!CCentServerMgr::Instance().Init(
 			CConfig::Instance().GetServerIP(),
 			CConfig::Instance().GetServerID(),
@@ -154,6 +162,7 @@ void CCenterServer::Exit()
 void CCenterServer::RunOnce()
 {
 	lxnet::net_run();
+	m_BackCommand->Run(g_currenttime);
 
 	CCentServerMgr::Instance().Run();
 	CLogConnecter::Instance().Run();
@@ -164,7 +173,115 @@ void CCenterServer::RunOnce()
 	CNameCheckConnecter::Instance().EndRun();
 }
 
+static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr);
+
+static void back_dofunction(lxnet::Socketer *sock)
+{
+	MessagePack *pack;
+	char commandstr[32];
+	Msg *pmsg = sock->GetMsg();
+	if (!pmsg)
+		return;
+	pack = (MessagePack *)pmsg;
+	pack->Begin();
+	pack->GetString(commandstr, sizeof(commandstr));
+	commandstr[sizeof(commandstr) - 1] = 0;
+
+	ProcessCommand(sock, commandstr);
+}
+
+bool CCenterServer::InitBackCommand()
+{
+	m_BackCommand = (CBackCommand *)malloc(sizeof(CBackCommand));
+	if (!m_BackCommand)
+		return false;
+	new(m_BackCommand) CBackCommand();
+	if (!m_BackCommand->Init(back_dofunction,CConfig::Instance().GetMonitorPort(),CConfig::Instance().GetPingTime(), CConfig::Instance().GetServerName()))
+		return false;
+
+	return true;
+}
+
 void CCenterServer::Destroy()
 {
 	Exit();
+
+	if (m_BackCommand)
+	{
+		m_BackCommand->~CBackCommand();
+		free(m_BackCommand);
+		m_BackCommand = NULL;
+	}
+}
+
+static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
+{
+	static char s_buf[31 * 1024];
+	short size = 0;
+	MessagePack res;
+	if (strcmp(commandstr, "help") == 0)
+	{
+		snprintf(s_buf, sizeof(s_buf) - 1, "help 帮助\nopenelapsed/closeelapsed 打开/关闭帧开销实时日志\ncurrentinfo 输出当前信息\nnetmeminfo 输出网络库内存使用情况\nallmeminfo 输出此程序内存池使用信息到文件\n");
+		size = (short)strlen(s_buf) + 1;
+		assert(size > 0);
+		s_buf[size] = 0;
+		res.PushString(s_buf);
+		sock->SendMsg(&res);
+	}
+	else if (strcmp(commandstr, "openelapsed") == 0)
+	{
+		g_elapsed_log_flag = true;
+
+		snprintf(s_buf, sizeof(s_buf) - 1, "帧开销实时日志已打开");
+		size = (short)strlen(s_buf) + 1;
+		assert(size > 0);
+		s_buf[size] = 0;
+		res.PushString(s_buf);
+		sock->SendMsg(&res);
+	}
+	else if (strcmp(commandstr, "closeelapsed") == 0)
+	{
+		g_elapsed_log_flag = false;
+
+		snprintf(s_buf, sizeof(s_buf) - 1, "帧开销实时日志已关闭");
+		size = (short)strlen(s_buf) + 1;
+		assert(size > 0);
+		s_buf[size] = 0;
+		res.PushString(s_buf);
+		sock->SendMsg(&res);
+	}
+	else if (strcmp(commandstr, "currentinfo") == 0)
+	{
+		size = 0;
+
+		CCentServerMgr::Instance().GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
+		s_buf[sizeof(s_buf) - 1] = 0;
+		res.PushString(s_buf);
+		sock->SendMsg(&res);
+	}
+	else if (strcmp(commandstr, "netmeminfo") == 0)
+	{
+		snprintf(s_buf, sizeof(s_buf) - 1, "%s", lxnet::net_get_memory_info(s_buf, sizeof(s_buf) - 1));
+		size = (short)strlen(s_buf) + 1;
+		assert(size > 0);
+		s_buf[size] = 0;
+		res.PushString(s_buf);
+		sock->SendMsg(&res);
+	}
+	else if (strcmp(commandstr, "allmeminfo") == 0)
+	{
+		sPoolInfo.writeinfotofile();
+
+		snprintf(s_buf, sizeof(s_buf) - 1, "所有内存信息已经写入到文件");
+		size = (short)strlen(s_buf) + 1;
+		assert(size > 0);
+		s_buf[size] = 0;
+		res.PushString(s_buf);
+		sock->SendMsg(&res);
+	}
+	else
+	{
+		res.PushString(commandstr);
+		sock->SendMsg(&res);
+	}
 }

@@ -21,13 +21,14 @@ CBackCommand::~CBackCommand()
 	Destroy();
 }
 
-bool CBackCommand::Init(void(*f_dofunc) (lxnet::Socketer *sock), int32 port, int32 pingtime, std::string &name)
+bool CBackCommand::Init(void(*f_dofunc) (lxnet::Socketer *sock), int32 port, int32 pingtime, const char *name)
 {
 	if (!f_dofunc)
 		return false;
 
 	Destroy();
 	
+	m_DoFunction = f_dofunc;
 	m_PingTime = pingtime;
 	m_Name = name;
 
@@ -65,7 +66,7 @@ void CBackCommand::Run(int64 currenttime)
 
 	if (m_Sock)
 	{
-		BackCommandLog("connect from [%s] is closed.", m_ConnectIP.c_str());
+		BackCommandLog("来自[%s]的连接已断开", m_ConnectIP.c_str());
 		m_ConnectIP.clear();
 
 		lxnet::Socketer::Release(m_Sock);
@@ -84,7 +85,7 @@ void CBackCommand::Run(int64 currenttime)
 			m_Sock->GetIP(ip, sizeof(ip) - 1);
 			ip[sizeof(ip) - 1] = 0;
 			m_ConnectIP = ip;
-			BackCommandLog("new connect from [%s].", m_ConnectIP.c_str());
+			BackCommandLog("来自[%s]的新连接", m_ConnectIP.c_str());
 		}
 
 		//告知此服的名字

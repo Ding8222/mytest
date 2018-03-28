@@ -162,15 +162,11 @@ bool CBaseConfig::Init(const std::string &servername, int32 lineid)
 		return false;
 	}
 
-	m_NameCheckServerID += GetGroupID() * 10;
-
 	if (pBaseInfo->QueryIntAttribute("NameCheckServer_Port", &m_NameCheckServerPort) != XML_SUCCESS)
 	{
 		log_error("没有找到字段： 'NameCheckServer_Port'");
 		return false;
 	}
-
-	m_NameCheckServerPort += GetGroupID() * 10;
 
 	m_NameCheckServerIP = pBaseInfo->Attribute("NameCheckServer_IP");
 	if (m_NameCheckServerIP.empty())
@@ -245,6 +241,7 @@ bool CBaseConfig::Init(const std::string &servername, int32 lineid)
 		return false;
 	}
 
+	SetMonitorPort(m_ListenPort + 10000);
 	SetServerName(servername.c_str());
 
 	return true;

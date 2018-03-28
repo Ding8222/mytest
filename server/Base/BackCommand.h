@@ -14,7 +14,7 @@ public:
 	CBackCommand();
 	~CBackCommand();
 
-	bool Init(void(*f_dofunc) (lxnet::Socketer *sock), int32 port, int32 pingtime, std::string &name);
+	bool Init(void(*f_dofunc) (lxnet::Socketer *sock), int32 port, int32 pingtime, const char *name);
 	void Run(int64 currenttime);
 	const char *GetName() { return m_Name.c_str(); }
 private:

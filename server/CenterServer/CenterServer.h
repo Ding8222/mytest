@@ -5,6 +5,7 @@
 */
 #pragma once
 
+class CBackCommand;
 class CCenterServer
 {
 public:
@@ -25,6 +26,8 @@ public:
 	void Destroy();
 private:
 	void RunOnce();
+	bool InitBackCommand();
 private:
 	bool m_Run;
+	CBackCommand *m_BackCommand;
 };

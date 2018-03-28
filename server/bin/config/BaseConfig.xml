@@ -2,7 +2,7 @@
 <!--
 服务器模块参数：
 
-GroupID					组ID，一机多服使用，启用的时候，DBIP可能需要修改一下
+GroupID					组ID，[0,99]一机多服使用，启用的时候，DBIP可能需要修改一下
 
 Over_Time				服务器超时重连时间
 Ping_Time				服务器Ping时间

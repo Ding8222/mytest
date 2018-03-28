@@ -47,6 +47,7 @@ public:
 	const char *GetDBPass() { return m_DBPass.c_str(); }
 	const char *GetDBIP() { return m_DBIP.c_str(); }
 
+	void SetMonitorPort(int32 port) { m_MonitorPort = port; }
 	int32 GetMonitorPort() { return m_MonitorPort; }
 private:
 	int32 m_GroupID;
@@ -84,6 +85,6 @@ private:
 	std::string m_DBPass;
 	std::string m_DBIP;
 
-	// 监控端口
+	// 监控端口,本地监听端口+100*GroupID
 	int32 m_MonitorPort;
 };
