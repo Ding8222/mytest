@@ -17,8 +17,8 @@ serverinfo::serverinfo ()
 	m_sendmsg_num = 0;
 
 	memset(m_ip, 0, sizeof(m_ip));
-	m_port = 0;
 	m_con = NULL;
+	m_servername.clear();
 }
 
 serverinfo::~serverinfo ()
@@ -28,6 +28,7 @@ serverinfo::~serverinfo ()
 		lxnet::Socketer::Release(m_con);
 		m_con = NULL;
 	}
+	m_servername.clear();
 }
 
 void serverinfo::SetCon (lxnet::Socketer *sock)
@@ -51,12 +52,12 @@ Msg *serverinfo::GetMsg ()
 	return pMsg;
 }
 
-void serverinfo::SetServerID (int serverid)
+void serverinfo::SetServerID (int32 serverid)
 {
 	m_serverid = serverid;
 }
 
-void serverinfo::SetServerType (int servertype)
+void serverinfo::SetServerType (int32 servertype)
 {
 	m_servertype = servertype;
 }
@@ -73,7 +74,7 @@ bool serverinfo::IsEnoughXMNotReg (int64 currenttime)
 	return (currenttime >= m_connecttime);
 }
 
-bool serverinfo::IsOverTime (int64 currenttime, int overtime)
+bool serverinfo::IsOverTime (int64 currenttime, int32 overtime)
 {
 	return (currenttime - m_pingtime >= overtime);
 }

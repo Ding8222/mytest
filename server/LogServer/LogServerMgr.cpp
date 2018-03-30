@@ -388,12 +388,6 @@ serverinfo *CLogServerMgr::FindServer(int nServerID, int nType)
 	return nullptr;
 }
 
-void CLogServerMgr::ServerRegisterSucc(int id, int type, const char *ip, int port)
-{
-
-}
-
-
 void CLogServerMgr::AddNewTask(Msg *pMsg, int serverid)
 {
 	if (!pMsg)

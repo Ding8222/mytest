@@ -122,11 +122,6 @@ void CGameGatewayMgr::SendMsgToServer(google::protobuf::Message &pMsg, int maint
 	}
 }
 
-void CGameGatewayMgr::ServerRegisterSucc(int id, int type, const char *ip, int port)
-{
-
-}
-
 void CGameGatewayMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 {
 	switch (info->GetServerType())

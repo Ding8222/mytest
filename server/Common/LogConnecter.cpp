@@ -19,16 +19,16 @@ CLogConnecter::~CLogConnecter()
 	Destroy();
 }
 
-bool CLogConnecter::Init(const char *logserverip, int logserverport, int logserverid,
-	int serverid, int servertype, int pingtime, int overtime)
+bool CLogConnecter::Init(const char *logserverip, int logserverport, int logserverid, const char *logservername, 
+	int serverid, int servertype, const char *servername, int pingtime, int overtime)
 {
-	if (!CConnectMgr::AddNewConnect(logserverip, logserverport, logserverid))
+	if (!CConnectMgr::AddNewConnect(logserverip, logserverport, logserverid, logservername))
 	{
 		log_error("添加Log服务器失败!");
 		return false;
 	}
 
-	return CConnectMgr::Init(serverid, servertype, pingtime, overtime);
+	return CConnectMgr::Init(serverid, servertype, servername, pingtime, overtime);
 }
 
 void CLogConnecter::Destroy()
@@ -38,10 +38,10 @@ void CLogConnecter::Destroy()
 	LogServerID = 0;
 }
 
-void CLogConnecter::ServerRegisterSucc(int id, const char *ip, int port)
+void CLogConnecter::ServerRegisterSucc(connector * con)
 {
 	isReady = true;
-	LogServerID = id;
+	LogServerID = con->GetConnectID();
 }
 
 void CLogConnecter::ConnectDisconnect(connector *)

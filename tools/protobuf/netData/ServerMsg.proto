@@ -13,7 +13,7 @@ message ServerRegister
 	int32 nServerID = 1;		// 此服的ID
 	int32 nServerType = 2;		// 此服的类型
 	int32 nConnectID = 3;		// 要连接的服的id
-	int32 nPort = 4;			// 此服的端口
+	string Name = 4;			// 此服名称
 }
 
 // 0-3 服务器注册返回
@@ -27,8 +27,6 @@ message ServerRegisterRet
 		EC_TO_CONNECT_ID_NOT_EQUAL = 3;
 	};
 	int32 nRetCode = 1;		// 返回的信息
-	string sIP = 2;			// 此服的IP
-	int32 nPort = 3;		// 此服的端口
 }
 
 // 0-4 发送服务器负载

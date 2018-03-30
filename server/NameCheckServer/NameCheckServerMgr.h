@@ -34,7 +34,6 @@ public:
 private:
 	bool AddNewServer(serverinfo *info, int nServerID, int nType);
 	serverinfo *FindServer(int nServerID, int nType);
-	void ServerRegisterSucc(int id, int type, const char *ip, int port);
 
 private:
 

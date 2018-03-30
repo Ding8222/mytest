@@ -36,14 +36,17 @@ DBIP                	IP
 	LogServer_ID = "6000"
 	LogServer_Port = "6001"
 	LogServer_IP = "127.0.0.1"
+	LogServer_Name = "LogServer"
 	
 	CenterServer_ID = "1000"
 	CenterServer_Port = "1001"
 	CenterServer_IP = "127.0.0.1"
+	CenterServer_Name = "CenterServer"
 	
 	NameCheckServer_ID = "7000"
 	NameCheckServer_Port = "7001"
 	NameCheckServer_IP = "127.0.0.1"
+	NameCheckServer_Name = "NameCheckServer"
 	
 	DBName = "test"
 	DBUser = "root"

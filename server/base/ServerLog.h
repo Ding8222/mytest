@@ -35,22 +35,12 @@ filelog_write_error(g_client_connectlog, fmt, ##__VA_ARGS__);}\
 
 // 运行时log
 #define RunStateLog(fmt, ...) \
-do{char temp_buf[32] = { 0 };\
-_format_prefix_string_(0, -1, temp_buf, sizeof(temp_buf),\
-0, 0, 0);\
-_log_printf_(enum_debug_print_time,\
-fmt, temp_buf, ##__VA_ARGS__, __END__ARG__FLAG__);\
-log_writelog(fmt, ##__VA_ARGS__);\
+do{log_writelog(fmt, ##__VA_ARGS__);\
 }while(0)
 
 // 运行时错误log
 #define RunStateError(fmt, ...) \
-do{char temp_buf[32] = { 0 };\
-_format_prefix_string_(0, -1, temp_buf, sizeof(temp_buf),\
-0, 0, 0);\
-_log_printf_(enum_debug_print_time,\
-fmt, temp_buf, ##__VA_ARGS__, __END__ARG__FLAG__);\
-log_error(fmt, ##__VA_ARGS__);\
+do{log_error(fmt, ##__VA_ARGS__);\
 }while(0)
 
 // 超时log

@@ -94,17 +94,10 @@ bool CConfig::Init(const char *servername, int lineid)
 	{
 		GameSvr server;
 
-		const char *ip = pinfo->Attribute("IP");
-		if (!ip)
-		{
-			log_error("没有找到字段： 'IP'");
-			return false;
-		}
-
-		server.ip = ip;
+		server.ip = pinfo->Attribute("IP");
 		if (server.ip.empty())
 		{
-			log_error("IP 填写错误：%s", server.ip.c_str());
+			log_error("没有找到字段： 'IP'");
 			return false;
 		}
 
@@ -123,6 +116,13 @@ bool CConfig::Init(const char *servername, int lineid)
 		}
 
 		server.id += GetGroupID() * 10;
+
+		server.name = pinfo->Attribute("NAME");
+		if (server.name.empty())
+		{
+			log_error("没有找到字段： 'NAME'");
+			return false;
+		}
 
 		m_GameSvrList.push_back(server);
 

@@ -18,12 +18,12 @@ public:
 	CConnectMgr();
 	~CConnectMgr();
 
-	bool Init(int serverid, int servertype, int pingtime, int overtime, int listenport = 0);
+	bool Init(int32 serverid, int32 servertype, const char *servername, int32 pingtime, int32 overtime);
 	void Run();
 	void EndRun();
 	virtual void Destroy();
 
-	bool IsAlreadyRegister(int id);
+	bool IsAlreadyRegister(int32 id);
 
 	// 获取当前连接中的服务器数量
 	void GetCurrentInfo(char *buf, size_t buflen);
@@ -34,20 +34,20 @@ public:
 
 public:
 	// 发送消息
-	bool SendMsgToServer(int nServerID, google::protobuf::Message &pMsg, int maintype, int subtype, int64 nClientID = 0);
-	bool SendMsgToServer(int nServerID, Msg &pMsg, int64 nClientID = 0);
+	bool SendMsgToServer(int32 nServerID, google::protobuf::Message &pMsg, int32 maintype, int32 subtype, int64 nClientID = 0);
+	bool SendMsgToServer(int32 nServerID, Msg &pMsg, int64 nClientID = 0);
 
-	bool SendMsgToServer(connector *con, google::protobuf::Message &pMsg, int maintype, int subtype, int64 nClientID = 0);
+	bool SendMsgToServer(connector *con, google::protobuf::Message &pMsg, int32 maintype, int32 subtype, int64 nClientID = 0);
 	bool SendMsgToServer(connector *con, Msg &pMsg, int64 nClientID = 0);
 
-	bool SendMsg(connector *info, google::protobuf::Message &pMsg, int maintype, int subtype, void *adddata = nullptr, size_t addsize = 0);
+	bool SendMsg(connector *info, google::protobuf::Message &pMsg, int32 maintype, int32 subtype, void *adddata = nullptr, size_t addsize = 0);
 	bool SendMsg(connector *info, Msg &pMsg, void *adddata = nullptr, size_t addsize = 0);
 
 public:
 	// 根据类型添加连接器
-	bool AddNewConnect(const char *ip, int port, int id);
+	bool AddNewConnect(const char *ip, int32 port, int32 id, const char *name);
 	// 根据类型查找连接器
-	connector *FindConnect(int nID);
+	connector *FindConnect(int32 nID);
 private:
 	// 尝试连接并请求注册
 	void TryConnect(connector *);
@@ -60,14 +60,14 @@ private:
 	// 注册后处理的消息
 	virtual void ProcessMsg(connector *) = 0;
 	// 注册成功后的回调
-	virtual void ServerRegisterSucc(int id, const char *ip, int port) = 0;
+	virtual void ServerRegisterSucc(connector *) {}
 private:
-	int m_ServerID;
-	int m_ServerType;
-	int m_OverTime;
-	int m_PingTime;
-	int m_ListenPort;
+	int32 m_ServerID;
+	int32 m_ServerType;
+	int32 m_OverTime;
+	int32 m_PingTime;
+	std::string m_ServerName;
 
-	std::unordered_map<int, connector *> m_List;
+	std::unordered_map<int32, connector *> m_List;
 };
 

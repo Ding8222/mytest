@@ -71,7 +71,7 @@ private:
 	// 根据类型查找服务器
 	virtual serverinfo *FindServer(int nServerID, int nType) = 0;
 	// 注册成功后的回调
-	virtual void ServerRegisterSucc(int id, int type, const char *ip, int port) = 0;
+	virtual void ServerRegisterSucc(serverinfo *info) {}
 private:
 	char s_ServerIP[MAX_IP_LEN];
 	int m_ListenPort;

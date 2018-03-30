@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <string>
 #include "lxnet.h"
 #include "crosslib.h"
 
@@ -17,40 +18,40 @@ public:
 	lxnet::Socketer *GetCon () { return m_con; }
 	void SendMsg (Msg *pMsg, void *adddata = NULL, size_t addsize = 0);
 	Msg *GetMsg ();
-	void SetServerID (int serverid);
-	int GetServerID () { return m_serverid; }
-	void SetServerType (int servertype);
-	int GetServerType () { return m_servertype; }
+	void SetServerID (int32 serverid);
+	int32 GetServerID () { return m_serverid; }
+	void SetServerType (int32 servertype);
+	int32 GetServerType () { return m_servertype; }
 	void SetConnectTime (int64 currenttime);
 	bool IsEnoughXMNotReg (int64 currenttime);
 	void SetNotRegister () { m_already_register = false; }
 	void SetAlreadyRegister () { m_already_register = true; }
 	bool IsAlreadyRegister () { return m_already_register; }
 	void SetPingTime (int64 currenttime) { m_pingtime = currenttime; }
-	bool IsOverTime (int64 currenttime, int overtime);
+	bool IsOverTime (int64 currenttime, int32 overtime);
 	bool IsNeedRemove () { return (m_removetime != 0); }
 	void SetRemove (int64 currenttime);
 	bool CanRemove (int64 currenttime);
 	void ResetMsgNum ();
-	int GetRecvMsgNum () { return m_recvmsg_num; }
-	int GetSendMsgNum () { return m_sendmsg_num; }
+	int32 GetRecvMsgNum () { return m_recvmsg_num; }
+	int32 GetSendMsgNum () { return m_sendmsg_num; }
 	const char *GetIP () { return m_ip; }
 	void SetIP (const char *ip);
-	int GetPort() { return m_port; }
-	void SetPort(int port) { m_port = port; }
+	void SetServerName(const char *name) { m_servername = name; }
+	const char *GetServerName() { return m_servername.c_str(); }
 private:
 	bool m_already_register;
-	int m_serverid;
-	int m_servertype;
+	int32 m_serverid;
+	int32 m_servertype;
 	int64 m_removetime;
 	int64 m_connecttime;
 	int64 m_pingtime;
 	
-	int m_recvmsg_num;
-	int m_sendmsg_num;
+	int32 m_recvmsg_num;
+	int32 m_sendmsg_num;
 
 	char m_ip[64];
-	int m_port;	// 如果大于0，说明该服务器处于监听状态
+	std::string m_servername;
 	lxnet::Socketer *m_con;
 };
 

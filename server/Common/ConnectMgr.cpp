@@ -3,13 +3,14 @@
 #include "log.h"
 #include "msgbase.h"
 #include "GlobalDefine.h"
+#include "BaseConfig.h"
 
 #include "ServerType.h"
 #include "ServerMsg.pb.h"
 
 extern int64 g_currenttime;
 
-static const int s_backlog = 16;
+static const int32 s_backlog = 16;
 
 CConnectMgr::CConnectMgr()
 {
@@ -17,9 +18,9 @@ CConnectMgr::CConnectMgr()
 	m_ServerType = 0;
 	m_OverTime = 0;
 	m_PingTime = 0;
-	m_ListenPort = 0;
 	
 	m_List.clear();
+	m_ServerName.clear();
 }
 
 CConnectMgr::~CConnectMgr()
@@ -27,20 +28,20 @@ CConnectMgr::~CConnectMgr()
 	Destroy();
 }
 
-bool CConnectMgr::Init(int serverid, int servertype, int pingtime, int overtime, int listenport)
+bool CConnectMgr::Init(int32 serverid, int32 servertype, const char *servername, int32 pingtime, int32 overtime)
 {
 	m_ServerID = serverid;
 	m_ServerType = servertype;
 	m_PingTime = pingtime;
 	m_OverTime = overtime;
-	m_ListenPort = listenport;
+	m_ServerName = servername;
 
 	return true;
 }
 
 void CConnectMgr::Run()
 {
-	std::unordered_map<int, connector *>::iterator itr;
+	std::unordered_map<int32, connector *>::iterator itr;
 	for (itr = m_List.begin(); itr != m_List.end(); ++itr)
 	{
 		connector *con = itr->second;
@@ -58,13 +59,13 @@ void CConnectMgr::Run()
 		}
 		if (con->IsOverTime(g_currenttime, m_OverTime))
 		{
-			log_error("连接远程服务器:[%d] 超时，准备断开重连!", con->GetConnectID());
+			log_error("连接远程服务器[%s], ID:[%d] 超时，准备断开重连!", con->GetConnectName(), con->GetConnectID());
 			OnConnectDisconnect(con);
 			continue;
 		}
 		if (con->IsClose())
 		{
-			log_error("远程服务器断开连接，准备断开重连!", con->GetConnectID());
+			log_error("远程服务器[%s], ID:[%d] 断开连接，准备断开重连!", con->GetConnectName(), con->GetConnectID());
 			OnConnectDisconnect(con);
 			continue;
 		}
@@ -78,7 +79,7 @@ void CConnectMgr::Run()
 
 void CConnectMgr::EndRun()
 {
-	for (std::unordered_map<int, connector *>::iterator itr = m_List.begin(); itr != m_List.end(); ++itr)
+	for (std::unordered_map<int32, connector *>::iterator itr = m_List.begin(); itr != m_List.end(); ++itr)
 	{
 		itr->second->CheckSend();
 		itr->second->CheckRecv();
@@ -87,14 +88,15 @@ void CConnectMgr::EndRun()
 
 void CConnectMgr::Destroy()
 {
-	for (std::unordered_map<int, connector *>::iterator itr = m_List.begin(); itr != m_List.end(); ++itr)
+	for (std::unordered_map<int32, connector *>::iterator itr = m_List.begin(); itr != m_List.end(); ++itr)
 	{
 		ConnectorRelease(itr->second);
 	}
 	m_List.clear();
+	m_ServerName.clear();
 }
 
-bool CConnectMgr::IsAlreadyRegister(int id)
+bool CConnectMgr::IsAlreadyRegister(int32 id)
 {
 	connector *con= FindConnect(id);
 	if (con)
@@ -106,13 +108,13 @@ bool CConnectMgr::IsAlreadyRegister(int id)
 
 void CConnectMgr::GetCurrentInfo(char *buf, size_t buflen)
 {
-	snprintf(buf, buflen - 1, "当前连接的服务器数量：%d\n",(int)m_List.size());
+	snprintf(buf, buflen - 1, "当前连接的服务器数量：%d\n",(int32)m_List.size());
 
 }
 
 void CConnectMgr::ResetMsgNum()
 {
-	for (std::unordered_map<int, connector *>::iterator itr = m_List.begin(); itr != m_List.end(); ++itr)
+	for (std::unordered_map<int32, connector *>::iterator itr = m_List.begin(); itr != m_List.end(); ++itr)
 	{
 		itr->second->ResetMsgNum();
 	}
@@ -123,13 +125,13 @@ const char *CConnectMgr::GetMsgNumInfo()
 	static char tempbuf[1024 * 32];
 	char *buf = tempbuf;
 	size_t len = sizeof(tempbuf);
-	int res = 0;
+	int32 res = 0;
 	connector *co = nullptr;
-	for (std::unordered_map<int, connector *>::iterator itr = m_List.begin(); itr != m_List.end(); ++itr)
+	for (std::unordered_map<int32, connector *>::iterator itr = m_List.begin(); itr != m_List.end(); ++itr)
 	{
 		co = itr->second;
-		snprintf(buf, len - 1, "连接服务器: %d, 收到消息数量:%d, 发送消息数量:%d\n", \
-			co->GetConnectID(), co->GetRecvMsgNum(), co->GetSendMsgNum());
+		snprintf(buf, len - 1, "连接服务器[%s], ID:%d, 收到消息数量:%d, 发送消息数量:%d\n", \
+			co->GetConnectName(), co->GetConnectID(), co->GetRecvMsgNum(), co->GetSendMsgNum());
 
 		res = strlen(buf);
 		buf += res;
@@ -141,7 +143,7 @@ const char *CConnectMgr::GetMsgNumInfo()
 	return tempbuf;
 }
 
-bool CConnectMgr::SendMsgToServer(int nServerID, google::protobuf::Message &pMsg, int maintype, int subtype, int64 nClientID)
+bool CConnectMgr::SendMsgToServer(int32 nServerID, google::protobuf::Message &pMsg, int32 maintype, int32 subtype, int64 nClientID)
 {
 	connector *con = FindConnect(nServerID);
 	if (con)
@@ -151,7 +153,7 @@ bool CConnectMgr::SendMsgToServer(int nServerID, google::protobuf::Message &pMsg
 	return false;
 }
 
-bool CConnectMgr::SendMsgToServer(int nServerID, Msg &pMsg, int64 nClientID)
+bool CConnectMgr::SendMsgToServer(int32 nServerID, Msg &pMsg, int64 nClientID)
 {
 	connector *con = FindConnect(nServerID);
 	if (con)
@@ -161,7 +163,7 @@ bool CConnectMgr::SendMsgToServer(int nServerID, Msg &pMsg, int64 nClientID)
 	return false;
 }
 
-bool CConnectMgr::SendMsgToServer(connector *con, google::protobuf::Message &pMsg, int maintype, int subtype, int64 clientid)
+bool CConnectMgr::SendMsgToServer(connector *con, google::protobuf::Message &pMsg, int32 maintype, int32 subtype, int64 clientid)
 {
 	assert(con);
 	assert(clientid >= 0);
@@ -185,7 +187,7 @@ bool CConnectMgr::SendMsgToServer(connector *con, Msg &pMsg, int64 clientid)
 	return SendMsg(con, pMsg, &tail, sizeof(tail));
 }
 
-bool CConnectMgr::SendMsg(connector *con, google::protobuf::Message &pMsg, int maintype, int subtype, void *adddata, size_t addsize)
+bool CConnectMgr::SendMsg(connector *con, google::protobuf::Message &pMsg, int32 maintype, int32 subtype, void *adddata, size_t addsize)
 {
 	assert(con != nullptr);
 
@@ -202,11 +204,11 @@ bool CConnectMgr::SendMsg(connector *con, Msg &pMsg, void *adddata, size_t addsi
 	return con->SendMsg(&pMsg, adddata, addsize);
 }
 
-bool CConnectMgr::AddNewConnect(const char *ip, int port, int id)
+bool CConnectMgr::AddNewConnect(const char *ip, int32 port, int32 id, const char *name)
 {
 	if (FindConnect(id))
 	{
-		log_error("创建新的连接失败, 已经存在的服务器id，ip:%s port:%d id:%d", ip, port, id);
+		log_error("创建[%s]连接失败, 已经存在的服务器id，ip:%s port:%d id:%d", name, ip, port, id);
 		return false;
 	}
 	connector *newcon = ConnectorCreate();
@@ -216,14 +218,15 @@ bool CConnectMgr::AddNewConnect(const char *ip, int port, int id)
 		return false;
 	}
 	newcon->SetConnectInfo(ip, port, id);
+	newcon->SetConnectName(name);
 	m_List.insert(std::make_pair(id,newcon));
-	log_writelog("创建新的连接成功, ip:%s port:%d id:%d", ip, port, id);
+	log_writelog("创建[%s]连接成功, ip:%s port:%d id:%d", name, ip, port, id);
 	return true;
 }
 
-connector *CConnectMgr::FindConnect(int nID)
+connector *CConnectMgr::FindConnect(int32 nID)
 {
-	std::unordered_map<int, connector *>::iterator iter = m_List.find(nID);
+	std::unordered_map<int32, connector *>::iterator iter = m_List.find(nID);
 	if (iter != m_List.end())
 	{
 		return iter->second;
@@ -239,12 +242,12 @@ void CConnectMgr::TryConnect(connector *con)
 		sendMsg.set_nserverid(m_ServerID);
 		sendMsg.set_nservertype(m_ServerType);
 		sendMsg.set_nconnectid(con->GetConnectID());
-		sendMsg.set_nport(m_ListenPort);
+		sendMsg.set_name(m_ServerName);
 
 		if(SendMsg(con, sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_REGISTER))
-			log_writelog("连接服务器成功!发送注册信息成功！服务器ID：[%d] IP:[%s]", con->GetConnectID(), con->GetConnectIP());
+			log_writelog("[%s]连接服务器成功!发送注册信息成功！服务器ID：[%d] IP:[%s]", con->GetConnectName(), con->GetConnectID(), con->GetConnectIP());
 		else
-			log_error("连接服务器成功!发送注册信息失败！服务器ID：[%d] IP:[%s]", con->GetConnectID(), con->GetConnectIP());
+			log_error("[%s]连接服务器成功!发送注册信息失败！服务器ID：[%d] IP:[%s]", con->GetConnectName(), con->GetConnectID(), con->GetConnectIP());
 	}
 }
 
@@ -287,29 +290,27 @@ void CConnectMgr::ProcessRegister(connector *con)
 				{
 					// 认证成功
 					con->SetAlreadyRegister(true);
-					ServerRegisterSucc(con->GetConnectID(), msg.sip().c_str(), msg.nport());
-					log_writelog("注册到远程服务器成功！");
+					ServerRegisterSucc(con);
+					log_writelog("[%s]注册到远程服务器成功！", con->GetConnectName());
 					break;
 				}
 				case svrData::ServerRegisterRet::EC_SERVER_ID_EXIST:
 				{
 					// 已存在相同ServerID被注册
-					log_error("注册到远程服务器失败！已存在相同ServerID被注册，远程服务器ID：[%d] IP:[%s]", con->GetConnectID(), con->GetConnectIP());
+					log_error("[%s]注册到远程服务器失败！已存在相同ServerID被注册，远程服务器ID：[%d] IP:[%s]", con->GetConnectName(), con->GetConnectID(), con->GetConnectIP());
 					exit(-1);
 					break;
 				}
 				case svrData::ServerRegisterRet::EC_TO_CONNECT_ID_NOT_EQUAL:
 				{
 					// 请求注册的ServerID和远程ServerID不同
-					log_error("注册到远程服务器失败！请求注册的ServerID和远程ServerID不同，远程服务器ID：[%d] IP:[%s]", con->GetConnectID(), con->GetConnectIP());
+					log_error("[%s]注册到远程服务器失败！请求注册的ServerID和远程ServerID不同，远程服务器ID：[%d] IP:[%s]", con->GetConnectName(), con->GetConnectID(), con->GetConnectIP());
 					exit(-1);
 					break;
 				}
 				}
 				break;
 			}
-			default:
-				break;
 			}
 			break;
 		}

@@ -299,7 +299,7 @@ void CServerMgr::OnServerRegister(serverinfo *info, MessagePack *pMsg)
 
 		//延时删除
 		info->SetRemove(g_currenttime);
-		log_error("一个新的服务器注册失败！请求注册的ServerID和本机ServerID不同，远程服务器ID：[%d] IP:[%s]", info->GetServerID(), info->GetIP());
+		log_error("服务器[%s]注册失败！请求注册的ServerID和本机ServerID不同，ID：[%d] IP:[%s]", msg.name().c_str(), info->GetServerID(), info->GetIP());
 		return;
 	}
 	
@@ -308,13 +308,11 @@ void CServerMgr::OnServerRegister(serverinfo *info, MessagePack *pMsg)
 		//注册成功
 		svrData::ServerRegisterRet ret;
 		ret.set_nretcode(svrData::ServerRegisterRet::EC_SUCC);
-		ret.set_sip(s_ServerIP);
-		ret.set_nport(m_ListenPort);
 
 		SendMsg(info, ret, SERVER_TYPE_MAIN, SVR_SUB_SERVER_REGISTER_RET);
-		info->SetPort(msg.nport());
-		ServerRegisterSucc(info->GetServerID(), info->GetServerType(), info->GetIP(), msg.nport());
-		log_writelog("一个新的服务器注册成功，远程服务器ID：[%d] IP:[%s]", info->GetServerID(), info->GetIP());
+		info->SetServerName(msg.name().c_str());
+		ServerRegisterSucc(info);
+		log_writelog("服务器[%s]注册成功，ID：[%d] IP:[%s]", info->GetServerName(), info->GetServerID(), info->GetIP());
 	}
 	else
 	{
@@ -326,7 +324,7 @@ void CServerMgr::OnServerRegister(serverinfo *info, MessagePack *pMsg)
 
 		//延时删除
 		info->SetRemove(g_currenttime);
-		log_error("一个新的服务器注册失败！远程服务器ID：[%d] IP:[%s]", info->GetServerID(), info->GetIP());
+		log_error("服务器[%s]注册失败！ID：[%d] IP:[%s]", msg.name().c_str(), info->GetServerID(), info->GetIP());
 	}
 }
 

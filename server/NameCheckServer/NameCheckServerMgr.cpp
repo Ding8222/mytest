@@ -244,8 +244,3 @@ serverinfo *CNameCheckServerMgr::FindServer(int nServerID, int nType)
 		return itr->second;
 	return nullptr;
 }
-
-void CNameCheckServerMgr::ServerRegisterSucc(int id, int type, const char *ip, int port)
-{
-
-}

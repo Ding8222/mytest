@@ -32,15 +32,18 @@ public:
 	int32 GetLogServerID() { return m_LogServerID; }
 	int32 GetLogServerPort() { return m_LogServerPort; }
 	const char *GetLogServerIP() { return m_LogServerIP.c_str(); }
+	const char *GetLogServerName() { return m_LogServerName.c_str(); }
 
 	int32 GetCenterServerID() { return m_CenterServerID; }
 	int32 GetCenterServerPort() { return m_CenterServerPort; }
 	const char *GetCenterServerIP() { return m_CenterServerIP.c_str(); }
+	const char *GetCenterServerName() { return m_CenterServerName.c_str(); }
 
 
 	int32 GetNameCheckServerID() { return m_NameCheckServerID; }
 	int32 GetNameCheckServerPort() { return m_NameCheckServerPort; }
 	const char *GetNameCheckServerIP() { return m_NameCheckServerIP.c_str(); }
+	const char *GetNameCheckServerName() { return m_NameCheckServerName.c_str(); }
 
 	const char *GetDBName() { return m_DBName.c_str(); }
 	const char *GetDBUser() { return m_DBUser.c_str(); }
@@ -68,16 +71,19 @@ private:
 	int32 m_LogServerID;
 	int32 m_LogServerPort;
 	std::string m_LogServerIP;
+	std::string m_LogServerName;
 
 	// 中心服务器信息
 	int32 m_CenterServerID;
 	int32 m_CenterServerPort;
 	std::string m_CenterServerIP;
+	std::string m_CenterServerName;
 
 	// 名称检查服务器
 	int32 m_NameCheckServerID;
 	int32 m_NameCheckServerPort;
 	std::string m_NameCheckServerIP;
+	std::string m_NameCheckServerName;
 
 	// 数据库信息
 	std::string m_DBName;

@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <string>
 #include "lxnet.h"
 #include "crosslib.h"
 #define MAX_IP_LEN 128
@@ -31,7 +32,9 @@ public:
 	lxnet::Socketer *GetCon () { return m_con; }
 	void SetConnectInfo(const char *ip, int port, int id);
 	int GetConnectID() { return m_id; }
-	char *GetConnectIP() { return m_ip; }
+	const char *GetConnectIP() { return m_ip; }
+	void SetConnectName(const char *name) { m_name = name; }
+	const char *GetConnectName() { return m_name.c_str(); }
 private:
 	void CheckAndInit ();
 	void Destroy ();
@@ -49,6 +52,7 @@ private:
 	int m_port;
 	int m_id;
 	bool m_already_register;
+	std::string m_name;
 };
 
 connector *ConnectorCreate();

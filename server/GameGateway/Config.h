@@ -16,6 +16,7 @@ struct GameSvr
 	int32 id;
 	int32 port;
 	std::string ip;
+	std::string name;
 };
 
 class CConfig :public CBaseConfig

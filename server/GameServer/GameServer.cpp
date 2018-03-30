@@ -72,8 +72,10 @@ bool CGameServer::Init()
 			CConfig::Instance().GetLogServerIP(),
 			CConfig::Instance().GetLogServerPort(),
 			CConfig::Instance().GetLogServerID(),
+			CConfig::Instance().GetLogServerName(),
 			CConfig::Instance().GetServerID(),
 			CConfig::Instance().GetServerType(),
+			CConfig::Instance().GetServerName(),
 			CConfig::Instance().GetPingTime(),
 			CConfig::Instance().GetOverTime()))
 		{

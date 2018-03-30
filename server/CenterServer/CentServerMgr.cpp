@@ -496,9 +496,9 @@ serverinfo *CCentServerMgr::FindServer(int nServerID, int nType)
 	return nullptr;
 }
 
-void CCentServerMgr::ServerRegisterSucc(int id, int type, const char *ip, int port)
+void CCentServerMgr::ServerRegisterSucc(serverinfo *info)
 {
-	if (type == ServerEnum::EST_DB)
+	if (info->GetServerType() == ServerEnum::EST_DB)
 	{
 		CClientAuthMgr::Instance().SetDBSvrReadyStatus(true);
 	}

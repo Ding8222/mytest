@@ -29,6 +29,6 @@ ClientConnect_Log	是否开启client连接log
 </GameGateway>
 
 <GameSvrList>
-	<GameSvr ID = "4001" IP = "127.0.0.1" PORT = "4001" />
-	<GameSvr ID = "4002" IP = "127.0.0.1" PORT = "4002" />
+	<GameSvr ID = "4001" IP = "127.0.0.1" PORT = "4001" NAME = "GameServer" />
+	<GameSvr ID = "4002" IP = "127.0.0.1" PORT = "4002" NAME = "GameServer" />
 </GameSvrList>

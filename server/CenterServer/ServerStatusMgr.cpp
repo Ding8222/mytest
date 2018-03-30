@@ -84,7 +84,7 @@ void CServerStatusMgr::AddGameServer(serverinfo *info, Msg *pMsg)
 			_pInfo->nPort = msg.nport();
 
 			m_GameServerInfo[_pInfo->nServerID] = _pInfo;
-			RunStateLog("新的逻辑服务器注册：ID[%d]", _pInfo->nServerID);
+			RunStateLog("服务器[%s]注册到服务器状态管理器：ID[%d]", info->GetServerName(), _pInfo->nServerID);
 		}
 	}
 
@@ -141,7 +141,7 @@ void CServerStatusMgr::AddGateServer(serverinfo *info, Msg *pMsg)
 			_pInfo->nPort = msg.nport();
 
 			m_GateServerInfo[_pInfo->nServerID] = _pInfo;
-			RunStateLog("新的逻辑服务器注册：ID[%d]", _pInfo->nServerID);
+			RunStateLog("服务器[%s]注册到服务器状态管理器：ID[%d]", info->GetServerName(), _pInfo->nServerID);
 		}
 	}
 }

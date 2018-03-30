@@ -31,7 +31,7 @@ bool CGameConnect::Init()
 	std::list<GameSvr> List = CConfig::Instance().GetGameSvrList();
 	for (auto &i : List)
 	{
-		if (!CConnectMgr::AddNewConnect(i.ip.c_str(),i.port,i.id))
+		if (!CConnectMgr::AddNewConnect(i.ip.c_str(), i.port, i.id, i.name.c_str()))
 		{
 			RunStateError("添加逻辑服务器失败!");
 			return false;
@@ -41,20 +41,15 @@ bool CGameConnect::Init()
 	return CConnectMgr::Init(
 		CConfig::Instance().GetServerID(),
 		CConfig::Instance().GetServerType(),
+		CConfig::Instance().GetServerName(),
 		CConfig::Instance().GetPingTime(),
-		CConfig::Instance().GetOverTime(),
-		CConfig::Instance().GetListenPort()
+		CConfig::Instance().GetOverTime()
 	);
 }
 
 void CGameConnect::Destroy()
 {
 	CConnectMgr::Destroy();
-}
-
-void CGameConnect::ServerRegisterSucc(int id, const char *ip, int port)
-{
-
 }
 
 void CGameConnect::ConnectDisconnect(connector *con)

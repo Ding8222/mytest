@@ -28,11 +28,13 @@ int64 g_currenttime;
 
 CCenterServer::CCenterServer()
 {
+	m_BackCommand = nullptr;
 	m_Run = false;
 }
 
 CCenterServer::~CCenterServer()
 {
+	m_BackCommand = nullptr;
 	m_Run = false;
 }
 
@@ -72,8 +74,10 @@ bool CCenterServer::Init()
 			CConfig::Instance().GetLogServerIP(),
 			CConfig::Instance().GetLogServerPort(),
 			CConfig::Instance().GetLogServerID(),
+			CConfig::Instance().GetLogServerName(),
 			CConfig::Instance().GetServerID(),
 			CConfig::Instance().GetServerType(),
+			CConfig::Instance().GetServerName(),
 			CConfig::Instance().GetPingTime(),
 			CConfig::Instance().GetOverTime()))
 		{
@@ -85,8 +89,10 @@ bool CCenterServer::Init()
 			CConfig::Instance().GetNameCheckServerIP(),
 			CConfig::Instance().GetNameCheckServerPort(),
 			CConfig::Instance().GetNameCheckServerID(),
+			CConfig::Instance().GetNameCheckServerName(),
 			CConfig::Instance().GetServerID(),
 			CConfig::Instance().GetServerType(),
+			CConfig::Instance().GetServerName(),
 			CConfig::Instance().GetPingTime(),
 			CConfig::Instance().GetOverTime()))
 		{
@@ -223,7 +229,6 @@ static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 	{
 		snprintf(s_buf, sizeof(s_buf) - 1, "help 帮助\nopenelapsed/closeelapsed 打开/关闭帧开销实时日志\ncurrentinfo 输出当前信息\nnetmeminfo 输出网络库内存使用情况\nallmeminfo 输出此程序内存池使用信息到文件\n");
 		size = (short)strlen(s_buf) + 1;
-		assert(size > 0);
 		s_buf[size] = 0;
 		res.PushString(s_buf);
 		sock->SendMsg(&res);
@@ -234,7 +239,6 @@ static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 
 		snprintf(s_buf, sizeof(s_buf) - 1, "帧开销实时日志已打开");
 		size = (short)strlen(s_buf) + 1;
-		assert(size > 0);
 		s_buf[size] = 0;
 		res.PushString(s_buf);
 		sock->SendMsg(&res);
@@ -245,7 +249,6 @@ static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 
 		snprintf(s_buf, sizeof(s_buf) - 1, "帧开销实时日志已关闭");
 		size = (short)strlen(s_buf) + 1;
-		assert(size > 0);
 		s_buf[size] = 0;
 		res.PushString(s_buf);
 		sock->SendMsg(&res);
@@ -263,7 +266,6 @@ static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 	{
 		snprintf(s_buf, sizeof(s_buf) - 1, "%s", lxnet::net_get_memory_info(s_buf, sizeof(s_buf) - 1));
 		size = (short)strlen(s_buf) + 1;
-		assert(size > 0);
 		s_buf[size] = 0;
 		res.PushString(s_buf);
 		sock->SendMsg(&res);
@@ -274,7 +276,6 @@ static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 
 		snprintf(s_buf, sizeof(s_buf) - 1, "所有内存信息已经写入到文件");
 		size = (short)strlen(s_buf) + 1;
-		assert(size > 0);
 		s_buf[size] = 0;
 		res.PushString(s_buf);
 		sock->SendMsg(&res);

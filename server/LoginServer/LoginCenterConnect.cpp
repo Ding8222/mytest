@@ -30,7 +30,8 @@ bool CLoginCenterConnect::Init()
 	if (!CConnectMgr::AddNewConnect(
 		CConfig::Instance().GetCenterServerIP(),
 		CConfig::Instance().GetCenterServerPort(),
-		CConfig::Instance().GetCenterServerID()
+		CConfig::Instance().GetCenterServerID(),
+		CConfig::Instance().GetCenterServerName()
 	))
 	{
 		RunStateError("添加中心服务器失败!");
@@ -40,6 +41,7 @@ bool CLoginCenterConnect::Init()
 	return CConnectMgr::Init(
 		CConfig::Instance().GetServerID(),
 		CConfig::Instance().GetServerType(),
+		CConfig::Instance().GetServerName(),
 		CConfig::Instance().GetPingTime(),
 		CConfig::Instance().GetOverTime()
 	);
@@ -48,11 +50,6 @@ bool CLoginCenterConnect::Init()
 void CLoginCenterConnect::Destroy()
 {
 	CConnectMgr::Destroy();
-}
-
-void CLoginCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
-{
-
 }
 
 void CLoginCenterConnect::ConnectDisconnect(connector *)

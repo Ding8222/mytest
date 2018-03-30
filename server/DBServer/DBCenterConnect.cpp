@@ -106,7 +106,8 @@ bool CDBCenterConnect::Init()
 	if (!CConnectMgr::AddNewConnect(
 		CConfig::Instance().GetCenterServerIP(),
 		CConfig::Instance().GetCenterServerPort(),
-		CConfig::Instance().GetCenterServerID()
+		CConfig::Instance().GetCenterServerID(),
+		CConfig::Instance().GetCenterServerName()
 		))
 	{
 		RunStateError("添加中心服务器失败!");
@@ -116,6 +117,7 @@ bool CDBCenterConnect::Init()
 	return CConnectMgr::Init(
 		CConfig::Instance().GetServerID(),
 		CConfig::Instance().GetServerType(),
+		CConfig::Instance().GetServerName(),
 		CConfig::Instance().GetPingTime(),
 		CConfig::Instance().GetOverTime()
 	);
@@ -139,11 +141,6 @@ void CDBCenterConnect::Destroy()
 	}
 
 	task::DestroyPools();
-}
-
-void CDBCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
-{
-
 }
 
 void CDBCenterConnect::ConnectDisconnect(connector *)

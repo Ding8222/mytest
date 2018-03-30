@@ -22,16 +22,16 @@ CNameCheckConnecter::~CNameCheckConnecter()
 	Destroy();
 }
 
-bool CNameCheckConnecter::Init(const char *ip, int port, int id,
-	int serverid, int servertype, int pingtime, int overtime)
+bool CNameCheckConnecter::Init(const char *ip, int port, int id, const char *name,
+	int serverid, int servertype, const char *servername, int pingtime, int overtime)
 {
-	if (!CConnectMgr::AddNewConnect(ip, port, id))
+	if (!CConnectMgr::AddNewConnect(ip, port, id, name))
 	{
 		RunStateError("添加NameCheck服务器失败!");
 		return false;
 	}
 
-	return CConnectMgr::Init(serverid, servertype, pingtime, overtime);
+	return CConnectMgr::Init(serverid, servertype, servername, pingtime, overtime);
 }
 
 void CNameCheckConnecter::Destroy()

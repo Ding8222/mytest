@@ -17,18 +17,22 @@ CBaseConfig::CBaseConfig()
 	m_ListenPort = 0;
 	m_ServerType = 0;
 	m_ServerIP.clear();
+	m_ServerName.clear();
 
 	m_LogServerID = 0;
 	m_LogServerPort = 0;
 	m_LogServerIP.clear();
+	m_LogServerName.clear();
 
 	m_CenterServerID = 0;
 	m_CenterServerPort = 0;
 	m_CenterServerIP.clear();
+	m_CenterServerName.clear();
 
 	m_NameCheckServerID = 0;
 	m_NameCheckServerPort = 0;
 	m_NameCheckServerIP.clear();
+	m_NameCheckServerName.clear();
 
 	m_DBName.clear();
 	m_DBUser.clear();
@@ -36,19 +40,21 @@ CBaseConfig::CBaseConfig()
 	m_DBIP.clear();
 
 	m_MonitorPort = 0;
-	m_ServerName.clear();
 }
 CBaseConfig::~CBaseConfig()
 {
 	m_ServerIP.clear();
+	m_ServerName.clear();
 	m_LogServerIP.clear();
+	m_LogServerName.clear();
 	m_CenterServerIP.clear();
+	m_CenterServerName.clear();
 	m_NameCheckServerIP.clear();
+	m_NameCheckServerName.clear();
 	m_DBName.clear();
 	m_DBUser.clear();
 	m_DBPass.clear();
 	m_DBIP.clear();
-	m_ServerName.clear();
 }
 
 bool CBaseConfig::Init(const std::string &servername, int32 lineid)
@@ -133,6 +139,13 @@ bool CBaseConfig::Init(const std::string &servername, int32 lineid)
 		return false;
 	}
 
+	m_LogServerName = pBaseInfo->Attribute("LogServer_Name");
+	if (m_LogServerName.empty())
+	{
+		log_error("没有找到字段： 'LogServer_Name'");
+		return false;
+	}
+
 	if (pBaseInfo->QueryIntAttribute("CenterServer_ID", &m_CenterServerID) != XML_SUCCESS)
 	{
 		log_error("没有找到字段： 'CenterServer_ID'");
@@ -156,6 +169,13 @@ bool CBaseConfig::Init(const std::string &servername, int32 lineid)
 		return false;
 	}
 
+	m_CenterServerName = pBaseInfo->Attribute("CenterServer_Name");
+	if (m_CenterServerName.empty())
+	{
+		log_error("没有找到字段： 'CenterServer_Name'");
+		return false;
+	}
+
 	if (pBaseInfo->QueryIntAttribute("NameCheckServer_ID", &m_NameCheckServerID) != XML_SUCCESS)
 	{
 		log_error("没有找到字段： 'NameCheckServer_ID'");
@@ -172,6 +192,13 @@ bool CBaseConfig::Init(const std::string &servername, int32 lineid)
 	if (m_NameCheckServerIP.empty())
 	{
 		log_error("没有找到字段： 'NameCheckServer_IP'");
+		return false;
+	}
+
+	m_NameCheckServerName = pBaseInfo->Attribute("NameCheckServer_Name");
+	if (m_NameCheckServerName.empty())
+	{
+		log_error("没有找到字段： 'NameCheckServer_Name'");
 		return false;
 	}
 

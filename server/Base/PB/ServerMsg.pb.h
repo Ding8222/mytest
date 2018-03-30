@@ -368,6 +368,20 @@ class ServerRegister : public ::google::protobuf::Message /* @@protoc_insertion_
 
   // accessors -------------------------------------------------------
 
+  // string Name = 4;
+  void clear_name();
+  static const int kNameFieldNumber = 4;
+  const ::std::string& name() const;
+  void set_name(const ::std::string& value);
+  #if LANG_CXX11
+  void set_name(::std::string&& value);
+  #endif
+  void set_name(const char* value);
+  void set_name(const char* value, size_t size);
+  ::std::string* mutable_name();
+  ::std::string* release_name();
+  void set_allocated_name(::std::string* name);
+
   // int32 nServerID = 1;
   void clear_nserverid();
   static const int kNServerIDFieldNumber = 1;
@@ -386,20 +400,14 @@ class ServerRegister : public ::google::protobuf::Message /* @@protoc_insertion_
   ::google::protobuf::int32 nconnectid() const;
   void set_nconnectid(::google::protobuf::int32 value);
 
-  // int32 nPort = 4;
-  void clear_nport();
-  static const int kNPortFieldNumber = 4;
-  ::google::protobuf::int32 nport() const;
-  void set_nport(::google::protobuf::int32 value);
-
   // @@protoc_insertion_point(class_scope:svrData.ServerRegister)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr name_;
   ::google::protobuf::int32 nserverid_;
   ::google::protobuf::int32 nservertype_;
   ::google::protobuf::int32 nconnectid_;
-  ::google::protobuf::int32 nport_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsServerRegisterImpl();
@@ -522,39 +530,17 @@ class ServerRegisterRet : public ::google::protobuf::Message /* @@protoc_inserti
 
   // accessors -------------------------------------------------------
 
-  // string sIP = 2;
-  void clear_sip();
-  static const int kSIPFieldNumber = 2;
-  const ::std::string& sip() const;
-  void set_sip(const ::std::string& value);
-  #if LANG_CXX11
-  void set_sip(::std::string&& value);
-  #endif
-  void set_sip(const char* value);
-  void set_sip(const char* value, size_t size);
-  ::std::string* mutable_sip();
-  ::std::string* release_sip();
-  void set_allocated_sip(::std::string* sip);
-
   // int32 nRetCode = 1;
   void clear_nretcode();
   static const int kNRetCodeFieldNumber = 1;
   ::google::protobuf::int32 nretcode() const;
   void set_nretcode(::google::protobuf::int32 value);
 
-  // int32 nPort = 3;
-  void clear_nport();
-  static const int kNPortFieldNumber = 3;
-  ::google::protobuf::int32 nport() const;
-  void set_nport(::google::protobuf::int32 value);
-
   // @@protoc_insertion_point(class_scope:svrData.ServerRegisterRet)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::internal::ArenaStringPtr sip_;
   ::google::protobuf::int32 nretcode_;
-  ::google::protobuf::int32 nport_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsServerRegisterRetImpl();
@@ -1866,18 +1852,57 @@ inline void ServerRegister::set_nconnectid(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:svrData.ServerRegister.nConnectID)
 }
 
-// int32 nPort = 4;
-inline void ServerRegister::clear_nport() {
-  nport_ = 0;
+// string Name = 4;
+inline void ServerRegister::clear_name() {
+  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
-inline ::google::protobuf::int32 ServerRegister::nport() const {
-  // @@protoc_insertion_point(field_get:svrData.ServerRegister.nPort)
-  return nport_;
+inline const ::std::string& ServerRegister::name() const {
+  // @@protoc_insertion_point(field_get:svrData.ServerRegister.Name)
+  return name_.GetNoArena();
 }
-inline void ServerRegister::set_nport(::google::protobuf::int32 value) {
+inline void ServerRegister::set_name(const ::std::string& value) {
   
-  nport_ = value;
-  // @@protoc_insertion_point(field_set:svrData.ServerRegister.nPort)
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:svrData.ServerRegister.Name)
+}
+#if LANG_CXX11
+inline void ServerRegister::set_name(::std::string&& value) {
+  
+  name_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:svrData.ServerRegister.Name)
+}
+#endif
+inline void ServerRegister::set_name(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:svrData.ServerRegister.Name)
+}
+inline void ServerRegister::set_name(const char* value, size_t size) {
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:svrData.ServerRegister.Name)
+}
+inline ::std::string* ServerRegister::mutable_name() {
+  
+  // @@protoc_insertion_point(field_mutable:svrData.ServerRegister.Name)
+  return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ServerRegister::release_name() {
+  // @@protoc_insertion_point(field_release:svrData.ServerRegister.Name)
+  
+  return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ServerRegister::set_allocated_name(::std::string* name) {
+  if (name != NULL) {
+    
+  } else {
+    
+  }
+  name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
+  // @@protoc_insertion_point(field_set_allocated:svrData.ServerRegister.Name)
 }
 
 // -------------------------------------------------------------------
@@ -1896,73 +1921,6 @@ inline void ServerRegisterRet::set_nretcode(::google::protobuf::int32 value) {
   
   nretcode_ = value;
   // @@protoc_insertion_point(field_set:svrData.ServerRegisterRet.nRetCode)
-}
-
-// string sIP = 2;
-inline void ServerRegisterRet::clear_sip() {
-  sip_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& ServerRegisterRet::sip() const {
-  // @@protoc_insertion_point(field_get:svrData.ServerRegisterRet.sIP)
-  return sip_.GetNoArena();
-}
-inline void ServerRegisterRet::set_sip(const ::std::string& value) {
-  
-  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:svrData.ServerRegisterRet.sIP)
-}
-#if LANG_CXX11
-inline void ServerRegisterRet::set_sip(::std::string&& value) {
-  
-  sip_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:svrData.ServerRegisterRet.sIP)
-}
-#endif
-inline void ServerRegisterRet::set_sip(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  
-  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:svrData.ServerRegisterRet.sIP)
-}
-inline void ServerRegisterRet::set_sip(const char* value, size_t size) {
-  
-  sip_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:svrData.ServerRegisterRet.sIP)
-}
-inline ::std::string* ServerRegisterRet::mutable_sip() {
-  
-  // @@protoc_insertion_point(field_mutable:svrData.ServerRegisterRet.sIP)
-  return sip_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* ServerRegisterRet::release_sip() {
-  // @@protoc_insertion_point(field_release:svrData.ServerRegisterRet.sIP)
-  
-  return sip_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void ServerRegisterRet::set_allocated_sip(::std::string* sip) {
-  if (sip != NULL) {
-    
-  } else {
-    
-  }
-  sip_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), sip);
-  // @@protoc_insertion_point(field_set_allocated:svrData.ServerRegisterRet.sIP)
-}
-
-// int32 nPort = 3;
-inline void ServerRegisterRet::clear_nport() {
-  nport_ = 0;
-}
-inline ::google::protobuf::int32 ServerRegisterRet::nport() const {
-  // @@protoc_insertion_point(field_get:svrData.ServerRegisterRet.nPort)
-  return nport_;
-}
-inline void ServerRegisterRet::set_nport(::google::protobuf::int32 value) {
-  
-  nport_ = value;
-  // @@protoc_insertion_point(field_set:svrData.ServerRegisterRet.nPort)
 }
 
 // -------------------------------------------------------------------

@@ -31,7 +31,8 @@ bool CGateCenterConnect::Init()
 	if (!CConnectMgr::AddNewConnect(
 		CConfig::Instance().GetCenterServerIP(),
 		CConfig::Instance().GetCenterServerPort(),
-		CConfig::Instance().GetCenterServerID()
+		CConfig::Instance().GetCenterServerID(),
+		CConfig::Instance().GetCenterServerName()
 	))
 	{
 		RunStateError("添加中心服务器失败!");
@@ -41,6 +42,7 @@ bool CGateCenterConnect::Init()
 	return CConnectMgr::Init(
 		CConfig::Instance().GetServerID(),
 		CConfig::Instance().GetServerType(),
+		CConfig::Instance().GetServerName(),
 		CConfig::Instance().GetPingTime(),
 		CConfig::Instance().GetOverTime()
 	);
@@ -51,7 +53,7 @@ void CGateCenterConnect::Destroy()
 	CConnectMgr::Destroy();
 }
 
-void CGateCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
+void CGateCenterConnect::ServerRegisterSucc(connector * con)
 {
 	// 发送负载信息给Center
 	svrData::ServerLoadInfo sendMsg;

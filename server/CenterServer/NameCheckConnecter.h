@@ -19,8 +19,8 @@ public:
 		return m;
 	}
 
-	bool Init(const char *ip, int port, int id,
-		int serverid, int servertype, int pingtime, int overtime);
+	bool Init(const char *ip, int port, int id, const char *name,
+		int serverid, int servertype, const char *servername, int pingtime, int overtime);
 	void Destroy();
 
 	void ServerRegisterSucc(int id, const char *ip, int port);

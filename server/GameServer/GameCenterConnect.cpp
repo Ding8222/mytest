@@ -32,7 +32,8 @@ bool CGameCenterConnect::Init()
 	if (!CConnectMgr::AddNewConnect(
 		CConfig::Instance().GetCenterServerIP(),
 		CConfig::Instance().GetCenterServerPort(),
-		CConfig::Instance().GetCenterServerID()
+		CConfig::Instance().GetCenterServerID(),
+		CConfig::Instance().GetCenterServerName()
 	))
 	{
 		RunStateError("添加中心服务器失败!");
@@ -42,6 +43,7 @@ bool CGameCenterConnect::Init()
 	return CConnectMgr::Init(
 		CConfig::Instance().GetServerID(),
 		CConfig::Instance().GetServerType(),
+		CConfig::Instance().GetServerName(),
 		CConfig::Instance().GetPingTime(),
 		CConfig::Instance().GetOverTime()
 	);
@@ -52,7 +54,7 @@ void CGameCenterConnect::Destroy()
 	CConnectMgr::Destroy();
 }
 
-void CGameCenterConnect::ServerRegisterSucc(int id, const char *ip, int port)
+void CGameCenterConnect::ServerRegisterSucc(connector *)
 {
 	// 发送负载信息给Center
 	svrData::ServerLoadInfo sendMsg;
