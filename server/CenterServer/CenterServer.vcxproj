@@ -70,13 +70,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>..\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;..\Common\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\;..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;..\Common\;$(IncludePath)</IncludePath>
     <OutDir>..\bin\</OutDir>
     <TargetName>G_$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;..\Common\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\cpr\;..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;..\Common\;$(IncludePath)</IncludePath>
     <LibraryPath>..\lib;$(LibraryPath)</LibraryPath>
     <OutDir>..\bin</OutDir>
   </PropertyGroup>
@@ -91,7 +90,7 @@
       <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Base.lib;lxnet.lib;tinyxml2.lib;Common.lib;libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Base.lib;lxnet.lib;tinyxml2.lib;Common.lib;libprotobuf.lib;cpr-d.lib;libcurl-d_imp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -114,7 +113,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>Base.lib;lxnet.lib;tinyxml2.lib;Common.lib;libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Base.lib;lxnet.lib;tinyxml2.lib;Common.lib;libprotobuf.lib;cpr.lib;libcurl_imp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
