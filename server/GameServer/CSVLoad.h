@@ -5,11 +5,13 @@
 */
 #pragma once
 
-#include "CSVParser.h"
 #include <string>
 #include <unordered_map>
+#include "CSVParser.h"
 
-#define  DEFINE_CLEAR static void Destroy(){ for( auto i : m_Data ) delete(i.second); m_Data.clear();}
+#define DEFINE_CLEAR static void Destroy(){ for( auto i : m_Data ) delete(i.second); m_Data.clear();}
+#define MAKE_SKILL_KEY(id,lev) (((id)<<8) | (lev))
+#define MAKE_STATUS_KEY(id,lev) (((id)<<8) | (lev))
 
 namespace CSVData
 {
@@ -27,12 +29,12 @@ namespace CSVData
 			nGold = 0;
 			text.clear();
 		}
-		int nIndex;
+		int32 nIndex;
 		double nGold;
 		std::string text;
 	};
 	
-	class CExample
+	class CExampleDB
 	{
 	public:
 		// 会被CSVParser调用,不要修改
@@ -50,5 +52,69 @@ namespace CSVData
 		DEFINE_CLEAR
 	private:
 		static std::unordered_map<int64, stExample *> m_Data;
+	};
+
+	// 技能
+	struct stSkill
+	{
+		stSkill()
+		{
+			nIndex = 0;
+			nSkillID = 0;
+			nSkillLev = 0;
+			nBaseDamage = 0;
+		}
+		int32 nIndex;
+		int32 nSkillID;
+		int32 nSkillLev;
+		int32 nBaseDamage;
+	};
+
+	class CSkillDB
+	{
+	public:
+		static bool AddData(CSV::Row & _Row);
+		static stSkill* FindById(int64 _Key)
+		{
+			std::unordered_map<int64, stSkill *>::iterator iter = m_Data.find(_Key);
+			if (iter != m_Data.end())
+				return iter->second;
+
+			return nullptr;
+		}
+		DEFINE_CLEAR
+	private:
+		static std::unordered_map<int64, stSkill *> m_Data;
+	};
+
+	// 状态
+	struct stStatus
+	{
+		stStatus()
+		{
+			nIndex = 0;
+			nStatusID = 0;
+			nStatusLev = 0;
+		}
+		int32 nIndex;
+		int32 nStatusID;
+		int32 nStatusLev;
+	};
+
+	class CStatusDB
+	{
+	public:
+		static bool AddData(CSV::Row & _Row);
+		static stStatus* FindById(int64 _Key)
+		{
+			std::unordered_map<int64, stStatus *>::iterator iter = m_Data.find(_Key);
+			if (iter != m_Data.end())
+				return iter->second;
+
+			return nullptr;
+		}
+		DEFINE_CLEAR
+	private:
+		static std::unordered_map<int64, stStatus *> m_Data;
 	};
 }

@@ -1,8 +1,17 @@
-﻿#pragma once
+﻿/*
+* 基础对象
+* Copyright (C) ddl
+* 2018
+*/
+
+#pragma once
 #include <unordered_map>
 #include "GlobalDefine.h"
 #include "platform_config.h"
 #include "ObjScene.h"
+#include "ObjAttribute.h"
+#include "ObjStatus.h"
+#include "ObjFight.h"
 
 extern int player_delay_time;
 extern int64 g_currenttime;
@@ -15,15 +24,15 @@ enum eObjType
 	EOT_MAX ,
 };
 
-class CBaseObj :public CObjScene
+class CBaseObj :public CObjScene, public CObjAttribute, public CObjStatus, public CObjFight
 {
 public:
 	CBaseObj(int8 nObjType);
 	~CBaseObj();
 
-	virtual void Run();
 	virtual CBaseObj *GetObj() { return this; }
-
+	virtual void Run();
+	virtual void Die() {}
 public:
 	int8 GetObjType() { return m_ObjType; }
 	void SetSex(int8 sex) { m_ObjSex = sex; }

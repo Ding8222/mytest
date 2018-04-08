@@ -126,6 +126,17 @@ void CObjScene::DelFromAoiListOut(uint32 id)
 	m_AoiListOut.erase(id);
 }
 
+CBaseObj * CObjScene::FindFromAoiList(uint32 id)
+{
+	auto iter = m_AoiList.find(id);
+	if (iter != m_AoiList.end())
+	{
+		return iter->second;
+	}
+
+	return nullptr;
+}
+
 // 离开AOI,清理自己和别人的AoiList
 void CObjScene::LeaveAoi()
 {

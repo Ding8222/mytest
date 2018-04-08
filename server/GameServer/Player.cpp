@@ -36,6 +36,11 @@ void CPlayer::Run()
 	}
 }
 
+void CPlayer::Die()
+{
+
+}
+
 // 加载数据
 bool CPlayer::LoadData(Msg *pMsg)
 {

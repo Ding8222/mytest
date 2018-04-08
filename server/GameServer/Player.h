@@ -1,4 +1,10 @@
-﻿#pragma once
+﻿/*
+* 玩家对象
+* Copyright (C) ddl
+* 2018
+*/
+
+#pragma once
 #include<unordered_map>
 #include "BaseObj.h"
 #include "serverinfo.h"
@@ -14,7 +20,8 @@ public:
 	CPlayer();
 	~CPlayer();
 
-	void Run();
+	virtual void Run();
+	virtual void Die();
 	// 加载数据
 	bool LoadData(Msg *pMsg);
 	// 保存数据

@@ -196,7 +196,9 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				else
 					sendMsg.set_ncode(netData::LoginRet::EC_ADDPLAYER);
 
-				FuncUti::SendPBNoLoop(player, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET);
+				msgtail tail;
+				tail.id = player->GetClientID();
+				CGameGatewayMgr::Instance().SendMsg(info, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, &tail, sizeof(tail));
 				break;
 			}
 			}

@@ -136,7 +136,12 @@
     <ClCompile Include="CSVLoad.cpp" />
     <ClCompile Include="Instance.cpp" />
     <ClCompile Include="InstanceMgr.cpp" />
+    <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="NPC.cpp" />
+    <ClCompile Include="ObjAttribute.cpp" />
+    <ClCompile Include="ObjFight.cpp" />
     <ClCompile Include="ObjScene.cpp" />
+    <ClCompile Include="ObjStatus.cpp" />
     <ClCompile Include="PlayerMgr.cpp" />
     <ClCompile Include="config.cpp" />
     <ClCompile Include="GameCenterConnect.cpp" />
@@ -157,7 +162,12 @@
     <ClInclude Include="CSVLoad.h" />
     <ClInclude Include="Instance.h" />
     <ClInclude Include="InstanceMgr.h" />
+    <ClInclude Include="Monster.h" />
+    <ClInclude Include="NPC.h" />
+    <ClInclude Include="ObjAttribute.h" />
+    <ClInclude Include="ObjFight.h" />
     <ClInclude Include="ObjScene.h" />
+    <ClInclude Include="ObjStatus.h" />
     <ClInclude Include="PlayerMgr.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="GameCenterConnect.h" />

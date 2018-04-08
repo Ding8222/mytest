@@ -1,4 +1,10 @@
-﻿#pragma once
+﻿/*
+* 玩家管理器
+* Copyright (C) ddl
+* 2018
+*/
+
+#pragma once
 #include <unordered_map>
 #include "Player.h"
 

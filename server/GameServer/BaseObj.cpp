@@ -25,4 +25,6 @@ CBaseObj::~CBaseObj()
 void CBaseObj::Run()
 {
 	AoiRun();
+	StatusRun();
+	FightRun();
 }

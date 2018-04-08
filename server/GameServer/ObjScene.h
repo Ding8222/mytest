@@ -1,4 +1,10 @@
-﻿#pragma once
+﻿/*
+* 对象场景
+* Copyright (C) ddl
+* 2018
+*/
+
+#pragma once
 #include <unordered_map>
 #include "platform_config.h"
 
@@ -41,6 +47,8 @@ public:
 	void AddToAoiListOut(CBaseObj * p);
 	// 从AoiList中移除对象
 	void DelFromAoiListOut(uint32 id);
+	// 从视野中查找目标
+	CBaseObj * FindFromAoiList(uint32 id);
 	// 获取视野中的对象
 	std::unordered_map<uint32, CBaseObj *> *GetAoiList() { return &m_AoiList; };
 	// 离开AOI

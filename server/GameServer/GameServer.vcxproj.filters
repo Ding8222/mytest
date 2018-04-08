@@ -16,11 +16,20 @@
     <Filter Include="地图场景">
       <UniqueIdentifier>{5e5c8976-6c61-4d08-9d7a-e89e57111f89}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家对象">
-      <UniqueIdentifier>{63467607-1ae3-4e85-abb0-8de900023564}</UniqueIdentifier>
-    </Filter>
     <Filter Include="玩家操作">
       <UniqueIdentifier>{eb345bdc-9e0a-4a8d-8af3-1336f86ce3a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="基础对象">
+      <UniqueIdentifier>{aa30a0ef-0be0-4a24-bdb0-39c985716fd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="基础对象\玩家">
+      <UniqueIdentifier>{63467607-1ae3-4e85-abb0-8de900023564}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="基础对象\怪物">
+      <UniqueIdentifier>{a54adf40-3068-413d-8a90-8bfdc6234b6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="基础对象\NPC">
+      <UniqueIdentifier>{aa2e093c-c08c-4efd-9f40-52205509a5a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -40,10 +49,7 @@
       <Filter>地图场景</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>玩家对象</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseObj.cpp">
-      <Filter>玩家对象</Filter>
+      <Filter>基础对象\玩家</Filter>
     </ClCompile>
     <ClCompile Include="GameCenterConnect.cpp">
       <Filter>源文件</Filter>
@@ -70,7 +76,7 @@
       <Filter>地图场景</Filter>
     </ClCompile>
     <ClCompile Include="PlayerMgr.cpp">
-      <Filter>玩家对象</Filter>
+      <Filter>基础对象\玩家</Filter>
     </ClCompile>
     <ClCompile Include="PlayerOperate.cpp">
       <Filter>玩家操作</Filter>
@@ -78,8 +84,26 @@
     <ClCompile Include="CSVLoad.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="BaseObj.cpp">
+      <Filter>基础对象</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjAttribute.cpp">
+      <Filter>基础对象</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjFight.cpp">
+      <Filter>基础对象</Filter>
+    </ClCompile>
     <ClCompile Include="ObjScene.cpp">
-      <Filter>玩家对象</Filter>
+      <Filter>基础对象</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjStatus.cpp">
+      <Filter>基础对象</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>基础对象\怪物</Filter>
+    </ClCompile>
+    <ClCompile Include="NPC.cpp">
+      <Filter>基础对象\NPC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -95,11 +119,8 @@
     <ClInclude Include="aoi.h">
       <Filter>地图场景</Filter>
     </ClInclude>
-    <ClInclude Include="BaseObj.h">
-      <Filter>玩家对象</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>玩家对象</Filter>
+      <Filter>基础对象\玩家</Filter>
     </ClInclude>
     <ClInclude Include="GameCenterConnect.h">
       <Filter>头文件</Filter>
@@ -126,7 +147,7 @@
       <Filter>地图场景</Filter>
     </ClInclude>
     <ClInclude Include="PlayerMgr.h">
-      <Filter>玩家对象</Filter>
+      <Filter>基础对象\玩家</Filter>
     </ClInclude>
     <ClInclude Include="PlayerOperate.h">
       <Filter>玩家操作</Filter>
@@ -134,8 +155,26 @@
     <ClInclude Include="CSVLoad.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="BaseObj.h">
+      <Filter>基础对象</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjAttribute.h">
+      <Filter>基础对象</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjFight.h">
+      <Filter>基础对象</Filter>
+    </ClInclude>
     <ClInclude Include="ObjScene.h">
-      <Filter>玩家对象</Filter>
+      <Filter>基础对象</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjStatus.h">
+      <Filter>基础对象</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>基础对象\怪物</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC.h">
+      <Filter>基础对象\NPC</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

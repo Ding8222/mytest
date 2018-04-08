@@ -159,7 +159,7 @@ namespace CSV
 				{
 					if (!T::AddData(file.getRow(i)))
 					{
-						throw Error(fmt::format("第{0}行数据读取失败！", i));
+						throw Error(fmt::format("第{0}行数据读取失败！", i + 1));
 					}
 				}
 			}

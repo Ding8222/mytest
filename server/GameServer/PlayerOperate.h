@@ -1,4 +1,10 @@
-﻿#pragma once
+﻿/*
+* 玩家操作
+* Copyright (C) ddl
+* 2018
+*/
+
+#pragma once
 #include "Player.h"
 
 void Operate(CPlayer *pPlayer, Msg *pMsg);
