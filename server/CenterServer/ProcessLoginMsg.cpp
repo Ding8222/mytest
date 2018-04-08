@@ -49,9 +49,13 @@ void ProcessLoginMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		{
 			if (!CNameCheckConnecter::Instance().SendMsgToServer(*pMsg, tl->id))
 			{
+				netData::CreatePlayer msg;
+				_CHECK_PARSE_(pMsg, msg);
+
 				netData::CreatePlayerRet SendMsg;
 				SendMsg.set_ncode(netData::CreatePlayerRet::EC_NAMESVR);
 				CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_CREATE_PLAYER_RET, ServerEnum::EST_LOGIN, tl->id);
+				CClientAuthMgr::Instance().SetPlayerOffline(msg.account());
 			}
 			break;
 		}

@@ -136,6 +136,7 @@
     <ClCompile Include="CSVLoad.cpp" />
     <ClCompile Include="Instance.cpp" />
     <ClCompile Include="InstanceMgr.cpp" />
+    <ClCompile Include="ObjScene.cpp" />
     <ClCompile Include="PlayerMgr.cpp" />
     <ClCompile Include="config.cpp" />
     <ClCompile Include="GameCenterConnect.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="CSVLoad.h" />
     <ClInclude Include="Instance.h" />
     <ClInclude Include="InstanceMgr.h" />
+    <ClInclude Include="ObjScene.h" />
     <ClInclude Include="PlayerMgr.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="GameCenterConnect.h" />

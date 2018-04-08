@@ -46,7 +46,7 @@ public:
 public:
 	// 根据类型添加连接器
 	bool AddNewConnect(const char *ip, int32 port, int32 id, const char *name);
-	// 根据类型查找连接器
+	// 根据ID查找连接器
 	connector *FindConnect(int32 nID);
 private:
 	// 尝试连接并请求注册

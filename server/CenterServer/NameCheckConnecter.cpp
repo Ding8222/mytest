@@ -39,10 +39,10 @@ void CNameCheckConnecter::Destroy()
 	CConnectMgr::Destroy();
 }
 
-void CNameCheckConnecter::ServerRegisterSucc(int id, const char *ip, int port)
+void CNameCheckConnecter::ServerRegisterSucc(connector * con)
 {
 	isReady = true;
-	LogServerID = id;
+	LogServerID = con->GetConnectID();
 }
 
 void CNameCheckConnecter::ConnectDisconnect(connector *)

@@ -78,6 +78,9 @@
     <ClCompile Include="CSVLoad.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ObjScene.cpp">
+      <Filter>玩家对象</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="CSVLoad.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjScene.h">
+      <Filter>玩家对象</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
