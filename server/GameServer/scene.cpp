@@ -11,9 +11,9 @@ CScene::CScene()
 	m_MapID = 0;
 	m_Width = 0;
 	m_Height = 0;
-	m_BirthPoint_X = 0;
-	m_BirthPoint_Y = 0;
-	m_BirthPoint_Z = 0;
+	m_BirthPoint_X = 0.0f;
+	m_BirthPoint_Y = 0.0f;
+	m_BirthPoint_Z = 0.0f;
 	m_Barinfo = nullptr;
 	m_Cookie = nullptr;
 	m_Space = nullptr;
@@ -146,7 +146,7 @@ bool CScene::AddObj(CBaseObj * obj)
 		}
 	}
 
-	int id = idmgr_allocid(m_IDPool);
+	int32 id = idmgr_allocid(m_IDPool);
 	if (id <= 0)
 	{
 		RunStateError("为新对象分配ID失败!, id:%d", id);
@@ -169,8 +169,8 @@ bool CScene::DelObj(CBaseObj * obj)
 	if (!FuncUti::isValidCret(obj))
 		return false;
 
-	int id = obj->GetTempID();
-	if (id <= 0 || id >= static_cast<int> (m_ObjSet.size()))
+	int32 id = obj->GetTempID();
+	if (id <= 0 || id >= static_cast<int32> (m_ObjSet.size()))
 	{
 		RunStateError("要释放的CBaseObj的ID错误!");
 		return false;
@@ -189,7 +189,7 @@ bool CScene::DelObj(CBaseObj * obj)
 	return true;
 }
 
-bool CScene::bCanMove(int x, int y, int z)
+bool CScene::bCanMove(int32 x, int32 y, int32 z)
 {
 	if (x >= 0 && x < m_Width)
 	{
@@ -208,7 +208,7 @@ bool CScene::MoveTo(CBaseObj * obj, float x, float y, float z)
 {
 	if (FuncUti::isValidCret(obj))
 	{
-		if (bCanMove(x, y, z))
+		if (bCanMove(static_cast<int>(floor(x)), static_cast<int>(floor(y)), static_cast<int>(floor(z))))
 		{
 			obj->SetNowPos(x, y, z);
 			Update(obj->GetTempID(), obj->GetAoiMode(), obj->GetNowPos());
@@ -260,9 +260,9 @@ void CScene::Run()
 
 }
 
-CBaseObj * CScene::GetObj(int id)
+CBaseObj * CScene::GetObj(int32 id)
 {
-	if (id <= 0 || id >= static_cast<int> (m_ObjSet.size()))
+	if (id <= 0 || id >= static_cast<int32> (m_ObjSet.size()))
 		return nullptr;
 
 	return m_ObjSet[id];

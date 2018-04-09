@@ -50,7 +50,7 @@ namespace CSVData
 		}
 		//定义m_Data的析构,每个结构体中都必须有这个,并在Destroy()中主动调用
 		DEFINE_CLEAR
-	private:
+
 		static std::unordered_map<int64, stExample *> m_Data;
 	};
 
@@ -83,7 +83,7 @@ namespace CSVData
 			return nullptr;
 		}
 		DEFINE_CLEAR
-	private:
+
 		static std::unordered_map<int64, stSkill *> m_Data;
 	};
 
@@ -114,7 +114,40 @@ namespace CSVData
 			return nullptr;
 		}
 		DEFINE_CLEAR
-	private:
+
 		static std::unordered_map<int64, stStatus *> m_Data;
+	};
+
+	// 地图
+	struct stMap
+	{
+		stMap()
+		{
+			nMapID = 0;
+		}
+		int32 nMapID;
+		int8 nLineID;
+		int8 nType;
+		float nX;
+		float nY;
+		float nZ;
+		std::string sMapBar;
+	};
+
+	class CMapDB
+	{
+	public:
+		static bool AddData(CSV::Row & _Row);
+		static stMap* FindById(int64 _Key)
+		{
+			std::unordered_map<int64, stMap *>::iterator iter = m_Data.find(_Key);
+			if (iter != m_Data.end())
+				return iter->second;
+
+			return nullptr;
+		}
+		DEFINE_CLEAR
+
+		static std::unordered_map<int64, stMap *> m_Data;
 	};
 }

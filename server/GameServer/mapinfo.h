@@ -4,7 +4,8 @@
 * 2018
 */
 #pragma once
-#include "string"
+#include <string>
+#include "platform_config.h"
 
 class CMapInfo
 {
@@ -12,21 +13,24 @@ public:
 	CMapInfo();
 	~CMapInfo();
 
-	bool Init(int mapid, const char *bar_filename);
+	bool Init(int32 mapid, int8 type, const char *bar_filename);
 	void Destroy();
 
-	void GetMapBirthPoint(int &x, int &y, int &z);
+	void SetMapBirthPoint(float &x, float &y, float &z);
+	void GetMapBirthPoint(float &x, float &y, float &z);
 	int  GetMapID();
-	void GetMapWidthAndHeight(int &x, int &y);
+	void GetMapWidthAndHeight(int32 &x, int32 &y);
 	bool *GetBarInfo() { return m_BarInfo; }
+	int8 GetMapType() { return m_MapType; }
 private:
-	int m_Mapid;
-	int m_Width;
-	int m_Height;
+	int32 m_MapID;
+	int8 m_MapType;
+	int32 m_Width;
+	int32 m_Height;
 
-	int m_BirthPoint_X;
-	int m_BirthPoint_Y;
-	int m_BirthPoint_Z;
+	float m_BirthPoint_X;
+	float m_BirthPoint_Y;
+	float m_BirthPoint_Z;
 
 	//阻挡信息
 	bool *m_BarInfo;

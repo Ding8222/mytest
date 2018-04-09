@@ -11,8 +11,8 @@
 #define CLIENT_ID_MAX 800000			//客户端最大id
 #define CLIENT_ID_DELAY_TIME 300000		//释放延时时间
 #define SCENE_ID_MAX 160000				//地图场景中对象的最大id
-#define INSTANCE_ID_MAX 2000			//副本数量
-#define INSTANCE_ID_DELAY_TIME 300000	//释放延时时间
+
+#define _CHECK_PARSE_(x,y) if(!((MessagePack *)x)->UnPack(y)) return
 
 namespace ServerEnum {
 	enum ServerType
@@ -30,7 +30,16 @@ namespace ServerEnum {
 	};
 }
 
-#define _CHECK_PARSE_(x,y) if(!((MessagePack *)x)->UnPack(y)) return
+
+namespace MapEnum {
+	enum MapType
+	{
+		EMT_NORMAL = 0,		//普通场景地图
+		EMT_INSTANCE,		//副本地图
+
+		EST_END,
+	};
+}
 
 #pragma pack(push, 1)
 

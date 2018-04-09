@@ -9,6 +9,7 @@ extern "C"
 {
 #include "aoi.h"
 }
+#include "platform_config.h"
 
 class CMapInfo;
 class CBaseObj;
@@ -27,9 +28,9 @@ struct alloc_cookie {
 		max = 0;
 		current = 0;
 	}
-	int count;
-	int max;
-	int current;
+	int32 count;
+	int32 max;
+	int32 current;
 };
 
 class CScene
@@ -47,9 +48,9 @@ public:
 	// 退出场景
 	bool DelObj(CBaseObj * obj);
 	// 获取场景中的对象
-	CBaseObj * GetObj(int id);
+	CBaseObj * GetObj(int32 id);
 	// 返回是否可以移动到某个点
-	bool bCanMove(int x, int y, int z);
+	bool bCanMove(int32 x, int32 y, int32 z);
 	// 移动至某个点
 	bool MoveTo(CBaseObj * obj, float x, float y, float z);
 	// Aoi Run
@@ -57,20 +58,20 @@ public:
 	// 更新对象在Aoi中的位置
 	void Update(uint32 id, const char * mode, float pos[3]);
 	// 获取当前场景所属的MapID
-	int GetMapID() { return m_MapID; }
+	int32 GetMapID() { return m_MapID; }
 
 private:
 	// 所需地图ID
-	int m_MapID;
+	int32 m_MapID;
 	// 场景宽
-	int m_Width;
+	int32 m_Width;
 	// 场景高
-	int m_Height;
+	int32 m_Height;
 
 	// 出生点
-	int m_BirthPoint_X;
-	int m_BirthPoint_Y;
-	int m_BirthPoint_Z;
+	float m_BirthPoint_X;
+	float m_BirthPoint_Y;
+	float m_BirthPoint_Z;
 	
 	// 阻挡信息
 	bool *m_Barinfo;

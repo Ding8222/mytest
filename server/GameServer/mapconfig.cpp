@@ -5,6 +5,7 @@
 #include "objectpool.h"
 #include "serverlog.h"
 #include "Config.h"
+#include "CSVLoad.h"
 
 using namespace tinyxml2;
 #define MAP_ID_MAX 10000
@@ -51,76 +52,25 @@ bool CMapConfig::Init()
 {
 	m_MapSet.resize(MAP_ID_MAX, nullptr);
 
-	const char *filename = "./data/maplist.xml";
-	XMLDocument doc;
-	if (doc.LoadFile(filename) != XML_SUCCESS)
+	for (auto &i : CSVData::CMapDB::m_Data)
 	{
-		RunStateError("加载 %s 失败!", filename);
-		return false;
-	}
-
-	// 将maplist.xml中的信息添加到m_MapList
-
-	XMLElement *pinfo = doc.FirstChildElement("maplist");
-	if (!pinfo)
-	{
-		RunStateError("没有找到字段： 'maplist'");
-		return false;
-	}
-
-	pinfo = pinfo->FirstChildElement("maps");
-	if (!pinfo)
-	{
-		RunStateError("没有找到字段： 'maps'");
-		return false;
-	}
-
-	while (pinfo)
-	{
-		int32 mapid = 0;
-		if (pinfo->QueryIntAttribute("mapid", &mapid) != XML_SUCCESS)
-		{
-			RunStateError("没有找到字段： 'mapid'");
-			return false;
-		}
-
-		if (mapid <= 0 || mapid >= static_cast<int>(m_MapSet.size()))
+		CSVData::stMap *mapinfo = i.second;
+		if (mapinfo->nMapID <= 0 || mapinfo->nMapID >= static_cast<int>(m_MapSet.size()))
 		{
 			RunStateError("地图ID错误！");
 			return false;
 		}
 
-		m_TotalMapList.insert(mapid);
-
-		int32 lineid = 0;
-		if (pinfo->QueryIntAttribute("lineid", &lineid) != XML_SUCCESS)
+		m_TotalMapList.insert(mapinfo->nMapID);
+		
+		if (mapinfo->nLineID != 0 && mapinfo->nLineID != CConfig::Instance().GetLineID())
 		{
-			RunStateError("没有找到字段： 'lineid'");
-			return false;
-		}
-
-		if (lineid < 0)
-		{
-			RunStateError("线路ID错误！");
-			return false;
-		}
-
-		if (lineid != 0 && lineid != CConfig::Instance().GetLineID())
-		{
-			pinfo = pinfo->NextSiblingElement("maps");
 			continue;
 		}
-
-		std::string filename = pinfo->Attribute("bar_filename");
-		if (filename.empty())
+		
+		if (m_MapSet[mapinfo->nMapID] != nullptr)
 		{
-			RunStateError("没有找到字段： 'bar_filename'");
-			return false;
-		}
-
-		if (m_MapSet[mapid] != nullptr)
-		{
-			RunStateError("添加地图失败!地图ID已存在：%d", mapid);
+			RunStateError("添加地图失败!地图ID已存在：%d", mapinfo->nMapID);
 			return false;
 		}
 
@@ -131,18 +81,19 @@ bool CMapConfig::Init()
 			return false;
 		}
 
-		if (!newmap->Init(mapid, filename.c_str()))
+		if (!newmap->Init(mapinfo->nMapID, mapinfo->nType, mapinfo->sMapBar.c_str()))
 		{
-			RunStateError("初始化加载地图配置失败!地图ID：%d", mapid);
+			RunStateError("初始化加载地图阻挡失败!地图ID：%d", mapinfo->nMapID);
+			delete newmap;
 			return false;
 		}
 
-		m_MapSet[mapid] = newmap;
+		newmap->SetMapBirthPoint(mapinfo->nX, mapinfo->nY, mapinfo->nZ);
+
+		m_MapSet[mapinfo->nMapID] = newmap;
 		m_MapList.push_back(newmap);
-		
-		pinfo = pinfo->NextSiblingElement("maps");
 	}
-	
+		
 	return true;
 }
 

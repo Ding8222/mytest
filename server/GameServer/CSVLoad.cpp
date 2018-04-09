@@ -4,6 +4,7 @@
 
 namespace CSVData
 {
+	static std::string text;
 	// 读取CSV
 	bool Init()
 	{
@@ -16,6 +17,9 @@ namespace CSVData
 		if (!CSV::CsvLoader::LoadCsv<CStatusDB>("Status"))
 			return false;
 
+		if (!CSV::CsvLoader::LoadCsv<CMapDB>("Map"))
+			return false;
+
 		RunStateLog("加载所有CSV成功！");
 		return true;
 	}
@@ -26,6 +30,7 @@ namespace CSVData
 		CExampleDB::Destroy();
 		CSkillDB::Destroy();
 		CStatusDB::Destroy();
+		CMapDB::Destroy();
 	}
 
 	// 例子
@@ -88,6 +93,37 @@ namespace CSVData
 		}
 
 		m_Data.insert(std::make_pair(key, pdata));
+		return true;
+	}
+
+	// 地图
+	std::unordered_map<int64, stMap *> CMapDB::m_Data;
+	bool CMapDB::AddData(CSV::Row & _Row)
+	{
+		stMap *pdata = new stMap;
+		_Row.getValue(pdata->nMapID, "地图ID");
+		_Row.getValue(pdata->nLineID, "线路ID");
+		_Row.getValue(pdata->nType, "地图类型");
+		_Row.getValue(pdata->nX, "出生点X");
+		_Row.getValue(pdata->nY, "出生点Y");
+		_Row.getValue(pdata->nZ, "出生点Z");
+		_Row.getValue(pdata->sMapBar, "阻挡文件路径");
+
+		if (FindById(pdata->nMapID))
+		{
+			RunStateError("添加重复项目 %d ！", pdata->nMapID);
+			delete pdata;
+			return false;
+		}
+
+		if (pdata->nMapID < 0 || pdata->nLineID < 0 || pdata->sMapBar.empty())
+		{
+			RunStateError("配置错误 %d ！", pdata->nMapID);
+			delete pdata;
+			return false;
+		}
+
+		m_Data.insert(std::make_pair(pdata->nMapID, pdata));
 		return true;
 	}
 }

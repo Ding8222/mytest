@@ -7,12 +7,12 @@ using namespace tinyxml2;
 
 CMapInfo::CMapInfo()
 {
-	m_Mapid = 0;
+	m_MapID = 0;
 	m_Width = 0;
 	m_Height = 0;
-	m_BirthPoint_X = 0;
-	m_BirthPoint_Y = 0;
-	m_BirthPoint_Z = 0;
+	m_BirthPoint_X = 0.0f;
+	m_BirthPoint_Y = 0.0f;
+	m_BirthPoint_Z = 0.0f;
 	m_BarInfo = nullptr;
 }
 
@@ -21,7 +21,7 @@ CMapInfo::~CMapInfo()
 	Destroy();
 }
 
-bool CMapInfo::Init(int mapid, const char *bar_filename)
+bool CMapInfo::Init(int32 mapid, int8 type, const char *bar_filename)
 {
 	if (!bar_filename)
 	{
@@ -29,8 +29,8 @@ bool CMapInfo::Init(int mapid, const char *bar_filename)
 		return false;
 	}
 
-	// 设置读取的路径
-	m_Mapid = mapid;
+	m_MapID = mapid;
+	m_MapType = type;
 
 	XMLDocument doc;
 	if (doc.LoadFile(bar_filename) != XML_SUCCESS)
@@ -140,7 +140,14 @@ void CMapInfo::Destroy()
 	}
 }
 
-void CMapInfo::GetMapBirthPoint(int &x, int &y, int &z)
+void CMapInfo::SetMapBirthPoint(float &x, float &y, float &z)
+{
+	m_BirthPoint_X = x;
+	m_BirthPoint_Y = y;
+	m_BirthPoint_Z = z;
+}
+
+void CMapInfo::GetMapBirthPoint(float &x, float &y, float &z)
 {
 	x = m_BirthPoint_X;
 	y = m_BirthPoint_Y;
@@ -148,9 +155,9 @@ void CMapInfo::GetMapBirthPoint(int &x, int &y, int &z)
 }
 int CMapInfo::GetMapID()
 {
-	return m_Mapid;
+	return m_MapID;
 }
-void CMapInfo::GetMapWidthAndHeight(int &x, int &y)
+void CMapInfo::GetMapWidthAndHeight(int32 &x, int32 &y)
 {
 	x = m_Width;
 	y = m_Height;

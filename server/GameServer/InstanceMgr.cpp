@@ -2,12 +2,14 @@
 #include "Instance.h"
 #include "InstanceMgr.h"
 #include "MapConfig.h"
+#include "MapInfo.h"
 #include "serverlog.h"
 #include "objectpool.h"
 #include "GlobalDefine.h"
 
 extern int64 g_currenttime;
-#define INSTANCE_ID_MAX 2000
+#define INSTANCE_ID_MAX 2000			//副本数量
+#define INSTANCE_ID_DELAY_TIME 300000	//释放延时时间
 
 static objectpool<CInstance> &InstancePool()
 {
@@ -99,7 +101,7 @@ int CInstanceMgr::AddInstance(int instancebaseid)
 {
 	CMapInfo* mapconfig = CMapConfig::Instance().FindMapInfo(instancebaseid);
 
-	if (!mapconfig)
+	if (!mapconfig || mapconfig->GetMapType() != MapEnum::MapType::EMT_INSTANCE)
 		return 0;
 
 	int id = idmgr_allocid(m_IDPool);
