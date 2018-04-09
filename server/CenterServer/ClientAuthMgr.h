@@ -57,8 +57,8 @@ private:
 	std::vector<ClientAuthInfo *> m_ClientInfoSet;
 	// account,guid
 	std::unordered_map<std::string, int64> m_PlayerOnlineMap;
-	// account,guid
-	std::unordered_map<std::string, int64> m_PlayerLoginMap;
+	// account,clientid
+	std::unordered_map<std::string, int32> m_PlayerLoginMap;
 
 	bool m_bDBSvrReady;
 };

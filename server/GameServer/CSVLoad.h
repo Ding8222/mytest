@@ -10,8 +10,8 @@
 #include "CSVParser.h"
 
 #define DEFINE_CLEAR static void Destroy(){ for( auto i : m_Data ) delete(i.second); m_Data.clear();}
-#define MAKE_SKILL_KEY(id,lev) (((id)<<8) | (lev))
-#define MAKE_STATUS_KEY(id,lev) (((id)<<8) | (lev))
+#define MAKE_SKILL_KEY(id,lev) (((int64)(id)<<8) | (lev))
+#define MAKE_STATUS_KEY(id,lev) (((int64)(id)<<8) | (lev))
 
 namespace CSVData
 {
@@ -124,10 +124,16 @@ namespace CSVData
 		stMap()
 		{
 			nMapID = 0;
+			nLineID = 0;
+			nType = 0;
+			nX = 0.0f;
+			nY = 0.0f;
+			nZ = 0.0f;
+			sMapBar.clear();
 		}
 		int32 nMapID;
-		int8 nLineID;
-		int8 nType;
+		int32 nLineID;
+		int32 nType;
 		float nX;
 		float nY;
 		float nZ;
@@ -149,5 +155,83 @@ namespace CSVData
 		DEFINE_CLEAR
 
 		static std::unordered_map<int64, stMap *> m_Data;
+	};
+
+	// Monster
+	struct stMonster
+	{
+		stMonster()
+		{
+			nMonsterID = 0;
+			nMonsterType = 0;
+			bCanRelive = false;
+			nReliveCD = 0;
+			nMapID = 0;
+			nX = 0.0f;
+			nY = 0.0f;
+			nZ = 0.0f;
+		}
+		int32 nMonsterID;
+		int32 nMonsterType;
+		bool bCanRelive;
+		int32 nReliveCD;
+		int32 nMapID;
+		float nX;
+		float nY;
+		float nZ;
+	};
+
+	class CMonsterDB
+	{
+	public:
+		static bool AddData(CSV::Row & _Row);
+		static stMonster* FindById(int64 _Key)
+		{
+			std::unordered_map<int64, stMonster *>::iterator iter = m_Data.find(_Key);
+			if (iter != m_Data.end())
+				return iter->second;
+
+			return nullptr;
+		}
+		DEFINE_CLEAR
+
+		static std::unordered_map<int64, stMonster *> m_Data;
+	};
+
+	// Monster
+	struct stNPC
+	{
+		stNPC()
+		{
+			nNPCID = 0;
+			nNPCType = 0;
+			nMapID = 0;
+			nX = 0.0f;
+			nY = 0.0f;
+			nZ = 0.0f;
+		}
+		int32 nNPCID;
+		int32 nNPCType;
+		int32 nMapID;
+		float nX;
+		float nY;
+		float nZ;
+	};
+
+	class CNPCDB
+	{
+	public:
+		static bool AddData(CSV::Row & _Row);
+		static stNPC* FindById(int64 _Key)
+		{
+			std::unordered_map<int64, stNPC *>::iterator iter = m_Data.find(_Key);
+			if (iter != m_Data.end())
+				return iter->second;
+
+			return nullptr;
+		}
+		DEFINE_CLEAR
+
+			static std::unordered_map<int64, stNPC *> m_Data;
 	};
 }

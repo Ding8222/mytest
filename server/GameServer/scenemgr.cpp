@@ -7,6 +7,7 @@
 #include "serverlog.h"
 #include "objectpool.h"
 #include "GlobalDefine.h"
+#include "CSVLoad.h"
 
 extern int64 g_currenttime;
 
@@ -65,13 +66,25 @@ bool CSceneMgr::Init()
 			}
 		}
 	}
-	
+
+	if (!LoadNPC())
+	{
+		RunStateError("加载NPC失败！");
+		return false;
+	}
+
+	if (!LoadMonster())
+	{
+		RunStateError("加载Monster失败！");
+		return false;
+	}
+
 	return true;
 }
 
 void CSceneMgr::Destroy()
 {
-	std::unordered_map<int, CScene *>::iterator iter = m_SceneMap.begin();
+	std::unordered_map<int32, CScene *>::iterator iter = m_SceneMap.begin();
 	for (; iter != m_SceneMap.end(); ++iter)
 	{
 		scene_release(iter->second);
@@ -86,6 +99,30 @@ void CSceneMgr::Run()
 	{
 		i.second->Run();
 	}
+}
+
+bool CSceneMgr::AddNPC(int32 npcid, int32 mapid, float x, float y, float z)
+{
+	CScene *map = FindScene(mapid);
+	if (!map)
+	{
+		RunStateError("添加NPC：%d 失败！不存在的地图ID：%d", npcid, mapid);
+		return false;
+	}
+	
+	return map->AddNPC(npcid, x, y, z);
+}
+
+bool CSceneMgr::AddMonster(int32 monsterid, int32 mapid, float x, float y, float z)
+{
+	CScene *map = FindScene(mapid);
+	if (!map)
+	{
+		RunStateError("添加Monster：%d 失败！不存在的地图ID：%d", monsterid, mapid);
+		return false;
+	}
+
+	return map->AddMonster(monsterid, x, y, z);
 }
 
 bool CSceneMgr::AddScene(CMapInfo* mapconfig)
@@ -111,7 +148,43 @@ bool CSceneMgr::AddScene(CMapInfo* mapconfig)
 	return false;
 }
 
-CScene *CSceneMgr::FindScene(int mapid)
+bool CSceneMgr::LoadNPC()
+{
+	for (auto &i : CSVData::CNPCDB::m_Data)
+	{
+		CSVData::stNPC *npc = i.second;
+		// 判断一下所在地图是否加载
+		if (FindScene(npc->nMapID))
+		{
+			if (!AddNPC(npc->nNPCID, npc->nMapID, npc->nX, npc->nY, npc->nZ))
+			{
+				RunStateError("地图：%d 添加NPC：%d 失败！");
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+bool CSceneMgr::LoadMonster()
+{
+	for (auto &i : CSVData::CMonsterDB::m_Data)
+	{
+		CSVData::stMonster *npc = i.second;
+		// 判断一下所在地图是否加载
+		if (FindScene(npc->nMapID))
+		{
+			if (!AddMonster(npc->nMonsterID, npc->nMapID, npc->nX, npc->nY, npc->nZ))
+			{
+				RunStateError("地图：%d 添加monster：%d 失败！");
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+CScene *CSceneMgr::FindScene(int32 mapid)
 {
 	auto iter = m_SceneMap.find(mapid);
 	if (iter != m_SceneMap.end())

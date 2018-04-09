@@ -186,9 +186,9 @@ void CServerStatusMgr::DelGateServer(int32 serverid)
 	}
 }
 
-ServerStatusInfo *CServerStatusMgr::GetGameServerInfo(int32 id, int32 lineid)
+ServerStatusInfo *CServerStatusMgr::GetGameServerInfo(int32 mapid, int32 lineid)
 {
-	auto iter = m_ServerMapInfo.find(id);
+	auto iter = m_ServerMapInfo.find(mapid);
 	if (iter != m_ServerMapInfo.end())
 	{
 		std::list<stServerInfo> &serverset = iter->second;

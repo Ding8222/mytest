@@ -4,9 +4,9 @@
 * 2018
 */
 #pragma once
-#include "Instance.h"
 
 struct idmgr;
+class CInstance;
 class CInstanceMgr
 {
 public:
@@ -24,8 +24,11 @@ public:
 	void Destroy();
 
 	// 传入副本基本ID，返回副本实例ID
-	int AddInstance(int instancebaseid);
-	CInstance *FindInstance(int instanceid);
+	int32 AddInstance(int32 instancebaseid);
+	// 根据副本实例ID查找副本
+	CInstance *FindInstance(int32 instanceid);
+	bool AddNPC(int32 npcid, int32 mapid, float x, float y, float z);
+	bool AddMonster(int32 monsterid, int32 mapid, float x, float y, float z);
 private:
 	void ProcessAllInstance();
 	void CheckAndRemove();

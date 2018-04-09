@@ -83,6 +83,13 @@ bool CGameServer::Init()
 			break;
 		}
 
+
+		if (!CSVData::Init())
+		{
+			RunStateError("加载CSVData失败!");
+			break;
+		}
+
 		// 需要在场景初始化之前初始化MapConfig
 		if (!CMapConfig::Instance().Init())
 		{
@@ -101,19 +108,14 @@ bool CGameServer::Init()
 			RunStateError("初始化InstanceMgr失败!");
 			break;
 		}
-
-		if (!CSVData::Init())
-		{
-			RunStateError("加载CSVData失败!");
-			break;
-		}
-		
+				
 		if (!CPlayerMgr::Instance().init())
 		{
 			RunStateError("初始化PlayerMgr失败!");
 			break;
 		}
 
+		RunStateLog("[%d线]逻辑服务器启动成功!", CConfig::Instance().GetLineID());
 		m_Run = true;
 		return true;
 	} while (true);

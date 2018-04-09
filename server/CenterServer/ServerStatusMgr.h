@@ -60,7 +60,7 @@ public:
 	void DelGameServer(int32 serverid);
 	void DelGateServer(int32 serverid);
 	
-	ServerStatusInfo *GetGameServerInfo(int32 id, int32 lineid = 0);
+	ServerStatusInfo *GetGameServerInfo(int32 mapid, int32 lineid = 0);
 	ServerStatusInfo *GetGateServerInfo();
 private:
 

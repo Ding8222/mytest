@@ -105,7 +105,7 @@ void CPlayerMgr::ProcessAllPlayer()
 
 bool CPlayerMgr::AddPlayer(serverinfo * info, int clientid)
 {
-	if (clientid <= 0 || clientid >= m_PlayerSet.size())
+	if (clientid <= 0 || static_cast<size_t>(clientid) >= m_PlayerSet.size())
 	{
 		RunStateError("AddPlayer的ClientID错误!");
 		return false;
@@ -136,7 +136,7 @@ bool CPlayerMgr::AddPlayer(serverinfo * info, int clientid)
 
 void CPlayerMgr::DelPlayer(int clientid)
 {
-	if (clientid <= 0 || clientid >= m_PlayerSet.size())
+	if (clientid <= 0 || static_cast<size_t>(clientid) >= m_PlayerSet.size())
 	{
 		RunStateError("DelPlayer的ClientID错误!");
 		return;

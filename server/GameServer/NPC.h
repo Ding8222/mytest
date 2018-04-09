@@ -15,4 +15,6 @@ public:
 
 	virtual void Run();
 	virtual void Die();
+
+	bool Init(int32 npcid);
 };

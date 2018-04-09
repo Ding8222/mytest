@@ -26,12 +26,17 @@ public:
 	void Run();
 
 public:
-	CScene *FindScene(int mapid);
-
+	CScene *FindScene(int32 mapid);
+	bool AddNPC(int32 npcid, int32 mapid, float x, float y, float z);
+	bool AddMonster(int32 monsterid, int32 mapid, float x, float y, float z);
 private:
+	// 添加游戏场景
 	bool AddScene(CMapInfo* mapconfig);
-
+	// 地图初始化的时候，创建所有NPC
+	bool LoadNPC();
+	// 地图初始化的时候，创建所有Monster
+	bool LoadMonster();
 private:
 	// mapid,scene
-	std::unordered_map<int ,CScene *> m_SceneMap;
+	std::unordered_map<int32 ,CScene *> m_SceneMap;
 };

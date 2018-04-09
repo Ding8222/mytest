@@ -10,6 +10,9 @@ extern "C"
 #include "aoi.h"
 }
 #include "platform_config.h"
+#include "MapInfo.h"
+#include "Monster.h"
+#include "NPC.h"
 
 class CMapInfo;
 class CBaseObj;
@@ -49,41 +52,59 @@ public:
 	bool DelObj(CBaseObj * obj);
 	// 获取场景中的对象
 	CBaseObj * GetObj(int32 id);
-	// 返回是否可以移动到某个点
-	bool bCanMove(int32 x, int32 y, int32 z);
 	// 移动至某个点
 	bool MoveTo(CBaseObj * obj, float x, float y, float z);
+public:
+	// 添加NPC至场景
+	bool AddNPC(int32 npcid, float x, float y, float z);
+private:
+	// 处理所有NPC
+	void ProcessAllNPC();
+	// 检查并真正移除NPC
+	void CheckAndRemoveNPC();
+	// 真正移除所有的NPC
+	void DelAllNPC();
+
+	std::list<CNPC *> m_NPCList;
+	std::list<CNPC *> m_WaitRemoveNPC;
+public:
+	// 添加Monster至场景
+	bool AddMonster(int32 monsterid, float x, float y, float z);
+private:
+	// 处理所有Monster
+	void ProcessAllMonster();
+	// 检查并真正移除Monster
+	void CheckAndRemoveMonster();
+	// 真正移除所有的Monster
+	void DelAllMonster();
+
+	std::list<CMonster *> m_MonsterList;
+	std::list<CMonster *> m_WaitRemoveMonster;
+public:
+
 	// Aoi Run
 	void Message();
 	// 更新对象在Aoi中的位置
 	void Update(uint32 id, const char * mode, float pos[3]);
-	// 获取当前场景所属的MapID
-	int32 GetMapID() { return m_MapID; }
-
 private:
-	// 所需地图ID
-	int32 m_MapID;
-	// 场景宽
-	int32 m_Width;
-	// 场景高
-	int32 m_Height;
 
-	// 出生点
-	float m_BirthPoint_X;
-	float m_BirthPoint_Y;
-	float m_BirthPoint_Z;
-	
-	// 阻挡信息
-	bool *m_Barinfo;
 	// Aoi内存分配信息
 	struct alloc_cookie* m_Cookie;
 	// Aoi 空间
 	struct aoi_space * m_Space;
 	// 是否更新过Aoi
 	bool m_bMessage;
+public:
+
+	// 获取当前场景所属的MapID
+	int32 GetMapID() { return m_MapInfo->GetMapID(); }
+	int32 GetMapType() { return m_MapInfo->GetMapType(); }
+private:
+
+	// 地图配置信息
+	CMapInfo * m_MapInfo;
 
 	std::unordered_map<uint32, CBaseObj *> m_ObjMap;
-
 	std::vector<CBaseObj *> m_ObjSet;
 	idmgr *m_IDPool;
 };

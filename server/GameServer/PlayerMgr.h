@@ -9,7 +9,6 @@
 #include "Player.h"
 
 static int player_max = 2000;
-static int player_delay_time = 30000;
 
 class CPlayerMgr
 {

@@ -12,5 +12,6 @@ http://www.vimer.cn/
 protobuf好像可以做到自动解析，不需要1-1这种...有空可以研究研究
 http://blog.csdn.net/solstice/article/details/6300108
 
-
 将所有server作为服务集中到一个线程，然后调度他们去处理。避免大量进程
+
+正则：Hyperscan，PCRE

@@ -13,18 +13,19 @@ public:
 	CMapInfo();
 	~CMapInfo();
 
-	bool Init(int32 mapid, int8 type, const char *bar_filename);
+	bool Init(int32 mapid, int32 type, const char *bar_filename);
 	void Destroy();
 
-	void SetMapBirthPoint(float &x, float &y, float &z);
+	void SetMapBirthPoint(const float &x, const float &y, const float &z);
 	void GetMapBirthPoint(float &x, float &y, float &z);
-	int  GetMapID();
 	void GetMapWidthAndHeight(int32 &x, int32 &y);
+	int  GetMapID() { return m_MapID; }
 	bool *GetBarInfo() { return m_BarInfo; }
-	int8 GetMapType() { return m_MapType; }
+	int32 GetMapType() { return m_MapType; }
+	bool bCanMove(int32 x, int32 y, int32 z);
 private:
 	int32 m_MapID;
-	int8 m_MapType;
+	int32 m_MapType;
 	int32 m_Width;
 	int32 m_Height;
 

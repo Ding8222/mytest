@@ -20,6 +20,12 @@ namespace CSVData
 		if (!CSV::CsvLoader::LoadCsv<CMapDB>("Map"))
 			return false;
 
+		if (!CSV::CsvLoader::LoadCsv<CMonsterDB>("Monster"))
+			return false;
+
+		if (!CSV::CsvLoader::LoadCsv<CNPCDB>("NPC"))
+			return false;
+
 		RunStateLog("加载所有CSV成功！");
 		return true;
 	}
@@ -31,6 +37,8 @@ namespace CSVData
 		CSkillDB::Destroy();
 		CStatusDB::Destroy();
 		CMapDB::Destroy();
+		CMonsterDB::Destroy();
+		CNPCDB::Destroy();
 	}
 
 	// 例子
@@ -124,6 +132,68 @@ namespace CSVData
 		}
 
 		m_Data.insert(std::make_pair(pdata->nMapID, pdata));
+		return true;
+	}
+
+	// Monster
+	std::unordered_map<int64, stMonster *> CMonsterDB::m_Data;
+	bool CMonsterDB::AddData(CSV::Row & _Row)
+	{
+		stMonster *pdata = new stMonster;
+		_Row.getValue(pdata->nMonsterID, "怪物ID");
+		_Row.getValue(pdata->nMonsterType, "怪物类型");
+		_Row.getValue(pdata->bCanRelive, "是否复活");
+		_Row.getValue(pdata->nReliveCD, "复活CD");
+		_Row.getValue(pdata->nMapID, "地图ID");
+		_Row.getValue(pdata->nX, "坐标X");
+		_Row.getValue(pdata->nY, "坐标Y");
+		_Row.getValue(pdata->nZ, "坐标Z");
+
+		if (FindById(pdata->nMonsterID))
+		{
+			RunStateError("添加重复项目 %d ！", pdata->nMonsterID);
+			delete pdata;
+			return false;
+		}
+
+		if (pdata->nMonsterID < 0 || pdata->nMonsterType < 0 || pdata->nMapID < 0 || pdata->nReliveCD < 0)
+		{
+			RunStateError("配置错误 %d ！", pdata->nMonsterID);
+			delete pdata;
+			return false;
+		}
+
+		m_Data.insert(std::make_pair(pdata->nMonsterID, pdata));
+		return true;
+	}
+
+	// NPC
+	std::unordered_map<int64, stNPC *> CNPCDB::m_Data;
+	bool CNPCDB::AddData(CSV::Row & _Row)
+	{
+		stNPC *pdata = new stNPC;
+		_Row.getValue(pdata->nNPCID, "NPCID");
+		_Row.getValue(pdata->nNPCType, "NPC类型");
+		_Row.getValue(pdata->nMapID, "地图ID");
+		_Row.getValue(pdata->nX, "坐标X");
+		_Row.getValue(pdata->nY, "坐标Y");
+		_Row.getValue(pdata->nZ, "坐标Z");
+
+		if (FindById(pdata->nNPCID))
+		{
+			RunStateError("添加重复项目 %d ！", pdata->nNPCID);
+			delete pdata;
+			return false;
+		}
+
+		if (pdata->nNPCID < 0 || pdata->nNPCType < 0 || pdata->nMapID < 0)
+		{
+			RunStateError("配置错误 %d ！", pdata->nNPCID);
+			delete pdata;
+			return false;
+		}
+
+		m_Data.insert(std::make_pair(pdata->nNPCID, pdata));
 		return true;
 	}
 }

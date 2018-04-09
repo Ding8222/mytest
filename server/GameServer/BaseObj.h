@@ -13,7 +13,7 @@
 #include "ObjStatus.h"
 #include "ObjFight.h"
 
-extern int player_delay_time;
+static int obj_delay_time = 30000;
 extern int64 g_currenttime;
 
 enum eObjType
@@ -58,11 +58,15 @@ private:
 	// 名称
 	char m_ObjName[MAX_NAME_LEN];
 public:
+	void RestWaitRemove() { m_WaitRemoveTime = 0; }
 	void SetWaitRemove() { m_WaitRemoveTime = g_currenttime; }
 	bool IsWaitRemove() { return m_WaitRemoveTime > 0; }
-	bool CanRemove(int64 time) { return time >= m_WaitRemoveTime + player_delay_time; }
-
+	bool CanRemove(int64 time) { return time >= m_WaitRemoveTime + obj_delay_time; }
+	void SetDieTime(int64 time) { m_DieTime = time; }
+	int64 GetDieTime() { return m_DieTime; }
+	bool IsDie() { return m_DieTime > 0; }
 private:
 	// 待移除时间
 	int64 m_WaitRemoveTime;
+	int64 m_DieTime;
 };

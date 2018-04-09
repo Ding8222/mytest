@@ -8,7 +8,7 @@ namespace FuncUti
 {
 	char *UnicodeToUTF_8(std::wstring str);
 	wchar_t *Utf_8ToUnicode(const char* szU8);
-	bool isValidCret(CBaseObj *player);
+	inline bool isValidCret(CBaseObj *player);
 	// 发送PB消息给玩家
 	// 不允许在循环中调用!!!
 	// 需要循环发送的使用SendMsg

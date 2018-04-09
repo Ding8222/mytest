@@ -137,7 +137,9 @@
     <ClCompile Include="Instance.cpp" />
     <ClCompile Include="InstanceMgr.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="MonsterCreator.cpp" />
     <ClCompile Include="NPC.cpp" />
+    <ClCompile Include="NPCCreator.cpp" />
     <ClCompile Include="ObjAttribute.cpp" />
     <ClCompile Include="ObjFight.cpp" />
     <ClCompile Include="ObjScene.cpp" />
@@ -163,7 +165,9 @@
     <ClInclude Include="Instance.h" />
     <ClInclude Include="InstanceMgr.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="MonsterCreator.h" />
     <ClInclude Include="NPC.h" />
+    <ClInclude Include="NPCCreator.h" />
     <ClInclude Include="ObjAttribute.h" />
     <ClInclude Include="ObjFight.h" />
     <ClInclude Include="ObjScene.h" />

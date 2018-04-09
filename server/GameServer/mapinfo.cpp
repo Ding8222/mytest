@@ -8,6 +8,7 @@ using namespace tinyxml2;
 CMapInfo::CMapInfo()
 {
 	m_MapID = 0;
+	m_MapType = 0;
 	m_Width = 0;
 	m_Height = 0;
 	m_BirthPoint_X = 0.0f;
@@ -21,7 +22,7 @@ CMapInfo::~CMapInfo()
 	Destroy();
 }
 
-bool CMapInfo::Init(int32 mapid, int8 type, const char *bar_filename)
+bool CMapInfo::Init(int32 mapid, int32 type, const char *bar_filename)
 {
 	if (!bar_filename)
 	{
@@ -140,7 +141,7 @@ void CMapInfo::Destroy()
 	}
 }
 
-void CMapInfo::SetMapBirthPoint(float &x, float &y, float &z)
+void CMapInfo::SetMapBirthPoint(const float &x, const float &y, const float &z)
 {
 	m_BirthPoint_X = x;
 	m_BirthPoint_Y = y;
@@ -153,12 +154,24 @@ void CMapInfo::GetMapBirthPoint(float &x, float &y, float &z)
 	y = m_BirthPoint_Y;
 	z = m_BirthPoint_Z;
 }
-int CMapInfo::GetMapID()
-{
-	return m_MapID;
-}
+
 void CMapInfo::GetMapWidthAndHeight(int32 &x, int32 &y)
 {
 	x = m_Width;
 	y = m_Height;
+}
+
+bool CMapInfo::bCanMove(int32 x, int32 y, int32 z)
+{
+	if (x >= 0 && x < m_Width)
+	{
+		if (y >= 0 && y < m_Height)
+		{
+			if (m_BarInfo)
+			{
+				return !m_BarInfo[x * y];
+			}
+		}
+	}
+	return false;
 }

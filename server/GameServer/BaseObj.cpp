@@ -14,6 +14,7 @@ CBaseObj::CBaseObj(int8 nObjType):m_ObjType(nObjType)
 	m_ObjJob = 0;
 	m_ObjLevel = 0;
 	m_WaitRemoveTime = 0;
+	m_DieTime = 0;
 	memset(m_ObjName, 0, MAX_NAME_LEN);
 }
 

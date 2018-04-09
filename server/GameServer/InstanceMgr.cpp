@@ -97,14 +97,14 @@ void CInstanceMgr::Destroy()
 	}
 }
 
-int CInstanceMgr::AddInstance(int instancebaseid)
+int32 CInstanceMgr::AddInstance(int32 instancebaseid)
 {
 	CMapInfo* mapconfig = CMapConfig::Instance().FindMapInfo(instancebaseid);
 
 	if (!mapconfig || mapconfig->GetMapType() != MapEnum::MapType::EMT_INSTANCE)
 		return 0;
 
-	int id = idmgr_allocid(m_IDPool);
+	int32 id = idmgr_allocid(m_IDPool);
 	if (id <= 0)
 	{
 		RunStateError("为新Instance分配ID失败!, id:%d", id);
@@ -134,9 +134,9 @@ int CInstanceMgr::AddInstance(int instancebaseid)
 	return 0;
 }
 
-CInstance *CInstanceMgr::FindInstance(int instanceid)
+CInstance *CInstanceMgr::FindInstance(int32 instanceid)
 {
-	if (instanceid <= 0 || instanceid >= static_cast<int>(m_InstanceSet.size()))
+	if (instanceid <= 0 || instanceid >= static_cast<int32>(m_InstanceSet.size()))
 		return nullptr;
 
 	CInstance * instance = m_InstanceSet[instanceid];
@@ -144,6 +144,30 @@ CInstance *CInstanceMgr::FindInstance(int instanceid)
 		return nullptr;
 
 	return instance;
+}
+
+bool CInstanceMgr::AddNPC(int32 npcid, int32 instanceid, float x, float y, float z)
+{
+	CInstance *instance = FindInstance(instanceid);
+	if (!instance)
+	{
+		RunStateError("添加NPC：%d 失败！不存在的实例副本ID：%d", npcid, instanceid);
+		return false;
+	}
+
+	return instance->AddNPC(npcid, x, y, z);
+}
+
+bool CInstanceMgr::AddMonster(int32 monsterid, int32 instanceid, float x, float y, float z)
+{
+	CInstance *instance = FindInstance(instanceid);
+	if (!instance)
+	{
+		RunStateError("添加Monster：%d 失败！不存在的实例副本ID：%d", monsterid, instanceid);
+		return false;
+	}
+
+	return instance->AddMonster(monsterid, x, y, z);
 }
 
 void CInstanceMgr::ProcessAllInstance()
@@ -182,8 +206,8 @@ void CInstanceMgr::ReleaseInstanceAndID(CInstance *instance)
 {
 	if (!instance)
 		return;
-	int id = instance->GetInsranceID();
-	if (id <= 0 || id >= (int)m_InstanceSet.size())
+	int32 id = instance->GetInsranceID();
+	if (id <= 0 || id >= (int32)m_InstanceSet.size())
 	{
 		RunStateError("要释放的Instance的ID错误!");
 		return;
