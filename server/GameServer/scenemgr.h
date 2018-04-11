@@ -28,7 +28,7 @@ public:
 public:
 	CScene *FindScene(int32 mapid);
 	bool AddNPC(int32 npcid, int32 mapid, float x, float y, float z);
-	bool AddMonster(int32 monsterid, int32 mapid, float x, float y, float z);
+	bool AddMonster(int32 monsterid, int32 mapid, float x, float y, float z, bool relive = false, int32 relivecd = 0);
 private:
 	// 添加游戏场景
 	bool AddScene(CMapInfo* mapconfig);

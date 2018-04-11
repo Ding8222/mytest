@@ -40,7 +40,7 @@ namespace CSVData
 		// 会被CSVParser调用,不要修改
 		static bool AddData(CSV::Row & _Row);
 		// m_Data中的查找,可根据实际情况修改
-		static stExample* FindById(int64 _Key)
+		static stExample *FindById(int64 _Key)
 		{
 			std::unordered_map<int64, stExample *>::iterator iter = m_Data.find(_Key);
 			if (iter != m_Data.end())
@@ -48,7 +48,8 @@ namespace CSVData
 
 			return nullptr;
 		}
-		//定义m_Data的析构,每个结构体中都必须有这个,并在Destroy()中主动调用
+		// 定义m_Data的析构,每个结构体中都必须有这个,并在Destroy()中主动调用
+		// 复杂的m_Data清理请自行重写
 		DEFINE_CLEAR
 
 		static std::unordered_map<int64, stExample *> m_Data;
@@ -74,7 +75,7 @@ namespace CSVData
 	{
 	public:
 		static bool AddData(CSV::Row & _Row);
-		static stSkill* FindById(int64 _Key)
+		static stSkill *FindById(int64 _Key)
 		{
 			std::unordered_map<int64, stSkill *>::iterator iter = m_Data.find(_Key);
 			if (iter != m_Data.end())
@@ -105,7 +106,7 @@ namespace CSVData
 	{
 	public:
 		static bool AddData(CSV::Row & _Row);
-		static stStatus* FindById(int64 _Key)
+		static stStatus *FindById(int64 _Key)
 		{
 			std::unordered_map<int64, stStatus *>::iterator iter = m_Data.find(_Key);
 			if (iter != m_Data.end())
@@ -144,7 +145,7 @@ namespace CSVData
 	{
 	public:
 		static bool AddData(CSV::Row & _Row);
-		static stMap* FindById(int64 _Key)
+		static stMap *FindById(int64 _Key)
 		{
 			std::unordered_map<int64, stMap *>::iterator iter = m_Data.find(_Key);
 			if (iter != m_Data.end())
@@ -157,6 +158,82 @@ namespace CSVData
 		static std::unordered_map<int64, stMap *> m_Data;
 	};
 
+	// 传送门
+	struct stMapGate
+	{
+		stMapGate()
+		{
+			nMapGateID = 0;
+			nSrcMapID = 0;
+			nSrcX = 0.0f;
+			nSrcY = 0.0f;
+			nSrcZ = 0.0f;
+			nTarMapID = 0;
+			nTarX = 0.0f;
+			nTarY = 0.0f;
+			nTarZ = 0.0f;
+		}
+		int32 nMapGateID;
+		// 所在地图
+		int32 nSrcMapID;
+		float nSrcX;
+		float nSrcY;
+		float nSrcZ;
+		// 目标地图
+		int32 nTarMapID;
+		float nTarX;
+		float nTarY;
+		float nTarZ;
+	};
+
+	class CMapGateDB
+	{
+	public:
+		static bool AddData(CSV::Row & _Row);
+		static stMapGate *FindById(int64 _Key)
+		{
+			std::unordered_map<int64, stMapGate *>::iterator iter = m_Data.find(_Key);
+			if (iter != m_Data.end())
+				return iter->second;
+
+			return nullptr;
+		}
+		DEFINE_CLEAR
+
+		static std::unordered_map<int64, stMapGate *> m_Data;
+	};
+
+	// 副本
+	struct stInstance
+	{
+		stInstance()
+		{
+			nInstanceID = 0;
+			nMapID = 0;
+			nLimitTime = 0;
+		}
+		int32 nInstanceID;
+		int32 nMapID;
+		int32 nLimitTime;
+	};
+
+	class CInstanceDB
+	{
+	public:
+		static bool AddData(CSV::Row & _Row);
+		static stInstance *FindById(int64 _Key)
+		{
+			std::unordered_map<int64, stInstance *>::iterator iter = m_Data.find(_Key);
+			if (iter != m_Data.end())
+				return iter->second;
+
+			return nullptr;
+		}
+		DEFINE_CLEAR
+
+		static std::unordered_map<int64, stInstance *> m_Data;
+	};
+
 	// Monster
 	struct stMonster
 	{
@@ -164,28 +241,16 @@ namespace CSVData
 		{
 			nMonsterID = 0;
 			nMonsterType = 0;
-			bCanRelive = false;
-			nReliveCD = 0;
-			nMapID = 0;
-			nX = 0.0f;
-			nY = 0.0f;
-			nZ = 0.0f;
 		}
 		int32 nMonsterID;
 		int32 nMonsterType;
-		bool bCanRelive;
-		int32 nReliveCD;
-		int32 nMapID;
-		float nX;
-		float nY;
-		float nZ;
 	};
 
 	class CMonsterDB
 	{
 	public:
 		static bool AddData(CSV::Row & _Row);
-		static stMonster* FindById(int64 _Key)
+		static stMonster *FindById(int64 _Key)
 		{
 			std::unordered_map<int64, stMonster *>::iterator iter = m_Data.find(_Key);
 			if (iter != m_Data.end())
@@ -198,7 +263,7 @@ namespace CSVData
 		static std::unordered_map<int64, stMonster *> m_Data;
 	};
 
-	// Monster
+	// NPC
 	struct stNPC
 	{
 		stNPC()
@@ -222,7 +287,7 @@ namespace CSVData
 	{
 	public:
 		static bool AddData(CSV::Row & _Row);
-		static stNPC* FindById(int64 _Key)
+		static stNPC *FindById(int64 _Key)
 		{
 			std::unordered_map<int64, stNPC *>::iterator iter = m_Data.find(_Key);
 			if (iter != m_Data.end())
@@ -232,6 +297,98 @@ namespace CSVData
 		}
 		DEFINE_CLEAR
 
-			static std::unordered_map<int64, stNPC *> m_Data;
+		static std::unordered_map<int64, stNPC *> m_Data;
+	};
+
+	// 地图刷怪
+	struct stMapMonster
+	{
+		stMapMonster()
+		{
+			nMapID = 0;
+			nMonsterID = 0;
+			bCanRelive = false;
+			nReliveCD = 0;
+			nX = 0.0f;
+			nY = 0.0f;
+			nZ = 0.0f;
+		}
+		int32 nMapID;
+		int32 nMonsterID;
+		bool bCanRelive;
+		int32 nReliveCD;
+		float nX;
+		float nY;
+		float nZ;
+	};
+
+	class CMapMonsterDB
+	{
+	public:
+		static bool AddData(CSV::Row & _Row);
+		static std::vector<stMapMonster *> *FindById(int64 _Key)
+		{
+			std::unordered_map<int64, std::vector<stMapMonster *> *>::iterator iter = m_Data.find(_Key);
+			if (iter != m_Data.end())
+				return iter->second;
+
+			return nullptr;
+		}
+		static void Destroy()
+		{
+			for (auto &i : m_Data)
+			{
+				std::vector<stMapMonster *> *monster = i.second;
+				std::vector<stMapMonster *>::iterator iter = monster->begin();
+				for (; iter != monster->end(); ++iter)
+				{
+					delete *iter;
+				}
+				monster->clear();
+				delete monster;
+			}
+			m_Data.clear();
+		}
+
+		static std::unordered_map<int64, std::vector<stMapMonster *> *> m_Data;
+	};
+
+	// 副本刷怪
+	struct stInstanceMonster
+	{
+		stInstanceMonster()
+		{
+			nInstanceID = 0;
+			nMonsterID = 0;
+			bCanRelive = false;
+			nReliveCD = 0;
+			nX = 0.0f;
+			nY = 0.0f;
+			nZ = 0.0f;
+		}
+		int32 nInstanceID;
+		int32 nMonsterID;
+		bool bCanRelive;
+		int32 nReliveCD;
+		float nX;
+		float nY;
+		float nZ;
+	};
+
+	class CInstanceMonsterDB
+	{
+	public:
+		static bool AddData(CSV::Row & _Row);
+		static std::vector<stInstanceMonster *> *FindById(int64 _Key)
+		{
+			std::unordered_map<int64, std::vector<stInstanceMonster *> *>::iterator iter = m_Data.find(_Key);
+			if (iter != m_Data.end())
+				return iter->second;
+
+			return nullptr;
+		}
+		DEFINE_CLEAR
+
+		static std::unordered_map<int64, std::vector<stInstanceMonster *> *> m_Data;
 	};
 }

@@ -19,7 +19,7 @@ public:
 	CMonster();
 	~CMonster();
 
-	bool Init(int32 monsterid);
+	bool Init(int32 monsterid, float relivex, float relivey, float relivez, bool relive, int32 relivecd);
 	void Destroy();
 	virtual void Run();
 	virtual void Die();
@@ -27,13 +27,15 @@ public:
 	// 复活
 	void Relive();
 
-	bool bCanRelive() { return m_bCanRelive; }
 	int32 GetMonsterID() { return m_MonsterID; }
 	int32 GetMonsterType() { return m_MonsterType; }
-	bool IsNeedRelive(int64 time) { return time >= GetDieTime() + m_ReliveCD; }
+	bool IsNeedRelive(int64 time) { return m_bCanRelive && time >= GetDieTime() + m_ReliveCD; }
 private:
 	bool m_bCanRelive;
 	int32 m_MonsterID;
 	int32 m_MonsterType;
 	int32 m_ReliveCD;
+	float m_ReliveX;
+	float m_ReliveY;
+	float m_ReliveZ;
 };

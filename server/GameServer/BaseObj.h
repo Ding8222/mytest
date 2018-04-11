@@ -58,7 +58,6 @@ private:
 	// 名称
 	char m_ObjName[MAX_NAME_LEN];
 public:
-	void RestWaitRemove() { m_WaitRemoveTime = 0; }
 	void SetWaitRemove() { m_WaitRemoveTime = g_currenttime; }
 	bool IsWaitRemove() { return m_WaitRemoveTime > 0; }
 	bool CanRemove(int64 time) { return time >= m_WaitRemoveTime + obj_delay_time; }

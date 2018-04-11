@@ -20,10 +20,22 @@ namespace CSVData
 		if (!CSV::CsvLoader::LoadCsv<CMapDB>("Map"))
 			return false;
 
+		if (!CSV::CsvLoader::LoadCsv<CMapGateDB>("MapGate"))
+			return false;
+
+		if (!CSV::CsvLoader::LoadCsv<CInstanceDB>("Instance"))
+			return false;
+
 		if (!CSV::CsvLoader::LoadCsv<CMonsterDB>("Monster"))
 			return false;
 
 		if (!CSV::CsvLoader::LoadCsv<CNPCDB>("NPC"))
+			return false;
+
+		if (!CSV::CsvLoader::LoadCsv<CMapMonsterDB>("MapMonster"))
+			return false;
+
+		if (!CSV::CsvLoader::LoadCsv<CInstanceMonsterDB>("InstanceMonster"))
 			return false;
 
 		RunStateLog("加载所有CSV成功！");
@@ -37,8 +49,12 @@ namespace CSVData
 		CSkillDB::Destroy();
 		CStatusDB::Destroy();
 		CMapDB::Destroy();
+		CMapGateDB::Destroy();
+		CInstanceDB::Destroy();
 		CMonsterDB::Destroy();
 		CNPCDB::Destroy();
+		CMapMonsterDB::Destroy();
+		CInstanceMonsterDB::Destroy();
 	}
 
 	// 例子
@@ -104,6 +120,33 @@ namespace CSVData
 		return true;
 	}
 
+	// 副本
+	std::unordered_map<int64, stInstance *> CInstanceDB::m_Data;
+	bool CInstanceDB::AddData(CSV::Row & _Row)
+	{
+		stInstance *pdata = new stInstance;
+		_Row.getValue(pdata->nInstanceID, "副本ID");
+		_Row.getValue(pdata->nMapID, "地图ID");
+		_Row.getValue(pdata->nLimitTime, "时间限制");
+
+		if (FindById(pdata->nInstanceID))
+		{
+			RunStateError("添加重复项目 %d ！", pdata->nInstanceID);
+			delete pdata;
+			return false;
+		}
+
+		if (pdata->nInstanceID < 0 || pdata->nMapID < 0 || pdata->nLimitTime <= 0)
+		{
+			RunStateError("配置错误 %d ！", pdata->nInstanceID);
+			delete pdata;
+			return false;
+		}
+
+		m_Data.insert(std::make_pair(pdata->nInstanceID, pdata));
+		return true;
+	}
+
 	// 地图
 	std::unordered_map<int64, stMap *> CMapDB::m_Data;
 	bool CMapDB::AddData(CSV::Row & _Row)
@@ -135,6 +178,40 @@ namespace CSVData
 		return true;
 	}
 
+	// 地图
+	std::unordered_map<int64, stMapGate *> CMapGateDB::m_Data;
+	bool CMapGateDB::AddData(CSV::Row & _Row)
+	{
+		stMapGate *pdata = new stMapGate;
+		_Row.getValue(pdata->nMapGateID, "传送门ID");
+		_Row.getValue(pdata->nSrcMapID, "所在地图");
+		_Row.getValue(pdata->nSrcX, "所在地图坐标X");
+		_Row.getValue(pdata->nSrcY, "所在地图坐标Y");
+		_Row.getValue(pdata->nSrcZ, "所在地图坐标Z");
+		_Row.getValue(pdata->nTarMapID, "目标地图");
+		_Row.getValue(pdata->nTarX, "目标地图坐标X");
+		_Row.getValue(pdata->nTarY, "目标地图坐标Y");
+		_Row.getValue(pdata->nTarZ, "目标地图坐标Z");
+
+		if (FindById(pdata->nMapGateID))
+		{
+			RunStateError("添加重复项目 %d ！", pdata->nMapGateID);
+			delete pdata;
+			return false;
+		}
+		
+		if (pdata->nMapGateID < 0 || pdata->nSrcMapID < 0 || pdata->nTarMapID < 0)
+		{
+			RunStateError("配置错误 %d ！", pdata->nMapGateID);
+			delete pdata;
+			return false;
+		}
+
+		m_Data.insert(std::make_pair(pdata->nMapGateID, pdata));
+
+		return true;
+	}
+
 	// Monster
 	std::unordered_map<int64, stMonster *> CMonsterDB::m_Data;
 	bool CMonsterDB::AddData(CSV::Row & _Row)
@@ -142,12 +219,6 @@ namespace CSVData
 		stMonster *pdata = new stMonster;
 		_Row.getValue(pdata->nMonsterID, "怪物ID");
 		_Row.getValue(pdata->nMonsterType, "怪物类型");
-		_Row.getValue(pdata->bCanRelive, "是否复活");
-		_Row.getValue(pdata->nReliveCD, "复活CD");
-		_Row.getValue(pdata->nMapID, "地图ID");
-		_Row.getValue(pdata->nX, "坐标X");
-		_Row.getValue(pdata->nY, "坐标Y");
-		_Row.getValue(pdata->nZ, "坐标Z");
 
 		if (FindById(pdata->nMonsterID))
 		{
@@ -156,7 +227,7 @@ namespace CSVData
 			return false;
 		}
 
-		if (pdata->nMonsterID < 0 || pdata->nMonsterType < 0 || pdata->nMapID < 0 || pdata->nReliveCD < 0)
+		if (pdata->nMonsterID < 0 || pdata->nMonsterType < 0)
 		{
 			RunStateError("配置错误 %d ！", pdata->nMonsterID);
 			delete pdata;
@@ -194,6 +265,68 @@ namespace CSVData
 		}
 
 		m_Data.insert(std::make_pair(pdata->nNPCID, pdata));
+		return true;
+	}
+
+	// 地图刷怪
+	std::unordered_map<int64, std::vector<stMapMonster *> *> CMapMonsterDB::m_Data;
+	bool CMapMonsterDB::AddData(CSV::Row & _Row)
+	{
+		stMapMonster *pdata = new stMapMonster;
+		_Row.getValue(pdata->nMapID, "地图ID");
+		_Row.getValue(pdata->nMonsterID, "怪物ID");
+		_Row.getValue(pdata->bCanRelive, "是否复活");
+		_Row.getValue(pdata->nReliveCD, "复活CD");
+		_Row.getValue(pdata->nX, "坐标X");
+		_Row.getValue(pdata->nY, "坐标Y");
+		_Row.getValue(pdata->nZ, "坐标Z");
+
+		std::vector<stMapMonster *> *monsterset = FindById(pdata->nMapID);
+		if (!monsterset)
+		{
+			monsterset = new std::vector<stMapMonster *>;
+			m_Data.insert(std::make_pair(pdata->nMapID, monsterset));
+		}
+
+		if (pdata->nMapID < 0 || pdata->nMonsterID < 0 || pdata->nReliveCD < 0)
+		{
+			RunStateError("配置错误 %d ！", pdata->nMapID);
+			delete pdata;
+			return false;
+		}
+
+		monsterset->push_back(pdata);
+		return true;
+	}
+
+	// 副本刷怪
+	std::unordered_map<int64, std::vector<stInstanceMonster *> *> CInstanceMonsterDB::m_Data;
+	bool CInstanceMonsterDB::AddData(CSV::Row & _Row)
+	{
+		stInstanceMonster *pdata = new stInstanceMonster;
+		_Row.getValue(pdata->nInstanceID, "副本ID");
+		_Row.getValue(pdata->nMonsterID, "怪物ID");
+		_Row.getValue(pdata->bCanRelive, "是否复活");
+		_Row.getValue(pdata->nReliveCD, "复活CD");
+		_Row.getValue(pdata->nX, "坐标X");
+		_Row.getValue(pdata->nY, "坐标Y");
+		_Row.getValue(pdata->nZ, "坐标Z");
+
+		std::vector<stInstanceMonster *> *monsterset = FindById(pdata->nInstanceID);
+		if (!monsterset)
+		{
+			monsterset = new std::vector<stInstanceMonster *>;
+			m_Data.insert(std::make_pair(pdata->nInstanceID, monsterset));
+		}
+
+		if (pdata->nInstanceID < 0 || pdata->nMonsterID < 0 || pdata->nReliveCD < 0)
+		{
+			RunStateError("配置错误 %d ！", pdata->nInstanceID);
+			delete pdata;
+			return false;
+		}
+
+		monsterset->push_back(pdata);
 		return true;
 	}
 }

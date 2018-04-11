@@ -321,7 +321,7 @@ void CScene::DelAllNPC()
 
 
 // 添加Monster至场景
-bool CScene::AddMonster(int32 monsterid, float x, float y, float z)
+bool CScene::AddMonster(int32 monsterid, float x, float y, float z, bool relive, int32 relivecd)
 {
 	CMonster *monster = CMonsterCreator::CreateMonster();
 	if (!monster)
@@ -330,7 +330,7 @@ bool CScene::AddMonster(int32 monsterid, float x, float y, float z)
 		return false;
 	}
 
-	if (!monster->Init(monsterid))
+	if (!monster->Init(monsterid, x, y, z, relive, relivecd))
 	{
 		RunStateError("Monster：%d 初始化失败！", monsterid);
 		CMonsterCreator::ReleaseMonster(monster);
@@ -366,8 +366,7 @@ void CScene::ProcessAllMonster()
 		tempiter = iter;
 		++iter;
 
-		// 不能复活，而且等待被移除
-		if (!(*tempiter)->bCanRelive() && (*tempiter)->IsWaitRemove())
+		if ((*tempiter)->IsWaitRemove())
 		{
 			m_WaitRemoveMonster.push_back(*tempiter);
 			m_MonsterList.erase(tempiter);

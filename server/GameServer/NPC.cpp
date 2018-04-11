@@ -18,7 +18,7 @@ void CNPC::Run()
 
 void CNPC::Die()
 {
-	if (IsWaitRemove())
+	if (IsDie())
 		return;
 
 	LeaveScene();

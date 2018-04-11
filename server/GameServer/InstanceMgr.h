@@ -6,6 +6,7 @@
 #pragma once
 
 struct idmgr;
+class CBaseObj;
 class CInstance;
 class CInstanceMgr
 {
@@ -27,8 +28,12 @@ public:
 	int32 AddInstance(int32 instancebaseid);
 	// 根据副本实例ID查找副本
 	CInstance *FindInstance(int32 instanceid);
-	bool AddNPC(int32 npcid, int32 mapid, float x, float y, float z);
-	bool AddMonster(int32 monsterid, int32 mapid, float x, float y, float z);
+	// 添加NPC
+	bool AddNPC(int32 npcid, int32 instanceid, float x, float y, float z);
+	// 添加怪物
+	bool AddMonster(int32 monsterid, int32 instanceid, float x, float y, float z);
+	// 进入副本
+	bool EnterInstance(CBaseObj * obj, int32 instanceid);
 private:
 	void ProcessAllInstance();
 	void CheckAndRemove();

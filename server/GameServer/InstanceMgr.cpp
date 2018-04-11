@@ -1,7 +1,6 @@
 ﻿#include "idmgr.c"
 #include "Instance.h"
 #include "InstanceMgr.h"
-#include "MapConfig.h"
 #include "MapInfo.h"
 #include "serverlog.h"
 #include "objectpool.h"
@@ -99,11 +98,6 @@ void CInstanceMgr::Destroy()
 
 int32 CInstanceMgr::AddInstance(int32 instancebaseid)
 {
-	CMapInfo* mapconfig = CMapConfig::Instance().FindMapInfo(instancebaseid);
-
-	if (!mapconfig || mapconfig->GetMapType() != MapEnum::MapType::EMT_INSTANCE)
-		return 0;
-
 	int32 id = idmgr_allocid(m_IDPool);
 	if (id <= 0)
 	{
@@ -118,7 +112,7 @@ int32 CInstanceMgr::AddInstance(int32 instancebaseid)
 		return 0;
 	}
 
-	if (newinstance->Init(mapconfig))
+	if (newinstance->Init(instancebaseid))
 	{
 		m_InstanceSet[id] = newinstance;
 		m_InstanceList.push_back(newinstance);
@@ -168,6 +162,17 @@ bool CInstanceMgr::AddMonster(int32 monsterid, int32 instanceid, float x, float 
 	}
 
 	return instance->AddMonster(monsterid, x, y, z);
+}
+
+bool CInstanceMgr::EnterInstance(CBaseObj * obj, int32 instanceid)
+{
+	CInstance *instance = FindInstance(instanceid);
+	if (instance && !instance->IsNeedRemove())
+	{
+		return instance->AddObj(obj);
+	}
+
+	return false;
 }
 
 void CInstanceMgr::ProcessAllInstance()

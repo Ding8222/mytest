@@ -69,7 +69,7 @@ private:
 	std::list<CNPC *> m_WaitRemoveNPC;
 public:
 	// 添加Monster至场景
-	bool AddMonster(int32 monsterid, float x, float y, float z);
+	bool AddMonster(int32 monsterid, float x, float y, float z, bool relive = false, int32 relivecd = 0);
 private:
 	// 处理所有Monster
 	void ProcessAllMonster();

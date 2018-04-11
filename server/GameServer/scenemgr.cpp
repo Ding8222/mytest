@@ -113,7 +113,7 @@ bool CSceneMgr::AddNPC(int32 npcid, int32 mapid, float x, float y, float z)
 	return map->AddNPC(npcid, x, y, z);
 }
 
-bool CSceneMgr::AddMonster(int32 monsterid, int32 mapid, float x, float y, float z)
+bool CSceneMgr::AddMonster(int32 monsterid, int32 mapid, float x, float y, float z, bool relive, int32 relivecd)
 {
 	CScene *map = FindScene(mapid);
 	if (!map)
@@ -122,7 +122,7 @@ bool CSceneMgr::AddMonster(int32 monsterid, int32 mapid, float x, float y, float
 		return false;
 	}
 
-	return map->AddMonster(monsterid, x, y, z);
+	return map->AddMonster(monsterid, x, y, z, relive, relivecd);
 }
 
 bool CSceneMgr::AddScene(CMapInfo* mapconfig)
@@ -168,16 +168,21 @@ bool CSceneMgr::LoadNPC()
 
 bool CSceneMgr::LoadMonster()
 {
-	for (auto &i : CSVData::CMonsterDB::m_Data)
+	for (auto &i : CSVData::CMapMonsterDB::m_Data)
 	{
-		CSVData::stMonster *npc = i.second;
+		std::vector<CSVData::stMapMonster *> *monsterset = i.second;
 		// 判断一下所在地图是否加载
-		if (FindScene(npc->nMapID))
+		if (FindScene(static_cast<int32>(i.first)))
 		{
-			if (!AddMonster(npc->nMonsterID, npc->nMapID, npc->nX, npc->nY, npc->nZ))
+			std::vector<CSVData::stMapMonster *>::iterator iter = monsterset->begin();
+			for (; iter != monsterset->end(); ++iter)
 			{
-				RunStateError("地图：%d 添加monster：%d 失败！");
-				return false;
+				CSVData::stMapMonster *monster = *iter;
+				if (!AddMonster(monster->nMonsterID, monster->nMapID, monster->nX, monster->nY, monster->nZ, monster->bCanRelive, monster->nReliveCD))
+				{
+					RunStateError("地图：%d 添加monster：%d 失败！");
+					return false;
+				}
 			}
 		}
 	}
