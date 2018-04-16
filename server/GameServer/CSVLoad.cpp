@@ -82,7 +82,7 @@ namespace CSVData
 	bool CSkillDB::AddData(CSV::Row & _Row)
 	{
 		stSkill *pdata = new stSkill;
-		_Row.getValue(pdata->nIndex, "序号");
+		_Row.getValue(pdata->nIndex, "Index");
 		_Row.getValue(pdata->nSkillID, "技能ID");
 		_Row.getValue(pdata->nSkillLev, "技能等级");
 		_Row.getValue(pdata->nBaseDamage, "基础伤害");
@@ -104,7 +104,7 @@ namespace CSVData
 	bool CStatusDB::AddData(CSV::Row & _Row)
 	{
 		stStatus *pdata = new stStatus;
-		_Row.getValue(pdata->nIndex, "序号");
+		_Row.getValue(pdata->nIndex, "Index");
 		_Row.getValue(pdata->nStatusID, "状态ID");
 		_Row.getValue(pdata->nStatusLev, "状态等级");
 
