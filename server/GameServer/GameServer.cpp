@@ -214,6 +214,13 @@ void CGameServer::RunOnce()
 void CGameServer::Destroy()
 {
 	Exit();
+
+	if (m_BackCommand)
+	{
+		m_BackCommand->~CBackCommand();
+		free(m_BackCommand);
+		m_BackCommand = NULL;
+	}
 }
 
 static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr);
