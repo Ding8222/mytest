@@ -60,7 +60,7 @@ bool init()
 
 	g_client_connectlog_flag = CConfig::Instance().IsOpenClientConnectLog();
 	g_elapsed_log_flag = CConfig::Instance().IsOpenElapsedLog();
-	sPoolInfo.SetMeminfoFileName("LoginServer_Log/mempoolinfo.txt");
+	sPoolInfo.SetMeminfoFileName("log_log/LoginServer_Log/mempoolinfo.txt");
 
 	RunStateLog("登陆服务器开始启动!");
 

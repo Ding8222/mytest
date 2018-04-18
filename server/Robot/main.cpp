@@ -57,7 +57,7 @@ bool init()
 		return 0;
 	}
 
-	sPoolInfo.SetMeminfoFileName("Robot_Log/mempoolinfo.txt");
+	sPoolInfo.SetMeminfoFileName("log_log/Robot_Log/mempoolinfo.txt");
 	log_writelog("机器人开始启动!");
 
 	// 初始化网络库

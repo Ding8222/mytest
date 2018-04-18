@@ -71,7 +71,7 @@ bool init(int argc, char *argv[])
 	}
 
 	g_elapsed_log_flag = CConfig::Instance().IsOpenElapsedLog();
-	sPoolInfo.SetMeminfoFileName("GameServer_Log/mempoolinfo.txt");
+	sPoolInfo.SetMeminfoFileName("log_log/GameServer_Log/mempoolinfo.txt");
 
 	RunStateLog("[%d线]逻辑服务器开始启动!", CConfig::Instance().GetLineID());
 

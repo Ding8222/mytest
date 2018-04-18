@@ -73,7 +73,7 @@ bool init(int argc, char *argv[])
 
 	g_client_connectlog_flag = CConfig::Instance().IsOpenClientConnectLog();
 	g_elapsed_log_flag = CConfig::Instance().IsOpenElapsedLog();
-	sPoolInfo.SetMeminfoFileName("GameGateway_Log/mempoolinfo.txt");
+	sPoolInfo.SetMeminfoFileName("log_log/GameGateway_Log/mempoolinfo.txt");
 
 	RunStateLog("[%d线]网关服务器开始启动!", CConfig::Instance().GetLineID());
 

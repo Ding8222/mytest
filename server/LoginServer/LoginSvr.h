@@ -5,6 +5,7 @@
 */
 #pragma once
 
+class CBackCommand;
 class CLoginServer
 {
 public:
@@ -25,7 +26,9 @@ public:
 
 private:
 	void RunOnce();
+	bool InitBackCommand();
 
 private:
 	bool m_Run;
+	CBackCommand *m_BackCommand;
 };

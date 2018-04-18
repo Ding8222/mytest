@@ -7,6 +7,8 @@
 #include "ServerLog.h"
 #include "ClientAuth.h"
 #include "LogConnecter.h"
+#include "BackCommand.h"
+#include "objectpool.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -24,11 +26,13 @@ int64 g_currenttime;
 
 CLoginServer::CLoginServer()
 {
+	m_BackCommand = nullptr;
 	m_Run = false;
 }
 
 CLoginServer::~CLoginServer()
 {
+	m_BackCommand = nullptr;
 	m_Run = false;
 }
 
@@ -48,6 +52,12 @@ bool CLoginServer::Init()
 			break;
 		}
 #endif
+		if (!InitBackCommand())
+		{
+			RunStateError("初始化 BackCommand 失败!");
+			break;
+		}
+
 		if (!CLoginClientMgr::Instance().Init(CConfig::Instance().GetMaxClientNum(),
 			CConfig::Instance().GetListenPort(),
 			CConfig::Instance().GetOverTime(),
@@ -146,6 +156,8 @@ void CLoginServer::Exit()
 void CLoginServer::RunOnce()
 {
 	lxnet::net_run();
+	m_BackCommand->Run(g_currenttime);
+
 	CLoginCenterConnect::Instance().Run();
 	CLoginClientMgr::Instance().Run();
 	CLogConnecter::Instance().Run();
@@ -158,4 +170,102 @@ void CLoginServer::RunOnce()
 void CLoginServer::Destroy()
 {
 	Exit();
+}
+
+static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr);
+
+static void back_dofunction(lxnet::Socketer *sock)
+{
+	MessagePack *pack;
+	char commandstr[32];
+	Msg *pmsg = sock->GetMsg();
+	if (!pmsg)
+		return;
+	pack = (MessagePack *)pmsg;
+	pack->Begin();
+	pack->GetString(commandstr, sizeof(commandstr));
+	commandstr[sizeof(commandstr) - 1] = 0;
+
+	ProcessCommand(sock, commandstr);
+}
+
+bool CLoginServer::InitBackCommand()
+{
+	m_BackCommand = (CBackCommand *)malloc(sizeof(CBackCommand));
+	if (!m_BackCommand)
+		return false;
+	new(m_BackCommand) CBackCommand();
+	if (!m_BackCommand->Init(back_dofunction, CConfig::Instance().GetMonitorPort(), CConfig::Instance().GetPingTime(), CConfig::Instance().GetServerName()))
+		return false;
+
+	return true;
+}
+
+static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
+{
+	static char s_buf[32 * 1024];
+	short size = 0;
+	MessagePack res;
+	if (strcmp(commandstr, "help") == 0)
+	{
+		snprintf(s_buf, sizeof(s_buf) - 1, "help 帮助\nopenelapsed/closeelapsed 打开/关闭帧开销实时日志\ncurrentinfo 输出当前信息\nnetmeminfo 输出网络库内存使用情况\nallmeminfo 输出此程序内存池使用信息到文件\n");
+		size = (short)strlen(s_buf) + 1;
+		s_buf[size] = 0;
+		res.PushString(s_buf);
+		sock->SendMsg(&res);
+	}
+	else if (strcmp(commandstr, "openelapsed") == 0)
+	{
+		g_elapsed_log_flag = true;
+
+		snprintf(s_buf, sizeof(s_buf) - 1, "帧开销实时日志已打开");
+		size = (short)strlen(s_buf) + 1;
+		s_buf[size] = 0;
+		res.PushString(s_buf);
+		sock->SendMsg(&res);
+	}
+	else if (strcmp(commandstr, "closeelapsed") == 0)
+	{
+		g_elapsed_log_flag = false;
+
+		snprintf(s_buf, sizeof(s_buf) - 1, "帧开销实时日志已关闭");
+		size = (short)strlen(s_buf) + 1;
+		s_buf[size] = 0;
+		res.PushString(s_buf);
+		sock->SendMsg(&res);
+	}
+	else if (strcmp(commandstr, "currentinfo") == 0)
+	{
+		size = 0;
+
+		CLoginCenterConnect::Instance().GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
+		size = strlen(s_buf);
+		CLoginClientMgr::Instance().GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
+		s_buf[sizeof(s_buf) - 1] = 0;
+		res.PushString(s_buf);
+		sock->SendMsg(&res);
+	}
+	else if (strcmp(commandstr, "netmeminfo") == 0)
+	{
+		snprintf(s_buf, sizeof(s_buf) - 1, "%s", lxnet::net_get_memory_info(s_buf, sizeof(s_buf) - 1));
+		size = (short)strlen(s_buf) + 1;
+		s_buf[size] = 0;
+		res.PushString(s_buf);
+		sock->SendMsg(&res);
+	}
+	else if (strcmp(commandstr, "allmeminfo") == 0)
+	{
+		sPoolInfo.writeinfotofile();
+
+		snprintf(s_buf, sizeof(s_buf) - 1, "所有内存信息已经写入到文件");
+		size = (short)strlen(s_buf) + 1;
+		s_buf[size] = 0;
+		res.PushString(s_buf);
+		sock->SendMsg(&res);
+	}
+	else
+	{
+		res.PushString(commandstr);
+		sock->SendMsg(&res);
+	}
 }

@@ -59,7 +59,7 @@ bool init()
 	}
 
 	g_elapsed_log_flag = CConfig::Instance().IsOpenElapsedLog();
-	sPoolInfo.SetMeminfoFileName("DBServer_Log/mempoolinfo.txt");
+	sPoolInfo.SetMeminfoFileName("log_log/DBServer_Log/mempoolinfo.txt");
 
 	RunStateLog("数据服务器开始启动!");
 

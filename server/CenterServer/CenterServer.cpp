@@ -179,6 +179,18 @@ void CCenterServer::RunOnce()
 	CNameCheckConnecter::Instance().EndRun();
 }
 
+void CCenterServer::Destroy()
+{
+	Exit();
+
+	if (m_BackCommand)
+	{
+		m_BackCommand->~CBackCommand();
+		free(m_BackCommand);
+		m_BackCommand = NULL;
+	}
+}
+
 static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr);
 
 static void back_dofunction(lxnet::Socketer *sock)
@@ -208,21 +220,9 @@ bool CCenterServer::InitBackCommand()
 	return true;
 }
 
-void CCenterServer::Destroy()
-{
-	Exit();
-
-	if (m_BackCommand)
-	{
-		m_BackCommand->~CBackCommand();
-		free(m_BackCommand);
-		m_BackCommand = NULL;
-	}
-}
-
 static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 {
-	static char s_buf[31 * 1024];
+	static char s_buf[32 * 1024];
 	short size = 0;
 	MessagePack res;
 	if (strcmp(commandstr, "help") == 0)

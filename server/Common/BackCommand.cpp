@@ -94,6 +94,7 @@ void CBackCommand::Run(int64 currenttime)
 		m_Sock->SendMsg(&res);
 		m_Sock->CheckSend();
 		m_Sock->CheckRecv();
+		m_LastSend = 0;
 	}
 }
 

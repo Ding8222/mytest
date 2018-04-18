@@ -109,7 +109,6 @@ bool CConnectMgr::IsAlreadyRegister(int32 id)
 void CConnectMgr::GetCurrentInfo(char *buf, size_t buflen)
 {
 	snprintf(buf, buflen - 1, "当前连接的服务器数量：%d\n",(int32)m_List.size());
-
 }
 
 void CConnectMgr::ResetMsgNum()
