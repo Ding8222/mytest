@@ -247,9 +247,9 @@ int32 CClientMgr::OnNewClient()
 
 	sock->SetRecvLimit(m_RecvDataLimit);
 	sock->SetSendLimit(m_SendDataLimit);
-	sock->UseCompress();
-	sock->UseEncrypt();
-	sock->UseDecrypt();
+	//sock->UseCompress();
+	//sock->UseEncrypt();
+	//sock->UseDecrypt();
 	//sock->UseTGW();
 
 	newclient->SetClientID(id);

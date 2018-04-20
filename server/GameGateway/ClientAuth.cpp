@@ -174,7 +174,7 @@ void CClientAuth::QueryLogin(Msg *pMsg, CClient *cl)
 		else
 		{
 			sendMsg.set_ncode(netData::LoginRet::EC_SECRET);
-			ClientConnectError("登陆失败！account:%s，秘钥：%s错误！", msg.account().c_str(), msg.secret().c_str());
+			ClientConnectError("登陆失败！account:%s，秘钥：[%s]错误！存储秘钥：[%s]", msg.account().c_str(), msg.secret().c_str(), _pData->Secret.c_str());
 		}
 	}
 	else

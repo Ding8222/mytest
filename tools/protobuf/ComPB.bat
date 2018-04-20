@@ -1,3 +1,4 @@
+@echo off
 cd .\netData
 
 for %%i in (*.proto) do (  

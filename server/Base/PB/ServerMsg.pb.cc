@@ -395,6 +395,7 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::DelClient, account_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::DelClient, offline_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::svrData::ClientAccount, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -454,11 +455,11 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 32, -1, sizeof(::svrData::UpdateServerLoad)},
   { 39, -1, sizeof(::svrData::AddPlayerToCenter)},
   { 48, -1, sizeof(::svrData::DelClient)},
-  { 54, -1, sizeof(::svrData::ClientAccount)},
-  { 63, -1, sizeof(::svrData::LoadPlayerData)},
-  { 82, -1, sizeof(::svrData::ChangeLine)},
-  { 91, -1, sizeof(::svrData::ChangeLineRet)},
-  { 99, -1, sizeof(::svrData::KickClient)},
+  { 55, -1, sizeof(::svrData::ClientAccount)},
+  { 64, -1, sizeof(::svrData::LoadPlayerData)},
+  { 83, -1, sizeof(::svrData::ChangeLine)},
+  { 92, -1, sizeof(::svrData::ChangeLineRet)},
+  { 100, -1, sizeof(::svrData::KickClient)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -512,25 +513,26 @@ void AddDescriptorsImpl() {
       "ClientCountNow\030\001 \001(\005\022\027\n\017nClientCountMax\030"
       "\002 \001(\005\"W\n\021AddPlayerToCenter\022\r\n\005nGuid\030\001 \001("
       "\003\022\021\n\tnClientID\030\002 \001(\005\022\017\n\007nGateID\030\003 \001(\005\022\017\n"
-      "\007Account\030\004 \001(\t\"\034\n\tDelClient\022\017\n\007Account\030\001"
-      " \001(\t\"h\n\rClientAccount\022\017\n\007nGameID\030\001 \001(\005\022\017"
-      "\n\007Account\030\002 \001(\t\022\016\n\006Secret\030\003 \001(\014\022%\n\004Data\030"
-      "\004 \001(\0132\027.svrData.LoadPlayerData\"\352\001\n\016LoadP"
-      "layerData\022\017\n\007Account\030\001 \001(\t\022\014\n\004Name\030\002 \001(\t"
-      "\022\r\n\005nGuid\030\003 \001(\003\022\014\n\004nSex\030\004 \001(\005\022\014\n\004nJob\030\005 "
-      "\001(\005\022\016\n\006nLevel\030\006 \001(\005\022\023\n\013nCreateTime\030\007 \001(\003"
-      "\022\022\n\nnLoginTime\030\010 \001(\003\022\016\n\006nMapID\030\t \001(\005\022\n\n\002"
-      "nX\030\n \001(\002\022\n\n\002nY\030\013 \001(\002\022\n\n\002nZ\030\014 \001(\002\022\023\n\013bCha"
-      "ngeLine\030\r \001(\010\022\014\n\004Data\030\016 \001(\014\"e\n\nChangeLin"
-      "e\022\016\n\006nMapID\030\001 \001(\005\022\017\n\007nLineID\030\002 \001(\005\022\017\n\007nG"
-      "ameID\030\003 \001(\005\022%\n\004Data\030\004 \001(\0132\027.svrData.Load"
-      "PlayerData\"|\n\rChangeLineRet\022\r\n\005nCode\030\001 \001"
-      "(\005\022\016\n\006nMapID\030\002 \001(\005\022\017\n\007nLineID\030\003 \001(\005\";\n\002E"
-      "C\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020"
-      "\002\022\r\n\tEC_SERVER\020\003\"\014\n\nKickClientb\006proto3"
+      "\007Account\030\004 \001(\t\"-\n\tDelClient\022\017\n\007Account\030\001"
+      " \001(\t\022\017\n\007OffLine\030\002 \001(\010\"h\n\rClientAccount\022\017"
+      "\n\007nGameID\030\001 \001(\005\022\017\n\007Account\030\002 \001(\t\022\016\n\006Secr"
+      "et\030\003 \001(\014\022%\n\004Data\030\004 \001(\0132\027.svrData.LoadPla"
+      "yerData\"\352\001\n\016LoadPlayerData\022\017\n\007Account\030\001 "
+      "\001(\t\022\014\n\004Name\030\002 \001(\t\022\r\n\005nGuid\030\003 \001(\003\022\014\n\004nSex"
+      "\030\004 \001(\005\022\014\n\004nJob\030\005 \001(\005\022\016\n\006nLevel\030\006 \001(\005\022\023\n\013"
+      "nCreateTime\030\007 \001(\003\022\022\n\nnLoginTime\030\010 \001(\003\022\016\n"
+      "\006nMapID\030\t \001(\005\022\n\n\002nX\030\n \001(\002\022\n\n\002nY\030\013 \001(\002\022\n\n"
+      "\002nZ\030\014 \001(\002\022\023\n\013bChangeLine\030\r \001(\010\022\014\n\004Data\030\016"
+      " \001(\014\"e\n\nChangeLine\022\016\n\006nMapID\030\001 \001(\005\022\017\n\007nL"
+      "ineID\030\002 \001(\005\022\017\n\007nGameID\030\003 \001(\005\022%\n\004Data\030\004 \001"
+      "(\0132\027.svrData.LoadPlayerData\"|\n\rChangeLin"
+      "eRet\022\r\n\005nCode\030\001 \001(\005\022\016\n\006nMapID\030\002 \001(\005\022\017\n\007n"
+      "LineID\030\003 \001(\005\";\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_S"
+      "UCC\020\001\022\013\n\007EC_FAIL\020\002\022\r\n\tEC_SERVER\020\003\"\014\n\nKic"
+      "kClientb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 1198);
+      descriptor, 1215);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "ServerMsg.proto", &protobuf_RegisterTypes);
 }
@@ -2538,6 +2540,7 @@ void DelClient::InitAsDefaultInstance() {
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int DelClient::kAccountFieldNumber;
+const int DelClient::kOffLineFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 DelClient::DelClient()
@@ -2557,11 +2560,13 @@ DelClient::DelClient(const DelClient& from)
   if (from.account().size() > 0) {
     account_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.account_);
   }
+  offline_ = from.offline_;
   // @@protoc_insertion_point(copy_constructor:svrData.DelClient)
 }
 
 void DelClient::SharedCtor() {
   account_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  offline_ = false;
   _cached_size_ = 0;
 }
 
@@ -2597,6 +2602,7 @@ void DelClient::Clear() {
   (void) cached_has_bits;
 
   account_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  offline_ = false;
   _internal_metadata_.Clear();
 }
 
@@ -2620,6 +2626,20 @@ bool DelClient::MergePartialFromCodedStream(
             this->account().data(), static_cast<int>(this->account().length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
             "svrData.DelClient.Account"));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      // bool OffLine = 2;
+      case 2: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(16u /* 16 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &offline_)));
         } else {
           goto handle_unusual;
         }
@@ -2662,6 +2682,11 @@ void DelClient::SerializeWithCachedSizes(
       1, this->account(), output);
   }
 
+  // bool OffLine = 2;
+  if (this->offline() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->offline(), output);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -2687,6 +2712,11 @@ void DelClient::SerializeWithCachedSizes(
         1, this->account(), target);
   }
 
+  // bool OffLine = 2;
+  if (this->offline() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->offline(), target);
+  }
+
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
@@ -2709,6 +2739,11 @@ size_t DelClient::ByteSizeLong() const {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::StringSize(
         this->account());
+  }
+
+  // bool OffLine = 2;
+  if (this->offline() != 0) {
+    total_size += 1 + 1;
   }
 
   int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
@@ -2744,6 +2779,9 @@ void DelClient::MergeFrom(const DelClient& from) {
 
     account_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.account_);
   }
+  if (from.offline() != 0) {
+    set_offline(from.offline());
+  }
 }
 
 void DelClient::CopyFrom(const ::google::protobuf::Message& from) {
@@ -2771,6 +2809,7 @@ void DelClient::Swap(DelClient* other) {
 void DelClient::InternalSwap(DelClient* other) {
   using std::swap;
   account_.Swap(&other->account_);
+  swap(offline_, other->offline_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
   swap(_cached_size_, other->_cached_size_);
 }

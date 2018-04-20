@@ -30,11 +30,6 @@ class LoadPlayerDataFinishDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<LoadPlayerDataFinish>
       _instance;
 } _LoadPlayerDataFinish_default_instance_;
-class LoadMapFinishDefaultTypeInternal {
- public:
-  ::google::protobuf::internal::ExplicitlyConstructed<LoadMapFinish>
-      _instance;
-} _LoadMapFinish_default_instance_;
 class PlayerMoveDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<PlayerMove>
@@ -97,27 +92,6 @@ void InitDefaultsLoadPlayerDataFinishImpl() {
 void InitDefaultsLoadPlayerDataFinish() {
   static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsLoadPlayerDataFinishImpl);
-}
-
-void InitDefaultsLoadMapFinishImpl() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
-  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
-#else
-  ::google::protobuf::internal::InitProtobufDefaults();
-#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
-  {
-    void* ptr = &::netData::_LoadMapFinish_default_instance_;
-    new (ptr) ::netData::LoadMapFinish();
-    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::netData::LoadMapFinish::InitAsDefaultInstance();
-}
-
-void InitDefaultsLoadMapFinish() {
-  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
-  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsLoadMapFinishImpl);
 }
 
 void InitDefaultsPlayerMoveImpl() {
@@ -204,7 +178,7 @@ void InitDefaultsChangeMapRet() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsChangeMapRetImpl);
 }
 
-::google::protobuf::Metadata file_level_metadata[7];
+::google::protobuf::Metadata file_level_metadata[6];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[2];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
@@ -220,11 +194,6 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::LoadPlayerDataFinish, ncode_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::LoadPlayerDataFinish, ntempid_),
-  ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::LoadMapFinish, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::PlayerMove, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -266,17 +235,15 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::netData::Ping)},
   { 5, -1, sizeof(::netData::LoadPlayerDataFinish)},
-  { 12, -1, sizeof(::netData::LoadMapFinish)},
-  { 17, -1, sizeof(::netData::PlayerMove)},
-  { 25, -1, sizeof(::netData::PlayerMoveRet)},
-  { 35, -1, sizeof(::netData::ChangeMap)},
-  { 43, -1, sizeof(::netData::ChangeMapRet)},
+  { 12, -1, sizeof(::netData::PlayerMove)},
+  { 20, -1, sizeof(::netData::PlayerMoveRet)},
+  { 30, -1, sizeof(::netData::ChangeMap)},
+  { 38, -1, sizeof(::netData::ChangeMapRet)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::netData::_Ping_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::netData::_LoadPlayerDataFinish_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::netData::_LoadMapFinish_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::netData::_PlayerMove_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::netData::_PlayerMoveRet_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::netData::_ChangeMap_default_instance_),
@@ -299,7 +266,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 7);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 6);
 }
 
 void AddDescriptorsImpl() {
@@ -308,21 +275,20 @@ void AddDescriptorsImpl() {
       "\n\017ClientMsg.proto\022\007netData\"\006\n\004Ping\"d\n\024Lo"
       "adPlayerDataFinish\022\r\n\005nCode\030\001 \001(\005\022\017\n\007nTe"
       "mpID\030\002 \001(\r\",\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUC"
-      "C\020\001\022\013\n\007EC_FAIL\020\002\"\017\n\rLoadMapFinish\"-\n\nPla"
-      "yerMove\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002"
-      "\"P\n\rPlayerMoveRet\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022"
-      "\t\n\001z\030\003 \001(\002\022\017\n\007nTempID\030\004 \001(\r\022\r\n\005nCode\030\005 \001"
-      "(\005\"=\n\tChangeMap\022\016\n\006nMapID\030\001 \001(\005\022\017\n\007sEtok"
-      "en\030\002 \001(\t\022\017\n\007sSecret\030\003 \001(\014\"\330\001\n\014ChangeMapR"
-      "et\022\r\n\005nCode\030\001 \001(\005\022\021\n\tbChangeIP\030\002 \001(\010\022\021\n\t"
-      "nServerID\030\003 \001(\005\022\013\n\003sIP\030\004 \001(\t\022\r\n\005nPort\030\005 "
-      "\001(\005\022\016\n\006nMapID\030\006 \001(\005\"g\n\002EC\022\014\n\010EC_OTHER\020\000\022"
-      "\013\n\007EC_SUCC\020\001\022\013\n\007EC_FAIL\020\002\022\013\n\007EC_LINE\020\004\022\n"
-      "\n\006EC_MAP\020\005\022\017\n\013EC_LEAVEMAP\020\006\022\017\n\013EC_PACKDA"
-      "TA\020\007b\006proto3"
+      "C\020\001\022\013\n\007EC_FAIL\020\002\"-\n\nPlayerMove\022\t\n\001x\030\001 \001("
+      "\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002\"P\n\rPlayerMoveRet"
+      "\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002\022\017\n\007nTe"
+      "mpID\030\004 \001(\r\022\r\n\005nCode\030\005 \001(\005\"=\n\tChangeMap\022\016"
+      "\n\006nMapID\030\001 \001(\005\022\017\n\007sEtoken\030\002 \001(\t\022\017\n\007sSecr"
+      "et\030\003 \001(\014\"\330\001\n\014ChangeMapRet\022\r\n\005nCode\030\001 \001(\005"
+      "\022\021\n\tbChangeIP\030\002 \001(\010\022\021\n\tnServerID\030\003 \001(\005\022\013"
+      "\n\003sIP\030\004 \001(\t\022\r\n\005nPort\030\005 \001(\005\022\016\n\006nMapID\030\006 \001"
+      "(\005\"g\n\002EC\022\014\n\010EC_OTHER\020\000\022\013\n\007EC_SUCC\020\001\022\013\n\007E"
+      "C_FAIL\020\002\022\013\n\007EC_LINE\020\004\022\n\n\006EC_MAP\020\005\022\017\n\013EC_"
+      "LEAVEMAP\020\006\022\017\n\013EC_PACKDATA\020\007b\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 572);
+      descriptor, 555);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "ClientMsg.proto", &protobuf_RegisterTypes);
 }
@@ -849,193 +815,6 @@ void LoadPlayerDataFinish::InternalSwap(LoadPlayerDataFinish* other) {
 }
 
 ::google::protobuf::Metadata LoadPlayerDataFinish::GetMetadata() const {
-  protobuf_ClientMsg_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_ClientMsg_2eproto::file_level_metadata[kIndexInFileMessages];
-}
-
-
-// ===================================================================
-
-void LoadMapFinish::InitAsDefaultInstance() {
-}
-#if !defined(_MSC_VER) || _MSC_VER >= 1900
-#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
-
-LoadMapFinish::LoadMapFinish()
-  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
-  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
-    ::protobuf_ClientMsg_2eproto::InitDefaultsLoadMapFinish();
-  }
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:netData.LoadMapFinish)
-}
-LoadMapFinish::LoadMapFinish(const LoadMapFinish& from)
-  : ::google::protobuf::Message(),
-      _internal_metadata_(NULL),
-      _cached_size_(0) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  // @@protoc_insertion_point(copy_constructor:netData.LoadMapFinish)
-}
-
-void LoadMapFinish::SharedCtor() {
-  _cached_size_ = 0;
-}
-
-LoadMapFinish::~LoadMapFinish() {
-  // @@protoc_insertion_point(destructor:netData.LoadMapFinish)
-  SharedDtor();
-}
-
-void LoadMapFinish::SharedDtor() {
-}
-
-void LoadMapFinish::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* LoadMapFinish::descriptor() {
-  ::protobuf_ClientMsg_2eproto::protobuf_AssignDescriptorsOnce();
-  return ::protobuf_ClientMsg_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
-}
-
-const LoadMapFinish& LoadMapFinish::default_instance() {
-  ::protobuf_ClientMsg_2eproto::InitDefaultsLoadMapFinish();
-  return *internal_default_instance();
-}
-
-
-void LoadMapFinish::Clear() {
-// @@protoc_insertion_point(message_clear_start:netData.LoadMapFinish)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  _internal_metadata_.Clear();
-}
-
-bool LoadMapFinish::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
-  ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:netData.LoadMapFinish)
-  for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
-    tag = p.first;
-    if (!p.second) goto handle_unusual;
-  handle_unusual:
-    if (tag == 0) {
-      goto success;
-    }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, _internal_metadata_.mutable_unknown_fields()));
-  }
-success:
-  // @@protoc_insertion_point(parse_success:netData.LoadMapFinish)
-  return true;
-failure:
-  // @@protoc_insertion_point(parse_failure:netData.LoadMapFinish)
-  return false;
-#undef DO_
-}
-
-void LoadMapFinish::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:netData.LoadMapFinish)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
-  }
-  // @@protoc_insertion_point(serialize_end:netData.LoadMapFinish)
-}
-
-::google::protobuf::uint8* LoadMapFinish::InternalSerializeWithCachedSizesToArray(
-    bool deterministic, ::google::protobuf::uint8* target) const {
-  (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:netData.LoadMapFinish)
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:netData.LoadMapFinish)
-  return target;
-}
-
-size_t LoadMapFinish::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:netData.LoadMapFinish)
-  size_t total_size = 0;
-
-  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
-  }
-  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = cached_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void LoadMapFinish::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:netData.LoadMapFinish)
-  GOOGLE_DCHECK_NE(&from, this);
-  const LoadMapFinish* source =
-      ::google::protobuf::internal::DynamicCastToGenerated<const LoadMapFinish>(
-          &from);
-  if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:netData.LoadMapFinish)
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:netData.LoadMapFinish)
-    MergeFrom(*source);
-  }
-}
-
-void LoadMapFinish::MergeFrom(const LoadMapFinish& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:netData.LoadMapFinish)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::google::protobuf::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-}
-
-void LoadMapFinish::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:netData.LoadMapFinish)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void LoadMapFinish::CopyFrom(const LoadMapFinish& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:netData.LoadMapFinish)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool LoadMapFinish::IsInitialized() const {
-  return true;
-}
-
-void LoadMapFinish::Swap(LoadMapFinish* other) {
-  if (other == this) return;
-  InternalSwap(other);
-}
-void LoadMapFinish::InternalSwap(LoadMapFinish* other) {
-  using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  swap(_cached_size_, other->_cached_size_);
-}
-
-::google::protobuf::Metadata LoadMapFinish::GetMetadata() const {
   protobuf_ClientMsg_2eproto::protobuf_AssignDescriptorsOnce();
   return ::protobuf_ClientMsg_2eproto::file_level_metadata[kIndexInFileMessages];
 }
@@ -2497,9 +2276,6 @@ template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::netData::Ping* Arena::Create< ::
 }
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::netData::LoadPlayerDataFinish* Arena::Create< ::netData::LoadPlayerDataFinish >(Arena* arena) {
   return Arena::CreateInternal< ::netData::LoadPlayerDataFinish >(arena);
-}
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::netData::LoadMapFinish* Arena::Create< ::netData::LoadMapFinish >(Arena* arena) {
-  return Arena::CreateInternal< ::netData::LoadMapFinish >(arena);
 }
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::netData::PlayerMove* Arena::Create< ::netData::PlayerMove >(Arena* arena) {
   return Arena::CreateInternal< ::netData::PlayerMove >(arena);

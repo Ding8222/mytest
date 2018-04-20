@@ -61,6 +61,7 @@ message AddPlayerToCenter
 message DelClient
 {
 	string Account = 1;
+	bool OffLine = 2;
 }
 
 // 0-9 ClientToken

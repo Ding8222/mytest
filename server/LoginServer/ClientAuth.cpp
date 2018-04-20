@@ -12,8 +12,10 @@
 #include "des.h"
 #include <string>
 
+#include "ServerType.h"
 #include "LoginType.h"
 #include "DBSvrType.h"
+#include "ServerMsg.pb.h"
 #include "ClientMsg.pb.h"
 #include "Login.pb.h"
 #include "DBServer.pb.h"
@@ -183,10 +185,41 @@ void CClientAuth::SelectPlayer(CClient *cl, Msg *pMsg)
 		RunStateError("请求选择角色失败！没有认证！clientid：%d", cl->GetClientID());
 }
 
+void CClientAuth::SetSelectPlayerSucc(int32 clientid)
+{
+	if (clientid <= 0 || clientid >= m_ClientAuthInfoSet.size())
+	{
+		ClientConnectError("SetSelectPlayerSucc的clientid错误!");
+		return;
+	}
+
+	assert(m_ClientAuthInfoSet[clientid]);
+	if (!m_ClientAuthInfoSet[clientid])
+	{
+		RunStateError("设置选择成功失败！clientid：%d 不存在信息", clientid);
+		return;
+	}
+
+	m_ClientAuthInfoSet[clientid]->SelectSucc = true;
+}
+
+
+ClientAuthInfo *CClientAuth::GetClientAuthInfo(int32 clientid)
+{
+	if (clientid <= 0 || clientid >= m_ClientAuthInfoSet.size())
+	{
+		ClientConnectError("SetSelectPlayerSucc的clientid错误!");
+		return nullptr;
+	}
+
+	assert(m_ClientAuthInfoSet[clientid]);
+	return m_ClientAuthInfoSet[clientid];
+}
+
 // Client断开连接
 void CClientAuth::OnClientDisconnect(CClient *cl)
 {
-	DelAutoInfo(cl->GetClientID());
+	DelAuthInfo(cl->GetClientID());
 }
 
 bool CClientAuth::AddSecret(int32 clientid, const std::string &secret)
@@ -230,7 +263,7 @@ bool CClientAuth::AddAccount(int32 clientid, const std::string &account)
 	return true;
 }
 
-void CClientAuth::DelAutoInfo(int32 clientid)
+void CClientAuth::DelAuthInfo(int32 clientid)
 {
 	if (clientid <= 0 || clientid >= m_ClientAuthInfoSet.size())
 	{

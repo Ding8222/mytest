@@ -92,8 +92,19 @@ void CLoginCenterConnect::ProcessMsg(connector *_con)
 			{
 			case LOGIN_SUB_PLAYER_LIST_RET:
 			case LOGIN_SUB_CREATE_PLAYER_RET:
+			{
+				CLoginClientMgr::Instance().SendMsg(tl->id, pMsg);
+				break;
+			}
 			case LOGIN_SUB_SELECT_PLAYER_RET:
 			{
+				netData::SelectPlayerRet msg;
+				_CHECK_PARSE_(pMsg, msg);
+
+				if (msg.ncode() == netData::SelectPlayerRet::EC_SUCC)
+				{
+					CClientAuth::Instance().SetSelectPlayerSucc(tl->id);
+				}
 				CLoginClientMgr::Instance().SendMsg(tl->id, pMsg);
 				break;
 			}

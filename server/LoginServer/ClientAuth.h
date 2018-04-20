@@ -6,11 +6,14 @@ struct ClientAuthInfo
 {
 	ClientAuthInfo()
 	{
+		SelectSucc = false;
 		ClientID = 0;
 		Account.clear();
 		Secret.clear();
 	}
 
+	// 选角是否成功
+	bool SelectSucc;
 	int32 ClientID;
 	std::string Account;	// 账号
 	std::string Secret;	// 秘钥
@@ -45,13 +48,17 @@ public:
 	void CreatePlayer(CClient *cl, Msg *pMsg);
 	// 请求选择角色
 	void SelectPlayer(CClient *cl, Msg *pMsg);
+	// 设置选角成功
+	void SetSelectPlayerSucc(int32 clientid);
+	// 根据clientid获取认证信息
+	ClientAuthInfo *GetClientAuthInfo(int32 clientid);
 	// Client断开连接
 	void OnClientDisconnect(CClient *cl);
 private:
 	// 添加Secret
 	bool AddSecret(int32 clientid, const std::string &secret);
 	// 删除认证信息
-	void DelAutoInfo(int32 clientid);
+	void DelAuthInfo(int32 clientid);
 	// 验证Secret是否正确
 	bool CheckSecret(int32 clientid, const std::string &secret);
 	// 获取Secret

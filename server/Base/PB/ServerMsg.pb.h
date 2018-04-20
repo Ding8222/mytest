@@ -1055,11 +1055,18 @@ class DelClient : public ::google::protobuf::Message /* @@protoc_insertion_point
   ::std::string* release_account();
   void set_allocated_account(::std::string* account);
 
+  // bool OffLine = 2;
+  void clear_offline();
+  static const int kOffLineFieldNumber = 2;
+  bool offline() const;
+  void set_offline(bool value);
+
   // @@protoc_insertion_point(class_scope:svrData.DelClient)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::internal::ArenaStringPtr account_;
+  bool offline_;
   mutable int _cached_size_;
   friend struct ::protobuf_ServerMsg_2eproto::TableStruct;
   friend void ::protobuf_ServerMsg_2eproto::InitDefaultsDelClientImpl();
@@ -2282,6 +2289,20 @@ inline void DelClient::set_allocated_account(::std::string* account) {
   }
   account_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), account);
   // @@protoc_insertion_point(field_set_allocated:svrData.DelClient.Account)
+}
+
+// bool OffLine = 2;
+inline void DelClient::clear_offline() {
+  offline_ = false;
+}
+inline bool DelClient::offline() const {
+  // @@protoc_insertion_point(field_get:svrData.DelClient.OffLine)
+  return offline_;
+}
+inline void DelClient::set_offline(bool value) {
+  
+  offline_ = value;
+  // @@protoc_insertion_point(field_set:svrData.DelClient.OffLine)
 }
 
 // -------------------------------------------------------------------

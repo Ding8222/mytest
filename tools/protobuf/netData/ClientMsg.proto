@@ -20,13 +20,7 @@ message LoadPlayerDataFinish
 	uint32 nTempID = 2;
 }
 
-// 3-3 通知Server加载地图完毕
-message LoadMapFinish
-{
-	
-}
-
-// 3-4 请求移动
+// 3-3 请求移动
 message PlayerMove
 {
 	float x = 1;
@@ -34,7 +28,7 @@ message PlayerMove
 	float z = 3;
 }
 
-// 3-5 移动返回
+// 3-4 移动返回
 message PlayerMoveRet
 {
 	float x = 1;
@@ -44,7 +38,7 @@ message PlayerMoveRet
 	int32 nCode = 5;//返回的错误码
 }
 
-// 3-6 请求切换地图
+// 3-5 请求切换地图
 message ChangeMap
 {
 	int32 nMapID = 1;
@@ -52,7 +46,7 @@ message ChangeMap
 	bytes sSecret = 3;	// 秘钥,前端不用填写
 }
 
-// 3-7 切换地图返回
+// 3-6 切换地图返回
 message ChangeMapRet
 {
 	enum EC

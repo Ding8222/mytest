@@ -31,6 +31,8 @@ void ProcessLoginMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			_CHECK_PARSE_(pMsg, msg);
 
 			CClientAuthMgr::Instance().DelClientAuthInfo(tl->id);
+			if(msg.offline())
+				CClientAuthMgr::Instance().SetPlayerOffline(msg.account());
 			break;
 		}
 		}

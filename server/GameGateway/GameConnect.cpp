@@ -88,8 +88,8 @@ void CGameConnect::ProcessMsg(connector *_con)
 				}
 			}
 		}
-		// 转发给client
-		CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
+		else
+			CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
 		
 		switch (pMsg->GetMainType())
 		{

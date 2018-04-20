@@ -76,9 +76,9 @@ void CRobotMgr::Run()
 				lxnet::Socketer *co = (*tempitr)->GetCon();
 				if (co)
 				{
-					co->UseUncompress();
-					co->UseEncrypt();
-					co->UseDecrypt();
+					//co->UseUncompress();
+					//co->UseEncrypt();
+					//co->UseDecrypt();
 					//co->SendTGWInfo(s_LoginServerIP.c_str(), m_LoginServerPort);
 				}
 				// 请求登陆
