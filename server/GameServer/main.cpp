@@ -27,6 +27,8 @@
 bool init(int argc, char *argv[])
 {
 #ifdef _WIN32
+	SetConsoleOutputCP(65001);
+
 	if (!CMiniDump::Begin())
 	{
 		RunStateError("初始化MiniDump失败!");

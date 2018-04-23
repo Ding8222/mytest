@@ -5,6 +5,7 @@
 #include "msgbase.h"
 #include "Utilities.h"
 #include "Timer.h"
+#include "GameGatewayMgr.h"
 
 #include "ServerType.h"
 #include "ServerMsg.pb.h"
@@ -33,6 +34,31 @@ void CPlayer::Run()
 	{
 		// 5分钟保存一次数据
 		SaveData();
+	}
+}
+
+void CPlayer::SendMsgToMe(Msg &pMsg, bool bRef)
+{
+	msgtail tail;
+	tail.id = GetClientID();
+	CGameGatewayMgr::Instance().SendMsg(GetGateInfo(), pMsg, &tail, sizeof(tail));
+
+	if (bRef)
+	{
+		std::unordered_map<uint32, CBaseObj *> *playerlist = GetAoiList();
+		std::unordered_map<uint32, CBaseObj *>::iterator iter = playerlist->begin();
+		for (; iter != playerlist->end(); ++iter)
+		{
+			if (iter->second->IsPlayer())
+			{
+				CPlayer * p = (CPlayer *)iter->second;
+				if (FuncUti::isValidCret(p))
+				{
+					tail.id = p->GetClientID();
+					CGameGatewayMgr::Instance().SendMsg(p->GetGateInfo(), pMsg, &tail, sizeof(tail));
+				}
+			}
+		}
 	}
 }
 

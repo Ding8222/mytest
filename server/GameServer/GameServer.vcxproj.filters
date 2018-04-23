@@ -16,9 +16,6 @@
     <Filter Include="地图场景">
       <UniqueIdentifier>{5e5c8976-6c61-4d08-9d7a-e89e57111f89}</UniqueIdentifier>
     </Filter>
-    <Filter Include="玩家操作">
-      <UniqueIdentifier>{eb345bdc-9e0a-4a8d-8af3-1336f86ce3a3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="基础对象">
       <UniqueIdentifier>{aa30a0ef-0be0-4a24-bdb0-39c985716fd7}</UniqueIdentifier>
     </Filter>
@@ -30,6 +27,9 @@
     </Filter>
     <Filter Include="基础对象\NPC">
       <UniqueIdentifier>{aa2e093c-c08c-4efd-9f40-52205509a5a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="基础对象\玩家\玩家操作">
+      <UniqueIdentifier>{eb345bdc-9e0a-4a8d-8af3-1336f86ce3a3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -79,7 +79,7 @@
       <Filter>基础对象\玩家</Filter>
     </ClCompile>
     <ClCompile Include="PlayerOperate.cpp">
-      <Filter>玩家操作</Filter>
+      <Filter>基础对象\玩家\玩家操作</Filter>
     </ClCompile>
     <ClCompile Include="CSVLoad.cpp">
       <Filter>源文件</Filter>
@@ -156,7 +156,7 @@
       <Filter>基础对象\玩家</Filter>
     </ClInclude>
     <ClInclude Include="PlayerOperate.h">
-      <Filter>玩家操作</Filter>
+      <Filter>基础对象\玩家\玩家操作</Filter>
     </ClInclude>
     <ClInclude Include="CSVLoad.h">
       <Filter>头文件</Filter>

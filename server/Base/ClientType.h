@@ -23,3 +23,6 @@
 
 // 更新对象信息
 #define CLIENT_SUB_UPTATE_OBJINFO 7
+
+// 删除视野中的对象
+#define CLIENT_SUB_DELOBJ_FROM_VIEW 8

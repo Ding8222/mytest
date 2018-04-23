@@ -74,5 +74,11 @@ message UpdataObjInfo
 	float y = 2;
 	float z = 3;
 	uint32 nTempID = 4;//对象的临时ID
-	bytes Name = 5;//名称
+	string Name = 5;//名称
+}
+
+// 3-8 删除视野中的对象
+message DelObjFromView
+{
+	uint32 nTempID = 1;//对象的临时ID
 }

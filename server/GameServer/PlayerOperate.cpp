@@ -52,23 +52,18 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 		netData::PlayerMove msg;
 		_CHECK_PARSE_(pMsg, msg);
 
-		netData::PlayerMoveRet sendMsg;
-		sendMsg.set_ntempid(pPlayer->GetTempID());
-		if (pPlayer->MoveTo(msg.x(), msg.y(), msg.z()))
+		if (!pPlayer->MoveTo(msg.x(), msg.y(), msg.z()))
 		{
-			sendMsg.set_x(msg.x());
-			sendMsg.set_y(msg.y());
-			sendMsg.set_z(msg.z());
-		}
-		else
-		{
+			netData::PlayerMoveRet sendMsg;
+			sendMsg.set_ntempid(pPlayer->GetTempID());
+
 			float _Pos[EOP_MAX] = { 0 };
 			pPlayer->GetNowPos(_Pos[EOP_X], _Pos[EOP_Y], _Pos[EOP_Z]);
 			sendMsg.set_x(_Pos[EOP_X]);
 			sendMsg.set_y(_Pos[EOP_Y]);
 			sendMsg.set_z(_Pos[EOP_Z]);
+			FuncUti::SendPBNoLoop(pPlayer, sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE_RET, true);
 		}
-		FuncUti::SendPBNoLoop(pPlayer, sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE_RET, true);
 		break;
 	}
 	case CLIENT_SUB_CHANGEMAP:

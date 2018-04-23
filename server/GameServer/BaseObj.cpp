@@ -61,3 +61,11 @@ void CBaseObj::UpdataObjInfo(CBaseObj *obj)
 		FuncUti::SendPBNoLoop(ToPlayer(), sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_UPTATE_OBJINFO, true);
 	}
 }
+
+void CBaseObj::DelObjFromView(uint32 tempid)
+{
+	netData::DelObjFromView sendMsg;
+	sendMsg.set_ntempid(tempid);
+
+	FuncUti::SendPBNoLoop(ToPlayer(), sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_DELOBJ_FROM_VIEW);
+}

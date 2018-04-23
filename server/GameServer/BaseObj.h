@@ -24,6 +24,7 @@ enum eObjType
 	EOT_MAX ,
 };
 
+struct Msg;
 class CPlayer;
 class CMonster;
 class CNPC;
@@ -34,6 +35,7 @@ public:
 	~CBaseObj();
 
 	virtual CBaseObj *GetObj() { return this; }
+	virtual void SendMsgToMe(Msg &pMsg, bool bRef = false){}
 	virtual void Run();
 	virtual void Die() {}
 
@@ -42,6 +44,7 @@ public:
 	CNPC *ToNPC() { return IsNPC() ? (CNPC *)this : nullptr; }
 public:
 	void UpdataObjInfo(CBaseObj *obj = nullptr);
+	void DelObjFromView(uint32 tempid);
 	int8 GetObjType() { return m_ObjType; }
 	void SetSex(int8 sex) { m_ObjSex = sex; }
 	int8 GetSex() { return m_ObjSex; }

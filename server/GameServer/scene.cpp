@@ -419,7 +419,6 @@ static void callbackmessage(void *ud, uint32 watcher, uint32 marker)
 			if (FuncUti::isValidCret(p2))
 			{
 				p1->AddToAoiList(p2);
-				p1->UpdataObjInfo(p2);
 				// 非玩家，需要帮忙加一下
 				if (!p2->IsPlayer())
 					p2->AddToAoiList(p1);

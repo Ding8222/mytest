@@ -21,6 +21,7 @@ public:
 	~CPlayer();
 
 	virtual void Run();
+	virtual void SendMsgToMe(Msg &pMsg, bool bRef = false);
 	virtual void Die();
 	// 加载数据
 	bool LoadData(Msg *pMsg);

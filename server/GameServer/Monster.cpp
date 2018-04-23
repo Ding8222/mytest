@@ -3,6 +3,9 @@
 #include "Timer.h"
 #include "Scene.h"
 #include "ServerLog.h"
+#include "msgbase.h"
+#include "Utilities.h"
+#include "GameGatewayMgr.h"
 
 CMonster::CMonster():CBaseObj(EOT_MONSTER)
 {
@@ -52,6 +55,55 @@ void CMonster::Run()
 	else
 	{
 		CBaseObj::Run();
+		{
+			int x = GetObj()->GetPosX();
+			int y = GetObj()->GetPosY();
+			int nRand = rand() % 10000;
+			if (nRand > 5000)
+				x += 10;
+			else
+				x -= 10;
+
+			if (x > 1000)
+				x = 1000;
+			else if (x < 1)
+				x = 1;
+
+			nRand = rand() % 10000;
+			if (nRand > 5000)
+				y += 10;
+			else
+				y -= 10;
+
+			if (y > 1000)
+				y = 1000;
+			else if (y < 1)
+				y = 1;
+
+			MoveTo(x, y, 1);
+		}
+	}
+}
+
+void CMonster::SendMsgToMe(Msg &pMsg, bool bRef)
+{
+	if (bRef)
+	{
+		msgtail tail;
+		std::unordered_map<uint32, CBaseObj *> *playerlist = GetAoiList();
+		std::unordered_map<uint32, CBaseObj *>::iterator iter = playerlist->begin();
+		for (; iter != playerlist->end(); ++iter)
+		{
+			if (iter->second->IsPlayer())
+			{
+				CPlayer * p = (CPlayer *)iter->second;
+				if (FuncUti::isValidCret(p))
+				{
+					tail.id = p->GetClientID();
+					CGameGatewayMgr::Instance().SendMsg(p->GetGateInfo(), pMsg, &tail, sizeof(tail));
+				}
+			}
+		}
 	}
 }
 

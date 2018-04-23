@@ -55,6 +55,11 @@ class UpdataObjInfoDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<UpdataObjInfo>
       _instance;
 } _UpdataObjInfo_default_instance_;
+class DelObjFromViewDefaultTypeInternal {
+ public:
+  ::google::protobuf::internal::ExplicitlyConstructed<DelObjFromView>
+      _instance;
+} _DelObjFromView_default_instance_;
 }  // namespace netData
 namespace protobuf_ClientMsg_2eproto {
 void InitDefaultsPingImpl() {
@@ -204,7 +209,28 @@ void InitDefaultsUpdataObjInfo() {
   ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsUpdataObjInfoImpl);
 }
 
-::google::protobuf::Metadata file_level_metadata[7];
+void InitDefaultsDelObjFromViewImpl() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  ::google::protobuf::internal::InitProtobufDefaultsForceUnique();
+#else
+  ::google::protobuf::internal::InitProtobufDefaults();
+#endif  // GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+  {
+    void* ptr = &::netData::_DelObjFromView_default_instance_;
+    new (ptr) ::netData::DelObjFromView();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::netData::DelObjFromView::InitAsDefaultInstance();
+}
+
+void InitDefaultsDelObjFromView() {
+  static GOOGLE_PROTOBUF_DECLARE_ONCE(once);
+  ::google::protobuf::GoogleOnceInit(&once, &InitDefaultsDelObjFromViewImpl);
+}
+
+::google::protobuf::Metadata file_level_metadata[8];
 const ::google::protobuf::EnumDescriptor* file_level_enum_descriptors[2];
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
@@ -267,6 +293,12 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::UpdataObjInfo, z_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::UpdataObjInfo, ntempid_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::UpdataObjInfo, name_),
+  ~0u,  // no _has_bits_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::DelObjFromView, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::netData::DelObjFromView, ntempid_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::netData::Ping)},
@@ -276,6 +308,7 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 30, -1, sizeof(::netData::ChangeMap)},
   { 38, -1, sizeof(::netData::ChangeMapRet)},
   { 49, -1, sizeof(::netData::UpdataObjInfo)},
+  { 59, -1, sizeof(::netData::DelObjFromView)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -286,6 +319,7 @@ static ::google::protobuf::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::google::protobuf::Message*>(&::netData::_ChangeMap_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::netData::_ChangeMapRet_default_instance_),
   reinterpret_cast<const ::google::protobuf::Message*>(&::netData::_UpdataObjInfo_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::netData::_DelObjFromView_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -304,7 +338,7 @@ void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 7);
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 8);
 }
 
 void AddDescriptorsImpl() {
@@ -325,10 +359,11 @@ void AddDescriptorsImpl() {
       "C_FAIL\020\002\022\013\n\007EC_LINE\020\004\022\n\n\006EC_MAP\020\005\022\017\n\013EC_"
       "LEAVEMAP\020\006\022\017\n\013EC_PACKDATA\020\007\"O\n\rUpdataObj"
       "Info\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002\022\017\n"
-      "\007nTempID\030\004 \001(\r\022\014\n\004Name\030\005 \001(\014b\006proto3"
+      "\007nTempID\030\004 \001(\r\022\014\n\004Name\030\005 \001(\t\"!\n\016DelObjFr"
+      "omView\022\017\n\007nTempID\030\001 \001(\rb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 636);
+      descriptor, 671);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "ClientMsg.proto", &protobuf_RegisterTypes);
 }
@@ -2454,12 +2489,16 @@ bool UpdataObjInfo::MergePartialFromCodedStream(
         break;
       }
 
-      // bytes Name = 5;
+      // string Name = 5;
       case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_name()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->name().data(), static_cast<int>(this->name().length()),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "netData.UpdataObjInfo.Name"));
         } else {
           goto handle_unusual;
         }
@@ -2512,9 +2551,13 @@ void UpdataObjInfo::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->ntempid(), output);
   }
 
-  // bytes Name = 5;
+  // string Name = 5;
   if (this->name().size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytesMaybeAliased(
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->name().data(), static_cast<int>(this->name().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "netData.UpdataObjInfo.Name");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
       5, this->name(), output);
   }
 
@@ -2552,10 +2595,14 @@ void UpdataObjInfo::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->ntempid(), target);
   }
 
-  // bytes Name = 5;
+  // string Name = 5;
   if (this->name().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->name().data(), static_cast<int>(this->name().length()),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "netData.UpdataObjInfo.Name");
     target =
-      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
         5, this->name(), target);
   }
 
@@ -2576,10 +2623,10 @@ size_t UpdataObjInfo::ByteSizeLong() const {
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
   }
-  // bytes Name = 5;
+  // string Name = 5;
   if (this->name().size() > 0) {
     total_size += 1 +
-      ::google::protobuf::internal::WireFormatLite::BytesSize(
+      ::google::protobuf::internal::WireFormatLite::StringSize(
         this->name());
   }
 
@@ -2691,6 +2738,237 @@ void UpdataObjInfo::InternalSwap(UpdataObjInfo* other) {
 }
 
 
+// ===================================================================
+
+void DelObjFromView::InitAsDefaultInstance() {
+}
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int DelObjFromView::kNTempIDFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+DelObjFromView::DelObjFromView()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (GOOGLE_PREDICT_TRUE(this != internal_default_instance())) {
+    ::protobuf_ClientMsg_2eproto::InitDefaultsDelObjFromView();
+  }
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:netData.DelObjFromView)
+}
+DelObjFromView::DelObjFromView(const DelObjFromView& from)
+  : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _cached_size_(0) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ntempid_ = from.ntempid_;
+  // @@protoc_insertion_point(copy_constructor:netData.DelObjFromView)
+}
+
+void DelObjFromView::SharedCtor() {
+  ntempid_ = 0u;
+  _cached_size_ = 0;
+}
+
+DelObjFromView::~DelObjFromView() {
+  // @@protoc_insertion_point(destructor:netData.DelObjFromView)
+  SharedDtor();
+}
+
+void DelObjFromView::SharedDtor() {
+}
+
+void DelObjFromView::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* DelObjFromView::descriptor() {
+  ::protobuf_ClientMsg_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_ClientMsg_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const DelObjFromView& DelObjFromView::default_instance() {
+  ::protobuf_ClientMsg_2eproto::InitDefaultsDelObjFromView();
+  return *internal_default_instance();
+}
+
+
+void DelObjFromView::Clear() {
+// @@protoc_insertion_point(message_clear_start:netData.DelObjFromView)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  ntempid_ = 0u;
+  _internal_metadata_.Clear();
+}
+
+bool DelObjFromView::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:netData.DelObjFromView)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // uint32 nTempID = 1;
+      case 1: {
+        if (static_cast< ::google::protobuf::uint8>(tag) ==
+            static_cast< ::google::protobuf::uint8>(8u /* 8 & 0xFF */)) {
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &ntempid_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:netData.DelObjFromView)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:netData.DelObjFromView)
+  return false;
+#undef DO_
+}
+
+void DelObjFromView::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:netData.DelObjFromView)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // uint32 nTempID = 1;
+  if (this->ntempid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->ntempid(), output);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
+  }
+  // @@protoc_insertion_point(serialize_end:netData.DelObjFromView)
+}
+
+::google::protobuf::uint8* DelObjFromView::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:netData.DelObjFromView)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // uint32 nTempID = 1;
+  if (this->ntempid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->ntempid(), target);
+  }
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:netData.DelObjFromView)
+  return target;
+}
+
+size_t DelObjFromView::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:netData.DelObjFromView)
+  size_t total_size = 0;
+
+  if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()));
+  }
+  // uint32 nTempID = 1;
+  if (this->ntempid() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::UInt32Size(
+        this->ntempid());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void DelObjFromView::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:netData.DelObjFromView)
+  GOOGLE_DCHECK_NE(&from, this);
+  const DelObjFromView* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const DelObjFromView>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:netData.DelObjFromView)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:netData.DelObjFromView)
+    MergeFrom(*source);
+  }
+}
+
+void DelObjFromView::MergeFrom(const DelObjFromView& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:netData.DelObjFromView)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.ntempid() != 0) {
+    set_ntempid(from.ntempid());
+  }
+}
+
+void DelObjFromView::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:netData.DelObjFromView)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void DelObjFromView::CopyFrom(const DelObjFromView& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:netData.DelObjFromView)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool DelObjFromView::IsInitialized() const {
+  return true;
+}
+
+void DelObjFromView::Swap(DelObjFromView* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void DelObjFromView::InternalSwap(DelObjFromView* other) {
+  using std::swap;
+  swap(ntempid_, other->ntempid_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata DelObjFromView::GetMetadata() const {
+  protobuf_ClientMsg_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_ClientMsg_2eproto::file_level_metadata[kIndexInFileMessages];
+}
+
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace netData
 namespace google {
@@ -2715,6 +2993,9 @@ template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::netData::ChangeMapRet* Arena::Cr
 }
 template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::netData::UpdataObjInfo* Arena::Create< ::netData::UpdataObjInfo >(Arena* arena) {
   return Arena::CreateInternal< ::netData::UpdataObjInfo >(arena);
+}
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::netData::DelObjFromView* Arena::Create< ::netData::DelObjFromView >(Arena* arena) {
+  return Arena::CreateInternal< ::netData::DelObjFromView >(arena);
 }
 }  // namespace protobuf
 }  // namespace google

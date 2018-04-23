@@ -37,7 +37,7 @@ namespace protobuf_ClientMsg_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[7];
+  static const ::google::protobuf::internal::ParseTable schema[8];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -57,6 +57,8 @@ void InitDefaultsChangeMapRetImpl();
 void InitDefaultsChangeMapRet();
 void InitDefaultsUpdataObjInfoImpl();
 void InitDefaultsUpdataObjInfo();
+void InitDefaultsDelObjFromViewImpl();
+void InitDefaultsDelObjFromView();
 inline void InitDefaults() {
   InitDefaultsPing();
   InitDefaultsLoadPlayerDataFinish();
@@ -65,6 +67,7 @@ inline void InitDefaults() {
   InitDefaultsChangeMap();
   InitDefaultsChangeMapRet();
   InitDefaultsUpdataObjInfo();
+  InitDefaultsDelObjFromView();
 }
 }  // namespace protobuf_ClientMsg_2eproto
 namespace netData {
@@ -74,6 +77,9 @@ extern ChangeMapDefaultTypeInternal _ChangeMap_default_instance_;
 class ChangeMapRet;
 class ChangeMapRetDefaultTypeInternal;
 extern ChangeMapRetDefaultTypeInternal _ChangeMapRet_default_instance_;
+class DelObjFromView;
+class DelObjFromViewDefaultTypeInternal;
+extern DelObjFromViewDefaultTypeInternal _DelObjFromView_default_instance_;
 class LoadPlayerDataFinish;
 class LoadPlayerDataFinishDefaultTypeInternal;
 extern LoadPlayerDataFinishDefaultTypeInternal _LoadPlayerDataFinish_default_instance_;
@@ -94,6 +100,7 @@ namespace google {
 namespace protobuf {
 template<> ::netData::ChangeMap* Arena::Create< ::netData::ChangeMap>(Arena*);
 template<> ::netData::ChangeMapRet* Arena::Create< ::netData::ChangeMapRet>(Arena*);
+template<> ::netData::DelObjFromView* Arena::Create< ::netData::DelObjFromView>(Arena*);
 template<> ::netData::LoadPlayerDataFinish* Arena::Create< ::netData::LoadPlayerDataFinish>(Arena*);
 template<> ::netData::Ping* Arena::Create< ::netData::Ping>(Arena*);
 template<> ::netData::PlayerMove* Arena::Create< ::netData::PlayerMove>(Arena*);
@@ -1036,7 +1043,7 @@ class UpdataObjInfo : public ::google::protobuf::Message /* @@protoc_insertion_p
 
   // accessors -------------------------------------------------------
 
-  // bytes Name = 5;
+  // string Name = 5;
   void clear_name();
   static const int kNameFieldNumber = 5;
   const ::std::string& name() const;
@@ -1045,7 +1052,7 @@ class UpdataObjInfo : public ::google::protobuf::Message /* @@protoc_insertion_p
   void set_name(::std::string&& value);
   #endif
   void set_name(const char* value);
-  void set_name(const void* value, size_t size);
+  void set_name(const char* value, size_t size);
   ::std::string* mutable_name();
   ::std::string* release_name();
   void set_allocated_name(::std::string* name);
@@ -1086,6 +1093,109 @@ class UpdataObjInfo : public ::google::protobuf::Message /* @@protoc_insertion_p
   mutable int _cached_size_;
   friend struct ::protobuf_ClientMsg_2eproto::TableStruct;
   friend void ::protobuf_ClientMsg_2eproto::InitDefaultsUpdataObjInfoImpl();
+};
+// -------------------------------------------------------------------
+
+class DelObjFromView : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:netData.DelObjFromView) */ {
+ public:
+  DelObjFromView();
+  virtual ~DelObjFromView();
+
+  DelObjFromView(const DelObjFromView& from);
+
+  inline DelObjFromView& operator=(const DelObjFromView& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  DelObjFromView(DelObjFromView&& from) noexcept
+    : DelObjFromView() {
+    *this = ::std::move(from);
+  }
+
+  inline DelObjFromView& operator=(DelObjFromView&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DelObjFromView& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const DelObjFromView* internal_default_instance() {
+    return reinterpret_cast<const DelObjFromView*>(
+               &_DelObjFromView_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    7;
+
+  void Swap(DelObjFromView* other);
+  friend void swap(DelObjFromView& a, DelObjFromView& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline DelObjFromView* New() const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<DelObjFromView>(NULL);
+  }
+
+  DelObjFromView* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<DelObjFromView>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const DelObjFromView& from);
+  void MergeFrom(const DelObjFromView& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(DelObjFromView* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // uint32 nTempID = 1;
+  void clear_ntempid();
+  static const int kNTempIDFieldNumber = 1;
+  ::google::protobuf::uint32 ntempid() const;
+  void set_ntempid(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:netData.DelObjFromView)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::uint32 ntempid_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_ClientMsg_2eproto::TableStruct;
+  friend void ::protobuf_ClientMsg_2eproto::InitDefaultsDelObjFromViewImpl();
 };
 // ===================================================================
 
@@ -1561,7 +1671,7 @@ inline void UpdataObjInfo::set_ntempid(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:netData.UpdataObjInfo.nTempID)
 }
 
-// bytes Name = 5;
+// string Name = 5;
 inline void UpdataObjInfo::clear_name() {
   name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
 }
@@ -1588,7 +1698,7 @@ inline void UpdataObjInfo::set_name(const char* value) {
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
   // @@protoc_insertion_point(field_set_char:netData.UpdataObjInfo.Name)
 }
-inline void UpdataObjInfo::set_name(const void* value, size_t size) {
+inline void UpdataObjInfo::set_name(const char* value, size_t size) {
   
   name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
       ::std::string(reinterpret_cast<const char*>(value), size));
@@ -1614,9 +1724,29 @@ inline void UpdataObjInfo::set_allocated_name(::std::string* name) {
   // @@protoc_insertion_point(field_set_allocated:netData.UpdataObjInfo.Name)
 }
 
+// -------------------------------------------------------------------
+
+// DelObjFromView
+
+// uint32 nTempID = 1;
+inline void DelObjFromView::clear_ntempid() {
+  ntempid_ = 0u;
+}
+inline ::google::protobuf::uint32 DelObjFromView::ntempid() const {
+  // @@protoc_insertion_point(field_get:netData.DelObjFromView.nTempID)
+  return ntempid_;
+}
+inline void DelObjFromView::set_ntempid(::google::protobuf::uint32 value) {
+  
+  ntempid_ = value;
+  // @@protoc_insertion_point(field_set:netData.DelObjFromView.nTempID)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

@@ -3,6 +3,10 @@
 #include "scene.h"
 #include "BaseObj.h"
 #include "ServerLog.h"
+#include "Utilities.h"
+
+#include "ClientType.h"
+#include "ClientMsg.pb.h"
 
 #define AOI_RADIS 200.0f
 #define AOI_RADIS2 ((AOI_RADIS) * (AOI_RADIS))
@@ -49,7 +53,17 @@ bool CObjScene::LeaveScene()
 bool CObjScene::MoveTo(float x, float y, float z)
 {
 	if (m_Scene)
-		return m_Scene->MoveTo(GetObj(), x, y, z);
+		if (m_Scene->MoveTo(GetObj(), x, y, z))
+		{
+			netData::PlayerMoveRet sendMsg;
+			sendMsg.set_ntempid(GetTempID());
+			sendMsg.set_x(x);
+			sendMsg.set_y(y);
+			sendMsg.set_z(z);
+
+			FuncUti::SendPBNoLoop(GetObj(), sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE_RET, true);
+			return true;
+		}
 
 	return false;
 }
@@ -80,6 +94,9 @@ void CObjScene::AddToAoiList(CBaseObj *p)
 	//assert(iter == m_AoiList.end());
 #endif
 	m_AoiList[p->GetTempID()] = p;
+	
+	if (GetObj()->IsPlayer())
+		GetObj()->UpdataObjInfo(p);
 
 #ifdef _DEBUG
 	float _Pos[EOP_MAX] = { 0 };
@@ -96,6 +113,7 @@ void CObjScene::DelFromAoiList(uint32 id)
 	assert(iter != m_AoiList.end());
 #endif
 	m_AoiList.erase(id);
+	GetObj()->DelObjFromView(id);
 	//RunStateLog("[%d]离开[%d]视野%d", id, GetTempID());
 }
 
@@ -190,6 +208,7 @@ void CObjScene::AoiRun()
 				_Obj->DelFromAoiList(GetTempID());
 				_Obj->AddToAoiListOut(GetObj());
 				AddToAoiListOut(_Obj);
+				GetObj()->DelObjFromView(_Obj->GetTempID());
 				continue;
 			}
 			else if (nDistance > LEAVE_AOI_RADIS2)
@@ -197,6 +216,7 @@ void CObjScene::AoiRun()
 				// 需要移除
 				iterB = m_AoiList.erase(iterB);
 				_Obj->DelFromAoiList(GetTempID());
+				GetObj()->DelObjFromView(_Obj->GetTempID());
 				continue;
 			}
 		}
