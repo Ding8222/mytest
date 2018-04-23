@@ -1,5 +1,5 @@
-/*
-* Log·şÎñÆ÷
+ï»¿/*
+* LogæœåŠ¡å™¨
 * Copyright (C) ddl
 * 2018
 */
@@ -29,7 +29,7 @@ bool init()
 #ifdef _WIN32
 	if (!CMiniDump::Begin())
 	{
-		RunStateError("³õÊ¼»¯MiniDumpÊ§°Ü!");
+		RunStateError("åˆå§‹åŒ–MiniDumpå¤±è´¥!");
 		system("pause");
 		return false;
 	}
@@ -37,50 +37,50 @@ bool init()
 
 	if (!init_log("LogServer_Log"))
 	{
-		RunStateError("³õÊ¼»¯LogÊ§°Ü!");
+		RunStateError("åˆå§‹åŒ–Logå¤±è´¥!");
 		return false;
 	}
 
-	//¶ÁÈ¡ÍøÂçÅäÖÃÎÄ¼ş
+	//è¯»å–ç½‘ç»œé…ç½®æ–‡ä»¶
 	if (!CNetConfig::Instance().Init())
 	{
-		RunStateError("³õÊ¼»¯NetConfigÊ§°Ü!");
+		RunStateError("åˆå§‹åŒ–NetConfigå¤±è´¥!");
 		system("pause");
 		return 0;
 	}
 
-	//¶ÁÈ¡ÅäÖÃÎÄ¼ş
+	//è¯»å–é…ç½®æ–‡ä»¶
 	if (!CConfig::Instance().Init("LogServer"))
 	{
-		RunStateError("³õÊ¼»¯ConfigÊ§°Ü!");
+		RunStateError("åˆå§‹åŒ–Configå¤±è´¥!");
 		system("pause");
 		return 0;
 	}
 
 	g_elapsed_log_flag = CConfig::Instance().IsOpenElapsedLog();
 
-	RunStateLog("ÈÕÖ¾·şÎñÆ÷¿ªÊ¼Æô¶¯!");
+	RunStateLog("æ—¥å¿—æœåŠ¡å™¨å¼€å§‹å¯åŠ¨!");
 
-	//³õÊ¼»¯ÍøÂç¿â
+	//åˆå§‹åŒ–ç½‘ç»œåº“
 	if (!lxnet::net_init(CNetConfig::Instance().GetBigBufSize(), CNetConfig::Instance().GetBigBufNum(),
 		CNetConfig::Instance().GetSmallBufSize(), CNetConfig::Instance().GetSmallBufNum(),
 		CNetConfig::Instance().GetListenerNum(), CNetConfig::Instance().GetSocketerNum(),
 		CNetConfig::Instance().GetThreadNum()))
 	{
-		RunStateError("³õÊ¼»¯ÍøÂç¿âÊ§°Ü!");
+		RunStateError("åˆå§‹åŒ–ç½‘ç»œåº“å¤±è´¥!");
 		system("pause");
 		return 0;
 	}
-	//ÉèÖÃ¼àÌı¶Ë¿Ú£¬´´½¨listener
+	//è®¾ç½®ç›‘å¬ç«¯å£ï¼Œåˆ›å»ºlistener
 	if (!CLogServer::Instance().Init())
 	{
-		RunStateError("³õÊ¼»¯Ê§°Ü!");
+		RunStateError("åˆå§‹åŒ–å¤±è´¥!");
 		system("pause");
 		return 0;
 	}
 
 	CLogServer::Instance().Run();
-	//Ñ­»·½áÊøºóµÄ×ÊÔ´ÊÍ·Å
+	//å¾ªç¯ç»“æŸåçš„èµ„æºé‡Šæ”¾
 	CLogServer::Instance().Release();
 	lxnet::net_release();
 	release_log();

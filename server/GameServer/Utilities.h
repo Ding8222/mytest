@@ -6,7 +6,7 @@
 
 namespace FuncUti
 {
-	char *UnicodeToUTF_8(std::wstring str);
+	char *UnicodeToUTF_8(const std::wstring &str);
 	wchar_t *Utf_8ToUnicode(const char* szU8);
 	inline bool isValidCret(CBaseObj *player);
 	// 发送PB消息给玩家

@@ -24,6 +24,9 @@ enum eObjType
 	EOT_MAX ,
 };
 
+class CPlayer;
+class CMonster;
+class CNPC;
 class CBaseObj :public CObjScene, public CObjAttribute, public CObjStatus, public CObjFight
 {
 public:
@@ -33,7 +36,12 @@ public:
 	virtual CBaseObj *GetObj() { return this; }
 	virtual void Run();
 	virtual void Die() {}
+
+	CPlayer *ToPlayer() { return IsPlayer() ? (CPlayer *)this : nullptr; }
+	CMonster *ToMonster() { return IsMonster() ? (CMonster *)this : nullptr; }
+	CNPC *ToNPC() { return IsNPC() ? (CNPC *)this : nullptr; }
 public:
+	void UpdataObjInfo(CBaseObj *obj = nullptr);
 	int8 GetObjType() { return m_ObjType; }
 	void SetSex(int8 sex) { m_ObjSex = sex; }
 	int8 GetSex() { return m_ObjSex; }

@@ -66,3 +66,13 @@ message ChangeMapRet
 	int32 nPort = 5;		// 返回要去连接的port
 	int32 nMapID = 6;		// 要加载的地图ID
 }
+
+// 3-7 更新对象信息（有则更新，无则添加）
+message UpdataObjInfo
+{
+	float x = 1;
+	float y = 2;
+	float z = 3;
+	uint32 nTempID = 4;//对象的临时ID
+	bytes Name = 5;//名称
+}

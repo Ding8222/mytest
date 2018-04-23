@@ -3,7 +3,6 @@
 * Copyright (C) ddl
 * 2018
 */
-
 #include "config.h"
 #include "GameServer.h"
 #include "NetConfig.h"

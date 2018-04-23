@@ -241,9 +241,11 @@ namespace CSVData
 		{
 			nMonsterID = 0;
 			nMonsterType = 0;
+			Name.clear();
 		}
 		int32 nMonsterID;
 		int32 nMonsterType;
+		std::string Name;
 	};
 
 	class CMonsterDB
@@ -270,6 +272,7 @@ namespace CSVData
 		{
 			nNPCID = 0;
 			nNPCType = 0;
+			Name.clear();
 			nMapID = 0;
 			nX = 0.0f;
 			nY = 0.0f;
@@ -277,6 +280,7 @@ namespace CSVData
 		}
 		int32 nNPCID;
 		int32 nNPCType;
+		std::string Name;
 		int32 nMapID;
 		float nX;
 		float nY;

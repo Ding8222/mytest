@@ -29,6 +29,7 @@ bool CMonster::Init(int32 monsterid, float relivex, float relivey, float relivez
 	m_bCanRelive = relive;
 	m_MonsterID = monsterinfo->nMonsterID;
 	m_MonsterType = monsterinfo->nMonsterType;
+	SetName(monsterinfo->Name.c_str());
 	m_ReliveCD = relivecd;
 	m_ReliveX = relivex;
 	m_ReliveY = relivey;

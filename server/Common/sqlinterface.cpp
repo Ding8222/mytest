@@ -77,7 +77,7 @@ void CRecordset::LoadResult (MYSQL *con, CConnection *root)
 		if (mysql_field_count(con) != 0)
 		{
 			char tempbuf[1024];
-			snprintf(tempbuf, sizeof(tempbuf)-1, "mysql errno: %d, error string: %s", mysql_errno(con), mysql_error(con));
+			snprintf(tempbuf, sizeof(tempbuf)-1, "mysql errno: %ud, error string: %s", mysql_errno(con), mysql_error(con));
 			tempbuf[sizeof(tempbuf)-1] = 0;
 			m_root->ErrorOut(tempbuf);
 		}
@@ -230,7 +230,7 @@ static unsigned int parse_ipstr (char *tempbuf, size_t buflen, const char *ipstr
 	strncpy(tempbuf, ipstring, buflen-1);
 	tempbuf[buflen-1] = 0;
 
-	char *res = strstr(tempbuf, ":");
+	char *res = strchr(tempbuf, ':');
 	if (res)
 	{
 		*res = '\0';
@@ -295,7 +295,7 @@ repeat_do:
 		ErrorOut(sqlstr);
 
 		char buf[1024*2];
-		snprintf(buf, sizeof(buf)-1, "errno:%d, error string:%s", mysql_errno(m_conn), mysql_error(m_conn));
+		snprintf(buf, sizeof(buf)-1, "errno:%ud, error string:%s", mysql_errno(m_conn), mysql_error(m_conn));
 		buf[sizeof(buf)-1] = 0;
 		ErrorOut(buf);
 		return NULL;

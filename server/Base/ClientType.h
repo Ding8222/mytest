@@ -20,3 +20,6 @@
 
 // 切换地图返回
 #define CLIENT_SUB_CHANGEMAP_RET 6
+
+// 更新对象信息
+#define CLIENT_SUB_UPTATE_OBJINFO 7

@@ -223,14 +223,14 @@ bool CSendMail::CReateSocket(SOCKET &sock)
 }
 
 
-bool CSendMail::Logon(SOCKET &sock)
+bool CSendMail::Logon(SOCKET *sock)
 {
-	recv(sock, m_cReceiveBuff, 1024, 0);
+	recv(*sock, m_cReceiveBuff, 1024, 0);
 
 	memset(m_cSendBuff, 0, sizeof(m_cSendBuff));
 	sprintf_s(m_cSendBuff, "HELO []\r\n");
-	send(sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);//开始会话  
-	recv(sock, m_cReceiveBuff, 1024, 0);
+	send(*sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);//开始会话  
+	recv(*sock, m_cReceiveBuff, 1024, 0);
 	if (m_cReceiveBuff[0] != '2' || m_cReceiveBuff[1] != '5' || m_cReceiveBuff[2] != '0')
 	{
 		return false;
@@ -238,8 +238,8 @@ bool CSendMail::Logon(SOCKET &sock)
 
 	memset(m_cSendBuff, 0, sizeof(m_cSendBuff));
 	sprintf_s(m_cSendBuff, "AUTH LOGIN\r\n");
-	send(sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);//请求登录  
-	recv(sock, m_cReceiveBuff, 1024, 0);
+	send(*sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);//请求登录  
+	recv(*sock, m_cReceiveBuff, 1024, 0);
 	if (m_cReceiveBuff[0] != '3' || m_cReceiveBuff[1] != '3' || m_cReceiveBuff[2] != '4')
 	{
 		return false;
@@ -249,8 +249,8 @@ bool CSendMail::Logon(SOCKET &sock)
 	Char2Base64(m_cSendBuff, m_sMailInfo.m_pcUserName, static_cast<int>(strlen(m_sMailInfo.m_pcUserName)));
 	m_cSendBuff[strlen(m_cSendBuff)] = '\r';
 	m_cSendBuff[strlen(m_cSendBuff)] = '\n';
-	send(sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);//发送用户名  
-	recv(sock, m_cReceiveBuff, 1024, 0);
+	send(*sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);//发送用户名  
+	recv(*sock, m_cReceiveBuff, 1024, 0);
 	if (m_cReceiveBuff[0] != '3' || m_cReceiveBuff[1] != '3' || m_cReceiveBuff[2] != '4')
 	{
 		return false;
@@ -260,8 +260,8 @@ bool CSendMail::Logon(SOCKET &sock)
 	Char2Base64(m_cSendBuff, m_sMailInfo.m_pcUserPassWord, static_cast<int>(strlen(m_sMailInfo.m_pcUserPassWord)));
 	m_cSendBuff[strlen(m_cSendBuff)] = '\r';
 	m_cSendBuff[strlen(m_cSendBuff)] = '\n';
-	send(sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);//发送用户密码  
-	recv(sock, m_cReceiveBuff, 1024, 0);
+	send(*sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);//发送用户密码  
+	recv(*sock, m_cReceiveBuff, 1024, 0);
 	if (m_cReceiveBuff[0] != '2' || m_cReceiveBuff[1] != '3' || m_cReceiveBuff[2] != '5')
 	{
 		return false;
@@ -270,42 +270,42 @@ bool CSendMail::Logon(SOCKET &sock)
 }
 
 
-bool CSendMail::SendHead(SOCKET &sock)
+bool CSendMail::SendHead(SOCKET *sock)
 {
 	int rt;
 	memset(m_cSendBuff, 0, sizeof(m_cSendBuff));
 	sprintf_s(m_cSendBuff, "MAIL FROM:<%s>\r\n", m_sMailInfo.m_pcSender);
-	rt = send(sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);
+	rt = send(*sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);
 
 	if (rt != strlen(m_cSendBuff))
 	{
 		return false;
 	}
-	recv(sock, m_cReceiveBuff, 1024, 0);
+	recv(*sock, m_cReceiveBuff, 1024, 0);
 
 	memset(m_cSendBuff, 0, sizeof(m_cSendBuff));
 	sprintf_s(m_cSendBuff, "RCPT TO:<%s>\r\n", m_sMailInfo.m_pcReceiver);
-	rt = send(sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);
+	rt = send(*sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);
 	if (rt != strlen(m_cSendBuff))
 	{
 		return false;
 	}
-	recv(sock, m_cReceiveBuff, 1024, 0);
+	recv(*sock, m_cReceiveBuff, 1024, 0);
 
 	memset(m_cSendBuff, 0, sizeof(m_cSendBuff));
 	memcpy(m_cSendBuff, "DATA\r\n", strlen("DATA\r\n"));
-	rt = send(sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);
+	rt = send(*sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);
 	if (rt != strlen(m_cSendBuff))
 	{
 		return false;
 	}
-	recv(sock, m_cReceiveBuff, 1024, 0);
+	recv(*sock, m_cReceiveBuff, 1024, 0);
 
 	memset(m_cSendBuff, 0, sizeof(m_cSendBuff));
 	sprintf_s(m_cSendBuff, "From:\"%s\"<%s>\r\n", m_sMailInfo.m_pcSenderName, m_sMailInfo.m_pcSender);
 	sprintf_s(&m_cSendBuff[strlen(m_cSendBuff)], 150, "To:\"INVT.COM.CN\"<%s>\r\n", m_sMailInfo.m_pcReceiver);
 	sprintf_s(&m_cSendBuff[strlen(m_cSendBuff)], 150, "Subject:%s\r\nMime-Version: 1.0\r\nContent-Type: multipart/mixed;   boundary=\"INVT\"\r\n\r\n", m_sMailInfo.m_pcTitle);
-	rt = send(sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);
+	rt = send(*sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);
 	if (rt != strlen(m_cSendBuff))
 	{
 		return false;
@@ -314,12 +314,12 @@ bool CSendMail::SendHead(SOCKET &sock)
 	return true;
 }
 
-bool CSendMail::SendTextBody(SOCKET &sock)
+bool CSendMail::SendTextBody(SOCKET *sock)
 {
 	int rt;
 	memset(m_cSendBuff, 0, sizeof(m_cSendBuff));
 	sprintf_s(m_cSendBuff, "--INVT\r\nContent-Type: text/plain;\r\n  charset=\"gb2312\"\r\n\r\n%s\r\n\r\n", m_sMailInfo.m_pcBody);
-	rt = send(sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);
+	rt = send(*sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);
 	if (rt != strlen(m_cSendBuff))
 	{
 		return false;
@@ -330,7 +330,7 @@ bool CSendMail::SendTextBody(SOCKET &sock)
 	}
 }
 
-bool CSendMail::SendFileBody(SOCKET &sock)
+bool CSendMail::SendFileBody(SOCKET *sock)
 {
 	char filePath[128];
 	std::string strPath;
@@ -350,14 +350,14 @@ bool CSendMail::SendFileBody(SOCKET &sock)
 		GetFileName(fileName, filePath);
 
 		sprintf_s(m_cSendBuff, "--INVT\r\nContent-Type: application/octet-stream;\r\n  name=\"%s\"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: attachment;\r\n  filename=\"%s\"\r\n\r\n", fileName, fileName);
-		send(sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);
+		send(*sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);
 		while (pt < len)
 		{
 			memset(m_cSendBuff, 0, sizeof(m_cSendBuff));
 			Char2Base64(m_cSendBuff, &m_pcFileBuff[pt], min(len - pt, 3000));
 			m_cSendBuff[strlen(m_cSendBuff)] = '\r';
 			m_cSendBuff[strlen(m_cSendBuff)] = '\n';
-			rt = send(sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);
+			rt = send(*sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);
 			pt += min(len - pt, 3000);
 			if (rt != strlen(m_cSendBuff))
 			{
@@ -373,14 +373,14 @@ bool CSendMail::SendFileBody(SOCKET &sock)
 	return true;
 }
 
-bool CSendMail::SendEnd(SOCKET &sock)
+bool CSendMail::SendEnd(SOCKET *sock)
 {
 	sprintf_s(m_cSendBuff, "--INVT--\r\n.\r\n");
-	send(sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);
+	send(*sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);
 
 	sprintf_s(m_cSendBuff, "QUIT\r\n");
-	send(sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);
-	closesocket(sock);
+	send(*sock, m_cSendBuff, static_cast<int>(strlen(m_cSendBuff)), 0);
+	closesocket(*sock);
 	WSACleanup();
 	return true;
 }
@@ -407,27 +407,27 @@ bool CSendMail::SendMail(sMailInfo &smailInfo)
 		return false;
 	}
 
-	if (!Logon(sock))//登录邮箱  
+	if (!Logon(&sock))//登录邮箱  
 	{
 		return false;
 	}
 
-	if (!SendHead(sock))//发送邮件头  
+	if (!SendHead(&sock))//发送邮件头  
 	{
 		return false;
 	}
 
-	if (!SendTextBody(sock))//发送邮件文本部分  
+	if (!SendTextBody(&sock))//发送邮件文本部分  
 	{
 		return false;
 	}
 
-	if (!SendFileBody(sock))//发送附件  
+	if (!SendFileBody(&sock))//发送附件  
 	{
 		return false;
 	}
 
-	if (!SendEnd(sock))//结束邮件，并关闭sock  
+	if (!SendEnd(&sock))//结束邮件，并关闭sock  
 	{
 		return false;
 	}

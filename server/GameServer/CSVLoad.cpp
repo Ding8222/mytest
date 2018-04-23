@@ -219,6 +219,7 @@ namespace CSVData
 		stMonster *pdata = new stMonster;
 		_Row.getValue(pdata->nMonsterID, "怪物ID");
 		_Row.getValue(pdata->nMonsterType, "怪物类型");
+		_Row.getValue(pdata->Name, "怪物名称");
 
 		if (FindById(pdata->nMonsterID))
 		{
@@ -245,6 +246,7 @@ namespace CSVData
 		stNPC *pdata = new stNPC;
 		_Row.getValue(pdata->nNPCID, "NPCID");
 		_Row.getValue(pdata->nNPCType, "NPC类型");
+		_Row.getValue(pdata->Name, "NPC名称");
 		_Row.getValue(pdata->nMapID, "地图ID");
 		_Row.getValue(pdata->nX, "坐标X");
 		_Row.getValue(pdata->nY, "坐标Y");

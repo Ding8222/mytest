@@ -43,14 +43,15 @@ void CClientLogin::ClientAuth(task *tk, Msg *pMsg)
 			msg.account()).c_str());
 		if (res && res->IsOpen() && !res->IsEnd())
 		{
+			const std::string &account = msg.account();
 			// 存在的账号
 			res = dbhand->Execute(fmt::format("update account set logintime ={0} where account = '{1}'",
-				CTimer::GetTime(), msg.account().c_str()).c_str());
+				CTimer::GetTime(), account.c_str()).c_str());
 			if (res)
 				sendMsg.set_ncode(netData::AuthRet::EC_SUCC);
 			else
 			{
-				RunStateError("更新账号:%s登陆时间失败！", msg.account().c_str());
+				RunStateError("更新账号:%s登陆时间失败！", account.c_str());
 				sendMsg.set_ncode(netData::AuthRet::EC_LOGINTIME);
 			}
 		}

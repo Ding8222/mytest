@@ -187,7 +187,7 @@ void CClientAuth::SelectPlayer(CClient *cl, Msg *pMsg)
 
 void CClientAuth::SetSelectPlayerSucc(int32 clientid)
 {
-	if (clientid <= 0 || clientid >= m_ClientAuthInfoSet.size())
+	if (clientid <= 0 || static_cast<size_t>(clientid) >= m_ClientAuthInfoSet.size())
 	{
 		ClientConnectError("SetSelectPlayerSucc的clientid错误!");
 		return;
@@ -206,7 +206,7 @@ void CClientAuth::SetSelectPlayerSucc(int32 clientid)
 
 ClientAuthInfo *CClientAuth::GetClientAuthInfo(int32 clientid)
 {
-	if (clientid <= 0 || clientid >= m_ClientAuthInfoSet.size())
+	if (clientid <= 0 || static_cast<size_t>(clientid) >= m_ClientAuthInfoSet.size())
 	{
 		ClientConnectError("SetSelectPlayerSucc的clientid错误!");
 		return nullptr;
@@ -246,7 +246,7 @@ bool CClientAuth::AddSecret(int32 clientid, const std::string &secret)
 
 bool CClientAuth::AddAccount(int32 clientid, const std::string &account)
 {
-	if (clientid <= 0 || clientid >= m_ClientAuthInfoSet.size())
+	if (clientid <= 0 || static_cast<size_t>(clientid) >= m_ClientAuthInfoSet.size())
 	{
 		ClientConnectError("AddAccount的clientid错误!");
 		return false;
@@ -265,7 +265,7 @@ bool CClientAuth::AddAccount(int32 clientid, const std::string &account)
 
 void CClientAuth::DelAuthInfo(int32 clientid)
 {
-	if (clientid <= 0 || clientid >= m_ClientAuthInfoSet.size())
+	if (clientid <= 0 || static_cast<size_t>(clientid) >= m_ClientAuthInfoSet.size())
 	{
 		ClientConnectError("要释放的ClientAuthInfo的ID错误!");
 		return;
@@ -288,7 +288,7 @@ bool CClientAuth::CheckSecret(int32 clientid, const std::string &secret)
 // 获取Secret
 std::string CClientAuth::GetSecret(int32 clientid)
 {
-	if (clientid <= 0 || clientid >= m_ClientAuthInfoSet.size())
+	if (clientid <= 0 || static_cast<size_t>(clientid) >= m_ClientAuthInfoSet.size())
 	{
 		ClientConnectError("GetSecret的clientid错误!");
 		return "";
@@ -302,7 +302,7 @@ std::string CClientAuth::GetSecret(int32 clientid)
 
 std::string CClientAuth::GetAccount(int32 clientid)
 {
-	if (clientid <= 0 || clientid >= m_ClientAuthInfoSet.size())
+	if (clientid <= 0 || static_cast<size_t>(clientid) >= m_ClientAuthInfoSet.size())
 	{
 		ClientConnectError("GetAccount的clientid错误!");
 		return "";

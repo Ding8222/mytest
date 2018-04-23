@@ -37,7 +37,7 @@ namespace protobuf_ClientMsg_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[6];
+  static const ::google::protobuf::internal::ParseTable schema[7];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -55,6 +55,8 @@ void InitDefaultsChangeMapImpl();
 void InitDefaultsChangeMap();
 void InitDefaultsChangeMapRetImpl();
 void InitDefaultsChangeMapRet();
+void InitDefaultsUpdataObjInfoImpl();
+void InitDefaultsUpdataObjInfo();
 inline void InitDefaults() {
   InitDefaultsPing();
   InitDefaultsLoadPlayerDataFinish();
@@ -62,6 +64,7 @@ inline void InitDefaults() {
   InitDefaultsPlayerMoveRet();
   InitDefaultsChangeMap();
   InitDefaultsChangeMapRet();
+  InitDefaultsUpdataObjInfo();
 }
 }  // namespace protobuf_ClientMsg_2eproto
 namespace netData {
@@ -83,6 +86,9 @@ extern PlayerMoveDefaultTypeInternal _PlayerMove_default_instance_;
 class PlayerMoveRet;
 class PlayerMoveRetDefaultTypeInternal;
 extern PlayerMoveRetDefaultTypeInternal _PlayerMoveRet_default_instance_;
+class UpdataObjInfo;
+class UpdataObjInfoDefaultTypeInternal;
+extern UpdataObjInfoDefaultTypeInternal _UpdataObjInfo_default_instance_;
 }  // namespace netData
 namespace google {
 namespace protobuf {
@@ -92,6 +98,7 @@ template<> ::netData::LoadPlayerDataFinish* Arena::Create< ::netData::LoadPlayer
 template<> ::netData::Ping* Arena::Create< ::netData::Ping>(Arena*);
 template<> ::netData::PlayerMove* Arena::Create< ::netData::PlayerMove>(Arena*);
 template<> ::netData::PlayerMoveRet* Arena::Create< ::netData::PlayerMoveRet>(Arena*);
+template<> ::netData::UpdataObjInfo* Arena::Create< ::netData::UpdataObjInfo>(Arena*);
 }  // namespace protobuf
 }  // namespace google
 namespace netData {
@@ -941,6 +948,145 @@ class ChangeMapRet : public ::google::protobuf::Message /* @@protoc_insertion_po
   friend struct ::protobuf_ClientMsg_2eproto::TableStruct;
   friend void ::protobuf_ClientMsg_2eproto::InitDefaultsChangeMapRetImpl();
 };
+// -------------------------------------------------------------------
+
+class UpdataObjInfo : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:netData.UpdataObjInfo) */ {
+ public:
+  UpdataObjInfo();
+  virtual ~UpdataObjInfo();
+
+  UpdataObjInfo(const UpdataObjInfo& from);
+
+  inline UpdataObjInfo& operator=(const UpdataObjInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  UpdataObjInfo(UpdataObjInfo&& from) noexcept
+    : UpdataObjInfo() {
+    *this = ::std::move(from);
+  }
+
+  inline UpdataObjInfo& operator=(UpdataObjInfo&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const UpdataObjInfo& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const UpdataObjInfo* internal_default_instance() {
+    return reinterpret_cast<const UpdataObjInfo*>(
+               &_UpdataObjInfo_default_instance_);
+  }
+  static PROTOBUF_CONSTEXPR int const kIndexInFileMessages =
+    6;
+
+  void Swap(UpdataObjInfo* other);
+  friend void swap(UpdataObjInfo& a, UpdataObjInfo& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline UpdataObjInfo* New() const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<UpdataObjInfo>(NULL);
+  }
+
+  UpdataObjInfo* New(::google::protobuf::Arena* arena) const PROTOBUF_FINAL {
+    return ::google::protobuf::Arena::Create<UpdataObjInfo>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void MergeFrom(const ::google::protobuf::Message& from) PROTOBUF_FINAL;
+  void CopyFrom(const UpdataObjInfo& from);
+  void MergeFrom(const UpdataObjInfo& from);
+  void Clear() PROTOBUF_FINAL;
+  bool IsInitialized() const PROTOBUF_FINAL;
+
+  size_t ByteSizeLong() const PROTOBUF_FINAL;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) PROTOBUF_FINAL;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const PROTOBUF_FINAL;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const PROTOBUF_FINAL;
+  int GetCachedSize() const PROTOBUF_FINAL { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const PROTOBUF_FINAL;
+  void InternalSwap(UpdataObjInfo* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const PROTOBUF_FINAL;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // bytes Name = 5;
+  void clear_name();
+  static const int kNameFieldNumber = 5;
+  const ::std::string& name() const;
+  void set_name(const ::std::string& value);
+  #if LANG_CXX11
+  void set_name(::std::string&& value);
+  #endif
+  void set_name(const char* value);
+  void set_name(const void* value, size_t size);
+  ::std::string* mutable_name();
+  ::std::string* release_name();
+  void set_allocated_name(::std::string* name);
+
+  // float x = 1;
+  void clear_x();
+  static const int kXFieldNumber = 1;
+  float x() const;
+  void set_x(float value);
+
+  // float y = 2;
+  void clear_y();
+  static const int kYFieldNumber = 2;
+  float y() const;
+  void set_y(float value);
+
+  // float z = 3;
+  void clear_z();
+  static const int kZFieldNumber = 3;
+  float z() const;
+  void set_z(float value);
+
+  // uint32 nTempID = 4;
+  void clear_ntempid();
+  static const int kNTempIDFieldNumber = 4;
+  ::google::protobuf::uint32 ntempid() const;
+  void set_ntempid(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:netData.UpdataObjInfo)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr name_;
+  float x_;
+  float y_;
+  float z_;
+  ::google::protobuf::uint32 ntempid_;
+  mutable int _cached_size_;
+  friend struct ::protobuf_ClientMsg_2eproto::TableStruct;
+  friend void ::protobuf_ClientMsg_2eproto::InitDefaultsUpdataObjInfoImpl();
+};
 // ===================================================================
 
 
@@ -1355,9 +1501,124 @@ inline void ChangeMapRet::set_nmapid(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:netData.ChangeMapRet.nMapID)
 }
 
+// -------------------------------------------------------------------
+
+// UpdataObjInfo
+
+// float x = 1;
+inline void UpdataObjInfo::clear_x() {
+  x_ = 0;
+}
+inline float UpdataObjInfo::x() const {
+  // @@protoc_insertion_point(field_get:netData.UpdataObjInfo.x)
+  return x_;
+}
+inline void UpdataObjInfo::set_x(float value) {
+  
+  x_ = value;
+  // @@protoc_insertion_point(field_set:netData.UpdataObjInfo.x)
+}
+
+// float y = 2;
+inline void UpdataObjInfo::clear_y() {
+  y_ = 0;
+}
+inline float UpdataObjInfo::y() const {
+  // @@protoc_insertion_point(field_get:netData.UpdataObjInfo.y)
+  return y_;
+}
+inline void UpdataObjInfo::set_y(float value) {
+  
+  y_ = value;
+  // @@protoc_insertion_point(field_set:netData.UpdataObjInfo.y)
+}
+
+// float z = 3;
+inline void UpdataObjInfo::clear_z() {
+  z_ = 0;
+}
+inline float UpdataObjInfo::z() const {
+  // @@protoc_insertion_point(field_get:netData.UpdataObjInfo.z)
+  return z_;
+}
+inline void UpdataObjInfo::set_z(float value) {
+  
+  z_ = value;
+  // @@protoc_insertion_point(field_set:netData.UpdataObjInfo.z)
+}
+
+// uint32 nTempID = 4;
+inline void UpdataObjInfo::clear_ntempid() {
+  ntempid_ = 0u;
+}
+inline ::google::protobuf::uint32 UpdataObjInfo::ntempid() const {
+  // @@protoc_insertion_point(field_get:netData.UpdataObjInfo.nTempID)
+  return ntempid_;
+}
+inline void UpdataObjInfo::set_ntempid(::google::protobuf::uint32 value) {
+  
+  ntempid_ = value;
+  // @@protoc_insertion_point(field_set:netData.UpdataObjInfo.nTempID)
+}
+
+// bytes Name = 5;
+inline void UpdataObjInfo::clear_name() {
+  name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& UpdataObjInfo::name() const {
+  // @@protoc_insertion_point(field_get:netData.UpdataObjInfo.Name)
+  return name_.GetNoArena();
+}
+inline void UpdataObjInfo::set_name(const ::std::string& value) {
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:netData.UpdataObjInfo.Name)
+}
+#if LANG_CXX11
+inline void UpdataObjInfo::set_name(::std::string&& value) {
+  
+  name_.SetNoArena(
+    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:netData.UpdataObjInfo.Name)
+}
+#endif
+inline void UpdataObjInfo::set_name(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:netData.UpdataObjInfo.Name)
+}
+inline void UpdataObjInfo::set_name(const void* value, size_t size) {
+  
+  name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:netData.UpdataObjInfo.Name)
+}
+inline ::std::string* UpdataObjInfo::mutable_name() {
+  
+  // @@protoc_insertion_point(field_mutable:netData.UpdataObjInfo.Name)
+  return name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* UpdataObjInfo::release_name() {
+  // @@protoc_insertion_point(field_release:netData.UpdataObjInfo.Name)
+  
+  return name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void UpdataObjInfo::set_allocated_name(::std::string* name) {
+  if (name != NULL) {
+    
+  } else {
+    
+  }
+  name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), name);
+  // @@protoc_insertion_point(field_set_allocated:netData.UpdataObjInfo.Name)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

@@ -51,7 +51,7 @@ void CBackCommand::Run(int64 currenttime)
 	{
 		m_DoFunction(m_Sock);
 
-		if (currenttime > m_LastSend + 5000)
+		if (currenttime > m_LastSend + 500)
 		{
 			MessagePack ping;
 			ping.PushString("__check_as_ping__");

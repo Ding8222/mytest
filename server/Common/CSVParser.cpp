@@ -15,6 +15,14 @@ namespace CSV {
 			std::ifstream ifile(_file.c_str());
 			if (ifile.is_open())
 			{
+				for (int i = 0; i < 3; ++i)
+				{
+					if (ifile.good())
+					{
+						ifile.get();
+					}
+				}
+
 				while (ifile.good())
 				{
 					getline(ifile, line);

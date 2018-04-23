@@ -1,5 +1,5 @@
-/*
-* Log·þÎñÆ÷
+ï»¿/*
+* LogæœåŠ¡å™¨
 * Copyright (C) ddl
 * 2018
 */

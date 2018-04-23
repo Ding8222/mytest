@@ -34,13 +34,13 @@ protected:
 	void GetFileName(char* fileName, char* filePath);//从附件的路径中获取文件名称  
 	void Char2Base64(char* pBuff64, char* pSrcBuff, int iLen);//把char类型转换成Base64类型  
 	bool  CReateSocket(SOCKET &sock);//建立socket连接  
-	bool Logon(SOCKET &sock);//登录邮箱，主要进行发邮件前的准备工作  
+	bool Logon(SOCKET *sock);//登录邮箱，主要进行发邮件前的准备工作  
 	int GetFileData(char* FilePath);//由文件路径获取附件内容  
 
-	bool SendHead(SOCKET &sock);//发送邮件头  
-	bool SendTextBody(SOCKET &sock);//发送邮件文本正文  
-	bool SendFileBody(SOCKET &sock);//发送邮件附件  
-	bool SendEnd(SOCKET &sock);//发送邮件结尾  
+	bool SendHead(SOCKET *sock);//发送邮件头  
+	bool SendTextBody(SOCKET *sock);//发送邮件文本正文  
+	bool SendFileBody(SOCKET *sock);//发送邮件附件  
+	bool SendEnd(SOCKET *sock);//发送邮件结尾  
 protected:
 	std::list<std::string> m_pcFilePathList;//记录附件路径  
 

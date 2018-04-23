@@ -1,4 +1,4 @@
-#include "GlobalDefine.h"
+ï»¿#include "GlobalDefine.h"
 #include "config.h"
 #include "tinyxml2.h"
 #include "log.h"
@@ -26,20 +26,20 @@ bool CConfig::Init(const char *servername)
 	XMLDocument doc;
 	if (doc.LoadFile(filename.c_str()) != XML_SUCCESS)
 	{
-		log_error("¼ÓÔØ %s Ê§°Ü!", filename.c_str());
+		log_error("åŠ è½½ %s å¤±è´¥!", filename.c_str());
 		return false;
 	}
 
 	XMLElement *pinfo = doc.FirstChildElement(servername);
 	if (!pinfo)
 	{
-		log_error("Ã»ÓÐÕÒµ½½Úµã£º'%s'", servername);
+		log_error("æ²¡æœ‰æ‰¾åˆ°èŠ‚ç‚¹ï¼š'%s'", servername);
 		return false;
 	}
 
 	if (pinfo->QueryBoolAttribute("SQL_Log", &m_SQLLog) != XML_SUCCESS)
 	{
-		log_error("Ã»ÓÐÕÒµ½×Ö¶Î£º 'SQL_Log'");
+		log_error("æ²¡æœ‰æ‰¾åˆ°å­—æ®µï¼š 'SQL_Log'");
 		return false;
 	}
 

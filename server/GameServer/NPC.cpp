@@ -1,4 +1,5 @@
 ﻿#include "NPC.h"
+#include "CSVLoad.h"
 
 CNPC::CNPC() :CBaseObj(EOT_NPC)
 {
@@ -29,5 +30,11 @@ void CNPC::Die()
 
 bool CNPC::Init(int32 npcid)
 {
+	CSVData::stNPC *npcinfo = CSVData::CNPCDB::FindById(npcid);
+	if (!npcinfo)
+		return false;
+
+	SetName(npcinfo->Name.c_str());
+
 	return true;
 }

@@ -1,4 +1,4 @@
-#include "LogServer.h"
+ï»¿#include "LogServer.h"
 #include "LogServerMgr.h"
 #include "config.h"
 #include "Timer.h"
@@ -41,7 +41,7 @@ bool CLogServer::Init()
 #ifdef _WIN32
 		if (!CCtrlHandler::Instance().Init(&cb))
 		{
-			RunStateError("³õÊ¼»¯CtrlHandlerÊ§°Ü!");
+			RunStateError("åˆå§‹åŒ–CtrlHandlerå¤±è´¥!");
 			break;
 		}
 #endif
@@ -51,7 +51,7 @@ bool CLogServer::Init()
 			CConfig::Instance().GetListenPort(),
 			CConfig::Instance().GetOverTime()))
 		{
-			RunStateError("³õÊ¼»¯ LogServerMgr Ê§°Ü!");
+			RunStateError("åˆå§‹åŒ– LogServerMgr å¤±è´¥!");
 			break;
 		}
 
@@ -90,7 +90,7 @@ void CLogServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			ElapsedLog("ÔËĞĞ³¬Ê±:%d\n%s", delay, CLogServerMgr::Instance().GetMsgNumInfo());
+			ElapsedLog("è¿è¡Œè¶…æ—¶:%d\n%s", delay, CLogServerMgr::Instance().GetMsgNumInfo());
 		}
 	}
 	delaytime(300);

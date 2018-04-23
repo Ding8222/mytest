@@ -1,4 +1,4 @@
-#include <map>
+ï»¿#include <map>
 #include "ServerMsg.pb.h"
 
 #include "serverinfo.h"
@@ -31,14 +31,14 @@ CLogServerMgr::~CLogServerMgr()
 	Destroy();
 }
 
-//Ö´ĞĞÂß¼­ÈÎÎñ
+//æ‰§è¡Œé€»è¾‘ä»»åŠ¡
 static bool DoTask(void *tk)
 {
 	OnDoTask(tk);
 	return false;
 }
 
-//¶ÔÖ´ĞĞÂß¼­ÈÎÎñµÄ½á¹ûµÄ´¦Àí
+//å¯¹æ‰§è¡Œé€»è¾‘ä»»åŠ¡çš„ç»“æœçš„å¤„ç†
 static void DoTaskResult(void *taskresult, freetask ffunc)
 {
 	ffunc(taskresult);
@@ -48,20 +48,20 @@ bool CLogServerMgr::Init(const char *ip, int serverid, int port, int overtime)
 {
 	if (!task::InitPools())
 	{
-		RunStateError("³õÊ¼»¯task poolÊ§°Ü!");
+		RunStateError("åˆå§‹åŒ–task poolå¤±è´¥!");
 		return false;
 	}
 
 	m_Hand = datahand_create();
 	if (!m_Hand)
 	{
-		RunStateError("´´½¨DataHandÊ§°Ü!");
+		RunStateError("åˆ›å»ºDataHandå¤±è´¥!");
 		return false;
 	}
 
 	if (!m_Hand->Init(10, nullptr, task_release, DoTask, DoTaskResult, nullptr))
 	{
-		RunStateError("³õÊ¼»¯DataHandÊ§°Ü!");
+		RunStateError("åˆå§‹åŒ–DataHandå¤±è´¥!");
 		return false;
 	}
 
@@ -72,13 +72,13 @@ bool CLogServerMgr::Init(const char *ip, int serverid, int port, int overtime)
 		CConfig::Instance().GetDBPass(),
 		CConfig::Instance().GetDBIP()))
 	{
-		RunStateError("Á¬½ÓMysqlÊ§°Ü!");
+		RunStateError("è¿æ¥Mysqlå¤±è´¥!");
 		return false;
 	}
 
 	if (!g_dbhand.SetCharacterSet("utf8"))
 	{
-		RunStateError("ÉèÖÃUTF-8Ê§°Ü!");
+		RunStateError("è®¾ç½®UTF-8å¤±è´¥!");
 		return false;
 	}
 
@@ -101,13 +101,13 @@ void CLogServerMgr::Destroy()
 		m_Hand = nullptr;
 	}
 
-	//ÇĞ¼Ç·Åµ½×îºó
+	//åˆ‡è®°æ”¾åˆ°æœ€å
 	task::DestroyPools();
 }
 
 void CLogServerMgr::GetCurrentInfo(char *buf, size_t buflen)
 {
-	snprintf(buf, buflen - 1, "µ±Ç°×¢²áµÄ·şÎñÆ÷ĞÅÏ¢£º\nÍø¹ØÊıÁ¿£º%d\nÂß¼­·şÎñÆ÷ÊıÁ¿£º%d\nµÇÂ½·şÎñÆ÷ÊıÁ¿£º%d\nÊı¾İ·şÎñÆ÷ÊıÁ¿£º%d\nÖĞĞÄ·şÎñÆ÷ÊıÁ¿£º%d\n",
+	snprintf(buf, buflen - 1, "å½“å‰æ³¨å†Œçš„æœåŠ¡å™¨ä¿¡æ¯ï¼š\nç½‘å…³æ•°é‡ï¼š%d\né€»è¾‘æœåŠ¡å™¨æ•°é‡ï¼š%d\nç™»é™†æœåŠ¡å™¨æ•°é‡ï¼š%d\næ•°æ®æœåŠ¡å™¨æ•°é‡ï¼š%d\nä¸­å¿ƒæœåŠ¡å™¨æ•°é‡ï¼š%d\n",
 		(int)m_GateList.size(), (int)m_GameList.size(), (int)m_LoginList.size(), (int)m_DBList.size(), (int)m_CenterList.size());
 }
 
@@ -149,7 +149,7 @@ const char *CLogServerMgr::GetMsgNumInfo()
 	for (std::map<int, serverinfo*>::iterator itr = m_GateList.begin(); itr != m_GateList.end(); ++itr)
 	{
 		info = itr->second;
-		snprintf(buf, len - 1, "Íø¹Ø·şÎñÆ÷: %d, ÊÕµ½ÏûÏ¢ÊıÁ¿:%d, ·¢ËÍÏûÏ¢ÊıÁ¿:%d\n", \
+		snprintf(buf, len - 1, "ç½‘å…³æœåŠ¡å™¨: %d, æ”¶åˆ°æ¶ˆæ¯æ•°é‡:%d, å‘é€æ¶ˆæ¯æ•°é‡:%d\n", \
 			info->GetServerID(), info->GetRecvMsgNum(), info->GetSendMsgNum());
 
 		res = strlen(buf);
@@ -160,7 +160,7 @@ const char *CLogServerMgr::GetMsgNumInfo()
 	for (std::map<int, serverinfo*>::iterator itr = m_GameList.begin(); itr != m_GameList.end(); ++itr)
 	{
 		info = itr->second;
-		snprintf(buf, len - 1, "Âß¼­·şÎñÆ÷: %d, ÊÕµ½ÏûÏ¢ÊıÁ¿:%d, ·¢ËÍÏûÏ¢ÊıÁ¿:%d\n", \
+		snprintf(buf, len - 1, "é€»è¾‘æœåŠ¡å™¨: %d, æ”¶åˆ°æ¶ˆæ¯æ•°é‡:%d, å‘é€æ¶ˆæ¯æ•°é‡:%d\n", \
 			info->GetServerID(), info->GetRecvMsgNum(), info->GetSendMsgNum());
 
 		res = strlen(buf);
@@ -171,7 +171,7 @@ const char *CLogServerMgr::GetMsgNumInfo()
 	for (std::map<int, serverinfo*>::iterator itr = m_LoginList.begin(); itr != m_LoginList.end(); ++itr)
 	{
 		info = itr->second;
-		snprintf(buf, len - 1, "µÇÂ½·şÎñÆ÷: %d, ÊÕµ½ÏûÏ¢ÊıÁ¿:%d, ·¢ËÍÏûÏ¢ÊıÁ¿:%d\n", \
+		snprintf(buf, len - 1, "ç™»é™†æœåŠ¡å™¨: %d, æ”¶åˆ°æ¶ˆæ¯æ•°é‡:%d, å‘é€æ¶ˆæ¯æ•°é‡:%d\n", \
 			info->GetServerID(), info->GetRecvMsgNum(), info->GetSendMsgNum());
 
 		res = strlen(buf);
@@ -182,7 +182,7 @@ const char *CLogServerMgr::GetMsgNumInfo()
 	for (std::map<int, serverinfo*>::iterator itr = m_DBList.begin(); itr != m_DBList.end(); ++itr)
 	{
 		info = itr->second;
-		snprintf(buf, len - 1, "Êı¾İ·şÎñÆ÷: %d, ÊÕµ½ÏûÏ¢ÊıÁ¿:%d, ·¢ËÍÏûÏ¢ÊıÁ¿:%d\n", \
+		snprintf(buf, len - 1, "æ•°æ®æœåŠ¡å™¨: %d, æ”¶åˆ°æ¶ˆæ¯æ•°é‡:%d, å‘é€æ¶ˆæ¯æ•°é‡:%d\n", \
 			info->GetServerID(), info->GetRecvMsgNum(), info->GetSendMsgNum());
 
 		res = strlen(buf);
@@ -193,7 +193,7 @@ const char *CLogServerMgr::GetMsgNumInfo()
 	for (std::map<int, serverinfo*>::iterator itr = m_CenterList.begin(); itr != m_CenterList.end(); ++itr)
 	{
 		info = itr->second;
-		snprintf(buf, len - 1, "ÖĞĞÄ·şÎñÆ÷: %d, ÊÕµ½ÏûÏ¢ÊıÁ¿:%d, ·¢ËÍÏûÏ¢ÊıÁ¿:%d\n", \
+		snprintf(buf, len - 1, "ä¸­å¿ƒæœåŠ¡å™¨: %d, æ”¶åˆ°æ¶ˆæ¯æ•°é‡:%d, å‘é€æ¶ˆæ¯æ•°é‡:%d\n", \
 			info->GetServerID(), info->GetRecvMsgNum(), info->GetSendMsgNum());
 
 		res = strlen(buf);
@@ -214,27 +214,27 @@ void CLogServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	{
 		m_GateList.erase(info->GetServerID());
 		if (overtime)
-			RunStateError("Íø¹Ø·şÆ÷³¬Ê±ÒÆ³ı:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("ç½‘å…³æœå™¨è¶…æ—¶ç§»é™¤:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		else
-			RunStateError("Íø¹Ø·şÆ÷¹Ø±ÕÒÆ³ı:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("ç½‘å…³æœå™¨å…³é—­ç§»é™¤:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		break;
 	}
 	case ServerEnum::EST_GAME:
 	{
 		m_GameList.erase(info->GetServerID());
 		if (overtime)
-			RunStateError("Âß¼­·şÆ÷³¬Ê±ÒÆ³ı:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("é€»è¾‘æœå™¨è¶…æ—¶ç§»é™¤:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		else
-			RunStateError("Âß¼­·şÆ÷¹Ø±ÕÒÆ³ı:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("é€»è¾‘æœå™¨å…³é—­ç§»é™¤:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		break;
 	}
 	case ServerEnum::EST_LOGIN:
 	{
 		m_LoginList.erase(info->GetServerID());
 		if (overtime)
-			RunStateError("µÇÂ½·şÆ÷³¬Ê±ÒÆ³ı:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("ç™»é™†æœå™¨è¶…æ—¶ç§»é™¤:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		else
-			RunStateError("µÇÂ½·şÆ÷¹Ø±ÕÒÆ³ı:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("ç™»é™†æœå™¨å…³é—­ç§»é™¤:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 
 		break;
 	}
@@ -242,9 +242,9 @@ void CLogServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	{
 		m_DBList.erase(info->GetServerID());
 		if (overtime)
-			RunStateError("Êı¾İ·şÆ÷³¬Ê±ÒÆ³ı:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("æ•°æ®æœå™¨è¶…æ—¶ç§»é™¤:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		else
-			RunStateError("Êı¾İ·şÆ÷¹Ø±ÕÒÆ³ı:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("æ•°æ®æœå™¨å…³é—­ç§»é™¤:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 
 		break;
 	}
@@ -252,18 +252,18 @@ void CLogServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	{
 		m_CenterList.erase(info->GetServerID());
 		if (overtime)
-			RunStateError("ÖĞĞÄ·şÆ÷³¬Ê±ÒÆ³ı:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("ä¸­å¿ƒæœå™¨è¶…æ—¶ç§»é™¤:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 		else
-			RunStateError("ÖĞĞÄ·şÆ÷¹Ø±ÕÒÆ³ı:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
+			RunStateError("ä¸­å¿ƒæœå™¨å…³é—­ç§»é™¤:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
 
 		break;
 	}
 	default:
 	{
 		if (overtime)
-			RunStateError("Î´×¢²áµÄ·şÎñÆ÷³¬Ê±ÒÆ³ı, ip:[%s]", info->GetIP());
+			RunStateError("æœªæ³¨å†Œçš„æœåŠ¡å™¨è¶…æ—¶ç§»é™¤, ip:[%s]", info->GetIP());
 		else
-			RunStateError("Î´×¢²áµÄ·şÎñÆ÷¹Ø±ÕÒÆ³ı, ip:[%s]", info->GetIP());
+			RunStateError("æœªæ³¨å†Œçš„æœåŠ¡å™¨å…³é—­ç§»é™¤, ip:[%s]", info->GetIP());
 	}
 	}
 }
@@ -303,7 +303,7 @@ bool CLogServerMgr::AddNewServer(serverinfo *info, int nServerID, int nType)
 {
 	if (FindServer(nServerID, nType))
 	{
-		RunStateError("Ìí¼Ó·şÎñÆ÷Ê§°Ü£¡ÒÑ¾­´æÔÚµÄ·şÎñÆ÷£¬Ô¶³Ì·şÎñÆ÷ID£º[%d] IP:[%s]", nServerID, info->GetIP());
+		RunStateError("æ·»åŠ æœåŠ¡å™¨å¤±è´¥ï¼å·²ç»å­˜åœ¨çš„æœåŠ¡å™¨ï¼Œè¿œç¨‹æœåŠ¡å™¨IDï¼š[%d] IP:[%s]", nServerID, info->GetIP());
 		return false;
 	}
 
@@ -337,7 +337,7 @@ bool CLogServerMgr::AddNewServer(serverinfo *info, int nServerID, int nType)
 	}
 	default:
 	{
-		RunStateError("Ìí¼Ó·şÎñÆ÷Ê§°Ü£¡²»´æÔÚµÄ·şÎñÆ÷ÀàĞÍ£¬Ô¶³Ì·şÎñÆ÷ID£º[%d] ÀàĞÍ£º[%d] IP:[%s]", nServerID, nType, info->GetIP());
+		RunStateError("æ·»åŠ æœåŠ¡å™¨å¤±è´¥ï¼ä¸å­˜åœ¨çš„æœåŠ¡å™¨ç±»å‹ï¼Œè¿œç¨‹æœåŠ¡å™¨IDï¼š[%d] ç±»å‹ï¼š[%d] IP:[%s]", nServerID, nType, info->GetIP());
 		return false;
 	}
 	}
@@ -396,7 +396,7 @@ void CLogServerMgr::AddNewTask(Msg *pMsg, int serverid)
 	task *tk = task_create();
 	if (!tk)
 	{
-		RunStateError("´´½¨ÈÎÎñÊ§°Ü!");
+		RunStateError("åˆ›å»ºä»»åŠ¡å¤±è´¥!");
 		return;
 	}
 
@@ -405,7 +405,7 @@ void CLogServerMgr::AddNewTask(Msg *pMsg, int serverid)
 	
 	if (!m_Hand->PushTask(tk))
 	{
-		RunStateError("Ìí¼ÓÈÎÎñÖÁdatahandÊ§°Ü!");
+		RunStateError("æ·»åŠ ä»»åŠ¡è‡³datahandå¤±è´¥!");
 		task_release(tk);
 		return;
 	}
