@@ -129,6 +129,7 @@ namespace CSVData
 		_Row.getValue(pdata->nInstanceID, "副本ID");
 		_Row.getValue(pdata->nMapID, "地图ID");
 		_Row.getValue(pdata->nLimitTime, "时间限制");
+		_Row.getValue(pdata->nMaxWave, "最大波数");
 
 		if (FindById(pdata->nInstanceID))
 		{
@@ -137,7 +138,7 @@ namespace CSVData
 			return false;
 		}
 
-		if (pdata->nInstanceID < 0 || pdata->nMapID < 0 || pdata->nLimitTime <= 0)
+		if (pdata->nInstanceID < 0 || pdata->nMapID < 0 || pdata->nLimitTime <= 0 || pdata->nMaxWave <= 0)
 		{
 			RunStateError("配置错误 %d ！", pdata->nInstanceID);
 			delete pdata;
@@ -303,26 +304,25 @@ namespace CSVData
 	}
 
 	// 副本刷怪
-	std::unordered_map<int64, std::vector<stInstanceMonster *> *> CInstanceMonsterDB::m_Data;
+	std::unordered_map<int64, std::list<stInstanceMonster *> *> CInstanceMonsterDB::m_Data;
 	bool CInstanceMonsterDB::AddData(CSV::Row & _Row)
 	{
 		stInstanceMonster *pdata = new stInstanceMonster;
 		_Row.getValue(pdata->nInstanceID, "副本ID");
+		_Row.getValue(pdata->nWave, "波数");
 		_Row.getValue(pdata->nMonsterID, "怪物ID");
-		_Row.getValue(pdata->bCanRelive, "是否复活");
-		_Row.getValue(pdata->nReliveCD, "复活CD");
 		_Row.getValue(pdata->nX, "坐标X");
 		_Row.getValue(pdata->nY, "坐标Y");
 		_Row.getValue(pdata->nZ, "坐标Z");
 
-		std::vector<stInstanceMonster *> *monsterset = FindById(pdata->nInstanceID);
+		std::list<stInstanceMonster *> *monsterset = FindById(pdata->nInstanceID);
 		if (!monsterset)
 		{
-			monsterset = new std::vector<stInstanceMonster *>;
+			monsterset = new std::list<stInstanceMonster *>;
 			m_Data.insert(std::make_pair(pdata->nInstanceID, monsterset));
 		}
 
-		if (pdata->nInstanceID < 0 || pdata->nMonsterID < 0 || pdata->nReliveCD < 0)
+		if (pdata->nInstanceID < 0 || pdata->nMonsterID < 0 || pdata->nWave <= 0)
 		{
 			RunStateError("配置错误 %d ！", pdata->nInstanceID);
 			delete pdata;

@@ -1,15 +1,21 @@
 ﻿#include "platform_config.h"
 #include "Instance.h"
 #include "MapConfig.h"
-#include "CSVLoad.h"
 #include "Timer.h"
 
 CInstance::CInstance()
 {
+	m_InstanceBaseID = 0;
 	m_InstanceID = 0;
+	m_InstanceResult = false;
+	m_NowWave = 0;
+	m_MaxWave = 0;
+	m_CreateMonsterDelayTime = 0;
+	m_MonsterCount = 0;
 	m_LimitTime = 0;
 	m_CreateTime = 0;
 	m_RemoveTime = 0;
+	m_InstanceMonster.clear();
 }
 
 CInstance::~CInstance()
@@ -19,6 +25,7 @@ CInstance::~CInstance()
 
 void CInstance::Destroy()
 {
+	m_InstanceMonster.clear();
 	CScene::Destroy();
 }
 
@@ -38,8 +45,10 @@ bool CInstance::Init(int32 instancebaseid)
 		return false;
 	}
 
+	m_InstanceBaseID = instancebaseid;
 	m_LimitTime = instanceinfo->nLimitTime;
 	m_CreateTime = CTimer::GetTime();
+	m_MaxWave = instanceinfo->nMaxWave;
 
 	if (!CScene::Init(mapconfig))
 	{
@@ -48,29 +57,56 @@ bool CInstance::Init(int32 instancebaseid)
 	}
 
 	// 初始化刷怪
-	std::vector<CSVData::stInstanceMonster *> *monsterset = CSVData::CInstanceMonsterDB::FindById(instancebaseid);
-	if (monsterset)
-	{
-		std::vector<CSVData::stInstanceMonster *>::iterator iter = monsterset->begin();
-		for (; iter != monsterset->end(); ++iter)
-		{
-			CSVData::stInstanceMonster *monster = *iter;
-			if (!AddMonster(monster->nMonsterID, monster->nX, monster->nY, monster->nZ, monster->bCanRelive, monster->nReliveCD))
-			{
-				RunStateError("副本：%d 地图：%d 添加monster：%d 失败！", instancebaseid, instanceinfo->nMapID, monster->nMonsterID);
-				return false;
-			}
-		}
-	}
+	m_InstanceMonster = *CSVData::CInstanceMonsterDB::FindById(instancebaseid);
 
 	return true;
 }
 
 void CInstance::Run()
 {
+	int64 nowtime = CTimer::GetTime();
+	CreateMonsterRun(nowtime);
 	CScene::Run();
-	if (IsOverTime(CTimer::GetTime()))
+	if (IsOverTime(nowtime))
 	{
 		SetWaitRemove();
+	}
+}
+
+void CInstance::MonsterDie(int32 monsterid)
+{
+	if (m_MonsterCount == 0)
+	{
+		if (m_NowWave < m_MaxWave)
+			++m_NowWave;
+		else
+			SetInstanceResult(true);
+	}
+}
+
+void CInstance::CreateMonsterRun(const int64 &time)
+{
+	if (time > m_CreateTime + m_CreateMonsterDelayTime)
+	{
+		if (m_MonsterCount == 0)
+		{
+			CSVData::stInstanceMonster *monsterinfo;
+			while (!m_InstanceMonster.empty())
+			{
+				monsterinfo = m_InstanceMonster.front();
+				if (monsterinfo->nWave == m_NowWave)
+				{
+					if (AddMonster(monsterinfo->nMonsterID, monsterinfo->nX, monsterinfo->nY, monsterinfo->nZ))
+					{
+						++m_MonsterCount;
+					}
+					else
+					{
+						RunStateError("副本：%d 地图：%d 添加monster：%d 失败！", GetInstanceBaseID(), GetMapID(), monsterinfo->nMonsterID);
+					}
+					m_InstanceMonster.pop_front();
+				}
+			}
+		}
 	}
 }

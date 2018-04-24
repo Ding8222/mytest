@@ -213,10 +213,12 @@ namespace CSVData
 			nInstanceID = 0;
 			nMapID = 0;
 			nLimitTime = 0;
+			nMaxWave = 0;
 		}
 		int32 nInstanceID;
 		int32 nMapID;
 		int32 nLimitTime;
+		int32 nMaxWave;
 	};
 
 	class CInstanceDB
@@ -365,17 +367,15 @@ namespace CSVData
 		stInstanceMonster()
 		{
 			nInstanceID = 0;
+			nWave = 0;
 			nMonsterID = 0;
-			bCanRelive = false;
-			nReliveCD = 0;
 			nX = 0.0f;
 			nY = 0.0f;
 			nZ = 0.0f;
 		}
 		int32 nInstanceID;
 		int32 nMonsterID;
-		bool bCanRelive;
-		int32 nReliveCD;
+		int32 nWave;
 		float nX;
 		float nY;
 		float nZ;
@@ -385,9 +385,9 @@ namespace CSVData
 	{
 	public:
 		static bool AddData(CSV::Row & _Row);
-		static std::vector<stInstanceMonster *> *FindById(int64 _Key)
+		static std::list<stInstanceMonster *> *FindById(int64 _Key)
 		{
-			std::unordered_map<int64, std::vector<stInstanceMonster *> *>::iterator iter = m_Data.find(_Key);
+			std::unordered_map<int64, std::list<stInstanceMonster *> *>::iterator iter = m_Data.find(_Key);
 			if (iter != m_Data.end())
 				return iter->second;
 
@@ -395,6 +395,6 @@ namespace CSVData
 		}
 		DEFINE_CLEAR
 
-		static std::unordered_map<int64, std::vector<stInstanceMonster *> *> m_Data;
+		static std::unordered_map<int64, std::list<stInstanceMonster *> *> m_Data;
 	};
 }
