@@ -134,6 +134,8 @@
     <ClCompile Include="aoi.c" />
     <ClCompile Include="BaseObj.cpp" />
     <ClCompile Include="CSVLoad.cpp" />
+    <ClCompile Include="DoClientMsg.cpp" />
+    <ClCompile Include="DoLoginMsg.cpp" />
     <ClCompile Include="Instance.cpp" />
     <ClCompile Include="InstanceMgr.cpp" />
     <ClCompile Include="Monster.cpp" />
@@ -156,12 +158,15 @@
     <ClCompile Include="PlayerOperate.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
+    <ClCompile Include="Status.cpp" />
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aoi.h" />
     <ClInclude Include="BaseObj.h" />
     <ClInclude Include="CSVLoad.h" />
+    <ClInclude Include="DoClientMsg.h" />
+    <ClInclude Include="DoLoginMsg.h" />
     <ClInclude Include="Instance.h" />
     <ClInclude Include="InstanceMgr.h" />
     <ClInclude Include="Monster.h" />
@@ -183,6 +188,7 @@
     <ClInclude Include="PlayerOperate.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneMgr.h" />
+    <ClInclude Include="Status.h" />
     <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

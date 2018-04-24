@@ -107,6 +107,7 @@ namespace CSVData
 		_Row.getValue(pdata->nIndex, "Index");
 		_Row.getValue(pdata->nStatusID, "状态ID");
 		_Row.getValue(pdata->nStatusLev, "状态等级");
+		_Row.getValue(pdata->nTime, "持续时间");
 
 		int64 key = MAKE_STATUS_KEY(pdata->nStatusID, pdata->nStatusLev);
 		if (FindById(key))

@@ -96,10 +96,12 @@ namespace CSVData
 			nIndex = 0;
 			nStatusID = 0;
 			nStatusLev = 0;
+			nTime = 0;
 		}
 		int32 nIndex;
 		int32 nStatusID;
 		int32 nStatusLev;
+		int32 nTime;
 	};
 
 	class CStatusDB
