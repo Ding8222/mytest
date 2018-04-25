@@ -38,6 +38,9 @@ namespace CSVData
 		if (!CSV::CsvLoader::LoadCsv<CInstanceMonsterDB>("InstanceMonster"))
 			return false;
 
+		if (!CSV::CsvLoader::LoadCsv<CItemDB>("Item"))
+			return false;
+
 		RunStateLog("加载所有CSV成功！");
 		return true;
 	}
@@ -55,6 +58,7 @@ namespace CSVData
 		CNPCDB::Destroy();
 		CMapMonsterDB::Destroy();
 		CInstanceMonsterDB::Destroy();
+		CItemDB::Destroy();
 	}
 
 	// 例子
@@ -330,6 +334,34 @@ namespace CSVData
 		}
 
 		monsterset->push_back(pdata);
+		return true;
+	}
+
+	// Item
+	std::unordered_map<int64, stItem *> CItemDB::m_Data;
+	bool CItemDB::AddData(CSV::Row & _Row)
+	{
+		stItem *pdata = new stItem;
+		_Row.getValue(pdata->nItemID, "道具ID");
+		_Row.getValue(pdata->Name, "道具名称");
+		_Row.getValue(pdata->nItemType, "道具类型");
+		_Row.getValue(pdata->nMaxCount, "最大叠加数量");
+
+		if (FindById(pdata->nItemID))
+		{
+			RunStateError("添加重复项目 %d ！", pdata->nItemID);
+			delete pdata;
+			return false;
+		}
+
+		if (pdata->nItemID <= 0 || pdata->nItemType < 0 || pdata->nMaxCount <= 0)
+		{
+			RunStateError("配置错误 %d ！", pdata->nItemID);
+			delete pdata;
+			return false;
+		}
+
+		m_Data.insert(std::make_pair(pdata->nItemID, pdata));
 		return true;
 	}
 }

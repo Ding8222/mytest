@@ -7,6 +7,7 @@
 #pragma once
 #include<unordered_map>
 #include "BaseObj.h"
+#include "Package.h"
 #include "serverinfo.h"
 #include "google/protobuf/Message.h"
 
@@ -25,12 +26,18 @@ public:
 	virtual void Die();
 	// 加载数据
 	bool LoadData(Msg *pMsg);
-	// 保存数据
-	bool SaveData();
+	// 保存数据,pMsg不为nullptr的时候，打包数据至pMsg
+	bool SaveData(google::protobuf::Message *pMsg = nullptr);
 	// 打包数据
-	bool PackData(google::protobuf::Message *pMsg);
+	bool PackData();
+	// 解析数据
+	bool UnPackData(const char *data,int32 len);
 	// 下线
 	void OffLine();
+	
+private:
+	// 背包
+	CPackage m_Package;
 
 public:
 	void SetGateInfo(serverinfo * info) { m_GateInfo = info; }
@@ -46,8 +53,6 @@ public:
 	int64 GetCreateTime() { return m_CreateTime; }
 	void SetLoginTime(int64 time) { m_LoginTime = time; }
 	int64 GetLoginTime() { return m_LoginTime; }
-	void SetData(const char *data, int32 size) { memcpy_s(m_Data, 256, data, size); }
-	char *GetData() { return m_Data; }
 private:
 	serverinfo * m_GateInfo;
 	int32 m_ClientID;
@@ -56,5 +61,5 @@ private:
 	int64 m_CreateTime;
 	int64 m_LoginTime;
 	int64 m_LastSaveTime;
-	char m_Data[256];
+	bool m_LoadDataSucc;
 };

@@ -99,5 +99,8 @@
     <ClCompile Include="BackCommand.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="zlib.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

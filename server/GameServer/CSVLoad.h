@@ -397,4 +397,37 @@ namespace CSVData
 
 		static std::unordered_map<int64, std::list<stInstanceMonster *> *> m_Data;
 	};
+
+	// Item
+	struct stItem
+	{
+		stItem()
+		{
+			nItemID = 0;
+			nItemType = 0;
+			Name.clear();
+			nMaxCount = 0;
+		}
+		int32 nItemID;
+		int32 nItemType;
+		std::string Name;
+		int32 nMaxCount;
+	};
+
+	class CItemDB
+	{
+	public:
+		static bool AddData(CSV::Row & _Row);
+		static stItem *FindById(int64 _Key)
+		{
+			std::unordered_map<int64, stItem *>::iterator iter = m_Data.find(_Key);
+			if (iter != m_Data.end())
+				return iter->second;
+
+			return nullptr;
+		}
+		DEFINE_CLEAR
+
+			static std::unordered_map<int64, stItem *> m_Data;
+	};
 }

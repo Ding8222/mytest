@@ -1,4 +1,4 @@
-﻿#include "DoClientMsg.h"
+﻿#include "PlayerOperate.h"
 #include "Utilities.h"
 #include "msgbase.h"
 #include "SceneMgr.h"
@@ -78,7 +78,7 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 					svrData::LoadPlayerData *pData = ChangeLineMsg.mutable_data();
 					if (pData)
 					{
-						if (pPlayer->PackData(pData))
+						if (pPlayer->SaveData(pData))
 						{
 							pData->set_nmapid(nMapID);
 #ifdef _DEBUG

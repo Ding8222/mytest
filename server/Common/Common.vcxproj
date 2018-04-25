@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>..\lib\</OutDir>
-    <IncludePath>..\3rd\libssh\;..\3rd\openssl\;..\3rd\curllib\;..\3rd\fmtlib\;..\3rd\json\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\3rd\mysql\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\;..\3rd\libssh\;..\3rd\openssl\;..\3rd\curllib\;..\3rd\fmtlib\;..\3rd\json\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\3rd\mysql\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>..\3rd\fmtlib\;..\3rd\json\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\3rd\mysql\;$(IncludePath)</IncludePath>
@@ -152,6 +152,7 @@
     <ClCompile Include="taskqueue.cpp" />
     <ClCompile Include="threadinstance.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="zlib.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

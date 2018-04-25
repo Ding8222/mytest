@@ -2,9 +2,6 @@
 #include "Utilities.h"
 #include "msgbase.h"
 
-#include "DoClientMsg.h"
-#include "DoLoginMsg.h"
-
 #include "ServerType.h"
 
 void Operate(CPlayer *pPlayer, Msg *pMsg)

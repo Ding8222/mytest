@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClInclude Include="..\3rd\json\json.hpp" />
     <ClInclude Include="BackCommand.h" />
+    <ClInclude Include="Base64.h" />
     <ClInclude Include="BaseConfig.h" />
     <ClInclude Include="blockbuf.h" />
     <ClInclude Include="Client.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="PB\Login.pb.h" />
     <ClInclude Include="PB\ServerMsg.pb.h" />
     <ClInclude Include="platform_config.h" />
+    <ClInclude Include="PlayerSaveAndLoadDef.h" />
     <ClInclude Include="pool.h" />
     <ClInclude Include="RandomPool.h" />
     <ClInclude Include="SendMail.h" />
@@ -174,6 +176,7 @@
     <ClInclude Include="threadinstance.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="tinyxml2.h" />
+    <ClInclude Include="zlib.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -70,7 +70,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\Common\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\;..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\Common\;$(IncludePath)</IncludePath>
     <OutDir>..\bin\</OutDir>
     <TargetName>G_$(ProjectName)</TargetName>
   </PropertyGroup>
@@ -85,12 +85,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>/wd4146 /utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Base.lib;lxnet.lib;tinyxml2.lib;Common.lib;libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Base.lib;lxnet.lib;tinyxml2.lib;Common.lib;libprotobuf.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\base;..\lib\tinyxml2;..\lib\lxnet;%(AdditionalIncludeDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -138,14 +138,14 @@
     <ClCompile Include="DoLoginMsg.cpp" />
     <ClCompile Include="Instance.cpp" />
     <ClCompile Include="InstanceMgr.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Monster.cpp" />
-    <ClCompile Include="MonsterCreator.cpp" />
     <ClCompile Include="NPC.cpp" />
-    <ClCompile Include="NPCCreator.cpp" />
     <ClCompile Include="ObjAttribute.cpp" />
     <ClCompile Include="ObjFight.cpp" />
     <ClCompile Include="ObjScene.cpp" />
     <ClCompile Include="ObjStatus.cpp" />
+    <ClCompile Include="Package.cpp" />
     <ClCompile Include="PlayerMgr.cpp" />
     <ClCompile Include="config.cpp" />
     <ClCompile Include="GameCenterConnect.cpp" />
@@ -156,6 +156,7 @@
     <ClCompile Include="MapInfo.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerOperate.cpp" />
+    <ClCompile Include="PlayerSaveAndLoad.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="Status.cpp" />
@@ -165,18 +166,16 @@
     <ClInclude Include="aoi.h" />
     <ClInclude Include="BaseObj.h" />
     <ClInclude Include="CSVLoad.h" />
-    <ClInclude Include="DoClientMsg.h" />
-    <ClInclude Include="DoLoginMsg.h" />
     <ClInclude Include="Instance.h" />
     <ClInclude Include="InstanceMgr.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Monster.h" />
-    <ClInclude Include="MonsterCreator.h" />
     <ClInclude Include="NPC.h" />
-    <ClInclude Include="NPCCreator.h" />
     <ClInclude Include="ObjAttribute.h" />
     <ClInclude Include="ObjFight.h" />
     <ClInclude Include="ObjScene.h" />
     <ClInclude Include="ObjStatus.h" />
+    <ClInclude Include="Package.h" />
     <ClInclude Include="PlayerMgr.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="GameCenterConnect.h" />

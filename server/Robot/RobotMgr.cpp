@@ -7,7 +7,6 @@
 #include "ClientType.h"
 #include "des.h"
 #include "osrng.h"
-#include "base64.h"
 #include <string>
 #include "serverlog.h"
 #include "msgbase.h"

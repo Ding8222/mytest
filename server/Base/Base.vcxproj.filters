@@ -179,5 +179,14 @@
     <ClInclude Include="BackCommand.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="zlib.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerSaveAndLoadDef.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Base64.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

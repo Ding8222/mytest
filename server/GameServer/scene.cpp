@@ -5,8 +5,6 @@
 #include "idmgr.c"
 #include "serverlog.h"
 #include "Utilities.h"
-#include "MonsterCreator.h"
-#include "NPCCreator.h"
 
 CScene::CScene()
 {

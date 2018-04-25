@@ -31,6 +31,15 @@
     <Filter Include="基础对象\玩家\玩家操作">
       <UniqueIdentifier>{eb345bdc-9e0a-4a8d-8af3-1336f86ce3a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="背包">
+      <UniqueIdentifier>{f7c8b007-98dd-49fb-9dea-659f20c1e6c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="道具">
+      <UniqueIdentifier>{98f786b8-7b78-4482-afe0-60fd7d0db22f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="地图场景\副本">
+      <UniqueIdentifier>{4d620ea4-587a-4a43-b169-19a411c4e24c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="config.cpp">
@@ -69,12 +78,6 @@
     <ClCompile Include="MapConfig.cpp">
       <Filter>地图场景</Filter>
     </ClCompile>
-    <ClCompile Include="InstanceMgr.cpp">
-      <Filter>地图场景</Filter>
-    </ClCompile>
-    <ClCompile Include="Instance.cpp">
-      <Filter>地图场景</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerMgr.cpp">
       <Filter>基础对象\玩家</Filter>
     </ClCompile>
@@ -105,12 +108,6 @@
     <ClCompile Include="NPC.cpp">
       <Filter>基础对象\NPC</Filter>
     </ClCompile>
-    <ClCompile Include="MonsterCreator.cpp">
-      <Filter>基础对象\怪物</Filter>
-    </ClCompile>
-    <ClCompile Include="NPCCreator.cpp">
-      <Filter>基础对象\NPC</Filter>
-    </ClCompile>
     <ClCompile Include="DoClientMsg.cpp">
       <Filter>基础对象\玩家\玩家操作</Filter>
     </ClCompile>
@@ -119,6 +116,21 @@
     </ClCompile>
     <ClCompile Include="Status.cpp">
       <Filter>基础对象</Filter>
+    </ClCompile>
+    <ClCompile Include="Package.cpp">
+      <Filter>背包</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>道具</Filter>
+    </ClCompile>
+    <ClCompile Include="Instance.cpp">
+      <Filter>地图场景\副本</Filter>
+    </ClCompile>
+    <ClCompile Include="InstanceMgr.cpp">
+      <Filter>地图场景\副本</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerSaveAndLoad.cpp">
+      <Filter>基础对象\玩家</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -155,12 +167,6 @@
     <ClInclude Include="MapConfig.h">
       <Filter>地图场景</Filter>
     </ClInclude>
-    <ClInclude Include="InstanceMgr.h">
-      <Filter>地图场景</Filter>
-    </ClInclude>
-    <ClInclude Include="Instance.h">
-      <Filter>地图场景</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerMgr.h">
       <Filter>基础对象\玩家</Filter>
     </ClInclude>
@@ -191,20 +197,20 @@
     <ClInclude Include="NPC.h">
       <Filter>基础对象\NPC</Filter>
     </ClInclude>
-    <ClInclude Include="MonsterCreator.h">
-      <Filter>基础对象\怪物</Filter>
-    </ClInclude>
-    <ClInclude Include="NPCCreator.h">
-      <Filter>基础对象\NPC</Filter>
-    </ClInclude>
-    <ClInclude Include="DoClientMsg.h">
-      <Filter>基础对象\玩家\玩家操作</Filter>
-    </ClInclude>
-    <ClInclude Include="DoLoginMsg.h">
-      <Filter>基础对象\玩家\玩家操作</Filter>
-    </ClInclude>
     <ClInclude Include="Status.h">
       <Filter>基础对象</Filter>
+    </ClInclude>
+    <ClInclude Include="Package.h">
+      <Filter>背包</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>道具</Filter>
+    </ClInclude>
+    <ClInclude Include="Instance.h">
+      <Filter>地图场景\副本</Filter>
+    </ClInclude>
+    <ClInclude Include="InstanceMgr.h">
+      <Filter>地图场景\副本</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

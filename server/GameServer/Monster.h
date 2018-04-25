@@ -7,6 +7,17 @@
 #pragma once
 #include "BaseObj.h"
 
+class CMonsterCreator
+{
+public:
+	CMonsterCreator(){}
+	~CMonsterCreator(){}
+
+	static CMonster *CreateMonster();
+	static void ReleaseMonster(CMonster *monster);
+private:
+};
+
 enum MonsterType
 {
 	EMT_NORMAL = 0,		// 普通怪物
