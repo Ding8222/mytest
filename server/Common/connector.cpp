@@ -4,7 +4,7 @@
 
 connector::connector ()
 {
-	memset(m_ip, 0, MAX_IP_LEN);
+	m_ip.clear();
 	m_port = 0;
 	m_id = 0;
 	m_already_register = false;
@@ -94,7 +94,7 @@ bool connector::TryConnect (int64 currenttime, const char *ip, int port)
 bool connector::TryConnect(int64 currenttime)
 {
 	CheckAndInit();
-	if (m_con->Connect(m_ip, m_port))
+	if (m_con->Connect(m_ip.c_str(), m_port))
 	{
 		m_already_connect = true;
 		SetRecvPingTime(currenttime);
@@ -150,12 +150,12 @@ void connector::Destroy ()
 		m_con = NULL;
 	}
 	m_already_connect = false;
+	m_ip.clear();
 }
 
 void connector::SetConnectInfo(const char *ip, int port, int id)
 {
-	strncpy(m_ip, ip, MAX_IP_LEN - 1);
-	m_ip[MAX_IP_LEN - 1] = 0;
+	m_ip = ip;
 	m_port = port;
 	m_id = id;
 }

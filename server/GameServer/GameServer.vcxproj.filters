@@ -40,6 +40,12 @@
     <Filter Include="地图场景\副本">
       <UniqueIdentifier>{4d620ea4-587a-4a43-b169-19a411c4e24c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="组队">
+      <UniqueIdentifier>{267755fd-e7a0-42e8-b20d-342d48d4b1ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="处理Center消息">
+      <UniqueIdentifier>{3e8486ae-75ae-40b0-9cc5-3a6865658a24}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="config.cpp">
@@ -132,6 +138,18 @@
     <ClCompile Include="PlayerSaveAndLoad.cpp">
       <Filter>基础对象\玩家</Filter>
     </ClCompile>
+    <ClCompile Include="Team.cpp">
+      <Filter>组队</Filter>
+    </ClCompile>
+    <ClCompile Include="DoTeamMsg.cpp">
+      <Filter>基础对象\玩家\玩家操作</Filter>
+    </ClCompile>
+    <ClCompile Include="DoTeamMsgFromCenter.cpp">
+      <Filter>处理Center消息</Filter>
+    </ClCompile>
+    <ClCompile Include="DoServerMsgFromCenter.cpp">
+      <Filter>处理Center消息</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -211,6 +229,15 @@
     </ClInclude>
     <ClInclude Include="InstanceMgr.h">
       <Filter>地图场景\副本</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerSaveAndLoadDef.h">
+      <Filter>基础对象\玩家</Filter>
+    </ClInclude>
+    <ClInclude Include="Team.h">
+      <Filter>组队</Filter>
+    </ClInclude>
+    <ClInclude Include="DoMsgFromCenter.h">
+      <Filter>处理Center消息</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

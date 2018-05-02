@@ -1,0 +1,170 @@
+syntax = "proto3";
+package netData;
+
+// 队伍成员信息
+message TeamMemberInfo
+{
+	int64 Guid = 1; // 玩家guid
+	string Name = 2; // 玩家姓名
+	bool Online = 3; // 是否在线
+}
+
+// 4-1 创建队伍
+message CreateTeam
+{
+	
+}
+
+// 4-2 创建队伍返回
+message CreateTeamRet
+{
+	enum EC
+	{
+		EC_OTHER = 0;
+		EC_SUCC = 1;
+		EC_FAIL = 2;
+		EC_TEAM = 4; // 已经有队伍了
+	};
+	int32 nCode = 1;
+}
+
+// 4-3 申请加入队伍
+message ApplyTeam
+{
+	int32 TeamID = 1; // 队伍ID
+}
+
+// 4-4 申请加入队伍返回
+message ApplyTeamRet
+{
+	enum EC
+	{
+		EC_OTHER = 0;
+		EC_SUCC = 1;
+		EC_FAIL = 2;
+		EC_TEAM = 4; // 已经有队伍了
+		EC_FIND = 5; // 不存在的队伍
+	};
+	int32 nCode = 1;
+}
+
+// 4-5 申请入队提示
+message ApplyTeamTips
+{
+	int64 PlayerGuid = 1; // 申请人guid
+	string Name = 2; // 申请人名称
+}
+
+// 4-6 申请列表
+message ApplyTeamList
+{
+	repeated ApplyTeamTips List = 1;
+}
+
+// 4-7 回应入队申请
+message ResponseApplyTeam
+{
+	int64 PlayerGuid = 1; // 玩家guid
+	bool Agree = 2; // 是否同意
+}
+
+// 4-8 申请人收到的申请返回
+message ResponseApplyTeamRet
+{
+	bool Agree = 1; // 是否同意
+	string Name = 2; // 审核人名称
+}
+
+// 4-9 邀请玩家入队
+message InviteTeam
+{
+	int64 PlayerGuid = 1; // 玩家guid
+}
+
+// 4-10 邀请玩家入队返回
+message InviteTeamRet
+{
+	enum EC
+	{
+		EC_OTHER = 0;
+		EC_SUCC = 1;
+		EC_FAIL = 2;
+		EC_TEAM = 4; // 已经有队伍了
+		EC_LEADER = 5; // 不是队长
+	};
+	int32 nCode = 1;
+}
+
+// 4-11 邀请提示
+message InviteTeamTips
+{
+	int64 PlayerGuid = 1; // 邀请人guid
+	string Name = 2; // 邀请人名称
+}
+
+// 4-12 邀请列表
+message InviteTeamList
+{
+	repeated InviteTeamTips List = 1;
+}
+
+// 4-13 回应入队邀请
+message ResponseInviteTeam
+{
+	int64 PlayerGuid = 1; // 邀请人guid
+	bool Agree = 2; // 是否同意
+}
+
+// 4-14 邀请人收到的邀请返回
+message ResponseInviteTeamRet
+{
+	bool Agree = 1; // 是否同意
+	string Name = 2; // 被邀请人
+}
+
+// 4-15 退出队伍
+message ExitTeam
+{
+	
+}
+
+// 4-16 退出队伍返回
+message ExitTeamRet
+{
+	enum EC
+	{
+		EC_OTHER = 0;
+		EC_SUCC = 1;
+		EC_FAIL = 2;
+		EC_TEAM = 4; // 没有队伍
+	};
+	int32 nCode = 1;
+}
+
+// 4-17 踢出玩家
+message KickTeamMember
+{
+	int64 PlayerGuid = 1;
+}
+
+// 4-18 队伍信息
+message TeamInfo
+{
+	int32 TeamID = 1;
+	int64 LeaderGuid = 2; // 队长guid
+	repeated TeamMemberInfo Info = 3; // 成员信息
+	
+}
+
+// 4-19 更新玩家信息
+message UpdateTeamMemberInfo
+{
+	bool Add = 1; // true 添加，false 更新
+	TeamMemberInfo Info = 2;
+}
+
+// 4-20 队伍解散
+message DissolutionTeam
+{
+	
+}

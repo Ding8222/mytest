@@ -10,11 +10,13 @@ struct stCenterPlayer
 		nGateID = 0;
 		nGameID = 0;
 		Account.clear();
+		Name.clear();
 	}
 	int32 nClientID;
 	int32 nGateID;
 	int32 nGameID;
 	std::string Account;
+	std::string Name;
 };
 
 class CCenterPlayerMgr

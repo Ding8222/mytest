@@ -1,6 +1,4 @@
 ﻿#include "GameCenterConnect.h"
-#include "GameGatewayMgr.h"
-#include "serverinfo.h"
 #include "connector.h"
 #include "config.h"
 #include "PlayerMgr.h"
@@ -8,14 +6,11 @@
 #include "serverlog.h"
 #include "MapConfig.h"
 #include "MapInfo.h"
-#include "SceneMgr.h"
+#include "DoMsgFromCenter.h"
 
+#include "MainType.h"
 #include "ServerType.h"
-#include "ClientType.h"
-#include "ClientMsg.pb.h"
 #include "ServerMsg.pb.h"
-
-extern int64 g_currenttime;
 
 CGameCenterConnect::CGameCenterConnect()
 {
@@ -108,14 +103,12 @@ void CGameCenterConnect::ProcessMsg(connector *_con)
 		{
 		case SERVER_TYPE_MAIN:
 		{
-			switch (pMsg->GetSubType())
-			{
-			case SVR_SUB_PING:
-			{
-				_con->SetRecvPingTime(g_currenttime);
-				break;
-			}
-			}
+			DoServerMsgFromCenter(_con, pMsg, tl);
+			break;
+		}
+		case TEAM_TYPE_MAIN:
+		{
+			DoTeamMsgFromCenter(_con, pMsg, tl);
 			break;
 		}
 		}

@@ -18,7 +18,7 @@ namespace FuncUti
 	{
 		CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), pMsg, maintype, subtype, player->GetGuid());
 	}
-	inline void SendMsgToCenter(CPlayer *player, Msg &pMsg, bool bRef)
+	inline void SendMsgToCenter(CPlayer *player, Msg &pMsg, bool bRef = false)
 	{
 		CGameCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), pMsg, player->GetGuid());
 	}

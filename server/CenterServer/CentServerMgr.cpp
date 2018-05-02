@@ -1,14 +1,12 @@
-﻿#include "CentServerMgr.h"
+﻿#include "GlobalDefine.h"
+#include "CentServerMgr.h"
 #include "serverinfo.h"
 #include "Config.h"
 #include "ClientAuthMgr.h"
 #include "ServerStatusMgr.h"
 #include "CenterPlayerMgr.h"
 #include "serverlog.h"
-#include "ProcessGameMsg.h"
-#include "ProcessLoginMsg.h"
-#include "ProcessGateMsg.h"
-#include "ProcessDBMsg.h"
+#include "ProcessServerMsg.h"
 
 extern int64 g_currenttime;
 

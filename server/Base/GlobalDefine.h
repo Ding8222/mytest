@@ -4,7 +4,6 @@
 */
 #pragma once
 
-#define MAX_IP_LEN 128
 #define MAX_NAME_LEN 64
 #define MAX_SECRET_LEN 16
 

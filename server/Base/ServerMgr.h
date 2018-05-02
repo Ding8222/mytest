@@ -9,7 +9,6 @@
 #include <google/protobuf/message.h>
 #include "platform_config.h"
 #include "msgbase.h"
-#include "GlobalDefine.h"
 
 class serverinfo;
 class CServerMgr
@@ -73,7 +72,7 @@ private:
 	// 注册成功后的回调
 	virtual void ServerRegisterSucc(serverinfo *info) {}
 private:
-	char s_ServerIP[MAX_IP_LEN];
+	std::string ServerIP;
 	int m_ListenPort;
 	int m_OverTime;
 	int m_ServerID;

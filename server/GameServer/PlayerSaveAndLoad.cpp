@@ -53,6 +53,7 @@ bool CPlayer::LoadData(Msg *pMsg)
 		RunStateLog("没有找到玩家：%s要登陆的地图：%d", GetName(), msg.nmapid());
 		return false;
 	}
+
 	if (!_pScene->AddObj(this))
 	{
 		RunStateLog("添加玩家：%s到地图：%d，失败！", GetName(), msg.nmapid());

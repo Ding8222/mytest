@@ -1,4 +1,5 @@
 ﻿#include "serverinfo.h"
+#include "GlobalDefine.h"
 #include "ServerStatusMgr.h"
 #include "serverlog.h"
 #include "objectpool.h"
@@ -80,7 +81,7 @@ void CServerStatusMgr::AddGameServer(serverinfo *info, Msg *pMsg)
 			_pInfo->nServerID = nServerID;
 			_pInfo->nMaxClient = msg.nmaxclient();
 			_pInfo->nNowClient = msg.nnowclient();
-			strncpy_s(_pInfo->chIP, MAX_IP_LEN, msg.sip().c_str(), msg.sip().size());
+			_pInfo->IP = msg.sip();
 			_pInfo->nPort = msg.nport();
 
 			m_GameServerInfo[_pInfo->nServerID] = _pInfo;
@@ -137,7 +138,7 @@ void CServerStatusMgr::AddGateServer(serverinfo *info, Msg *pMsg)
 			_pInfo->nServerID = nServerID;
 			_pInfo->nMaxClient = msg.nmaxclient();
 			_pInfo->nNowClient = msg.nnowclient();
-			strncpy_s(_pInfo->chIP, MAX_IP_LEN, msg.sip().c_str(), msg.sip().size());
+			_pInfo->IP = msg.sip();
 			_pInfo->nPort = msg.nport();
 
 			m_GateServerInfo[_pInfo->nServerID] = _pInfo;

@@ -1,4 +1,5 @@
-﻿#include "idmgr.c"
+﻿#include "GlobalDefine.h"
+#include "idmgr.c"
 #include "ClientAuthMgr.h"
 #include "CentServerMgr.h"
 #include "ServerStatusMgr.h"

@@ -11,6 +11,7 @@
 #include "NameCheckConnecter.h"
 #include "BackCommand.h"
 #include "objectpool.h"
+#include "TeamMgr.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -57,6 +58,12 @@ bool CCenterServer::Init()
 		if (!InitBackCommand())
 		{
 			RunStateError("初始化 BackCommand 失败!");
+			break;
+		}
+
+		if (!CTeamMgr::Instance().Init())
+		{
+			RunStateError("初始化 TeamMgr 失败!");
 			break;
 		}
 

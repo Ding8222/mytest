@@ -6,7 +6,6 @@
 #pragma once
 #include <unordered_map>
 #include <list>
-#include "GlobalDefine.h"
 
 struct ServerStatusInfo
 {
@@ -14,17 +13,17 @@ struct ServerStatusInfo
 	{
 		nLineID = 0;
 		nServerID = 0;
-		memset(chIP, 0, MAX_IP_LEN);
 		nPort = 0;
 		nMaxClient = 0;
 		nNowClient = 0;
+		IP.clear();
 	}
 	int32 nLineID;
 	int32 nServerID;
-	char chIP[MAX_IP_LEN];
 	int32 nPort;
 	int32 nMaxClient;
 	int32 nNowClient;
+	std::string IP;
 };
 
 struct stServerInfo

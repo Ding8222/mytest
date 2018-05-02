@@ -88,6 +88,9 @@
       <AdditionalOptions>/wd4146 /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>Base.lib;lxnet.lib;tinyxml2.lib;Common.lib;libprotobuf.lib;cpr-d.lib;libcurl-d_imp.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -98,6 +101,9 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -109,6 +115,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -123,6 +132,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -134,6 +146,9 @@
     <ClCompile Include="ClientAuthMgr.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="CenterPlayerMgr.cpp" />
+    <ClCompile Include="DoLoginMsg.cpp" />
+    <ClCompile Include="DoServerMsg.cpp" />
+    <ClCompile Include="DoTeamMsg.cpp" />
     <ClCompile Include="NameCheckConnecter.cpp" />
     <ClCompile Include="ProcessDBMsg.cpp" />
     <ClCompile Include="ProcessGameMsg.cpp" />
@@ -142,6 +157,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CentServerMgr.cpp" />
     <ClCompile Include="ServerStatusMgr.cpp" />
+    <ClCompile Include="Team.cpp" />
+    <ClCompile Include="TeamMgr.cpp" />
+    <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CenterServer.h" />
@@ -149,12 +167,13 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="CentServerMgr.h" />
     <ClInclude Include="CenterPlayerMgr.h" />
+    <ClInclude Include="DoMsg.h" />
     <ClInclude Include="NameCheckConnecter.h" />
-    <ClInclude Include="ProcessDBMsg.h" />
-    <ClInclude Include="ProcessGameMsg.h" />
-    <ClInclude Include="ProcessGateMsg.h" />
-    <ClInclude Include="ProcessLoginMsg.h" />
+    <ClInclude Include="ProcessServerMsg.h" />
     <ClInclude Include="ServerStatusMgr.h" />
+    <ClInclude Include="Team.h" />
+    <ClInclude Include="TeamMgr.h" />
+    <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

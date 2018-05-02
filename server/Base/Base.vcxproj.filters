@@ -39,6 +39,9 @@
     <ClCompile Include="PB\DBServer.pb.cc">
       <Filter>PB</Filter>
     </ClCompile>
+    <ClCompile Include="PB\Team.pb.cc">
+      <Filter>PB</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PB\ServerMsg.pb.h">
@@ -182,11 +185,14 @@
     <ClInclude Include="zlib.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerSaveAndLoadDef.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="Base64.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="TeamType.h">
+      <Filter>MsgType</Filter>
+    </ClInclude>
+    <ClInclude Include="PB\Team.pb.h">
+      <Filter>PB</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

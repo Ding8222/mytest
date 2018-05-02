@@ -7,3 +7,5 @@
 #define LOGIN_TYPE_MAIN 2
 
 #define CLIENT_TYPE_MAIN 3
+
+#define TEAM_TYPE_MAIN 4

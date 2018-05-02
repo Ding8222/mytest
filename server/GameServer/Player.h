@@ -8,6 +8,7 @@
 #include<unordered_map>
 #include "BaseObj.h"
 #include "Package.h"
+#include "Team.h"
 #include "serverinfo.h"
 #include "google/protobuf/Message.h"
 
@@ -15,12 +16,13 @@ class serverinfo;
 class CClient;
 class scene;
 struct Msg;
-class CPlayer :public CBaseObj
+class CPlayer :public CBaseObj, public CTeam
 {
 public:
 	CPlayer();
 	~CPlayer();
 
+	virtual CPlayer *GetPlayer() { return this; }
 	virtual void Run();
 	virtual void SendMsgToMe(Msg &pMsg, bool bRef = false);
 	virtual void Die();
@@ -38,7 +40,6 @@ public:
 private:
 	// 背包
 	CPackage m_Package;
-
 public:
 	void SetGateInfo(serverinfo * info) { m_GateInfo = info; }
 	serverinfo *GetGateInfo() { return m_GateInfo; }

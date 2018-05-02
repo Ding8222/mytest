@@ -1,7 +1,6 @@
-﻿#include "ProcessGateMsg.h"
+﻿#include "GlobalDefine.h"
+#include "ProcessServerMsg.h"
 #include "ServerStatusMgr.h"
-#include "ClientAuthMgr.h"
-#include "CentServerMgr.h"
 
 #include "ServerType.h"
 #include "ServerMsg.pb.h"
@@ -16,12 +15,6 @@ void ProcessGateMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 	{
 		switch (pMsg->GetSubType())
 		{
-		case SVR_SUB_PING:
-		{
-			info->SendMsg(pMsg);
-			info->SetPingTime(g_currenttime);
-			break;
-		}
 		case SVR_SUB_SERVER_LOADINFO:
 		{
 			// 添加服务器负载信息
@@ -37,6 +30,8 @@ void ProcessGateMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			CServerStatusMgr::Instance().UpdateGateServerLoad(info->GetServerID(), msg.nclientcountnow(), msg.nclientcountmax());
 			break;
 		}
+		default:
+			DoServerMsg(info, pMsg, tl);
 		}
 		break;
 	}

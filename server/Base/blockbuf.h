@@ -1,6 +1,6 @@
 ﻿
 #pragma once
-
+#pragma warning(disable : 4200)
 class blockbuf
 {
 public:

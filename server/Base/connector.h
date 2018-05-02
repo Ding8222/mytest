@@ -3,7 +3,7 @@
 #include <string>
 #include "lxnet.h"
 #include "crosslib.h"
-#define MAX_IP_LEN 128
+
 class connector
 {
 public:
@@ -32,7 +32,7 @@ public:
 	lxnet::Socketer *GetCon () { return m_con; }
 	void SetConnectInfo(const char *ip, int port, int id);
 	int GetConnectID() { return m_id; }
-	const char *GetConnectIP() { return m_ip; }
+	const char *GetConnectIP() { return m_ip.c_str(); }
 	void SetConnectName(const char *name) { m_name = name; }
 	const char *GetConnectName() { return m_name.c_str(); }
 private:
@@ -48,7 +48,7 @@ private:
 	int m_recvmsgnum;
 	int m_sendmsgnum;
 
-	char m_ip[MAX_IP_LEN];
+	std::string m_ip;
 	int m_port;
 	int m_id;
 	bool m_already_register;

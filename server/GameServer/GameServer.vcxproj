@@ -88,6 +88,9 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>Base.lib;lxnet.lib;tinyxml2.lib;Common.lib;libprotobuf.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -99,6 +102,9 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -110,6 +116,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -124,6 +133,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -136,6 +148,9 @@
     <ClCompile Include="CSVLoad.cpp" />
     <ClCompile Include="DoClientMsg.cpp" />
     <ClCompile Include="DoLoginMsg.cpp" />
+    <ClCompile Include="DoServerMsgFromCenter.cpp" />
+    <ClCompile Include="DoTeamMsg.cpp" />
+    <ClCompile Include="DoTeamMsgFromCenter.cpp" />
     <ClCompile Include="Instance.cpp" />
     <ClCompile Include="InstanceMgr.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -160,12 +175,14 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="Status.cpp" />
+    <ClCompile Include="Team.cpp" />
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aoi.h" />
     <ClInclude Include="BaseObj.h" />
     <ClInclude Include="CSVLoad.h" />
+    <ClInclude Include="DoMsgFromCenter.h" />
     <ClInclude Include="Instance.h" />
     <ClInclude Include="InstanceMgr.h" />
     <ClInclude Include="Item.h" />
@@ -185,9 +202,11 @@
     <ClInclude Include="MapInfo.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerOperate.h" />
+    <ClInclude Include="PlayerSaveAndLoadDef.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneMgr.h" />
     <ClInclude Include="Status.h" />
+    <ClInclude Include="Team.h" />
     <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

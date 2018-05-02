@@ -1,7 +1,7 @@
-﻿#include "ProcessDBMsg.h"
+﻿#include "GlobalDefine.h"
+#include "ProcessServerMsg.h"
 #include "ClientAuthMgr.h"
 #include "CentServerMgr.h"
-#include "GlobalDefine.h"
 #include "ServerStatusMgr.h"
 #include "ServerLog.h"
 
@@ -20,12 +20,6 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 	{
 		switch (pMsg->GetSubType())
 		{
-		case SVR_SUB_PING:
-		{
-			info->SendMsg(pMsg);
-			info->SetPingTime(g_currenttime);
-			break;
-		}
 		case SVR_SUB_PLAYERDATA:
 		{
 			svrData::LoadPlayerData msg;
@@ -42,7 +36,7 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 					// 返回loginsvr，通知client选角成功，登陆gamegateway
 					SendMsg.set_ncode(netData::SelectPlayerRet::EC_SUCC);
 					SendMsg.set_nserverid(_pGateInfo->nServerID);
-					SendMsg.set_sip(_pGateInfo->chIP);
+					SendMsg.set_sip(_pGateInfo->IP);
 					SendMsg.set_nport(_pGateInfo->nPort);
 					SendMsg.set_nmapid(msg.nmapid());
 
@@ -74,6 +68,8 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER_RET, ServerEnum::EST_LOGIN, tl->id);
 			break;
 		}
+		default:
+			DoServerMsg(info, pMsg, tl);
 		}
 		break;
 	}
@@ -81,33 +77,8 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 	{
 		switch (pMsg->GetSubType())
 		{
-		case LOGIN_SUB_AUTH_RET:
-		{
-			netData::AuthRet msg;
-			_CHECK_PARSE_(pMsg, msg);
-			msg.set_ncode(netData::AuthRet::EC_AUTHINFO);
-
-			ClientAuthInfo *clientinfo = CClientAuthMgr::Instance().FindClientAuthInfo(tl->id);
-			if (clientinfo)
-			{
-				msg.set_account(clientinfo->Account);
-				msg.set_ncode(netData::AuthRet::EC_SUCC);
-				CCentServerMgr::Instance().SendMsgToServer(msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, tl->id);
-			}
-			else
-			{
-				RunStateError("处理DB认证返回失败！没有找到账号%s信息！clientid：%d", msg.account().c_str(), tl->id);
-				CClientAuthMgr::Instance().SetPlayerOffline(msg.account());
-			}
-			break;
-		}
-		case LOGIN_SUB_PLAYER_LIST_RET:
-		case LOGIN_SUB_CREATE_PLAYER_RET:
-		case LOGIN_SUB_SELECT_PLAYER_RET:
-		{
-			CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_LOGIN, tl->id);
-			break;
-		}
+		default:
+			DoLoginMsg(info, pMsg, tl);
 		}
 		break;
 	}

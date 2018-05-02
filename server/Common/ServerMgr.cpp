@@ -1,7 +1,7 @@
-﻿#include "ServerMgr.h"
+﻿#include "GlobalDefine.h"
+#include "ServerMgr.h"
 #include "serverinfo.h"
 #include "log.h"
-#include "GlobalDefine.h"
 
 #include "ServerType.h"
 #include "ServerMsg.pb.h"
@@ -12,7 +12,7 @@ static const int s_backlog = 16;
 
 CServerMgr::CServerMgr()
 {
-	memset(s_ServerIP, 0, sizeof(s_ServerIP));
+	ServerIP.clear();
 	m_ListenPort = 0;
 	m_OverTime = 0;
 	m_ServerID = 0;
@@ -30,8 +30,7 @@ CServerMgr::~CServerMgr()
 
 bool CServerMgr::Init(const char * ip, int serverid, int port, int overtime)
 {
-	strncpy_s(s_ServerIP, ip, MAX_SECRET_LEN - 1);
-	s_ServerIP[MAX_SECRET_LEN - 1] = '\0';
+	ServerIP = ip;
 	m_ListenPort = port;
 	m_OverTime = overtime;
 	m_ServerID = serverid;
@@ -85,7 +84,7 @@ void CServerMgr::Destroy()
 		serverinfo_release(*itr);
 	}
 	m_WaitRemove.clear();
-	memset(s_ServerIP, 0, sizeof(s_ServerIP));
+	ServerIP.clear();
 }
 
 bool CServerMgr::IsAlreadyRegister(int id)

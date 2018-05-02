@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="消息处理">
-      <UniqueIdentifier>{231a80f2-492c-4909-a0f3-2c178aedca72}</UniqueIdentifier>
-    </Filter>
     <Filter Include="认证">
       <UniqueIdentifier>{aa40db8d-4467-4350-a37a-8730e4376864}</UniqueIdentifier>
     </Filter>
@@ -24,6 +21,15 @@
     </Filter>
     <Filter Include="在线玩家">
       <UniqueIdentifier>{90e53808-6e9c-46ef-84da-175695a76d80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="组队">
+      <UniqueIdentifier>{805f1335-d2f8-471f-979d-9be98a8972bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="处理服务器消息">
+      <UniqueIdentifier>{231a80f2-492c-4909-a0f3-2c178aedca72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="处理服务器消息\处理具体消息">
+      <UniqueIdentifier>{d24c620c-a20e-4385-b2e9-46a14558d2b9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -46,21 +52,39 @@
       <Filter>逻辑服管理</Filter>
     </ClCompile>
     <ClCompile Include="ProcessLoginMsg.cpp">
-      <Filter>消息处理</Filter>
+      <Filter>处理服务器消息</Filter>
     </ClCompile>
     <ClCompile Include="ProcessDBMsg.cpp">
-      <Filter>消息处理</Filter>
+      <Filter>处理服务器消息</Filter>
     </ClCompile>
     <ClCompile Include="ProcessGameMsg.cpp">
-      <Filter>消息处理</Filter>
+      <Filter>处理服务器消息</Filter>
     </ClCompile>
     <ClCompile Include="ProcessGateMsg.cpp">
-      <Filter>消息处理</Filter>
+      <Filter>处理服务器消息</Filter>
     </ClCompile>
     <ClCompile Include="CenterPlayerMgr.cpp">
       <Filter>在线玩家</Filter>
     </ClCompile>
     <ClCompile Include="NameCheckConnecter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Team.cpp">
+      <Filter>组队</Filter>
+    </ClCompile>
+    <ClCompile Include="DoLoginMsg.cpp">
+      <Filter>处理服务器消息\处理具体消息</Filter>
+    </ClCompile>
+    <ClCompile Include="DoServerMsg.cpp">
+      <Filter>处理服务器消息\处理具体消息</Filter>
+    </ClCompile>
+    <ClCompile Include="TeamMgr.cpp">
+      <Filter>组队</Filter>
+    </ClCompile>
+    <ClCompile Include="DoTeamMsg.cpp">
+      <Filter>处理服务器消息\处理具体消息</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,22 +104,25 @@
     <ClInclude Include="ServerStatusMgr.h">
       <Filter>逻辑服管理</Filter>
     </ClInclude>
-    <ClInclude Include="ProcessLoginMsg.h">
-      <Filter>消息处理</Filter>
-    </ClInclude>
-    <ClInclude Include="ProcessDBMsg.h">
-      <Filter>消息处理</Filter>
-    </ClInclude>
-    <ClInclude Include="ProcessGameMsg.h">
-      <Filter>消息处理</Filter>
-    </ClInclude>
-    <ClInclude Include="ProcessGateMsg.h">
-      <Filter>消息处理</Filter>
-    </ClInclude>
     <ClInclude Include="CenterPlayerMgr.h">
       <Filter>在线玩家</Filter>
     </ClInclude>
     <ClInclude Include="NameCheckConnecter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Team.h">
+      <Filter>组队</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcessServerMsg.h">
+      <Filter>处理服务器消息</Filter>
+    </ClInclude>
+    <ClInclude Include="DoMsg.h">
+      <Filter>处理服务器消息\处理具体消息</Filter>
+    </ClInclude>
+    <ClInclude Include="TeamMgr.h">
+      <Filter>组队</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

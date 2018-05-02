@@ -1,4 +1,5 @@
-﻿#include "connector.h"
+﻿#include "GlobalDefine.h"
+#include "connector.h"
 #include "msgbase.h"
 #include "NameCheckConnecter.h"
 #include "CentServerMgr.h"

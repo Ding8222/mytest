@@ -85,6 +85,9 @@
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -92,6 +95,9 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -102,6 +108,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -115,6 +124,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <UndefinePreprocessorDefinitions>
+      </UndefinePreprocessorDefinitions>
+      <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -126,6 +138,7 @@
     <ClCompile Include="PB\DBServer.pb.cc" />
     <ClCompile Include="PB\Login.pb.cc" />
     <ClCompile Include="PB\ServerMsg.pb.cc" />
+    <ClCompile Include="PB\Team.pb.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rd\json\json.hpp" />
@@ -161,8 +174,8 @@
     <ClInclude Include="PB\DBServer.pb.h" />
     <ClInclude Include="PB\Login.pb.h" />
     <ClInclude Include="PB\ServerMsg.pb.h" />
+    <ClInclude Include="PB\Team.pb.h" />
     <ClInclude Include="platform_config.h" />
-    <ClInclude Include="PlayerSaveAndLoadDef.h" />
     <ClInclude Include="pool.h" />
     <ClInclude Include="RandomPool.h" />
     <ClInclude Include="SendMail.h" />
@@ -173,6 +186,7 @@
     <ClInclude Include="sqlinterface.h" />
     <ClInclude Include="task.h" />
     <ClInclude Include="taskqueue.h" />
+    <ClInclude Include="TeamType.h" />
     <ClInclude Include="threadinstance.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="tinyxml2.h" />
