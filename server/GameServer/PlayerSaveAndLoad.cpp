@@ -75,6 +75,21 @@ bool CPlayer::LoadData(Msg *pMsg)
 	return true;
 }
 
+bool CPlayer::SaveData()
+{
+	// 没有加载数据的时候，不保存数据
+	if (!m_LoadDataSucc)
+		return true;
+
+	svrData::LoadPlayerData SendMsg;
+	if (SaveData(&SendMsg))
+	{
+		FuncUti::SendMsgToCenter(this, SendMsg, SERVER_TYPE_MAIN, SVR_SUB_PLAYERDATA);
+		return true;
+	}
+	return false;
+}
+
 // 保存数据
 bool CPlayer::SaveData(google::protobuf::Message *pMsg)
 {
@@ -82,45 +97,26 @@ bool CPlayer::SaveData(google::protobuf::Message *pMsg)
 	if (!m_LoadDataSucc)
 		return true;
 
+	if (!pMsg)
+		return false;
+
 	if (PackData())
 	{
-		if (pMsg == nullptr)
-		{
-			m_LastSaveTime = CTimer::GetTime();
-			svrData::LoadPlayerData SendMsg;
-			SendMsg.set_account(GetAccount());
-			SendMsg.set_name(GetName());
-			SendMsg.set_nguid(GetGuid());
-			SendMsg.set_nsex(GetSex());
-			SendMsg.set_njob(GetJob());
-			SendMsg.set_nlevel(GetLevel());
-			SendMsg.set_ncreatetime(GetCreateTime());
-			SendMsg.set_nlogintime(GetLoginTime());
-			SendMsg.set_nmapid(GetMapID());
-			SendMsg.set_nx(GetPosX());
-			SendMsg.set_ny(GetPosY());
-			SendMsg.set_nz(GetPosZ());
-			SendMsg.set_data(g_Base64Data);
-
-			FuncUti::SendMsgToCenter(this, SendMsg, SERVER_TYPE_MAIN, SVR_SUB_PLAYERDATA);
-		}
-		else
-		{
-			svrData::LoadPlayerData *data = (svrData::LoadPlayerData *)pMsg;
-			data->set_account(GetAccount());
-			data->set_name(GetName());
-			data->set_nguid(GetGuid());
-			data->set_nsex(GetSex());
-			data->set_njob(GetJob());
-			data->set_nlevel(GetLevel());
-			data->set_ncreatetime(GetCreateTime());
-			data->set_nlogintime(GetLoginTime());
-			data->set_nmapid(GetMapID());
-			data->set_nx(GetPosX());
-			data->set_ny(GetPosY());
-			data->set_nz(GetPosZ());
-			data->set_data(g_CompressData, strlen(g_PackData));
-		}
+		svrData::LoadPlayerData *data = (svrData::LoadPlayerData *)pMsg;
+		m_LastSaveTime = CTimer::GetTime();
+		data->set_account(GetAccount());
+		data->set_name(GetName());
+		data->set_nguid(GetGuid());
+		data->set_nsex(GetSex());
+		data->set_njob(GetJob());
+		data->set_nlevel(GetLevel());
+		data->set_ncreatetime(GetCreateTime());
+		data->set_nlogintime(GetLoginTime());
+		data->set_nmapid(GetMapID());
+		data->set_nx(GetPosX());
+		data->set_ny(GetPosY());
+		data->set_nz(GetPosZ());
+		data->set_data(g_Base64Data);
 		return true;
 	}
 	return false;

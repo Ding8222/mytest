@@ -28,8 +28,9 @@ public:
 	virtual void Die();
 	// 加载数据
 	bool LoadData(Msg *pMsg);
+	bool SaveData();
 	// 保存数据,pMsg不为nullptr的时候，打包数据至pMsg
-	bool SaveData(google::protobuf::Message *pMsg = nullptr);
+	bool SaveData(google::protobuf::Message *pMsg);
 	// 打包数据
 	bool PackData();
 	// 解析数据
