@@ -93,7 +93,7 @@ void CClientAuthMgr::QueryAuth(Msg *pMsg, int32 clientid, int32 serverid)
 		RunStateError("DB服务器没有启动！");
 		netData::AuthRet SendMsg;
 		SendMsg.set_ncode(netData::AuthRet::EC_DBSTAUTS);
-		CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, clientid, serverid);
+		CentServerMgr.SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, clientid, serverid);
 		return;
 	}
 
@@ -108,7 +108,7 @@ void CClientAuthMgr::QueryAuth(Msg *pMsg, int32 clientid, int32 serverid)
 			{
 				RunStateLog("账号%s在线，尝试连接的clientid：%d，尝试踢下原有玩家", msg.account().c_str(), clientid);
 				svrData::KickClient SendMsg;
-				CCentServerMgr::Instance().SendMsgToServer(SendMsg, SERVER_TYPE_MAIN, SVR_SUB_KICKCLIENT, ServerEnum::EST_GATE, iter->second);
+				CentServerMgr.SendMsgToServer(SendMsg, SERVER_TYPE_MAIN, SVR_SUB_KICKCLIENT, ServerEnum::EST_GATE, iter->second);
 				bWaitKick = true;
 			}
 			else
@@ -116,7 +116,7 @@ void CClientAuthMgr::QueryAuth(Msg *pMsg, int32 clientid, int32 serverid)
 				RunStateLog("正在等待踢出账号%s，操作无效", msg.account().c_str());
 				netData::AuthRet SendMsg;
 				SendMsg.set_ncode(netData::AuthRet::EC_WATING);
-				CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, clientid, serverid);
+				CentServerMgr.SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, clientid, serverid);
 				return;
 			}
 		}
@@ -125,7 +125,7 @@ void CClientAuthMgr::QueryAuth(Msg *pMsg, int32 clientid, int32 serverid)
 			RunStateLog("账号%s正在认证中，操作无效", msg.account().c_str());
 			netData::AuthRet SendMsg;
 			SendMsg.set_ncode(netData::AuthRet::EC_AUTHING);
-			CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, clientid, serverid);
+			CentServerMgr.SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET, ServerEnum::EST_LOGIN, clientid, serverid);
 			return;
 		}
 	}
@@ -147,7 +147,7 @@ void CClientAuthMgr::QueryAuth(Msg *pMsg, int32 clientid, int32 serverid)
 	else
 	{
 		m_PlayerOnlineMap[msg.account()] = 0;
-		CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_DB, clientid, CConfig::Instance().GetDBID());
+		CentServerMgr.SendMsgToServer(*pMsg, ServerEnum::EST_DB, clientid, Config.GetDBID());
 	}
 }
 
@@ -223,7 +223,7 @@ void CClientAuthMgr::SetPlayerOffline(const std::string &account)
 			netData::Auth SendMsg;
 			SendMsg.set_account(info->Account);
 			SendMsg.set_secret(info->Secret);
-			CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH, ServerEnum::EST_DB, iterF->second, CConfig::Instance().GetDBID());
+			CentServerMgr.SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH, ServerEnum::EST_DB, iterF->second, Config.GetDBID());
 			m_PlayerLoginMap.erase(iterF);
 		}
 		else

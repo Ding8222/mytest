@@ -31,7 +31,7 @@ bool CNameCheckServerMgr::Init(const char *ip, int serverid, int port, int overt
 	const char *tmp;
 	DataBase::CRecordset *res;
 	int num = 0;
-	std::list<DBInfo *> temp = CConfig::Instance().GetTableList();
+	std::list<DBInfo *> temp = Config.GetTableList();
 	for (std::list<DBInfo *>::iterator itr = temp.begin(); itr != temp.end(); ++itr)
 	{
 		if (!dbhand.Open((*itr)->dbname.c_str(), (*itr)->dbusername.c_str(), (*itr)->dbpassword.c_str(), (*itr)->dbip.c_str()))
@@ -62,7 +62,7 @@ bool CNameCheckServerMgr::Init(const char *ip, int serverid, int port, int overt
 				return false;
 			}
 			
-			if (!CNameSet::Instance().AddName(tmp))
+			if (!NameSet.AddName(tmp))
 			{
 				RunStateError("添加名称失败失败! DBName:%s, IP:%s, 条目:%d，名称:%s", (*itr)->dbname.c_str(), (*itr)->dbip.c_str(), num, tmp);
 				return false;
@@ -181,7 +181,7 @@ void CNameCheckServerMgr::ProcessMsg(serverinfo *info)
 				netData::CreatePlayer msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				if (!CNameSet::Instance().AddName(msg.sname()))
+				if (!NameSet.AddName(msg.sname()))
 					msg.set_nnamecheckret(netData::CreatePlayer::EC_REPEATED);
 				else
 					msg.set_nnamecheckret(netData::CreatePlayer::EC_SUCC);

@@ -1,10 +1,4 @@
-﻿
-/*
- * Copyright (C) lcinx
- * lcinx@163.com
-*/
-
-#pragma once
+﻿#pragma once
 
 #ifdef _WIN32
 #include <WinSock2.h>

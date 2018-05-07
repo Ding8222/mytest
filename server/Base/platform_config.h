@@ -1,10 +1,4 @@
-﻿
-/*
- * Copyright (C) lcinx
- * lcinx@163.com
- */
-
-#pragma once
+﻿#pragma once
 
 #ifndef _CROSS_PLATFORM_INT_TYPE_CONFIG_
 

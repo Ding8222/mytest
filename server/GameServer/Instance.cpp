@@ -38,7 +38,7 @@ bool CInstance::Init(int32 instancebaseid)
 		return false;
 	}
 
-	CMapInfo* mapconfig = CMapConfig::Instance().FindMapInfo(instanceinfo->nMapID);
+	CMapInfo* mapconfig = MapConfig.FindMapInfo(instanceinfo->nMapID);
 	if (!mapconfig || mapconfig->GetMapType() != MapEnum::MapType::EMT_INSTANCE)
 	{
 		RunStateError("副本地图错误：%d", instanceinfo->nMapID);

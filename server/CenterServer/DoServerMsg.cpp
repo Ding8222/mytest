@@ -23,8 +23,8 @@ void DoServerMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		svrData::AddPlayerToCenter msg;
 		_CHECK_PARSE_(pMsg, msg);
 
-		CCenterPlayerMgr::Instance().AddPlayer(msg.nguid(), msg.account(), msg.nclientid(), info->GetServerID(), msg.ngateid());
-		CClientAuthMgr::Instance().SetGuid(msg.account(), msg.nguid());
+		CenterPlayerMgr.AddPlayer(msg.nguid(), msg.account(), msg.nclientid(), info->GetServerID(), msg.ngateid());
+		ClientAuthMgr.SetGuid(msg.account(), msg.nguid());
 		break;
 	}
 	case SVR_SUB_CHANGELINE:
@@ -36,18 +36,18 @@ void DoServerMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		svrData::ChangeLineRet SendMsg;
 		SendMsg.set_nmapid(msg.nmapid());
 		SendMsg.set_nlineid(msg.nlineid());
-		ServerStatusInfo *_pGameInfo = CServerStatusMgr::Instance().GetGameServerInfo(msg.nmapid());
+		ServerStatusInfo *_pGameInfo = ServerStatusMgr.GetGameServerInfo(msg.nmapid());
 		if (_pGameInfo)
 		{
 			msg.set_ngameid(_pGameInfo->nServerID);
-			CCenterPlayerMgr::Instance().UpdatePlayerGameSvr(tl->id, _pGameInfo->nServerID);
-			CCentServerMgr::Instance().SendMsgToServer(msg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE, ServerEnum::EST_GATE, tl->id);
+			CenterPlayerMgr.UpdatePlayerGameSvr(tl->id, _pGameInfo->nServerID);
+			CentServerMgr.SendMsgToServer(msg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE, ServerEnum::EST_GATE, tl->id);
 			return;
 		}
 		else
 			SendMsg.set_ncode(svrData::ChangeLineRet::EC_SERVER);
 
-		CCentServerMgr::Instance().SendMsgToServer(SendMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE_RET, ServerEnum::EST_GATE, tl->id);
+		CentServerMgr.SendMsgToServer(SendMsg, SERVER_TYPE_MAIN, SVR_SUB_CHANGELINE_RET, ServerEnum::EST_GATE, tl->id);
 		break;
 	}
 	}

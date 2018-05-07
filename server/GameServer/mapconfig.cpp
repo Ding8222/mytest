@@ -63,7 +63,7 @@ bool CMapConfig::Init()
 
 		m_TotalMapList.insert(mapinfo->nMapID);
 		
-		if (mapinfo->nLineID != 0 && mapinfo->nLineID != CConfig::Instance().GetLineID())
+		if (mapinfo->nLineID != 0 && mapinfo->nLineID != Config.GetLineID())
 		{
 			continue;
 		}

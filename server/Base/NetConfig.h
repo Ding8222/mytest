@@ -1,9 +1,11 @@
 ﻿/*
-* 网络配置
-* 
+* 网路配置
+* Copyright (C) ddl
+* 2018
 */
 #pragma once
 
+#define NetConfig CNetConfig::Instance()
 class CNetConfig
 {
 public:

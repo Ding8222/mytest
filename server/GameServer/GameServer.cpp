@@ -41,7 +41,7 @@ CGameServer::~CGameServer()
 
 static void cb()
 {
-	CGameServer::Instance().Destroy();
+	GameServer.Destroy();
 }
 
 bool CGameServer::Init()
@@ -49,7 +49,7 @@ bool CGameServer::Init()
 	do 
 	{
 #ifdef _WIN32
-		if (!CCtrlHandler::Instance().Init(&cb))
+		if (!CtrlHandler.Init(&cb))
 		{
 			RunStateError("初始化CtrlHandler失败!");
 			break;
@@ -61,32 +61,32 @@ bool CGameServer::Init()
 			break;
 		}
 
-		if (!CGameGatewayMgr::Instance().Init(
-			CConfig::Instance().GetServerIP(),
-			CConfig::Instance().GetServerID(),
-			CConfig::Instance().GetListenPort(),
-			CConfig::Instance().GetOverTime()))
+		if (!GameGatewayMgr.Init(
+			Config.GetServerIP(),
+			Config.GetServerID(),
+			Config.GetListenPort(),
+			Config.GetOverTime()))
 		{
 			RunStateError("初始化GameGatewayMgr失败!");
 			break;
 		}
 
-		if (!CGameCenterConnect::Instance().Init())
+		if (!GameCenterConnect.Init())
 		{
 			RunStateError("初始化中心服务器连接失败!");
 			break;
 		}
 
-		if (!CLogConnecter::Instance().Init(
-			CConfig::Instance().GetLogServerIP(),
-			CConfig::Instance().GetLogServerPort(),
-			CConfig::Instance().GetLogServerID(),
-			CConfig::Instance().GetLogServerName(),
-			CConfig::Instance().GetServerID(),
-			CConfig::Instance().GetServerType(),
-			CConfig::Instance().GetServerName(),
-			CConfig::Instance().GetPingTime(),
-			CConfig::Instance().GetOverTime()))
+		if (!LogConnecter.Init(
+			Config.GetLogServerIP(),
+			Config.GetLogServerPort(),
+			Config.GetLogServerID(),
+			Config.GetLogServerName(),
+			Config.GetServerID(),
+			Config.GetServerType(),
+			Config.GetServerName(),
+			Config.GetPingTime(),
+			Config.GetOverTime()))
 		{
 			RunStateError("初始化 LogConnecter 失败!");
 			break;
@@ -100,42 +100,42 @@ bool CGameServer::Init()
 		}
 
 		// 需要在场景初始化之前初始化MapConfig
-		if (!CMapConfig::Instance().Init())
+		if (!MapConfig.Init())
 		{
 			RunStateError("初始化MapConfig失败!");
 			break;
 		}
 
-		if (!CSceneMgr::Instance().Init())
+		if (!SceneMgr.Init())
 		{
 			RunStateError("初始化Scenemgr失败!");
 			break;
 		}
 
-		if (!CInstanceMgr::Instance().Init())
+		if (!InstanceMgr.Init())
 		{
 			RunStateError("初始化InstanceMgr失败!");
 			break;
 		}
 				
-		if (!CPlayerMgr::Instance().init())
+		if (!PlayerMgr.init())
 		{
 			RunStateError("初始化PlayerMgr失败!");
 			break;
 		}
 
-		RunStateLog("[%d线]逻辑服务器启动成功!", CConfig::Instance().GetLineID());
+		RunStateLog("[%d线]逻辑服务器启动成功!", Config.GetLineID());
 		m_Run = true;
 		return true;
 	} while (true);
 
-	CGameGatewayMgr::Instance().Destroy();
-	CGameCenterConnect::Instance().Destroy();
-	CLogConnecter::Instance().Destroy();
-	CMapConfig::Instance().Destroy();
-	CPlayerMgr::Instance().Destroy();
-	CSceneMgr::Instance().Destroy();
-	CInstanceMgr::Instance().Destroy();
+	GameGatewayMgr.Destroy();
+	GameCenterConnect.Destroy();
+	LogConnecter.Destroy();
+	MapConfig.Destroy();
+	PlayerMgr.Destroy();
+	SceneMgr.Destroy();
+	InstanceMgr.Destroy();
 	CSVData::Destroy();
 	Destroy();
 
@@ -154,9 +154,9 @@ void CGameServer::Run()
 	int delay;
 	while (m_Run)
 	{
-		CGameGatewayMgr::Instance().ResetMsgNum();
-		CGameCenterConnect::Instance().ResetMsgNum();
-		CLogConnecter::Instance().ResetMsgNum();
+		GameGatewayMgr.ResetMsgNum();
+		GameCenterConnect.ResetMsgNum();
+		LogConnecter.ResetMsgNum();
 		CTimer::UpdateTime();
 
 		g_currenttime = get_millisecond();
@@ -169,20 +169,20 @@ void CGameServer::Run()
 		else if (delay > maxdelay)
 		{
 			ElapsedLog("运行超时:%d", delay);
-			ElapsedLog("%s", CGameGatewayMgr::Instance().GetMsgNumInfo());
-			ElapsedLog("中心服务器连接：%s", CGameCenterConnect::Instance().GetMsgNumInfo());
-			ElapsedLog("日志服务器连接：%s", CLogConnecter::Instance().GetMsgNumInfo());
+			ElapsedLog("%s", GameGatewayMgr.GetMsgNumInfo());
+			ElapsedLog("中心服务器连接：%s", GameCenterConnect.GetMsgNumInfo());
+			ElapsedLog("日志服务器连接：%s", LogConnecter.GetMsgNumInfo());
 		}
 	}
 	delaytime(300);
 
-	CGameGatewayMgr::Instance().Destroy();
-	CGameCenterConnect::Instance().Destroy();
-	CLogConnecter::Instance().Destroy();
-	CMapConfig::Instance().Destroy();
-	CPlayerMgr::Instance().Destroy();
-	CSceneMgr::Instance().Destroy();
-	CInstanceMgr::Instance().Destroy();
+	GameGatewayMgr.Destroy();
+	GameCenterConnect.Destroy();
+	LogConnecter.Destroy();
+	MapConfig.Destroy();
+	PlayerMgr.Destroy();
+	SceneMgr.Destroy();
+	InstanceMgr.Destroy();
 	CSVData::Destroy();
 
 	Destroy();
@@ -198,17 +198,17 @@ void CGameServer::RunOnce()
 	lxnet::net_run();
 	m_BackCommand->Run(g_currenttime);
 
-	CGameGatewayMgr::Instance().Run();
-	CGameCenterConnect::Instance().Run();
-	CLogConnecter::Instance().Run();
+	GameGatewayMgr.Run();
+	GameCenterConnect.Run();
+	LogConnecter.Run();
 
-	CPlayerMgr::Instance().Run();
-	CSceneMgr::Instance().Run();
-	CInstanceMgr::Instance().Run();
+	PlayerMgr.Run();
+	SceneMgr.Run();
+	InstanceMgr.Run();
 
-	CGameGatewayMgr::Instance().EndRun();
-	CGameCenterConnect::Instance().EndRun();
-	CLogConnecter::Instance().EndRun();
+	GameGatewayMgr.EndRun();
+	GameCenterConnect.EndRun();
+	LogConnecter.EndRun();
 }
 
 void CGameServer::Destroy()
@@ -246,7 +246,7 @@ bool CGameServer::InitBackCommand()
 	if (!m_BackCommand)
 		return false;
 	new(m_BackCommand) CBackCommand();
-	if (!m_BackCommand->Init(back_dofunction, CConfig::Instance().GetMonitorPort(), CConfig::Instance().GetPingTime(), CConfig::Instance().GetServerName()))
+	if (!m_BackCommand->Init(back_dofunction, Config.GetMonitorPort(), Config.GetPingTime(), Config.GetServerName()))
 		return false;
 
 	return true;
@@ -289,9 +289,9 @@ static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 	{
 		size = 0;
 
-		CGameCenterConnect::Instance().GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
+		GameCenterConnect.GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
 		size = strlen(s_buf);
-		CGameGatewayMgr::Instance().GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
+		GameGatewayMgr.GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
 		s_buf[sizeof(s_buf) - 1] = 0;
 		res.PushString(s_buf);
 		sock->SendMsg(&res);

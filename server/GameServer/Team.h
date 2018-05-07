@@ -34,7 +34,7 @@ public:
 	void SetTeamID(int32 teamid) { m_TeamID = teamid; }
 	int32 GetTeamID() { return m_TeamID; }
 	void SetTeamLeaderGuid(int64 guid) { m_TeamLeaderGuid = guid; }
-	int32 GetTeamLeaderGuid() { return m_TeamLeaderGuid; }
+	int64 GetTeamLeaderGuid() { return m_TeamLeaderGuid; }
 	// 添加成员
 	void AddTeamMember(int64 guid, const std::string &name, bool online);
 	// 删除成员

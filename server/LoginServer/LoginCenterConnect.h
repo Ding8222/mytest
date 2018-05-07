@@ -6,6 +6,7 @@
 #pragma once
 #include "ConnectMgr.h"
 
+#define LoginCenterConnect CLoginCenterConnect::Instance()
 class CLoginCenterConnect : public CConnectMgr
 {
 public:

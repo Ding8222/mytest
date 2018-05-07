@@ -5,6 +5,7 @@
 */
 #pragma once
 #include "ConnectMgr.h"
+#define GameCenterConnect CGameCenterConnect::Instance()
 
 class CGameCenterConnect : public CConnectMgr
 {

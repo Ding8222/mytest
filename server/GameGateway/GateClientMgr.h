@@ -6,6 +6,7 @@
 #pragma once
 #include "ClientMgr.h"
 
+#define GateClientMgr CGateClientMgr::Instance()
 class CGateClientMgr : public CClientMgr
 {
 public:

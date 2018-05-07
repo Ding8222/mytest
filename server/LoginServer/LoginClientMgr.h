@@ -6,6 +6,7 @@
 #pragma once
 #include "ClientMgr.h"
 
+#define LoginClientMgr CLoginClientMgr::Instance()
 class CLoginClientMgr : public CClientMgr
 {
 public:

@@ -3,6 +3,7 @@
 #include "BaseConfig.h"
 #include "platform_config.h"
 
+#define Config CConfig::Instance()
 class CConfig:public CBaseConfig
 {
 public:

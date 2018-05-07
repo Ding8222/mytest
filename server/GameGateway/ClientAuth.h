@@ -20,6 +20,7 @@ struct ClientAuthInfo
 };
 
 class CClient;
+#define ClientAuth CClientAuth::Instance()
 class CClientAuth
 {
 public:

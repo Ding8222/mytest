@@ -1,10 +1,4 @@
-﻿
-/*
- * Copyright (C) lcinx
- * lcinx@163.com
-*/
-
-#pragma once
+﻿#pragma once
 #include <string>
 #include <list>
 #include <time.h>

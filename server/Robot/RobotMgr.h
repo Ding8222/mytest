@@ -6,6 +6,7 @@
 #pragma once
 #include <list>
 class CRobot;
+#define RobotMgr CRobotMgr::Instance()
 class CRobotMgr
 {
 public:

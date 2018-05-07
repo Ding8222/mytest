@@ -32,7 +32,7 @@ CCheckNameServer::~CCheckNameServer()
 
 static void cb()
 {
-	CCheckNameServer::Instance().Destroy();
+	CheckNameServer.Destroy();
 }
 
 bool CCheckNameServer::Init()
@@ -40,17 +40,17 @@ bool CCheckNameServer::Init()
 	do
 	{
 #ifdef _WIN32
-		if (!CCtrlHandler::Instance().Init(&cb))
+		if (!CtrlHandler.Init(&cb))
 		{
 			RunStateError("初始化CtrlHandler失败!");
 			break;
 		}
 #endif
-		if (!CNameCheckServerMgr::Instance().Init(
-			CConfig::Instance().GetServerIP(),
-			CConfig::Instance().GetServerID(),
-			CConfig::Instance().GetListenPort(),
-			CConfig::Instance().GetOverTime()))
+		if (!NameCheckServerMgr.Init(
+			Config.GetServerIP(),
+			Config.GetServerID(),
+			Config.GetListenPort(),
+			Config.GetOverTime()))
 		{
 			RunStateError("初始化 NameCheckServerMgr 失败!");
 			break;
@@ -61,8 +61,8 @@ bool CCheckNameServer::Init()
 
 	} while (true);
 
-	CNameCheckServerMgr::Instance().Destroy();
-	CNameSet::Instance().Destroy();
+	NameCheckServerMgr.Destroy();
+	NameSet.Destroy();
 
 	Destroy();
 
@@ -81,7 +81,7 @@ void CCheckNameServer::Run()
 	int delay;
 	while (m_Run)
 	{
-		CNameCheckServerMgr::Instance().ResetMsgNum();
+		NameCheckServerMgr.ResetMsgNum();
 		CTimer::UpdateTime();
 
 		g_currenttime = get_millisecond();
@@ -93,13 +93,13 @@ void CCheckNameServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			ElapsedLog("运行超时:%d\n%s", delay, CNameCheckServerMgr::Instance().GetMsgNumInfo());
+			ElapsedLog("运行超时:%d\n%s", delay, NameCheckServerMgr.GetMsgNumInfo());
 		}
 	}
 	delaytime(300);
 
-	CNameCheckServerMgr::Instance().Destroy();
-	CNameSet::Instance().Destroy();
+	NameCheckServerMgr.Destroy();
+	NameSet.Destroy();
 
 	Destroy();
 }
@@ -113,9 +113,9 @@ void CCheckNameServer::RunOnce()
 {
 	lxnet::net_run();
 
-	CNameCheckServerMgr::Instance().Run();
+	NameCheckServerMgr.Run();
 
-	CNameCheckServerMgr::Instance().EndRun();
+	NameCheckServerMgr.EndRun();
 }
 
 void CCheckNameServer::Destroy()

@@ -8,7 +8,7 @@
 
 void DoTeamMsgFromCenter(connector *con, Msg *pMsg, msgtail *tl)
 {
-	CPlayer *pPlayer = CPlayerMgr::Instance().FindPlayerByClientID(static_cast<int32>(tl->id));
+	CPlayer *pPlayer = PlayerMgr.FindPlayerByClientID(static_cast<int32>(tl->id));
 
 	switch (pMsg->GetSubType())
 	{

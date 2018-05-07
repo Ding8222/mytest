@@ -26,11 +26,11 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			_CHECK_PARSE_(pMsg, msg);
 
 			netData::SelectPlayerRet SendMsg;
-			ClientAuthInfo *_pAuthInfo = CClientAuthMgr::Instance().FindClientAuthInfo(tl->id);
+			ClientAuthInfo *_pAuthInfo = ClientAuthMgr.FindClientAuthInfo(tl->id);
 			if (_pAuthInfo)
 			{
-				ServerStatusInfo *_pGameInfo = CServerStatusMgr::Instance().GetGameServerInfo(msg.nmapid());
-				ServerStatusInfo *_pGateInfo = CServerStatusMgr::Instance().GetGateServerInfo();
+				ServerStatusInfo *_pGameInfo = ServerStatusMgr.GetGameServerInfo(msg.nmapid());
+				ServerStatusInfo *_pGateInfo = ServerStatusMgr.GetGateServerInfo();
 				if (_pGameInfo && _pGateInfo)
 				{
 					// 返回loginsvr，通知client选角成功，登陆gamegateway
@@ -46,7 +46,7 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 					sendMsg.set_account(_pAuthInfo->Account);
 					sendMsg.set_secret(_pAuthInfo->Secret);
 					sendMsg.set_ngameid(_pGameInfo->nServerID);
-					CCentServerMgr::Instance().SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_ACCOUNT, ServerEnum::EST_GATE, 0, _pGateInfo->nServerID);
+					CentServerMgr.SendMsgToServer(sendMsg, SERVER_TYPE_MAIN, SVR_SUB_CLIENT_ACCOUNT, ServerEnum::EST_GATE, 0, _pGateInfo->nServerID);
 				}
 				else
 				{
@@ -55,17 +55,17 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 					if (!_pGateInfo)
 						RunStateError("为账号：%s分配网关失败！", msg.account().c_str());
 					SendMsg.set_ncode(netData::SelectPlayerRet::EC_SERVER);
-					CClientAuthMgr::Instance().SetPlayerOffline(msg.account());
+					ClientAuthMgr.SetPlayerOffline(msg.account());
 				}
 			}
 			else
 			{
 				RunStateError("没有找到clientid：%d的认证信息！", tl->id);
 				SendMsg.set_ncode(netData::SelectPlayerRet::EC_AUTH);
-				CClientAuthMgr::Instance().SetPlayerOffline(msg.account());
+				ClientAuthMgr.SetPlayerOffline(msg.account());
 			}
 
-			CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER_RET, ServerEnum::EST_LOGIN, tl->id);
+			CentServerMgr.SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER_RET, ServerEnum::EST_LOGIN, tl->id);
 			break;
 		}
 		default:

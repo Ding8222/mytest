@@ -50,7 +50,7 @@ CSceneMgr::~CSceneMgr()
 bool CSceneMgr::Init()
 {
 	// 加载普通地图
-	const std::list<CMapInfo*> maplist = CMapConfig::Instance().GetMapList();
+	const std::list<CMapInfo*> maplist = MapConfig.GetMapList();
 	for (auto &iter : maplist)
 	{
 		CMapInfo *info = iter;

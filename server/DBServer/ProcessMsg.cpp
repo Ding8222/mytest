@@ -69,22 +69,22 @@ void ProcessLoginMsg(task *tk, Msg *pMsg)
 	{
 	case LOGIN_SUB_AUTH:
 	{
-		CClientLogin::Instance().ClientAuth(tk, pMsg);
+		ClientLogin.ClientAuth(tk, pMsg);
 		break;
 	}
 	case LOGIN_SUB_PLAYER_LIST:
 	{
-		CClientLogin::Instance().GetPlayerList(tk, pMsg);
+		ClientLogin.GetPlayerList(tk, pMsg);
 		break;
 	}
 	case LOGIN_SUB_CREATE_PLAYER:
 	{
-		CClientLogin::Instance().CreatePlayer(tk, pMsg);
+		ClientLogin.CreatePlayer(tk, pMsg);
 		break;
 	}
 	case LOGIN_SUB_SELECT_PLAYER:
 	{
-		CClientLogin::Instance().SelectPlayer(tk, pMsg);
+		ClientLogin.SelectPlayer(tk, pMsg);
 		break;
 	}
 	default:

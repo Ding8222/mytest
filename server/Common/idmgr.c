@@ -1,10 +1,4 @@
-﻿
-/*
- * Copyright (C) lcinx
- * lcinx@163.com
-*/
-
-#include <stdlib.h>
+﻿#include <stdlib.h>
 #include <assert.h>
 #include "idmgr.h"
 #include "log.h"

@@ -128,7 +128,7 @@ void CGameGatewayMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	{
 	case ServerEnum::EST_GATE:
 	{
-		CPlayerMgr::Instance().AsGateServerDisconnect(info->GetServerID());
+		PlayerMgr.AsGateServerDisconnect(info->GetServerID());
 		m_GateList.erase(info->GetServerID());
 		if (overtime)
 			RunStateError("网关服器超时移除:[%d], ip:[%s]", info->GetServerID(), info->GetIP());
@@ -168,20 +168,20 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				svrData::DelClient msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				CPlayer *player = CPlayerMgr::Instance().FindPlayerByClientID(tl->id);
+				CPlayer *player = PlayerMgr.FindPlayerByClientID(tl->id);
 				if (FuncUti::isValidCret(player))
 				{
 					msg.set_account(player->GetAccount());
 					FuncUti::SendMsgToCenter(player, msg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT);
 					RunStateLog("玩家连接断开！账号：%s，角色名称：%s", player->GetAccount().c_str(), player->GetName());
-					CPlayerMgr::Instance().DelPlayer(tl->id);
+					PlayerMgr.DelPlayer(tl->id);
 				}
 				break;
 			}
 			case SVR_SUB_PLAYERDATA:
 			{
-				CPlayerMgr::Instance().AddPlayer(info, tl->id);
-				CPlayer *player = CPlayerMgr::Instance().FindPlayerByClientID(tl->id);
+				PlayerMgr.AddPlayer(info, tl->id);
+				CPlayer *player = PlayerMgr.FindPlayerByClientID(tl->id);
 				netData::LoginRet sendMsg;
 				if (FuncUti::isValidCret(player))
 				{
@@ -198,7 +198,7 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 
 				msgtail tail;
 				tail.id = player->GetClientID();
-				CGameGatewayMgr::Instance().SendMsg(info, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, &tail, sizeof(tail));
+				GameGatewayMgr.SendMsg(info, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, &tail, sizeof(tail));
 				break;
 			}
 			}
@@ -221,7 +221,7 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 
 void CGameGatewayMgr::ProcessClientMsg(int32 clientid, Msg *pMsg)
 {
-	CPlayer *player = CPlayerMgr::Instance().FindPlayerByClientID(clientid);
+	CPlayer *player = PlayerMgr.FindPlayerByClientID(clientid);
 	if (FuncUti::isValidCret(player))
 	{
 		Operate(player, pMsg);

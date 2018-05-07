@@ -6,6 +6,7 @@
 #pragma once
 #include "ServerMgr.h"
 
+#define CentServerMgr CCentServerMgr::Instance()
 class CCentServerMgr :public CServerMgr
 {
 public:

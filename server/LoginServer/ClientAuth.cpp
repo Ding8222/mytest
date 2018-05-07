@@ -96,7 +96,7 @@ void CClientAuth::HandShake(CClient *cl, Msg *pMsg)
 	else
 		sendMsg.set_ncode(netData::HandShakeRet::EC_FAIL);
 
-	CLoginClientMgr::Instance().SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_HANDSHAKE_RET);
+	LoginClientMgr.SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_HANDSHAKE_RET);
 }
 
 // 挑战
@@ -114,7 +114,7 @@ void CClientAuth::Challenge(CClient *cl, Msg *pMsg)
 	else
 		sendMsg.set_ncode(netData::ChallengeRet::EC_FAIL);
 
-	CLoginClientMgr::Instance().SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_CHALLENGE_RET);
+	LoginClientMgr.SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_CHALLENGE_RET);
 }
 
 // 认证
@@ -130,14 +130,14 @@ void CClientAuth::Auth(CClient *cl, Msg *pMsg)
 	if (!secret.empty())
 	{
 		msg.set_secret(secret);
-		CLoginCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH, cl->GetClientID());
+		LoginCenterConnect.SendMsgToServer(Config.GetCenterServerID(), msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH, cl->GetClientID());
 	}
 	else
 	{
 		RunStateError("Auth失败！没有握手！clientid：%d，account：%s", cl->GetClientID(), msg.account().c_str());
 		netData::AuthRet sendMsg;
 		sendMsg.set_ncode(netData::AuthRet::EC_HANDSHAKE);
-		CLoginClientMgr::Instance().SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET);
+		LoginClientMgr.SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET);
 	}
 }
 
@@ -151,7 +151,7 @@ void CClientAuth::GetPlayerList(CClient *cl, Msg *pMsg)
 		_CHECK_PARSE_(pMsg, sendMsg);
 		sendMsg.set_account(account);
 
-		CLoginCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_PLAYER_LIST, cl->GetClientID());
+		LoginCenterConnect.SendMsgToServer(Config.GetCenterServerID(), sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_PLAYER_LIST, cl->GetClientID());
 	}
 	else
 		RunStateError("请求获取角色列表失败！没有认证！clientid：%d",cl->GetClientID());
@@ -167,7 +167,7 @@ void CClientAuth::CreatePlayer(CClient *cl, Msg *pMsg)
 		_CHECK_PARSE_(pMsg, sendMsg);
 		sendMsg.set_account(account);
 
-		CLoginCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_CREATE_PLAYER, cl->GetClientID());
+		LoginCenterConnect.SendMsgToServer(Config.GetCenterServerID(), sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_CREATE_PLAYER, cl->GetClientID());
 	}
 	else
 		RunStateError("请求创建角色失败！没有认证！clientid：%d", cl->GetClientID());
@@ -179,7 +179,7 @@ void CClientAuth::SelectPlayer(CClient *cl, Msg *pMsg)
 	const std::string &account = GetAccount(cl->GetClientID());
 	if (!account.empty())
 	{
-		CLoginCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), *pMsg, cl->GetClientID());
+		LoginCenterConnect.SendMsgToServer(Config.GetCenterServerID(), *pMsg, cl->GetClientID());
 	}
 	else
 		RunStateError("请求选择角色失败！没有认证！clientid：%d", cl->GetClientID());

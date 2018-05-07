@@ -2,6 +2,7 @@
 #include <string>
 #include"BaseConfig.h"
 
+#define Config CConfig::Instance()
 class CConfig :public CBaseConfig
 {
 public:

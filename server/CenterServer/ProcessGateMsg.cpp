@@ -18,7 +18,7 @@ void ProcessGateMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		case SVR_SUB_SERVER_LOADINFO:
 		{
 			// 添加服务器负载信息
-			CServerStatusMgr::Instance().AddGateServer(info, pMsg);
+			ServerStatusMgr.AddGateServer(info, pMsg);
 			break;
 		}
 		case SVR_SUB_UPDATE_LOAD:
@@ -27,7 +27,7 @@ void ProcessGateMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			svrData::UpdateServerLoad msg;
 			_CHECK_PARSE_(pMsg, msg);
 
-			CServerStatusMgr::Instance().UpdateGateServerLoad(info->GetServerID(), msg.nclientcountnow(), msg.nclientcountmax());
+			ServerStatusMgr.UpdateGateServerLoad(info->GetServerID(), msg.nclientcountnow(), msg.nclientcountmax());
 			break;
 		}
 		default:

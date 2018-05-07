@@ -30,7 +30,7 @@ void CLoginClientMgr::Destroy()
 
 int32 CLoginClientMgr::OnNewClient()
 {
-	if (!CLoginCenterConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetCenterServerID()))
+	if (!LoginCenterConnect.IsAlreadyRegister(Config.GetCenterServerID()))
 		return 0;
 
 	int32 nClientID = CClientMgr::OnNewClient();
@@ -46,17 +46,17 @@ void CLoginClientMgr::OnClientDisconnect(CClient *cl)
 	{
 		// 通知Center删除认证信息
 		svrData::DelClient sendMsg;
-		ClientAuthInfo *info = CClientAuth::Instance().GetClientAuthInfo(cl->GetClientID());
+		ClientAuthInfo *info = ClientAuth.GetClientAuthInfo(cl->GetClientID());
 		if (info)
 		{
 			sendMsg.set_account(info->Account);
 			if(!info->SelectSucc)
 				sendMsg.set_offline(true);
 		}
-		CLoginCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, cl->GetClientID());
+		LoginCenterConnect.SendMsgToServer(Config.GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, cl->GetClientID());
 	}
 	// 删除Client中记录的Secret
-	CClientAuth::Instance().OnClientDisconnect(cl);
+	ClientAuth.OnClientDisconnect(cl);
 	CClientMgr::OnClientDisconnect(cl);
 }
 
@@ -93,17 +93,17 @@ void CLoginClientMgr::ProcessClientMsg(CClient *cl)
 				{
 				case LOGIN_SUB_PLAYER_LIST:
 				{
-					CClientAuth::Instance().GetPlayerList(cl, pMsg);
+					ClientAuth.GetPlayerList(cl, pMsg);
 					break;
 				}
 				case LOGIN_SUB_CREATE_PLAYER:
 				{
-					CClientAuth::Instance().CreatePlayer(cl, pMsg);
+					ClientAuth.CreatePlayer(cl, pMsg);
 					break;
 				}
 				case LOGIN_SUB_SELECT_PLAYER:
 				{
-					CClientAuth::Instance().SelectPlayer(cl, pMsg);
+					ClientAuth.SelectPlayer(cl, pMsg);
 					break;
 				}
 				}
@@ -115,17 +115,17 @@ void CLoginClientMgr::ProcessClientMsg(CClient *cl)
 				{
 				case LOGIN_SUB_HANDSHAKE:
 				{
-					CClientAuth::Instance().HandShake(cl, pMsg);
+					ClientAuth.HandShake(cl, pMsg);
 					break;
 				}
 				case LOGIN_SUB_CHALLENGE:
 				{
-					CClientAuth::Instance().Challenge(cl, pMsg);
+					ClientAuth.Challenge(cl, pMsg);
 					break;
 				}
 				case LOGIN_SUB_AUTH:
 				{
-					CClientAuth::Instance().Auth(cl, pMsg);
+					ClientAuth.Auth(cl, pMsg);
 					break;
 				}
 				}

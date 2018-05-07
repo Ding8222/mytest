@@ -36,7 +36,7 @@ CDBServer::~CDBServer()
 
 static void cb()
 {
-	CDBServer::Instance().Destroy();
+	DBServer.Destroy();
 }
 
 bool CDBServer::Init()
@@ -44,7 +44,7 @@ bool CDBServer::Init()
 	do
 	{
 #ifdef _WIN32
-		if (!CCtrlHandler::Instance().Init(&cb))
+		if (!CtrlHandler.Init(&cb))
 		{
 			RunStateError("初始化CtrlHandler失败!");
 			break;
@@ -56,22 +56,22 @@ bool CDBServer::Init()
 			break;
 		}
 
-		if (!CDBCenterConnect::Instance().Init())
+		if (!DBCenterConnect.Init())
 		{
 			RunStateError("初始化 ServerMgr 失败!");
 			break;
 		}
 
-		if (!CLogConnecter::Instance().Init(
-			CConfig::Instance().GetLogServerIP(),
-			CConfig::Instance().GetLogServerPort(),
-			CConfig::Instance().GetLogServerID(),
-			CConfig::Instance().GetLogServerName(),
-			CConfig::Instance().GetServerID(),
-			CConfig::Instance().GetServerType(),
-			CConfig::Instance().GetServerName(),
-			CConfig::Instance().GetPingTime(),
-			CConfig::Instance().GetOverTime()))
+		if (!LogConnecter.Init(
+			Config.GetLogServerIP(),
+			Config.GetLogServerPort(),
+			Config.GetLogServerID(),
+			Config.GetLogServerName(),
+			Config.GetServerID(),
+			Config.GetServerType(),
+			Config.GetServerName(),
+			Config.GetPingTime(),
+			Config.GetOverTime()))
 		{
 			RunStateError("初始化 LogConnecter 失败!");
 			break;
@@ -82,9 +82,9 @@ bool CDBServer::Init()
 
 	} while (true);
 
-	CDBCenterConnect::Instance().Destroy();
-	CLogConnecter::Instance().Destroy();
-	CClientLogin::Instance().Destroy();
+	DBCenterConnect.Destroy();
+	LogConnecter.Destroy();
+	ClientLogin.Destroy();
 	Destroy();
 
 	return false;
@@ -102,8 +102,8 @@ void CDBServer::Run()
 	int delay;
 	while (m_Run)
 	{
-		CDBCenterConnect::Instance().ResetMsgNum();
-		CLogConnecter::Instance().ResetMsgNum();
+		DBCenterConnect.ResetMsgNum();
+		LogConnecter.ResetMsgNum();
 		CTimer::UpdateTime();
 
 		g_currenttime = get_millisecond();
@@ -116,15 +116,15 @@ void CDBServer::Run()
 		else if (delay > maxdelay)
 		{
 			ElapsedLog("运行超时:%d", delay);
-			ElapsedLog("中心服务器连接：%s", CDBCenterConnect::Instance().GetMsgNumInfo());
-			ElapsedLog("日志服务器连接：%s", CLogConnecter::Instance().GetMsgNumInfo());
+			ElapsedLog("中心服务器连接：%s", DBCenterConnect.GetMsgNumInfo());
+			ElapsedLog("日志服务器连接：%s", LogConnecter.GetMsgNumInfo());
 		}
 	}
 	delaytime(300);
 
-	CDBCenterConnect::Instance().Destroy();
-	CLogConnecter::Instance().Destroy();
-	CClientLogin::Instance().Destroy();
+	DBCenterConnect.Destroy();
+	LogConnecter.Destroy();
+	ClientLogin.Destroy();
 
 	Destroy();
 }
@@ -139,11 +139,11 @@ void CDBServer::RunOnce()
 	lxnet::net_run();
 	m_BackCommand->Run(g_currenttime);
 
-	CDBCenterConnect::Instance().Run();
-	CLogConnecter::Instance().Run();
+	DBCenterConnect.Run();
+	LogConnecter.Run();
 
-	CDBCenterConnect::Instance().EndRun();
-	CLogConnecter::Instance().EndRun();
+	DBCenterConnect.EndRun();
+	LogConnecter.EndRun();
 }
 
 void CDBServer::Destroy()
@@ -181,7 +181,7 @@ bool CDBServer::InitBackCommand()
 	if (!m_BackCommand)
 		return false;
 	new(m_BackCommand) CBackCommand();
-	if (!m_BackCommand->Init(back_dofunction, CConfig::Instance().GetMonitorPort(), CConfig::Instance().GetPingTime(), CConfig::Instance().GetServerName()))
+	if (!m_BackCommand->Init(back_dofunction, Config.GetMonitorPort(), Config.GetPingTime(), Config.GetServerName()))
 		return false;
 
 	return true;
@@ -224,7 +224,7 @@ static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 	{
 		size = 0;
 
-		CDBCenterConnect::Instance().GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
+		DBCenterConnect.GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
 		s_buf[sizeof(s_buf) - 1] = 0;
 		res.PushString(s_buf);
 		sock->SendMsg(&res);

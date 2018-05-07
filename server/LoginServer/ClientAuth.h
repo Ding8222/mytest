@@ -19,6 +19,7 @@ struct ClientAuthInfo
 	std::string Secret;	// 秘钥
 };
 
+#define ClientAuth CClientAuth::Instance()
 class CClientAuth
 {
 public:

@@ -21,7 +21,7 @@ void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		case SVR_SUB_SERVER_LOADINFO:
 		{
 			// 添加服务器负载信息
-			CServerStatusMgr::Instance().AddGameServer(info, pMsg);
+			ServerStatusMgr.AddGameServer(info, pMsg);
 			break;
 		}
 		case SVR_SUB_UPDATE_LOAD:
@@ -30,12 +30,12 @@ void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			svrData::UpdateServerLoad msg;
 			_CHECK_PARSE_(pMsg, msg);
 
-			CServerStatusMgr::Instance().UpdateGameServerLoad(info->GetServerID(), msg.nclientcountnow(), msg.nclientcountmax());
+			ServerStatusMgr.UpdateGameServerLoad(info->GetServerID(), msg.nclientcountnow(), msg.nclientcountmax());
 			break;
 		}
 		case SVR_SUB_PLAYERDATA:
 		{
-			CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_DB, tl->id);
+			CentServerMgr.SendMsgToServer(*pMsg, ServerEnum::EST_DB, tl->id);
 			break;
 		}
 		case SVR_SUB_DEL_CLIENT:
@@ -44,8 +44,8 @@ void ProcessGameMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			svrData::DelClient msg;
 			_CHECK_PARSE_(pMsg, msg);
 
-			CCenterPlayerMgr::Instance().DelPlayer(tl->id);
-			CClientAuthMgr::Instance().SetPlayerOffline(msg.account());
+			CenterPlayerMgr.DelPlayer(tl->id);
+			ClientAuthMgr.SetPlayerOffline(msg.account());
 			break;
 		}
 		default:

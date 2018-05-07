@@ -8,6 +8,7 @@
 struct idmgr;
 class CBaseObj;
 class CInstance;
+#define InstanceMgr CInstanceMgr::Instance()
 class CInstanceMgr
 {
 public:

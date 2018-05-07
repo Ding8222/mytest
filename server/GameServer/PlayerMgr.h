@@ -8,8 +8,9 @@
 #include <unordered_map>
 #include "Player.h"
 
-static int player_max = 2000;
+static int32 player_max = 2000;
 
+#define PlayerMgr CPlayerMgr::Instance()
 class CPlayerMgr
 {
 public:
@@ -24,17 +25,17 @@ public:
 
 	bool init();
 	void Destroy();
-	void AsGateServerDisconnect(int gateserverid);
+	void AsGateServerDisconnect(int32 gateserverid);
 
 	void Run();
 	void ProcessAllPlayer();
 
-	bool AddPlayer(serverinfo * info,int clientid);
-	void DelPlayer(int clientid);
+	bool AddPlayer(serverinfo * info,int32 clientid);
+	void DelPlayer(int32 clientid);
 	void DelAllPlayer();
 	void ReleasePlayer(CPlayer *player);
-	int GetPlayerSize() { return m_PlayerList.size(); }
-	CPlayer *FindPlayerByClientID(int clientid);
+	int32 GetPlayerSize() { return m_PlayerList.size(); }
+	CPlayer *FindPlayerByClientID(int32 clientid);
 	std::list<CPlayer *> &GetPlayerList() { return m_PlayerList; }
 private:
 	void CheckAndRemove();

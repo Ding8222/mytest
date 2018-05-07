@@ -11,6 +11,8 @@
 
 class CMapInfo;
 
+#define MapConfig CMapConfig::Instance()
+
 class CMapConfig
 {
 public:

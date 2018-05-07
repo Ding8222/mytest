@@ -21,9 +21,9 @@ void ProcessLoginMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			svrData::DelClient msg;
 			_CHECK_PARSE_(pMsg, msg);
 
-			CClientAuthMgr::Instance().DelClientAuthInfo(tl->id);
+			ClientAuthMgr.DelClientAuthInfo(tl->id);
 			if(msg.offline())
-				CClientAuthMgr::Instance().SetPlayerOffline(msg.account());
+				ClientAuthMgr.SetPlayerOffline(msg.account());
 			break;
 		}
 		default:

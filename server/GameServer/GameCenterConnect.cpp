@@ -25,10 +25,10 @@ CGameCenterConnect::~CGameCenterConnect()
 bool CGameCenterConnect::Init()
 {
 	if (!CConnectMgr::AddNewConnect(
-		CConfig::Instance().GetCenterServerIP(),
-		CConfig::Instance().GetCenterServerPort(),
-		CConfig::Instance().GetCenterServerID(),
-		CConfig::Instance().GetCenterServerName()
+		Config.GetCenterServerIP(),
+		Config.GetCenterServerPort(),
+		Config.GetCenterServerID(),
+		Config.GetCenterServerName()
 	))
 	{
 		RunStateError("添加中心服务器失败!");
@@ -36,11 +36,11 @@ bool CGameCenterConnect::Init()
 	}
 
 	return CConnectMgr::Init(
-		CConfig::Instance().GetServerID(),
-		CConfig::Instance().GetServerType(),
-		CConfig::Instance().GetServerName(),
-		CConfig::Instance().GetPingTime(),
-		CConfig::Instance().GetOverTime()
+		Config.GetServerID(),
+		Config.GetServerType(),
+		Config.GetServerName(),
+		Config.GetPingTime(),
+		Config.GetOverTime()
 	);
 }
 
@@ -53,17 +53,17 @@ void CGameCenterConnect::ServerRegisterSucc(connector *)
 {
 	// 发送负载信息给Center
 	svrData::ServerLoadInfo sendMsg;
-	sendMsg.set_nlineid(CConfig::Instance().GetLineID());
-	sendMsg.set_nmaxclient(CConfig::Instance().GetMaxClientNum());
-	sendMsg.set_nnowclient(CPlayerMgr::Instance().GetPlayerSize());
-	sendMsg.set_nport(CConfig::Instance().GetListenPort());
-	sendMsg.set_sip(CConfig::Instance().GetServerIP());
-	const std::list<CMapInfo*> maplist = CMapConfig::Instance().GetMapList();
+	sendMsg.set_nlineid(Config.GetLineID());
+	sendMsg.set_nmaxclient(Config.GetMaxClientNum());
+	sendMsg.set_nnowclient(PlayerMgr.GetPlayerSize());
+	sendMsg.set_nport(Config.GetListenPort());
+	sendMsg.set_sip(Config.GetServerIP());
+	const std::list<CMapInfo*> maplist = MapConfig.GetMapList();
 	for (auto &iter : maplist)
 	{
 		sendMsg.add_mapid(iter->GetMapID());
 	}
-	std::list<CPlayer *> &temp = CPlayerMgr::Instance().GetPlayerList();
+	std::list<CPlayer *> &temp = PlayerMgr.GetPlayerList();
 	for (auto &i : temp)
 	{
 		CPlayer *player = i;
@@ -79,7 +79,7 @@ void CGameCenterConnect::ServerRegisterSucc(connector *)
 			}
 		}
 	}
-	SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_LOADINFO);
+	SendMsgToServer(Config.GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_LOADINFO);
 }
 
 void CGameCenterConnect::ConnectDisconnect(connector *_con)

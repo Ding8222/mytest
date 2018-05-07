@@ -58,7 +58,7 @@ bool init(int argc, char *argv[])
 	}
 
 	//读取网络配置文件
-	if (!CNetConfig::Instance().Init())
+	if (!NetConfig.Init())
 	{
 		RunStateError("初始化NetConfig失败!");
 		system("pause");
@@ -66,40 +66,40 @@ bool init(int argc, char *argv[])
 	}
 
 	//读取配置文件
-	if (!CConfig::Instance().Init("GameGateway", nLineID))
+	if (!Config.Init("GameGateway", nLineID))
 	{
 		RunStateError("初始化Config失败!");
 		system("pause");
 		return 0;
 	}
 
-	g_client_connectlog_flag = CConfig::Instance().IsOpenClientConnectLog();
-	g_elapsed_log_flag = CConfig::Instance().IsOpenElapsedLog();
+	g_client_connectlog_flag = Config.IsOpenClientConnectLog();
+	g_elapsed_log_flag = Config.IsOpenElapsedLog();
 	sPoolInfo.SetMeminfoFileName("log_log/GameGateway_Log/mempoolinfo.txt");
 
-	RunStateLog("[%d线]网关服务器开始启动!", CConfig::Instance().GetLineID());
+	RunStateLog("[%d线]网关服务器开始启动!", Config.GetLineID());
 
 	//初始化网络库
-	if (!lxnet::net_init(CNetConfig::Instance().GetBigBufSize(), CNetConfig::Instance().GetBigBufNum(),
-		CNetConfig::Instance().GetSmallBufSize(), CNetConfig::Instance().GetSmallBufNum(),
-		CNetConfig::Instance().GetListenerNum(), CNetConfig::Instance().GetSocketerNum(),
-		CNetConfig::Instance().GetThreadNum()))
+	if (!lxnet::net_init(NetConfig.GetBigBufSize(), NetConfig.GetBigBufNum(),
+		NetConfig.GetSmallBufSize(), NetConfig.GetSmallBufNum(),
+		NetConfig.GetListenerNum(), NetConfig.GetSocketerNum(),
+		NetConfig.GetThreadNum()))
 	{
 		RunStateError("初始化网络库失败!");
 		system("pause");
 		return 0;
 	}
 	//设置监听端口，创建listener
-	if (!CGameGateway::Instance().Init())
+	if (!GameGateway.Init())
 	{
 		RunStateError("初始化失败!");
 		system("pause");
 		return 0;
 	}
 
-	CGameGateway::Instance().Run();
+	GameGateway.Run();
 	//循环结束后的资源释放
-	CGameGateway::Instance().Release();
+	GameGateway.Release();
 	lxnet::net_release();
 	release_log();
 #ifdef _WIN32

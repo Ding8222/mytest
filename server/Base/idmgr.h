@@ -1,9 +1,4 @@
-﻿
-/*
- * Copyright (C) lcinx
- * lcinx@163.com
-*/
-#pragma once
+﻿#pragma once
 #include "platform_config.h"
 
 #ifdef __cplusplus

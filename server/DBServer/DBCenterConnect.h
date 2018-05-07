@@ -9,6 +9,7 @@
 #include "msgbase.h"
 
 class datahand;
+#define DBCenterConnect CDBCenterConnect::Instance()
 class CDBCenterConnect : public CConnectMgr
 {
 public:

@@ -99,7 +99,7 @@ void CTeamMgr::SendTeamInfo(int64 playerguid)
 			{
 				info->set_guid(player.Guid);
 				info->set_name(player.Name);
-				stCenterPlayer *playerinfo = CCenterPlayerMgr::Instance().FindPlayerByGuid(player.Guid);
+				stCenterPlayer *playerinfo = CenterPlayerMgr.FindPlayerByGuid(player.Guid);
 				info->set_online(playerinfo == nullptr ? false : true);
 			}
 		}
@@ -183,7 +183,7 @@ void CTeamMgr::ReasponseApplyTeam(int64 playerguid, int64 applyguid, bool agree)
 
 	// 通知申请人结果
 	netData::ResponseApplyTeamRet SendMsg;
-	stCenterPlayer *player = CCenterPlayerMgr::Instance().FindPlayerByGuid(playerguid);
+	stCenterPlayer *player = CenterPlayerMgr.FindPlayerByGuid(playerguid);
 	SendMsg.set_agree(agree);
 	if (player)
 		SendMsg.set_name(player->Name);
@@ -205,7 +205,7 @@ void CTeamMgr::QueryInviteTeam(int64 playerguid, int64 inviteguid)
 			if (team->GetLeaderGuid() == playerguid)
 			{
 				// 通知玩家有新的邀请
-				stCenterPlayer *player = CCenterPlayerMgr::Instance().FindPlayerByGuid(playerguid);
+				stCenterPlayer *player = CenterPlayerMgr.FindPlayerByGuid(playerguid);
 				if (player)
 				{
 					netData::InviteTeamTips SendTipsMsg;
@@ -242,7 +242,7 @@ void CTeamMgr::ReasponseInviteTeam(int64 playerguid, int64 inviteguid, bool agre
 
 	// 通知邀请人结果
 	netData::ResponseInviteTeamRet SendMsg;
-	stCenterPlayer *player = CCenterPlayerMgr::Instance().FindPlayerByGuid(playerguid);
+	stCenterPlayer *player = CenterPlayerMgr.FindPlayerByGuid(playerguid);
 	SendMsg.set_agree(agree);
 	if (player)
 		SendMsg.set_name(player->Name);
@@ -284,7 +284,7 @@ void CTeamMgr::QueryKickPlayer(int64 playerguid, int64 kickguid)
 
 void CTeamMgr::AddToApplyList(int64 leaderguid, int64 playerguid)
 {
-	stCenterPlayer *player = CCenterPlayerMgr::Instance().FindPlayerByGuid(playerguid);
+	stCenterPlayer *player = CenterPlayerMgr.FindPlayerByGuid(playerguid);
 	if (player)
 	{
 		netData::ApplyTeamTips SendTipsMsg;

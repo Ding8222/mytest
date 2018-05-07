@@ -45,7 +45,7 @@ bool CTeam::AddMember(int64 guid)
 		auto iter = m_Member.find(guid);
 		if (iter == m_Member.end())
 		{
-			stCenterPlayer *player = CCenterPlayerMgr::Instance().FindPlayerByGuid(guid);
+			stCenterPlayer *player = CenterPlayerMgr.FindPlayerByGuid(guid);
 			if (player)
 			{
 				m_Member.insert(std::make_pair(guid, TeamPlayer(guid, player->Name)));

@@ -41,7 +41,7 @@ CCenterServer::~CCenterServer()
 
 static void cb()
 {
-	CCenterServer::Instance().Destroy();
+	CenterServer.Destroy();
 }
 
 bool CCenterServer::Init()
@@ -49,7 +49,7 @@ bool CCenterServer::Init()
 	do 
 	{
 #ifdef _WIN32
-		if (!CCtrlHandler::Instance().Init(&cb))
+		if (!CtrlHandler.Init(&cb))
 		{
 			RunStateError("初始化CtrlHandler失败!");
 			break;
@@ -61,47 +61,47 @@ bool CCenterServer::Init()
 			break;
 		}
 
-		if (!CTeamMgr::Instance().Init())
+		if (!TeamMgr.Init())
 		{
 			RunStateError("初始化 TeamMgr 失败!");
 			break;
 		}
 
-		if (!CCentServerMgr::Instance().Init(
-			CConfig::Instance().GetServerIP(),
-			CConfig::Instance().GetServerID(),
-			CConfig::Instance().GetListenPort(),
-			CConfig::Instance().GetOverTime()))
+		if (!CentServerMgr.Init(
+			Config.GetServerIP(),
+			Config.GetServerID(),
+			Config.GetListenPort(),
+			Config.GetOverTime()))
 		{
 			RunStateError("初始化 ServerMgr 失败!");
 			break;
 		}
 
-		if (!CLogConnecter::Instance().Init(
-			CConfig::Instance().GetLogServerIP(),
-			CConfig::Instance().GetLogServerPort(),
-			CConfig::Instance().GetLogServerID(),
-			CConfig::Instance().GetLogServerName(),
-			CConfig::Instance().GetServerID(),
-			CConfig::Instance().GetServerType(),
-			CConfig::Instance().GetServerName(),
-			CConfig::Instance().GetPingTime(),
-			CConfig::Instance().GetOverTime()))
+		if (!LogConnecter.Init(
+			Config.GetLogServerIP(),
+			Config.GetLogServerPort(),
+			Config.GetLogServerID(),
+			Config.GetLogServerName(),
+			Config.GetServerID(),
+			Config.GetServerType(),
+			Config.GetServerName(),
+			Config.GetPingTime(),
+			Config.GetOverTime()))
 		{
 			RunStateError("初始化 LogConnecter 失败!");
 			break;
 		}
 
-		if (!CNameCheckConnecter::Instance().Init(
-			CConfig::Instance().GetNameCheckServerIP(),
-			CConfig::Instance().GetNameCheckServerPort(),
-			CConfig::Instance().GetNameCheckServerID(),
-			CConfig::Instance().GetNameCheckServerName(),
-			CConfig::Instance().GetServerID(),
-			CConfig::Instance().GetServerType(),
-			CConfig::Instance().GetServerName(),
-			CConfig::Instance().GetPingTime(),
-			CConfig::Instance().GetOverTime()))
+		if (!NameCheckConnecter.Init(
+			Config.GetNameCheckServerIP(),
+			Config.GetNameCheckServerPort(),
+			Config.GetNameCheckServerID(),
+			Config.GetNameCheckServerName(),
+			Config.GetServerID(),
+			Config.GetServerType(),
+			Config.GetServerName(),
+			Config.GetPingTime(),
+			Config.GetOverTime()))
 		{
 			RunStateError("初始化 NameCheckConnecter 失败!");
 			break;
@@ -112,12 +112,12 @@ bool CCenterServer::Init()
 
 	} while (true);
 
-	CCentServerMgr::Instance().Destroy();
-	CLogConnecter::Instance().Destroy();
-	CNameCheckConnecter::Instance().Destroy();
-	CClientAuthMgr::Instance().Destroy();
-	CServerStatusMgr::Instance().Destroy();
-	CCenterPlayerMgr::Instance().Destroy();
+	CentServerMgr.Destroy();
+	LogConnecter.Destroy();
+	NameCheckConnecter.Destroy();
+	ClientAuthMgr.Destroy();
+	ServerStatusMgr.Destroy();
+	CenterPlayerMgr.Destroy();
 	Destroy();
 
 	return false;
@@ -135,9 +135,9 @@ void CCenterServer::Run()
 	int delay;
 	while (m_Run)
 	{
-		CCentServerMgr::Instance().ResetMsgNum();
-		CLogConnecter::Instance().ResetMsgNum();
-		CNameCheckConnecter::Instance().ResetMsgNum();
+		CentServerMgr.ResetMsgNum();
+		LogConnecter.ResetMsgNum();
+		NameCheckConnecter.ResetMsgNum();
 		CTimer::UpdateTime();
 
 		g_currenttime = get_millisecond();
@@ -150,19 +150,19 @@ void CCenterServer::Run()
 		else if (delay > maxdelay)
 		{
 			ElapsedLog("运行超时:%d\n%s日志服务器连接：%s名称检查服务器连接：%s", delay, 
-				CCentServerMgr::Instance().GetMsgNumInfo(), 
-				CLogConnecter::Instance().GetMsgNumInfo(),
-				CNameCheckConnecter::Instance().GetMsgNumInfo());
+				CentServerMgr.GetMsgNumInfo(), 
+				LogConnecter.GetMsgNumInfo(),
+				NameCheckConnecter.GetMsgNumInfo());
 		}
 	}
 	delaytime(300);
 
-	CCentServerMgr::Instance().Destroy();
-	CLogConnecter::Instance().Destroy();
-	CNameCheckConnecter::Instance().Destroy();
-	CClientAuthMgr::Instance().Destroy();
-	CServerStatusMgr::Instance().Destroy();
-	CCenterPlayerMgr::Instance().Destroy();
+	CentServerMgr.Destroy();
+	LogConnecter.Destroy();
+	NameCheckConnecter.Destroy();
+	ClientAuthMgr.Destroy();
+	ServerStatusMgr.Destroy();
+	CenterPlayerMgr.Destroy();
 
 	Destroy();
 }
@@ -177,13 +177,13 @@ void CCenterServer::RunOnce()
 	lxnet::net_run();
 	m_BackCommand->Run(g_currenttime);
 
-	CCentServerMgr::Instance().Run();
-	CLogConnecter::Instance().Run();
-	CNameCheckConnecter::Instance().Run();
+	CentServerMgr.Run();
+	LogConnecter.Run();
+	NameCheckConnecter.Run();
 
-	CCentServerMgr::Instance().EndRun();
-	CLogConnecter::Instance().EndRun();
-	CNameCheckConnecter::Instance().EndRun();
+	CentServerMgr.EndRun();
+	LogConnecter.EndRun();
+	NameCheckConnecter.EndRun();
 }
 
 void CCenterServer::Destroy()
@@ -221,7 +221,7 @@ bool CCenterServer::InitBackCommand()
 	if (!m_BackCommand)
 		return false;
 	new(m_BackCommand) CBackCommand();
-	if (!m_BackCommand->Init(back_dofunction,CConfig::Instance().GetMonitorPort(),CConfig::Instance().GetPingTime(), CConfig::Instance().GetServerName()))
+	if (!m_BackCommand->Init(back_dofunction,Config.GetMonitorPort(),Config.GetPingTime(), Config.GetServerName()))
 		return false;
 
 	return true;
@@ -264,7 +264,7 @@ static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 	{
 		size = 0;
 
-		CCentServerMgr::Instance().GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
+		CentServerMgr.GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
 		s_buf[sizeof(s_buf) - 1] = 0;
 		res.PushString(s_buf);
 		sock->SendMsg(&res);

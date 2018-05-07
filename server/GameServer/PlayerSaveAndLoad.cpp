@@ -47,7 +47,7 @@ bool CPlayer::LoadData(Msg *pMsg)
 	SetNowPos(msg.nx(), msg.ny(), msg.nz());
 	m_LastSaveTime = CTimer::GetTime();
 
-	CScene *_pScene = CSceneMgr::Instance().FindScene(msg.nmapid());
+	CScene *_pScene = SceneMgr.FindScene(msg.nmapid());
 	if (!_pScene)
 	{
 		RunStateLog("没有找到玩家：%s要登陆的地图：%d", GetName(), msg.nmapid());

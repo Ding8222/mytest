@@ -7,6 +7,7 @@
 #include "ConnectMgr.h"
 #include "msgbase.h"
 
+#define NameCheckConnecter CNameCheckConnecter::Instance()
 class CNameCheckConnecter : public CConnectMgr
 {
 public:

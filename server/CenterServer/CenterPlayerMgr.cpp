@@ -97,7 +97,7 @@ void CCenterPlayerMgr::AsGateServerDisconnect(int32 gateserverid)
 		stCenterPlayer *player = iterB->second;
 		if (player->nGateID == gateserverid)
 		{
-			CClientAuthMgr::Instance().SetPlayerOffline(player->Account);
+			ClientAuthMgr.SetPlayerOffline(player->Account);
 			centerplayer_release(player);
 			iterB = m_PlayerMap.erase(iterB);
 		}
@@ -114,7 +114,7 @@ void CCenterPlayerMgr::AsGameServerDisconnect(int32 gameserverid)
 		stCenterPlayer *player = iterB->second;
 		if (player->nGameID == gameserverid)
 		{
-			CClientAuthMgr::Instance().SetPlayerOffline(player->Account);
+			ClientAuthMgr.SetPlayerOffline(player->Account);
 			centerplayer_release(player);
 			iterB = m_PlayerMap.erase(iterB);
 		}

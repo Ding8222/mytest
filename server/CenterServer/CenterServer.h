@@ -6,6 +6,7 @@
 #pragma once
 
 class CBackCommand;
+#define CenterServer CCenterServer::Instance()
 class CCenterServer
 {
 public:

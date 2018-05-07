@@ -1,10 +1,4 @@
-﻿
-/*
- * Copyright (C) lcinx
- * lcinx@163.com
-*/
-
-#pragma once
+﻿#pragma once
 
 #ifdef __cplusplus
 extern "C"{

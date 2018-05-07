@@ -6,6 +6,7 @@
 #pragma once
 
 #include <unordered_set>
+#define NameSet CNameSet::Instance()
 class CNameSet
 {
 public:

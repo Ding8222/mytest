@@ -14,21 +14,21 @@ CCtrlHandler::~CCtrlHandler()
 	f_Fun = nullptr;
 }
 
-BOOL CtrlHandler(DWORD fdwCtrlType)
+BOOL Handler(DWORD fdwCtrlType)
 {
 	switch (fdwCtrlType)
 	{
 		// Handle the CTRL-C signal. 
 	case CTRL_C_EVENT:
 		log_error("Ctrl-C event");
-		CCtrlHandler::Instance().Destroy();
+		CtrlHandler.Destroy();
 
 		return(TRUE);
 
 		// CTRL-CLOSE: confirm that the user wants to exit. 
 	case CTRL_CLOSE_EVENT:
 		log_error("Ctrl-Close event");
-		CCtrlHandler::Instance().Destroy();
+		CtrlHandler.Destroy();
 		return(TRUE);
 
 		// Pass other signals to the next handler. 
@@ -52,7 +52,7 @@ BOOL CtrlHandler(DWORD fdwCtrlType)
 bool CCtrlHandler::Init(Callback *cb)
 {
 	f_Fun = cb;
-	if (!SetConsoleCtrlHandler((PHANDLER_ROUTINE)CtrlHandler, TRUE))
+	if (!SetConsoleCtrlHandler((PHANDLER_ROUTINE)Handler, TRUE))
 	{
 		log_error("初始化CtrlHandler失败！");
 		return false;

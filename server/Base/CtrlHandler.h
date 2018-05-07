@@ -8,6 +8,7 @@
 
 typedef void (Callback)();
 
+#define CtrlHandler CCtrlHandler::Instance()
 class CCtrlHandler
 {
 public:

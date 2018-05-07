@@ -19,6 +19,7 @@ struct stCenterPlayer
 	std::string Name;
 };
 
+#define CenterPlayerMgr CCenterPlayerMgr::Instance()
 class CCenterPlayerMgr
 {
 public:

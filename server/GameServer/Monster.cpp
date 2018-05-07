@@ -147,7 +147,7 @@ void CMonster::SendMsgToMe(Msg &pMsg, bool bRef)
 				if (FuncUti::isValidCret(p))
 				{
 					tail.id = p->GetClientID();
-					CGameGatewayMgr::Instance().SendMsg(p->GetGateInfo(), pMsg, &tail, sizeof(tail));
+					GameGatewayMgr.SendMsg(p->GetGateInfo(), pMsg, &tail, sizeof(tail));
 				}
 			}
 		}

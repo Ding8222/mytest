@@ -7,6 +7,8 @@
 #include "ConnectMgr.h"
 #include "msgbase.h"
 
+#define LogConnecter CLogConnecter::Instance()
+
 class CLogConnecter : public CConnectMgr
 {
 public:

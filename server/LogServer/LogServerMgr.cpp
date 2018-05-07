@@ -66,11 +66,11 @@ bool CLogServerMgr::Init(const char *ip, int serverid, int port, int overtime)
 	}
 
 	g_dbhand.SetLogDirectory("log_log/LogServer_Log/dbhand_log");
-	g_dbhand.SetEnableLog(CConfig::Instance().GetIsOpenSQLLog());
-	if (!g_dbhand.Open(CConfig::Instance().GetDBName(),
-		CConfig::Instance().GetDBUser(),
-		CConfig::Instance().GetDBPass(),
-		CConfig::Instance().GetDBIP()))
+	g_dbhand.SetEnableLog(Config.GetIsOpenSQLLog());
+	if (!g_dbhand.Open(Config.GetDBName(),
+		Config.GetDBUser(),
+		Config.GetDBPass(),
+		Config.GetDBIP()))
 	{
 		RunStateError("连接Mysql失败!");
 		return false;

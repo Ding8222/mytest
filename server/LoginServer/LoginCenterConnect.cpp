@@ -28,10 +28,10 @@ CLoginCenterConnect::~CLoginCenterConnect()
 bool CLoginCenterConnect::Init()
 {
 	if (!CConnectMgr::AddNewConnect(
-		CConfig::Instance().GetCenterServerIP(),
-		CConfig::Instance().GetCenterServerPort(),
-		CConfig::Instance().GetCenterServerID(),
-		CConfig::Instance().GetCenterServerName()
+		Config.GetCenterServerIP(),
+		Config.GetCenterServerPort(),
+		Config.GetCenterServerID(),
+		Config.GetCenterServerName()
 	))
 	{
 		RunStateError("添加中心服务器失败!");
@@ -39,11 +39,11 @@ bool CLoginCenterConnect::Init()
 	}
 
 	return CConnectMgr::Init(
-		CConfig::Instance().GetServerID(),
-		CConfig::Instance().GetServerType(),
-		CConfig::Instance().GetServerName(),
-		CConfig::Instance().GetPingTime(),
-		CConfig::Instance().GetOverTime()
+		Config.GetServerID(),
+		Config.GetServerType(),
+		Config.GetServerName(),
+		Config.GetPingTime(),
+		Config.GetOverTime()
 	);
 }
 
@@ -93,7 +93,7 @@ void CLoginCenterConnect::ProcessMsg(connector *_con)
 			case LOGIN_SUB_PLAYER_LIST_RET:
 			case LOGIN_SUB_CREATE_PLAYER_RET:
 			{
-				CLoginClientMgr::Instance().SendMsg(tl->id, pMsg);
+				LoginClientMgr.SendMsg(tl->id, pMsg);
 				break;
 			}
 			case LOGIN_SUB_SELECT_PLAYER_RET:
@@ -103,9 +103,9 @@ void CLoginCenterConnect::ProcessMsg(connector *_con)
 
 				if (msg.ncode() == netData::SelectPlayerRet::EC_SUCC)
 				{
-					CClientAuth::Instance().SetSelectPlayerSucc(tl->id);
+					ClientAuth.SetSelectPlayerSucc(tl->id);
 				}
-				CLoginClientMgr::Instance().SendMsg(tl->id, pMsg);
+				LoginClientMgr.SendMsg(tl->id, pMsg);
 				break;
 			}
 			case LOGIN_SUB_AUTH_RET:
@@ -115,12 +115,12 @@ void CLoginCenterConnect::ProcessMsg(connector *_con)
 
 				if (msg.ncode() == netData::AuthRet::EC_SUCC)
 				{
-					if (CClientAuth::Instance().AddAccount(tl->id, msg.account()))
-						CLoginClientMgr::Instance().SetClientAuthSucceed(tl->id);
+					if (ClientAuth.AddAccount(tl->id, msg.account()))
+						LoginClientMgr.SetClientAuthSucceed(tl->id);
 					else
 						msg.set_ncode(netData::AuthRet::EC_ADDACCOUNT);
 				}
-				CLoginClientMgr::Instance().SendMsg(tl->id, pMsg);
+				LoginClientMgr.SendMsg(tl->id, pMsg);
 				break;
 			}
 			default:

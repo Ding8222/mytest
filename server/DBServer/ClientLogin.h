@@ -6,6 +6,7 @@
 #pragma once
 
 class task;
+#define ClientLogin CClientLogin::Instance()
 class CClientLogin
 {
 public:

@@ -32,7 +32,7 @@ CRobotSvr::~CRobotSvr()
 
 static void cb()
 {
-	CRobotSvr::Instance().Destroy();
+	RobotSvr.Destroy();
 }
 
 bool CRobotSvr::Init()
@@ -40,18 +40,18 @@ bool CRobotSvr::Init()
 	do
 	{
 #ifdef _WIN32
-		if (!CCtrlHandler::Instance().Init(&cb))
+		if (!CtrlHandler.Init(&cb))
 		{
 			RunStateError("初始化CtrlHandler失败!");
 			break;
 		}
 #endif
-		if (!CRobotMgr::Instance().Init(CConfig::Instance().GetLoginServerIP().c_str(),
-			CConfig::Instance().GetLoginServerPort(),
-			CConfig::Instance().GetLoginServerID(),
-			CConfig::Instance().GetMaxRobot(),
-			CConfig::Instance().GetPingTime(),
-			CConfig::Instance().GetOverTime()))
+		if (!RobotMgr.Init(Config.GetLoginServerIP().c_str(),
+			Config.GetLoginServerPort(),
+			Config.GetLoginServerID(),
+			Config.GetMaxRobot(),
+			Config.GetPingTime(),
+			Config.GetOverTime()))
 		{
 			RunStateError("初始化client mgr 失败!");
 			break;
@@ -61,7 +61,7 @@ bool CRobotSvr::Init()
 		return true;
 	} while (true);
 
-	CRobotMgr::Instance().Destroy();
+	RobotMgr.Destroy();
 	Destroy();
 
 	return false;
@@ -91,13 +91,13 @@ void CRobotSvr::Run()
 		else if (delay > maxdelay)
 		{
 // 			log_error("运行超时:%d\n收到消息数量：%d，发送消息数量：%d\n", delay,
-// 				CRobotMgr::Instance().GetRecvMsgNum(),
-// 				CRobotMgr::Instance().GetSendMsgNum());
+// 				RobotMgr.GetRecvMsgNum(),
+// 				RobotMgr.GetSendMsgNum());
 		}
 	}
 	delaytime(300);
 
-	CRobotMgr::Instance().Destroy();
+	RobotMgr.Destroy();
 
 	Destroy();
 }
@@ -110,9 +110,9 @@ void CRobotSvr::Exit()
 void CRobotSvr::RunOnce()
 {
 	lxnet::net_run();
-	CRobotMgr::Instance().Run();
+	RobotMgr.Run();
 
-	CRobotMgr::Instance().EndRun();
+	RobotMgr.EndRun();
 }
 
 void CRobotSvr::Destroy()

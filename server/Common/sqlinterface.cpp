@@ -1,10 +1,4 @@
-﻿
-/*
- * Copyright (C) lcinx
- * lcinx@163.com
-*/
-
-#include "platform_config.h"
+﻿#include "platform_config.h"
 #include "sqlinterface.h"
 #include "errmsg.h"
 #include "log.h"

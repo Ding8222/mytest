@@ -12,7 +12,7 @@ void DoTeamMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 	{
 	case TEAM_SUB_CREATE:
 	{
-		CTeamMgr::Instance().QueryCreateTeam(tl->id);
+		TeamMgr.QueryCreateTeam(tl->id);
 		break;
 	}
 	case TEAM_SUB_APPLY:
@@ -20,7 +20,7 @@ void DoTeamMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		netData::ApplyTeam msg;
 		_CHECK_PARSE_(pMsg, msg);
 
-		CTeamMgr::Instance().QueryApplyTeam(tl->id, msg.teamid());
+		TeamMgr.QueryApplyTeam(tl->id, msg.teamid());
 		break;
 	}
 	case TEAM_SUB_APPLY_RESPONSE:
@@ -28,7 +28,7 @@ void DoTeamMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		netData::ResponseApplyTeam msg;
 		_CHECK_PARSE_(pMsg, msg);
 
-		CTeamMgr::Instance().ReasponseApplyTeam(tl->id, msg.playerguid(), msg.agree());
+		TeamMgr.ReasponseApplyTeam(tl->id, msg.playerguid(), msg.agree());
 		break;
 	}
 	case TEAM_SUB_INVITE:
@@ -36,7 +36,7 @@ void DoTeamMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		netData::InviteTeam msg;
 		_CHECK_PARSE_(pMsg, msg);
 
-		CTeamMgr::Instance().QueryInviteTeam(tl->id, msg.playerguid());
+		TeamMgr.QueryInviteTeam(tl->id, msg.playerguid());
 		break;
 	}
 	case TEAM_SUB_INVITE_RESPONSE:
@@ -44,12 +44,12 @@ void DoTeamMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		netData::ResponseInviteTeam msg;
 		_CHECK_PARSE_(pMsg, msg);
 
-		CTeamMgr::Instance().ReasponseInviteTeam(tl->id, msg.playerguid(), msg.agree());
+		TeamMgr.ReasponseInviteTeam(tl->id, msg.playerguid(), msg.agree());
 		break;
 	}
 	case TEAM_SUB_EXIT:
 	{
-		CTeamMgr::Instance().QueryExitTeam(tl->id);
+		TeamMgr.QueryExitTeam(tl->id);
 		break;
 	}
 	case TEAM_SUB_TICK:
@@ -57,7 +57,7 @@ void DoTeamMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		netData::KickTeamMember msg;
 		_CHECK_PARSE_(pMsg, msg);
 
-		CTeamMgr::Instance().QueryKickPlayer(tl->id, msg.playerguid());
+		TeamMgr.QueryKickPlayer(tl->id, msg.playerguid());
 		break;
 	}
 	}

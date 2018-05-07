@@ -8,6 +8,7 @@
 #include "sqlinterface.h"
 
 class datahand;
+#define LogServerMgr CLogServerMgr::Instance()
 class CLogServerMgr :public CServerMgr
 {
 public:

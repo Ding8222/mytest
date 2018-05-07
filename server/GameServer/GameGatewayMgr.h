@@ -6,6 +6,8 @@
 #pragma once
 #include "ServerMgr.h"
 
+#define GameGatewayMgr CGameGatewayMgr::Instance()
+
 class CGameGatewayMgr :public CServerMgr
 {
 public:

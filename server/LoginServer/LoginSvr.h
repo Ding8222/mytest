@@ -6,6 +6,7 @@
 #pragma once
 
 class CBackCommand;
+#define LoginServer CLoginServer::Instance()
 class CLoginServer
 {
 public:

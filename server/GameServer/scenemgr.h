@@ -6,6 +6,8 @@
 #pragma once
 #include<unordered_map>
 
+#define SceneMgr CSceneMgr::Instance()
+
 class CScene;
 class CMapInfo;
 

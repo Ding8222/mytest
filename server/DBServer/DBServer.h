@@ -6,6 +6,7 @@
 #pragma once
 
 class CBackCommand;
+#define DBServer CDBServer::Instance()
 class CDBServer
 {
 public:

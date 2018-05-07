@@ -38,6 +38,7 @@ struct stServerInfo
 	int32 nServerID;
 };
 
+#define ServerStatusMgr CServerStatusMgr::Instance()
 class CServerStatusMgr
 {
 public:

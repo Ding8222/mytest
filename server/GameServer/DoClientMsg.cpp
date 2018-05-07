@@ -41,7 +41,7 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 		int32 nMapID = msg.nmapid();
 		if (nMapID != pPlayer->GetMapID())
 		{
-			CScene *scene = CSceneMgr::Instance().FindScene(nMapID);
+			CScene *scene = SceneMgr.FindScene(nMapID);
 			if (scene)
 			{
 				// 本线路存在的地图
@@ -65,7 +65,7 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 			else
 			{
 				// 本线路不存在的地图
-				if (CMapConfig::Instance().isValidMapID(nMapID))
+				if (MapConfig.isValidMapID(nMapID))
 				{
 					// 在其他线路
 					// 向Center请求转移进入其他线路地图

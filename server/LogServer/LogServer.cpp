@@ -31,7 +31,7 @@ CLogServer::~CLogServer()
 
 static void cb()
 {
-	CLogServer::Instance().Destroy();
+	LogServer.Destroy();
 }
 
 bool CLogServer::Init()
@@ -39,17 +39,17 @@ bool CLogServer::Init()
 	do
 	{
 #ifdef _WIN32
-		if (!CCtrlHandler::Instance().Init(&cb))
+		if (!CtrlHandler.Init(&cb))
 		{
 			RunStateError("初始化CtrlHandler失败!");
 			break;
 		}
 #endif
-		if (!CLogServerMgr::Instance().Init(
-			CConfig::Instance().GetServerIP(),
-			CConfig::Instance().GetServerID(),
-			CConfig::Instance().GetListenPort(),
-			CConfig::Instance().GetOverTime()))
+		if (!LogServerMgr.Init(
+			Config.GetServerIP(),
+			Config.GetServerID(),
+			Config.GetListenPort(),
+			Config.GetOverTime()))
 		{
 			RunStateError("初始化 LogServerMgr 失败!");
 			break;
@@ -60,7 +60,7 @@ bool CLogServer::Init()
 
 	} while (true);
 
-	CLogServerMgr::Instance().Destroy();
+	LogServerMgr.Destroy();
 	Destroy();
 
 	return false;
@@ -78,7 +78,7 @@ void CLogServer::Run()
 	int delay;
 	while (m_Run)
 	{
-		CLogServerMgr::Instance().ResetMsgNum();
+		LogServerMgr.ResetMsgNum();
 		CTimer::UpdateTime();
 
 		g_currenttime = get_millisecond();
@@ -90,12 +90,12 @@ void CLogServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			ElapsedLog("运行超时:%d\n%s", delay, CLogServerMgr::Instance().GetMsgNumInfo());
+			ElapsedLog("运行超时:%d\n%s", delay, LogServerMgr.GetMsgNumInfo());
 		}
 	}
 	delaytime(300);
 
-	CLogServerMgr::Instance().Destroy();
+	LogServerMgr.Destroy();
 
 	Destroy();
 }
@@ -109,9 +109,9 @@ void CLogServer::RunOnce()
 {
 	lxnet::net_run();
 
-	CLogServerMgr::Instance().Run();
+	LogServerMgr.Run();
 
-	CLogServerMgr::Instance().EndRun();
+	LogServerMgr.EndRun();
 }
 
 void CLogServer::Destroy()

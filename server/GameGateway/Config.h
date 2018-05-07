@@ -19,6 +19,7 @@ struct GameSvr
 	std::string name;
 };
 
+#define Config CConfig::Instance()
 class CConfig :public CBaseConfig
 {
 public:

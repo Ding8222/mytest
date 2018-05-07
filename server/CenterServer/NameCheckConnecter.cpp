@@ -90,15 +90,15 @@ void CNameCheckConnecter::ProcessMsg(connector *_con)
 				if (msg.nnamecheckret() == netData::CreatePlayer::EC_SUCC)
 				{
 					// 名称检查成功，转发至DB创建角色
-					CCentServerMgr::Instance().SendMsgToServer(*pMsg, ServerEnum::EST_DB, tl->id);
+					CentServerMgr.SendMsgToServer(*pMsg, ServerEnum::EST_DB, tl->id);
 				}
 				else
 				{
 					// 名称检查失败
 					netData::CreatePlayerRet SendMsg;
 					SendMsg.set_ncode(msg.nnamecheckret());
-					CCentServerMgr::Instance().SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_CREATE_PLAYER_RET, ServerEnum::EST_LOGIN, tl->id);
-					CClientAuthMgr::Instance().SetPlayerOffline(msg.account());
+					CentServerMgr.SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_CREATE_PLAYER_RET, ServerEnum::EST_LOGIN, tl->id);
+					ClientAuthMgr.SetPlayerOffline(msg.account());
 				}
 				break;
 			}

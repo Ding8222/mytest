@@ -129,13 +129,13 @@ void CClientAuth::KickClient(int32 clientid, bool closeclient)
 		ClientAuthInfo *info = iter->second;
 		// 通知玩家下线处理
 		svrData::DelClient sendMsg;
-		CGameConnect::Instance().SendMsgToServer(info->GameServerID, sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, clientid);
+		GameConnect.SendMsgToServer(info->GameServerID, sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, clientid);
 
 		// 通知延迟关闭Client
 		if (closeclient)
 		{
 			RunStateLog("玩家被踢下线！账号：%s", info->Account.c_str());
-			CGateClientMgr::Instance().DelayCloseClient(clientid);
+			GateClientMgr.DelayCloseClient(clientid);
 		}
 		else
 			RunStateLog("玩家连接断开！账号：%s", info->Account.c_str());
@@ -167,7 +167,7 @@ void CClientAuth::QueryLogin(Msg *pMsg, CClient *cl)
 			_pData->ClientID = nClientID;
 			m_ClientAuthInfo.insert(std::make_pair(nClientID, _pData));
 			_pData->Data.set_bchangeline(false);
-			CGameConnect::Instance().SendMsgToServer(_pData->GameServerID, _pData->Data, SERVER_TYPE_MAIN, SVR_SUB_PLAYERDATA, nClientID);
+			GameConnect.SendMsgToServer(_pData->GameServerID, _pData->Data, SERVER_TYPE_MAIN, SVR_SUB_PLAYERDATA, nClientID);
 			cl->SetAlreadyAuth();
 			return;
 		}
@@ -183,7 +183,7 @@ void CClientAuth::QueryLogin(Msg *pMsg, CClient *cl)
 		ClientConnectError("登陆失败！account:%s，没有找到账号信息", msg.account().c_str());
 	}
 
-	CGateClientMgr::Instance().SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET);
+	GateClientMgr.SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET);
 }
 
 ClientAuthInfo *CClientAuth::FindAuthInfo(int32 clientid)

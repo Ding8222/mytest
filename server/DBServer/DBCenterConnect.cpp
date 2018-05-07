@@ -58,7 +58,7 @@ static void DoTaskResult(void *taskresult, freetask ffunc)
 				if (!pMsg)
 					break;
 
-				CDBCenterConnect::Instance().SendMsgToServer(d->GetServerID(), *pMsg, d->GetClientID());
+				DBCenterConnect.SendMsgToServer(d->GetServerID(), *pMsg, d->GetClientID());
 			}
 		}
 	}
@@ -87,11 +87,11 @@ bool CDBCenterConnect::Init()
 	}
 
 	g_dbhand.SetLogDirectory("log_log/DBServer_Log/dbhand_log");
-	g_dbhand.SetEnableLog(CConfig::Instance().GetIsOpenSQLLog());
-	if (!g_dbhand.Open(CConfig::Instance().GetDBName(),
-		CConfig::Instance().GetDBUser(),
-		CConfig::Instance().GetDBPass(),
-		CConfig::Instance().GetDBIP()))
+	g_dbhand.SetEnableLog(Config.GetIsOpenSQLLog());
+	if (!g_dbhand.Open(Config.GetDBName(),
+		Config.GetDBUser(),
+		Config.GetDBPass(),
+		Config.GetDBIP()))
 	{
 		RunStateError("连接Mysql失败!");
 		return false;
@@ -104,10 +104,10 @@ bool CDBCenterConnect::Init()
 	}
 
 	if (!CConnectMgr::AddNewConnect(
-		CConfig::Instance().GetCenterServerIP(),
-		CConfig::Instance().GetCenterServerPort(),
-		CConfig::Instance().GetCenterServerID(),
-		CConfig::Instance().GetCenterServerName()
+		Config.GetCenterServerIP(),
+		Config.GetCenterServerPort(),
+		Config.GetCenterServerID(),
+		Config.GetCenterServerName()
 		))
 	{
 		RunStateError("添加中心服务器失败!");
@@ -115,11 +115,11 @@ bool CDBCenterConnect::Init()
 	}
 
 	return CConnectMgr::Init(
-		CConfig::Instance().GetServerID(),
-		CConfig::Instance().GetServerType(),
-		CConfig::Instance().GetServerName(),
-		CConfig::Instance().GetPingTime(),
-		CConfig::Instance().GetOverTime()
+		Config.GetServerID(),
+		Config.GetServerType(),
+		Config.GetServerName(),
+		Config.GetPingTime(),
+		Config.GetOverTime()
 	);
 }
 

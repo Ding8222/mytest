@@ -31,7 +31,7 @@ void CGateClientMgr::Destroy()
 
 int32 CGateClientMgr::OnNewClient()
 {
-	if (!CGateCenterConnect::Instance().IsAlreadyRegister(CConfig::Instance().GetCenterServerID()))
+	if (!GateCenterConnect.IsAlreadyRegister(Config.GetCenterServerID()))
 		return 0;
 
 	int32 nClientID = CClientMgr::OnNewClient();
@@ -39,10 +39,10 @@ int32 CGateClientMgr::OnNewClient()
 		return 0;
 
 	svrData::UpdateServerLoad sendMsg;
-	sendMsg.set_nclientcountmax(CConfig::Instance().GetMaxClientNum());
+	sendMsg.set_nclientcountmax(Config.GetMaxClientNum());
 	sendMsg.set_nclientcountnow(GetClientConnectNum());
 
-	CGateCenterConnect::Instance().SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_UPDATE_LOAD);
+	GateCenterConnect.SendMsgToServer(Config.GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_UPDATE_LOAD);
 	return nClientID;
 }
 
@@ -50,7 +50,7 @@ void CGateClientMgr::OnClientDisconnect(CClient *cl)
 {
 	if (cl->IsAlreadyAuth())
 	{
-		CClientAuth::Instance().KickClient(cl->GetClientID(), false);
+		ClientAuth.KickClient(cl->GetClientID(), false);
 	}
 	CClientMgr::OnClientDisconnect(cl);
 }
@@ -58,7 +58,7 @@ void CGateClientMgr::OnClientDisconnect(CClient *cl)
 void CGateClientMgr::ReleaseAllClient()
 {
 	CClientMgr::ReleaseAllClient();
-	CClientAuth::Instance().Destroy();
+	ClientAuth.Destroy();
 }
 
 void CGateClientMgr::ProcessClientMsg(CClient *cl)
@@ -87,9 +87,9 @@ void CGateClientMgr::ProcessClientMsg(CClient *cl)
 				default:
 				{
 					// 登录成功的,转发至GameServer
-					if (CGameConnect::Instance().IsAlreadyRegister(cl->GetLogicServer()))
+					if (GameConnect.IsAlreadyRegister(cl->GetLogicServer()))
 					{
-						CGameConnect::Instance().SendMsgToServer(cl->GetLogicServer(), *pMsg, cl->GetClientID());
+						GameConnect.SendMsgToServer(cl->GetLogicServer(), *pMsg, cl->GetClientID());
 					}
 				}
 				}
@@ -98,9 +98,9 @@ void CGateClientMgr::ProcessClientMsg(CClient *cl)
 			default:
 			{
 				// 登录成功的,转发至GameServer
-				if (CGameConnect::Instance().IsAlreadyRegister(cl->GetLogicServer()))
+				if (GameConnect.IsAlreadyRegister(cl->GetLogicServer()))
 				{
-					CGameConnect::Instance().SendMsgToServer(cl->GetLogicServer(), *pMsg, cl->GetClientID());
+					GameConnect.SendMsgToServer(cl->GetLogicServer(), *pMsg, cl->GetClientID());
 				}
 			}
 			}
@@ -136,7 +136,7 @@ void CGateClientMgr::ProcessClientAuth(CClient *cl, Msg *pMsg)
 		{
 		case LOGIN_SUB_LOGIN:
 		{
-			CClientAuth::Instance().QueryLogin(pMsg, cl);
+			ClientAuth.QueryLogin(pMsg, cl);
 			break;
 		}
 		}

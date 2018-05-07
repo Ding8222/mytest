@@ -5,6 +5,7 @@
 */
 #pragma once
 
+#define RobotSvr CRobotSvr::Instance()
 class CRobotSvr
 {
 public:

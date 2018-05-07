@@ -6,6 +6,7 @@
 #pragma once
 
 class CBackCommand;
+#define GameGateway CGameGateway::Instance()
 class CGameGateway
 {
 public:

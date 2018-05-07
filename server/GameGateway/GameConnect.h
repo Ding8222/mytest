@@ -6,6 +6,7 @@
 #pragma once
 #include "ConnectMgr.h"
 
+#define GameConnect CGameConnect::Instance()
 class CGameConnect : public CConnectMgr
 {
 public:

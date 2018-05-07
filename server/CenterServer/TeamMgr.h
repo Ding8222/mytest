@@ -10,6 +10,7 @@
 
 class CTeam;
 struct idmgr;
+#define TeamMgr CTeamMgr::Instance()
 class CTeamMgr
 {
 public:

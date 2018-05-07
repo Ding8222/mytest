@@ -1,6 +1,7 @@
 ﻿/*
 * MiniDump
-* 
+* Copyright (C) ddl
+* 2018
 */
 #pragma once
 

@@ -38,7 +38,7 @@ CLoginServer::~CLoginServer()
 
 static void cb()
 {
-	CLoginServer::Instance().Destroy();
+	LoginServer.Destroy();
 }
 
 bool CLoginServer::Init()
@@ -46,7 +46,7 @@ bool CLoginServer::Init()
 	do 
 	{
 #ifdef _WIN32
-		if (!CCtrlHandler::Instance().Init(&cb))
+		if (!CtrlHandler.Init(&cb))
 		{
 			RunStateError("初始化CtrlHandler失败!");
 			break;
@@ -58,38 +58,38 @@ bool CLoginServer::Init()
 			break;
 		}
 
-		if (!CLoginClientMgr::Instance().Init(CConfig::Instance().GetMaxClientNum(),
-			CConfig::Instance().GetListenPort(),
-			CConfig::Instance().GetOverTime(),
-			CConfig::Instance().GetRecvDataLimt(),
-			CConfig::Instance().GetSendDataLimt()))
+		if (!LoginClientMgr.Init(Config.GetMaxClientNum(),
+			Config.GetListenPort(),
+			Config.GetOverTime(),
+			Config.GetRecvDataLimt(),
+			Config.GetSendDataLimt()))
 		{
 			RunStateError("初始化client mgr 失败!");
 			break;
 		}
 
-		if (!CLoginCenterConnect::Instance().Init())
+		if (!LoginCenterConnect.Init())
 		{
 			RunStateError("初始化中心服务器连接失败!");
 			break;
 		}
 
-		if (!CLogConnecter::Instance().Init(
-			CConfig::Instance().GetLogServerIP(),
-			CConfig::Instance().GetLogServerPort(),
-			CConfig::Instance().GetLogServerID(),
-			CConfig::Instance().GetLogServerName(),
-			CConfig::Instance().GetServerID(),
-			CConfig::Instance().GetServerType(),
-			CConfig::Instance().GetServerName(),
-			CConfig::Instance().GetPingTime(),
-			CConfig::Instance().GetOverTime()))
+		if (!LogConnecter.Init(
+			Config.GetLogServerIP(),
+			Config.GetLogServerPort(),
+			Config.GetLogServerID(),
+			Config.GetLogServerName(),
+			Config.GetServerID(),
+			Config.GetServerType(),
+			Config.GetServerName(),
+			Config.GetPingTime(),
+			Config.GetOverTime()))
 		{
 			RunStateError("初始化 LogConnecter 失败!");
 			break;
 		}
 
-		if (!CClientAuth::Instance().Init())
+		if (!ClientAuth.Init())
 		{
 			RunStateError("初始化 ClientAuth 失败!");
 			break;
@@ -99,10 +99,10 @@ bool CLoginServer::Init()
 		return true;
 	} while (true);
 
-	CLoginClientMgr::Instance().Destroy();
-	CLoginCenterConnect::Instance().Destroy();
-	CLogConnecter::Instance().Destroy();
-	CClientAuth::Instance().Destroy();
+	LoginClientMgr.Destroy();
+	LoginCenterConnect.Destroy();
+	LogConnecter.Destroy();
+	ClientAuth.Destroy();
 	Destroy();
 
 	return false;
@@ -120,8 +120,8 @@ void CLoginServer::Run()
 	int delay;
 	while (m_Run)
 	{
-		CLoginCenterConnect::Instance().ResetMsgNum();
-		CLogConnecter::Instance().ResetMsgNum();
+		LoginCenterConnect.ResetMsgNum();
+		LogConnecter.ResetMsgNum();
 		CTimer::UpdateTime();
 
 		g_currenttime = get_millisecond();
@@ -134,16 +134,16 @@ void CLoginServer::Run()
 		else if (delay > maxdelay)
 		{
 			ElapsedLog("运行超时:%d", delay);
-			ElapsedLog("中心服务器连接：%s", CLoginCenterConnect::Instance().GetMsgNumInfo());
-			ElapsedLog("日志服务器连接：%s", CLogConnecter::Instance().GetMsgNumInfo());
+			ElapsedLog("中心服务器连接：%s", LoginCenterConnect.GetMsgNumInfo());
+			ElapsedLog("日志服务器连接：%s", LogConnecter.GetMsgNumInfo());
 		}
 	}
 	delaytime(300);
 
-	CLoginCenterConnect::Instance().Destroy();
-	CLogConnecter::Instance().Destroy();
-	CLoginClientMgr::Instance().Destroy();
-	CClientAuth::Instance().Destroy();
+	LoginCenterConnect.Destroy();
+	LogConnecter.Destroy();
+	LoginClientMgr.Destroy();
+	ClientAuth.Destroy();
 
 	Destroy();
 }
@@ -158,13 +158,13 @@ void CLoginServer::RunOnce()
 	lxnet::net_run();
 	m_BackCommand->Run(g_currenttime);
 
-	CLoginCenterConnect::Instance().Run();
-	CLoginClientMgr::Instance().Run();
-	CLogConnecter::Instance().Run();
+	LoginCenterConnect.Run();
+	LoginClientMgr.Run();
+	LogConnecter.Run();
 
-	CLoginCenterConnect::Instance().EndRun();
-	CLoginClientMgr::Instance().EndRun();
-	CLogConnecter::Instance().EndRun();
+	LoginCenterConnect.EndRun();
+	LoginClientMgr.EndRun();
+	LogConnecter.EndRun();
 }
 
 void CLoginServer::Destroy()
@@ -202,7 +202,7 @@ bool CLoginServer::InitBackCommand()
 	if (!m_BackCommand)
 		return false;
 	new(m_BackCommand) CBackCommand();
-	if (!m_BackCommand->Init(back_dofunction, CConfig::Instance().GetMonitorPort(), CConfig::Instance().GetPingTime(), CConfig::Instance().GetServerName()))
+	if (!m_BackCommand->Init(back_dofunction, Config.GetMonitorPort(), Config.GetPingTime(), Config.GetServerName()))
 		return false;
 
 	return true;
@@ -245,9 +245,9 @@ static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 	{
 		size = 0;
 
-		CLoginCenterConnect::Instance().GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
+		LoginCenterConnect.GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
 		size = strlen(s_buf);
-		CLoginClientMgr::Instance().GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
+		LoginClientMgr.GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
 		s_buf[sizeof(s_buf) - 1] = 0;
 		res.PushString(s_buf);
 		sock->SendMsg(&res);

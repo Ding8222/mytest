@@ -25,7 +25,7 @@ CCentServerMgr::~CCentServerMgr()
 
 bool CCentServerMgr::Init(const char *ip, int serverid, int port, int overtime)
 {
-	if (!CClientAuthMgr::Instance().Init())
+	if (!ClientAuthMgr.Init())
 	{
 		RunStateError("初始化 ClientAuthMgr 失败!");
 		return false;
@@ -36,7 +36,7 @@ bool CCentServerMgr::Init(const char *ip, int serverid, int port, int overtime)
 
 void CCentServerMgr::Run()
 {
-	CClientAuthMgr::Instance().Run();
+	ClientAuthMgr.Run();
 	CServerMgr::Run();
 }
 
@@ -144,7 +144,7 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int64 nClientID, int 
 	{
 		if (!bBroad && nServerID == 0)
 		{
-			stCenterPlayer *_pData = CCenterPlayerMgr::Instance().FindPlayerByGuid(nClientID);
+			stCenterPlayer *_pData = CenterPlayerMgr.FindPlayerByGuid(nClientID);
 			if (_pData)
 			{
 				tail.id = _pData->nClientID;
@@ -160,7 +160,7 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int64 nClientID, int 
 	{
 		if (!bBroad && nServerID == 0)
 		{
-			stCenterPlayer *_pData = CCenterPlayerMgr::Instance().FindPlayerByGuid(nClientID);
+			stCenterPlayer *_pData = CenterPlayerMgr.FindPlayerByGuid(nClientID);
 			if (_pData)
 			{
 				tail.id = _pData->nClientID;
@@ -177,7 +177,7 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int64 nClientID, int 
 	{
 		if (!bBroad && nServerID == 0)
 		{
-			ClientAuthInfo *_pAuthInfo = CClientAuthMgr::Instance().FindClientAuthInfo(nClientID);
+			ClientAuthInfo *_pAuthInfo = ClientAuthMgr.FindClientAuthInfo(nClientID);
 			if (_pAuthInfo)
 			{
 				tail.id = nClientID;
@@ -235,7 +235,7 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 	{
 		if (!bBroad && nServerID == 0)
 		{
-			stCenterPlayer *_pData = CCenterPlayerMgr::Instance().FindPlayerByGuid(nClientID);
+			stCenterPlayer *_pData = CenterPlayerMgr.FindPlayerByGuid(nClientID);
 			if (_pData)
 			{
 				tail.id = _pData->nClientID;
@@ -251,7 +251,7 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 	{
 		if (!bBroad && nServerID == 0)
 		{
-			stCenterPlayer *_pData = CCenterPlayerMgr::Instance().FindPlayerByGuid(nClientID);
+			stCenterPlayer *_pData = CenterPlayerMgr.FindPlayerByGuid(nClientID);
 			if (_pData)
 			{
 				tail.id = _pData->nClientID;
@@ -267,7 +267,7 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 	{
 		if (!bBroad && nServerID == 0)
 		{
-			ClientAuthInfo *_pAuthInfo = CClientAuthMgr::Instance().FindClientAuthInfo(nClientID);
+			ClientAuthInfo *_pAuthInfo = ClientAuthMgr.FindClientAuthInfo(nClientID);
 			if (_pAuthInfo)
 			{
 				tail.id = nClientID;
@@ -320,8 +320,8 @@ void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	{
 	case ServerEnum::EST_GATE:
 	{
-		CCenterPlayerMgr::Instance().AsGateServerDisconnect(nServerID);
-		CServerStatusMgr::Instance().DelGateServer(nServerID);
+		CenterPlayerMgr.AsGateServerDisconnect(nServerID);
+		ServerStatusMgr.DelGateServer(nServerID);
 		m_GateList.erase(nServerID);
 		if (overtime)
 			RunStateError("网关服器超时移除:[%d], ip:[%s]", nServerID, info->GetIP());
@@ -331,8 +331,8 @@ void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	}
 	case ServerEnum::EST_GAME:
 	{
-		CCenterPlayerMgr::Instance().AsGameServerDisconnect(nServerID);
-		CServerStatusMgr::Instance().DelGameServer(nServerID);
+		CenterPlayerMgr.AsGameServerDisconnect(nServerID);
+		ServerStatusMgr.DelGameServer(nServerID);
 		m_GameList.erase(nServerID);
 		if (overtime)
 			RunStateError("逻辑服器超时移除:[%d], ip:[%s]", nServerID, info->GetIP());
@@ -342,7 +342,7 @@ void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	}
 	case ServerEnum::EST_LOGIN:
 	{
-		CClientAuthMgr::Instance().AsLoginServerDisconnect();
+		ClientAuthMgr.AsLoginServerDisconnect();
 		m_LoginList.erase(nServerID);
 		if (overtime)
 			RunStateError("登陆服器超时移除:[%d], ip:[%s]", nServerID, info->GetIP());
@@ -353,7 +353,7 @@ void CCentServerMgr::OnConnectDisconnect(serverinfo *info, bool overtime)
 	}
 	case ServerEnum::EST_DB:
 	{
-		CClientAuthMgr::Instance().SetDBSvrReadyStatus(false);
+		ClientAuthMgr.SetDBSvrReadyStatus(false);
 		m_DBList.erase(nServerID);
 		if (overtime)
 			RunStateError("数据服器超时移除:[%d], ip:[%s]", nServerID, info->GetIP());
@@ -498,6 +498,6 @@ void CCentServerMgr::ServerRegisterSucc(serverinfo *info)
 {
 	if (info->GetServerType() == ServerEnum::EST_DB)
 	{
-		CClientAuthMgr::Instance().SetDBSvrReadyStatus(true);
+		ClientAuthMgr.SetDBSvrReadyStatus(true);
 	}
 }

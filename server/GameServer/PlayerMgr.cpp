@@ -58,7 +58,7 @@ void CPlayerMgr::Destroy()
 	DelAllPlayer();
 }
 
-void CPlayerMgr::AsGateServerDisconnect(int gateserverid)
+void CPlayerMgr::AsGateServerDisconnect(int32 gateserverid)
 {
 	std::list<CPlayer*>::iterator iter, tempiter;
 	for (iter = m_PlayerList.begin(); iter != m_PlayerList.end();)
@@ -103,7 +103,7 @@ void CPlayerMgr::ProcessAllPlayer()
 	}
 }
 
-bool CPlayerMgr::AddPlayer(serverinfo * info, int clientid)
+bool CPlayerMgr::AddPlayer(serverinfo * info, int32 clientid)
 {
 	if (clientid <= 0 || static_cast<size_t>(clientid) >= m_PlayerSet.size())
 	{
@@ -134,7 +134,7 @@ bool CPlayerMgr::AddPlayer(serverinfo * info, int clientid)
 	return false;
 }
 
-void CPlayerMgr::DelPlayer(int clientid)
+void CPlayerMgr::DelPlayer(int32 clientid)
 {
 	if (clientid <= 0 || static_cast<size_t>(clientid) >= m_PlayerSet.size())
 	{
@@ -184,7 +184,7 @@ void CPlayerMgr::ReleasePlayer(CPlayer * player)
 	if (!player)
 		return;
 
-	if (player->GetClientID() <= 0 || player->GetClientID() >= static_cast<int>(m_PlayerSet.size()))
+	if (player->GetClientID() <= 0 || player->GetClientID() >= static_cast<int32>(m_PlayerSet.size()))
 	{
 		RunStateError("要释放的PlayerInfo的ClientID错误!");
 		return;
@@ -194,8 +194,14 @@ void CPlayerMgr::ReleasePlayer(CPlayer * player)
 	player_release(player);
 }
 
-CPlayer *CPlayerMgr::FindPlayerByClientID(int clientid)
+CPlayer *CPlayerMgr::FindPlayerByClientID(int32 clientid)
 {
+	if (clientid <= 0 || clientid >= static_cast<int32>(m_PlayerSet.size()))
+	{
+		RunStateError("要查找的Player的ClientID错误!%d", clientid);
+		return nullptr;
+	}
+
 	assert(m_PlayerSet[clientid]);
 	if (m_PlayerSet[clientid])
 		return m_PlayerSet[clientid];

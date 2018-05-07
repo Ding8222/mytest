@@ -28,7 +28,7 @@ CGameConnect::~CGameConnect()
 
 bool CGameConnect::Init()
 {
-	std::list<GameSvr> List = CConfig::Instance().GetGameSvrList();
+	std::list<GameSvr> List = Config.GetGameSvrList();
 	for (auto &i : List)
 	{
 		if (!CConnectMgr::AddNewConnect(i.ip.c_str(), i.port, i.id, i.name.c_str()))
@@ -39,11 +39,11 @@ bool CGameConnect::Init()
 	}
 
 	return CConnectMgr::Init(
-		CConfig::Instance().GetServerID(),
-		CConfig::Instance().GetServerType(),
-		CConfig::Instance().GetServerName(),
-		CConfig::Instance().GetPingTime(),
-		CConfig::Instance().GetOverTime()
+		Config.GetServerID(),
+		Config.GetServerType(),
+		Config.GetServerName(),
+		Config.GetPingTime(),
+		Config.GetOverTime()
 	);
 }
 
@@ -54,8 +54,8 @@ void CGameConnect::Destroy()
 
 void CGameConnect::ConnectDisconnect(connector *con)
 {
-	CGateClientMgr::Instance().AsLogicServerDisconnect(con->GetConnectID());
-	CClientAuth::Instance().AsLogicServerDisconnect(con->GetConnectID());
+	GateClientMgr.AsLogicServerDisconnect(con->GetConnectID());
+	ClientAuth.AsLogicServerDisconnect(con->GetConnectID());
 }
 
 void CGameConnect::ProcessMsg(connector *_con)
@@ -84,12 +84,12 @@ void CGameConnect::ProcessMsg(connector *_con)
 				for (int32 i = 0; i < nClienNum; ++i)
 				{
 					nClientID = pkmain->GetInt32();
-					CGateClientMgr::Instance().SendMsg(nClientID, pk);
+					GateClientMgr.SendMsg(nClientID, pk);
 				}
 			}
 		}
 		else
-			CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
+			GateClientMgr.SendMsg(tl->id, pMsg);
 		
 		switch (pMsg->GetMainType())
 		{
@@ -115,10 +115,10 @@ void CGameConnect::ProcessMsg(connector *_con)
 				_CHECK_PARSE_(pMsg, msg);
 				if (msg.ncode() == netData::LoginRet::EC_SUCC)
 				{
-					ClientAuthInfo *info = CClientAuth::Instance().FindAuthInfo(tl->id);
+					ClientAuthInfo *info = ClientAuth.FindAuthInfo(tl->id);
 					if (info)
 					{
-						CGateClientMgr::Instance().SetClientAlreadyLogin(tl->id, _con->GetConnectID());
+						GateClientMgr.SetClientAlreadyLogin(tl->id, _con->GetConnectID());
 						ClientConnectLog("账号：%s登陆成功！目标服务器：%d", info->Account.c_str(), _con->GetConnectID());
 					}
 				}

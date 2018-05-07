@@ -6,6 +6,7 @@
 #pragma once
 
 class CBackCommand;
+#define GameServer CGameServer::Instance()
 class CGameServer
 {
 public:

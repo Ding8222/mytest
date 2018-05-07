@@ -5,6 +5,7 @@
 */
 #pragma once
 
+#define CheckNameServer CCheckNameServer::Instance()
 class CCheckNameServer
 {
 public:

@@ -18,6 +18,7 @@ struct DBInfo
 	std::string fieldname;
 };
 
+#define Config CConfig::Instance()
 class CConfig :public CBaseConfig
 {
 public:

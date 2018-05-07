@@ -45,7 +45,7 @@ bool init()
 	}
 
 	//读取网络配置文件
-	if (!CNetConfig::Instance().Init())
+	if (!NetConfig.Init())
 	{
 		RunStateError("初始化NetConfig失败!");
 		system("pause");
@@ -53,39 +53,39 @@ bool init()
 	}
 
 	//读取服务器配置文件
-	if (!CConfig::Instance().Init("CenterServer"))
+	if (!Config.Init("CenterServer"))
 	{
 		RunStateError("初始化CenterServer Config失败!");
 		system("pause");
 		return 0;
 	}
 
-	g_elapsed_log_flag = CConfig::Instance().IsOpenElapsedLog();
+	g_elapsed_log_flag = Config.IsOpenElapsedLog();
 	sPoolInfo.SetMeminfoFileName("log_log/CenterServer_Log/mempoolinfo.txt");
 
 	RunStateLog("中心服务器开始启动!");
 
 	//初始化网络库
-	if (!lxnet::net_init(CNetConfig::Instance().GetBigBufSize(), CNetConfig::Instance().GetBigBufNum(),
-		CNetConfig::Instance().GetSmallBufSize(), CNetConfig::Instance().GetSmallBufNum(),
-		CNetConfig::Instance().GetListenerNum(), CNetConfig::Instance().GetSocketerNum(),
-		CNetConfig::Instance().GetThreadNum()))
+	if (!lxnet::net_init(NetConfig.GetBigBufSize(), NetConfig.GetBigBufNum(),
+		NetConfig.GetSmallBufSize(), NetConfig.GetSmallBufNum(),
+		NetConfig.GetListenerNum(), NetConfig.GetSocketerNum(),
+		NetConfig.GetThreadNum()))
 	{
 		RunStateError("初始化网络库失败!");
 		system("pause");
 		return 0;
 	}
 	//设置监听端口，创建listener
-	if (!CCenterServer::Instance().Init())
+	if (!CenterServer.Init())
 	{
 		RunStateError("初始化失败!");
 		system("pause");
 		return 0;
 	}
 	
-	CCenterServer::Instance().Run();
+	CenterServer.Run();
 	//循环结束后的资源释放
-	CCenterServer::Instance().Release();
+	CenterServer.Release();
 	lxnet::net_release();
 	release_log();
 #ifdef _WIN32

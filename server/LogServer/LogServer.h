@@ -5,6 +5,7 @@
 */
 #pragma once
 
+#define LogServer CLogServer::Instance()
 class CLogServer
 {
 public:

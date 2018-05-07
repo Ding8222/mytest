@@ -41,7 +41,7 @@ void CPlayer::SendMsgToMe(Msg &pMsg, bool bRef)
 {
 	msgtail tail;
 	tail.id = GetClientID();
-	CGameGatewayMgr::Instance().SendMsg(GetGateInfo(), pMsg, &tail, sizeof(tail));
+	GameGatewayMgr.SendMsg(GetGateInfo(), pMsg, &tail, sizeof(tail));
 
 	if (bRef)
 	{
@@ -55,7 +55,7 @@ void CPlayer::SendMsgToMe(Msg &pMsg, bool bRef)
 				if (FuncUti::isValidCret(p))
 				{
 					tail.id = p->GetClientID();
-					CGameGatewayMgr::Instance().SendMsg(p->GetGateInfo(), pMsg, &tail, sizeof(tail));
+					GameGatewayMgr.SendMsg(p->GetGateInfo(), pMsg, &tail, sizeof(tail));
 				}
 			}
 		}

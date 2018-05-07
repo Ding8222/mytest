@@ -6,6 +6,7 @@
 #pragma once
 #include "ConnectMgr.h"
 
+#define GateCenterConnect CGateCenterConnect::Instance()
 class CGateCenterConnect : public CConnectMgr
 {
 public:

@@ -29,10 +29,10 @@ CGateCenterConnect::~CGateCenterConnect()
 bool CGateCenterConnect::Init()
 {
 	if (!CConnectMgr::AddNewConnect(
-		CConfig::Instance().GetCenterServerIP(),
-		CConfig::Instance().GetCenterServerPort(),
-		CConfig::Instance().GetCenterServerID(),
-		CConfig::Instance().GetCenterServerName()
+		Config.GetCenterServerIP(),
+		Config.GetCenterServerPort(),
+		Config.GetCenterServerID(),
+		Config.GetCenterServerName()
 	))
 	{
 		RunStateError("添加中心服务器失败!");
@@ -40,11 +40,11 @@ bool CGateCenterConnect::Init()
 	}
 
 	return CConnectMgr::Init(
-		CConfig::Instance().GetServerID(),
-		CConfig::Instance().GetServerType(),
-		CConfig::Instance().GetServerName(),
-		CConfig::Instance().GetPingTime(),
-		CConfig::Instance().GetOverTime()
+		Config.GetServerID(),
+		Config.GetServerType(),
+		Config.GetServerName(),
+		Config.GetPingTime(),
+		Config.GetOverTime()
 	);
 }
 
@@ -57,12 +57,12 @@ void CGateCenterConnect::ServerRegisterSucc(connector * con)
 {
 	// 发送负载信息给Center
 	svrData::ServerLoadInfo sendMsg;
-	sendMsg.set_nlineid(CConfig::Instance().GetLineID());
-	sendMsg.set_nmaxclient(CConfig::Instance().GetMaxClientNum());
-	sendMsg.set_nnowclient(CClientAuth::Instance().GetClientSize());
-	sendMsg.set_nport(CConfig::Instance().GetListenPort());
-	sendMsg.set_sip(CConfig::Instance().GetServerIP());
-	SendMsgToServer(CConfig::Instance().GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_LOADINFO);
+	sendMsg.set_nlineid(Config.GetLineID());
+	sendMsg.set_nmaxclient(Config.GetMaxClientNum());
+	sendMsg.set_nnowclient(ClientAuth.GetClientSize());
+	sendMsg.set_nport(Config.GetListenPort());
+	sendMsg.set_sip(Config.GetServerIP());
+	SendMsgToServer(Config.GetCenterServerID(), sendMsg, SERVER_TYPE_MAIN, SVR_SUB_SERVER_LOADINFO);
 }
 
 void CGateCenterConnect::ConnectDisconnect(connector *)
@@ -95,12 +95,12 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 			}
 			case SVR_SUB_CLIENT_ACCOUNT:
 			{
-				CClientAuth::Instance().AddAccountInfo(pMsg);
+				ClientAuth.AddAccountInfo(pMsg);
 				break;
 			}
 			case SVR_SUB_KICKCLIENT:
 			{
-				CClientAuth::Instance().KickClient(tl->id);
+				ClientAuth.KickClient(tl->id);
 				break;
 			}
 			case SVR_SUB_CHANGELINE_RET:
@@ -109,14 +109,14 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 				_CHECK_PARSE_(pMsg, msg);
 				if (msg.ncode() != svrData::ChangeLineRet::EC_SUCC)
 				{
-					ClientAuthInfo *info = CClientAuth::Instance().FindAuthInfo(tl->id);
+					ClientAuthInfo *info = ClientAuth.FindAuthInfo(tl->id);
 					if(info)
 						RunStateError("玩家换线失败！踢下线！账号：%s，目标地图：%d，目标线路：%d", info->Account.c_str(), msg.nmapid(), msg.nlineid());
 					else
 						RunStateError("玩家换线失败！踢下线！目标地图：%d，目标线路：%d", msg.nmapid(), msg.nlineid());
-					CClientAuth::Instance().KickClient(tl->id);
+					ClientAuth.KickClient(tl->id);
 				}
-				CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
+				GateClientMgr.SendMsg(tl->id, pMsg);
 				break;
 			}
 			case SVR_SUB_CHANGELINE:
@@ -124,15 +124,15 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 				svrData::ChangeLine msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				CClient *cl = CGateClientMgr::Instance().FindClientByClientID(tl->id);
+				CClient *cl = GateClientMgr.FindClientByClientID(tl->id);
 				if(cl)
 				{
-					CClientAuth::Instance().UpdateGameSvrID(tl->id, msg.ngameid());
+					ClientAuth.UpdateGameSvrID(tl->id, msg.ngameid());
 					cl->SetLogicServerID(msg.ngameid());
 					svrData::LoadPlayerData Data;
 					Data.CopyFrom(msg.data());
 					Data.set_bchangeline(true);
-					CGameConnect::Instance().SendMsgToServer(msg.ngameid(), Data, SERVER_TYPE_MAIN, SVR_SUB_PLAYERDATA, tl->id);
+					GameConnect.SendMsgToServer(msg.ngameid(), Data, SERVER_TYPE_MAIN, SVR_SUB_PLAYERDATA, tl->id);
 				}
 				break;
 			}
@@ -147,7 +147,7 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 			case LOGIN_SUB_CREATE_PLAYER_RET:
 			case LOGIN_SUB_SELECT_PLAYER_RET:
 			{
-				CGateClientMgr::Instance().SendMsg(tl->id, pMsg);
+				GateClientMgr.SendMsg(tl->id, pMsg);
 				break;
 			}
 			}

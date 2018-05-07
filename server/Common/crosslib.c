@@ -1,10 +1,4 @@
-﻿
-/*
- * Copyright (C) lcinx
- * lcinx@163.com
- */
-
-#include <time.h>
+﻿#include <time.h>
 #include "crosslib.h"
 
 #ifdef _WIN32
