@@ -19,7 +19,7 @@ bool CLuaScript::Init()
 	if (!m_Lua)
 	{
 		m_Lua = new sol::state;
-		m_Lua->open_libraries(sol::lib::base);
+		m_Lua->open_libraries();
 		return Register();
 	}
 	return false;
