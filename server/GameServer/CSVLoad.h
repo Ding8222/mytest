@@ -393,7 +393,21 @@ namespace CSVData
 
 			return nullptr;
 		}
-		DEFINE_CLEAR
+		static void Destroy()
+		{
+			for (auto &i : m_Data)
+			{
+				std::list<stInstanceMonster *> *monster = i.second;
+				std::list<stInstanceMonster *>::iterator iter = monster->begin();
+				for (; iter != monster->end(); ++iter)
+				{
+					delete *iter;
+				}
+				monster->clear();
+				delete monster;
+			}
+			m_Data.clear();
+		}
 
 		static std::unordered_map<int64, std::list<stInstanceMonster *> *> m_Data;
 	};

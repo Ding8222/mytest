@@ -4,11 +4,13 @@
 * 2018
 */
 
+#include "vld.h"
 #include "config.h"
 #include "NameCheckServer.h"
 #include "NetConfig.h"
 #include "ServerLog.h"
 #include "lxnet.h"
+#include "google/protobuf/message.h"
 
 #pragma comment(lib,"fmt.lib") 
 
@@ -86,6 +88,7 @@ bool init()
 	CheckNameServer.Release();
 	lxnet::net_release();
 	release_log();
+	google::protobuf::ShutdownProtobufLibrary();
 #ifdef _WIN32
 	CMiniDump::End();
 #endif

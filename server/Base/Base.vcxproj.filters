@@ -25,6 +25,9 @@
     <Filter Include="JSON">
       <UniqueIdentifier>{a53d68eb-d1e5-47bb-b4ff-aa6a778b302a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="lua">
+      <UniqueIdentifier>{1bd11486-e70c-443d-9919-9a4ebcb55cdb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PB\ServerMsg.pb.cc">
@@ -193,6 +196,21 @@
     </ClInclude>
     <ClInclude Include="PB\Team.pb.h">
       <Filter>PB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\lua\lauxlib.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\lua\lua.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\lua\lua.hpp">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\lua\luaconf.h">
+      <Filter>lua</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaScript.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

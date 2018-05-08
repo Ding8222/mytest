@@ -102,5 +102,8 @@
     <ClCompile Include="zlib.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="LuaScript.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

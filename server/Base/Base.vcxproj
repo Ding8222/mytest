@@ -142,6 +142,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\3rd\json\json.hpp" />
+    <ClInclude Include="..\3rd\lua\lauxlib.h" />
+    <ClInclude Include="..\3rd\lua\lua.h" />
+    <ClInclude Include="..\3rd\lua\lua.hpp" />
+    <ClInclude Include="..\3rd\lua\luaconf.h" />
     <ClInclude Include="BackCommand.h" />
     <ClInclude Include="Base64.h" />
     <ClInclude Include="BaseConfig.h" />
@@ -163,6 +167,7 @@
     <ClInclude Include="log.h" />
     <ClInclude Include="LogConnecter.h" />
     <ClInclude Include="LoginType.h" />
+    <ClInclude Include="LuaScript.h" />
     <ClInclude Include="lxnet.h" />
     <ClInclude Include="MainType.h" />
     <ClInclude Include="MiniDump.h" />

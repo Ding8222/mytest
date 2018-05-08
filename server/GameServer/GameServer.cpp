@@ -12,6 +12,7 @@
 #include "CSVLoad.h"
 #include "BackCommand.h"
 #include "objectpool.h"
+#include "LuaScript.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -55,6 +56,18 @@ bool CGameServer::Init()
 			break;
 		}
 #endif
+		if (!LuaScript.Init())
+		{
+			RunStateError("初始化 LuaScript 失败!");
+			break;
+		}
+
+		if (!LuaScript.DoInitScriptFile("Script/Init.lua"))
+		{
+			RunStateError("初始化 LuaScript 失败!");
+			break;
+		}
+
 		if (!InitBackCommand())
 		{
 			RunStateError("初始化 BackCommand 失败!");
@@ -137,6 +150,7 @@ bool CGameServer::Init()
 	SceneMgr.Destroy();
 	InstanceMgr.Destroy();
 	CSVData::Destroy();
+	LuaScript.Destroy();
 	Destroy();
 
 	return false;

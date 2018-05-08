@@ -3,6 +3,7 @@
 * Copyright (C) ddl
 * 2018
 */
+#include "vld.h"
 #include "config.h"
 #include "GameServer.h"
 #include "NetConfig.h"
@@ -10,6 +11,7 @@
 #include "lxnet.h"
 #include "objectpool.h"
 #include "fmt/ostream.h"
+#include "google/protobuf/message.h"
 
 #pragma comment(lib,"fmt.lib") 
 #ifdef _WIN32
@@ -99,6 +101,7 @@ bool init(int argc, char *argv[])
 	GameServer.Release();
 	lxnet::net_release();
 	release_log();
+	google::protobuf::ShutdownProtobufLibrary();
 #ifdef _WIN32
 	CMiniDump::End();
 #endif

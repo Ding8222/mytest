@@ -4,12 +4,14 @@
 * 2018
 */
 
+#include "vld.h"
 #include "RobotSvr.h"
 #include "config.h"
 #include "NetConfig.h"
 #include "ServerLog.h"
 #include "lxnet.h"
 #include "objectpool.h"
+#include "google/protobuf/message.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -84,6 +86,8 @@ bool init()
 	// 循环结束后的资源释放
 	RobotSvr.Release();
 	lxnet::net_release();
+	release_log();
+	google::protobuf::ShutdownProtobufLibrary();
 
 #ifdef _WIN32
 	CMiniDump::End();

@@ -47,6 +47,12 @@ bool init_log(const char *rootdirname)
 
 void release_log()
 {
+	if (g_backcommand_log)
+	{
+		filelog_release(g_backcommand_log);
+		g_backcommand_log = NULL;
+	}
+
 	if (g_client_connectlog)
 	{
 		filelog_release(g_client_connectlog);
