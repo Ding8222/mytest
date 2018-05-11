@@ -84,6 +84,7 @@ bool init()
 	}
 
 	CheckNameServer.Run();
+	RunStateLog("名称检查服务器关闭!");
 	//循环结束后的资源释放
 	CheckNameServer.Release();
 	lxnet::net_release();

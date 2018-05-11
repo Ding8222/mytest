@@ -43,9 +43,9 @@ void CBaseObj::UpdataObjInfo(CBaseObj *obj)
 		// 将obj的信息发送给我
 		sendMsg.set_name(obj->GetName());
 		sendMsg.set_ntempid(obj->GetTempID());
-		sendMsg.set_x(obj->GetPosX());
-		sendMsg.set_y(obj->GetPosY());
-		sendMsg.set_z(obj->GetPosZ());
+		sendMsg.set_x(obj->GetNowPosX());
+		sendMsg.set_y(obj->GetNowPosY());
+		sendMsg.set_z(obj->GetNowPosZ());
 
 		FuncUti::SendPBNoLoop(ToPlayer(), sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_UPTATE_OBJINFO);
 	}
@@ -54,9 +54,9 @@ void CBaseObj::UpdataObjInfo(CBaseObj *obj)
 		// 广播我的信息
 		sendMsg.set_name(GetName());
 		sendMsg.set_ntempid(GetTempID());
-		sendMsg.set_x(GetPosX());
-		sendMsg.set_y(GetPosY());
-		sendMsg.set_z(GetPosZ());
+		sendMsg.set_x(GetNowPosX());
+		sendMsg.set_y(GetNowPosY());
+		sendMsg.set_z(GetNowPosZ());
 
 		FuncUti::SendPBNoLoop(ToPlayer(), sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_UPTATE_OBJINFO, true);
 	}

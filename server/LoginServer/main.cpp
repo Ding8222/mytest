@@ -87,6 +87,7 @@ bool init()
 	}
 
 	LoginServer.Run();
+	RunStateLog("登陆服务器关闭!");
 	//循环结束后的资源释放
 	LoginServer.Release();
 	lxnet::net_release();

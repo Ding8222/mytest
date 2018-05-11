@@ -84,6 +84,7 @@ bool init()
 	}
 
 	LogServer.Run();
+	RunStateLog("日志服务器关闭!");
 	//循环结束后的资源释放
 	LogServer.Release();
 	lxnet::net_release();

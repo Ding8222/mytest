@@ -86,6 +86,7 @@ bool init()
 	}
 
 	DBServer.Run();
+	RunStateLog("数据服务器关闭!");
 	//循环结束后的资源释放
 	DBServer.Release();
 	lxnet::net_release();

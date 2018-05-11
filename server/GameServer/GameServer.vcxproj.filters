@@ -46,6 +46,15 @@
     <Filter Include="处理Center消息">
       <UniqueIdentifier>{3e8486ae-75ae-40b0-9cc5-3a6865658a24}</UniqueIdentifier>
     </Filter>
+    <Filter Include="基础对象\AI">
+      <UniqueIdentifier>{7051c6b1-434b-4b5a-90fb-9739d541f84a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="基础对象\AI\FSM">
+      <UniqueIdentifier>{508d3111-9635-4f64-9a4e-5bb60710be99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Define">
+      <UniqueIdentifier>{8c72fc3f-15d1-41e8-bd71-0ea7e1c9728c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="config.cpp">
@@ -150,6 +159,12 @@
     <ClCompile Include="DoServerMsgFromCenter.cpp">
       <Filter>处理Center消息</Filter>
     </ClCompile>
+    <ClCompile Include="AIMonsterStates.cpp">
+      <Filter>基础对象\AI\FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="AIMonster.cpp">
+      <Filter>基础对象\AI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -238,6 +253,24 @@
     </ClInclude>
     <ClInclude Include="DoMsgFromCenter.h">
       <Filter>处理Center消息</Filter>
+    </ClInclude>
+    <ClInclude Include="AIMonsterStates.h">
+      <Filter>基础对象\AI\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>基础对象\AI\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>基础对象\AI\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="AIMonster.h">
+      <Filter>基础对象\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3D.h">
+      <Filter>基础对象\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="AoiDefine.h">
+      <Filter>Define</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

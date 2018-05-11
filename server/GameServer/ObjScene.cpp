@@ -8,11 +8,6 @@
 #include "ClientType.h"
 #include "ClientMsg.pb.h"
 
-#define AOI_RADIS 200.0f
-#define AOI_RADIS2 ((AOI_RADIS) * (AOI_RADIS))
-#define LEAVE_AOI_RADIS2 ((AOI_RADIS2) * 4)
-#define DIST2(p1,p2) ((p1[EOP_X] - p2[EOP_X]) * (p1[EOP_X] - p2[EOP_X]) + (p1[EOP_Y] - p2[EOP_Y]) * (p1[EOP_Y] - p2[EOP_Y]) + (p1[EOP_Z] - p2[EOP_Z]) * (p1[EOP_Z] - p2[EOP_Z]))
-
 CObjScene::CObjScene()
 {
 	m_AoiMode[MAX_AOIMODE_LEN - 1] = '\0';
@@ -68,6 +63,25 @@ bool CObjScene::MoveTo(float x, float y, float z)
 	return false;
 }
 
+// 设置当前坐标
+void CObjScene::SetNowPos(const Vector3D &pos)
+{
+	m_vNowPos = pos;
+	m_NowPos[EOP_X] = m_vNowPos.x;
+	m_NowPos[EOP_Y] = m_vNowPos.y;
+	m_NowPos[EOP_Z] = m_vNowPos.z;
+}
+
+void CObjScene::SetNowPos(const float &x, const float &y, const float &z)
+{
+	m_NowPos[EOP_X] = x;
+	m_NowPos[EOP_Y] = y;
+	m_NowPos[EOP_Z] = z;
+	m_vNowPos.x = x;
+	m_vNowPos.y = y;
+	m_vNowPos.z = z;
+}
+
 // 获取当前坐标
 void CObjScene::GetNowPos(float &x, float &y, float &z)
 {
@@ -76,12 +90,12 @@ void CObjScene::GetNowPos(float &x, float &y, float &z)
 	z = m_NowPos[EOP_Z];
 }
 
-// 设置当前坐标
-void CObjScene::SetNowPos(const float &x, const float &y, const float &z)
+// 设置出生点坐标
+void CObjScene::SetHomePos(const float &x, const float &y, const float &z)
 {
-	m_NowPos[EOP_X] = x;
-	m_NowPos[EOP_Y] = y;
-	m_NowPos[EOP_Z] = z;
+	m_vHomePos.x = x;
+	m_vHomePos.y = y;
+	m_vHomePos.z = z;
 }
 
 // 添加对象至AoiList

@@ -98,7 +98,6 @@ void CNameCheckConnecter::ProcessMsg(connector *_con)
 					netData::CreatePlayerRet SendMsg;
 					SendMsg.set_ncode(msg.nnamecheckret());
 					CentServerMgr.SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_CREATE_PLAYER_RET, ServerEnum::EST_LOGIN, tl->id);
-					ClientAuthMgr.SetPlayerOffline(msg.account());
 				}
 				break;
 			}

@@ -7,8 +7,8 @@
 #pragma once
 #include <unordered_map>
 #include "platform_config.h"
-
-#define MAX_AOIMODE_LEN 4
+#include "Vector3D.h"
+#include "AoiDefine.h"
 
 class CScene;
 class CBaseObj;
@@ -32,12 +32,21 @@ public:
 	bool MoveTo(float x, float y, float z);
 
 	// 设置当前坐标
+	void SetNowPos(const Vector3D &pos);
 	void SetNowPos(const float &x, const float &y, const float &z);
 	void GetNowPos(float &x, float &y, float &z);
 	float *GetNowPos() { return m_NowPos; }
-	float GetPosX() { return m_NowPos[EOP_X]; }
-	float GetPosY() { return m_NowPos[EOP_Y]; }
-	float GetPosZ() { return m_NowPos[EOP_Z]; }
+	Vector3D &GetNowPosV() { return m_vNowPos; }
+	float GetNowPosX() { return m_NowPos[EOP_X]; }
+	float GetNowPosY() { return m_NowPos[EOP_Y]; }
+	float GetNowPosZ() { return m_NowPos[EOP_Z]; }
+	// 获取朝向
+	void SetHeading(const Vector3D &heading) { m_vHeading = heading; }
+	Vector3D &GetHeading() { return m_vHeading; }
+
+	// 设置出生点坐标
+	void SetHomePos(const float &x, const float &y, const float &z);
+	Vector3D &GetHomePos() { return m_vHomePos; }
 
 	// 添加对象至AoiList
 	void AddToAoiList(CBaseObj * p);
@@ -78,6 +87,11 @@ private:
 	int m_NowMapID;
 	// 当前坐标
 	float m_NowPos[EOP_MAX];
+	Vector3D m_vNowPos;
+	// 朝向
+	Vector3D m_vHeading;
+	// 出生点
+	Vector3D m_vHomePos;
 	//临时ID
 	uint32 m_TempID;
 	// 所在场景

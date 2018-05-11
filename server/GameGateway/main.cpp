@@ -100,6 +100,7 @@ bool init(int argc, char *argv[])
 	}
 
 	GameGateway.Run();
+	RunStateLog("[%d线]网关服务器关闭!", Config.GetLineID());
 	//循环结束后的资源释放
 	GameGateway.Release();
 	lxnet::net_release();

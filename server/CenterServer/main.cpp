@@ -86,6 +86,7 @@ bool init()
 	}
 	
 	CenterServer.Run();
+	RunStateLog("中心服务器关闭!");
 	//循环结束后的资源释放
 	CenterServer.Release();
 	lxnet::net_release();

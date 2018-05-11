@@ -55,14 +55,12 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 					if (!_pGateInfo)
 						RunStateError("为账号：%s分配网关失败！", msg.account().c_str());
 					SendMsg.set_ncode(netData::SelectPlayerRet::EC_SERVER);
-					ClientAuthMgr.SetPlayerOffline(msg.account());
 				}
 			}
 			else
 			{
 				RunStateError("没有找到clientid：%d的认证信息！", tl->id);
 				SendMsg.set_ncode(netData::SelectPlayerRet::EC_AUTH);
-				ClientAuthMgr.SetPlayerOffline(msg.account());
 			}
 
 			CentServerMgr.SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER_RET, ServerEnum::EST_LOGIN, tl->id);

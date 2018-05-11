@@ -33,7 +33,6 @@ void DoLoginMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		else
 		{
 			RunStateError("处理DB认证返回失败！没有找到账号%s信息！clientid：%d", msg.account().c_str(), tl->id);
-			ClientAuthMgr.SetPlayerOffline(msg.account());
 		}
 		break;
 	}
@@ -47,7 +46,6 @@ void DoLoginMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			netData::CreatePlayerRet SendMsg;
 			SendMsg.set_ncode(netData::CreatePlayerRet::EC_NAMESVR);
 			CentServerMgr.SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_CREATE_PLAYER_RET, ServerEnum::EST_LOGIN, tl->id);
-			ClientAuthMgr.SetPlayerOffline(msg.account());
 		}
 		break;
 	}

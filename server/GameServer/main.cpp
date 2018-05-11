@@ -97,6 +97,7 @@ bool init(int argc, char *argv[])
 	}
 
 	GameServer.Run();
+	RunStateLog("[%d线]逻辑服务器关闭!", Config.GetLineID());
 	//循环结束后的资源释放
 	GameServer.Release();
 	lxnet::net_release();

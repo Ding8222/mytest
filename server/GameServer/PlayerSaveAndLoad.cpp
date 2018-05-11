@@ -113,9 +113,9 @@ bool CPlayer::SaveData(google::protobuf::Message *pMsg)
 		data->set_ncreatetime(GetCreateTime());
 		data->set_nlogintime(GetLoginTime());
 		data->set_nmapid(GetMapID());
-		data->set_nx(GetPosX());
-		data->set_ny(GetPosY());
-		data->set_nz(GetPosZ());
+		data->set_nx(GetNowPosX());
+		data->set_ny(GetNowPosY());
+		data->set_nz(GetNowPosZ());
 		data->set_data(g_Base64Data);
 		return true;
 	}

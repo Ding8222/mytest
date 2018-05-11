@@ -7,41 +7,42 @@
 #include "Utilities.h"
 #include "GameGatewayMgr.h"
 #include "objectpool.h"
+#include "AIMonster.h"
 
 #define MONSTER_MAX 100000
 
-static objectpool<CMonster> &MonsterPool()
+static objectpool<CAIMonster> &MonsterPool()
 {
-	static objectpool<CMonster> m(MONSTER_MAX, "CMonster pools");
+	static objectpool<CAIMonster> m(MONSTER_MAX, "CAIMonster pools");
 	return m;
 }
 
-static CMonster *monster_create()
+static CAIMonster *monster_create()
 {
-	CMonster *self = MonsterPool().GetObject();
+	CAIMonster *self = MonsterPool().GetObject();
 	if (!self)
 	{
-		RunStateError("创建 CMonster 失败!");
+		RunStateError("创建 CAIMonster 失败!");
 		return NULL;
 	}
-	new(self) CMonster();
+	new(self) CAIMonster();
 	return self;
 }
 
-static void monster_release(CMonster *self)
+static void monster_release(CAIMonster *self)
 {
 	if (!self)
 		return;
-	self->~CMonster();
+	self->~CAIMonster();
 	MonsterPool().FreeObject(self);
 }
 
 CMonster *CMonsterCreator::CreateMonster()
 {
-	CMonster *monster = monster_create();
+	CAIMonster *monster = monster_create();
 	if (!monster)
 	{
-		RunStateError("创建CMonster失败!");
+		RunStateError("创建CAIMonster失败!");
 		return nullptr;
 	}
 
@@ -50,9 +51,8 @@ CMonster *CMonsterCreator::CreateMonster()
 
 void CMonsterCreator::ReleaseMonster(CMonster *monster)
 {
-	monster_release(monster);
+	monster_release((CAIMonster *)monster);
 }
-
 
 CMonster::CMonster():CBaseObj(EOT_MONSTER)
 {
@@ -84,6 +84,7 @@ bool CMonster::Init(int32 monsterid, float relivex, float relivey, float relivez
 	m_ReliveX = relivex;
 	m_ReliveY = relivey;
 	m_ReliveZ = relivez;
+	SetSpeed(300);
 
 	return true;
 }
@@ -102,33 +103,7 @@ void CMonster::Run()
 	else
 	{
 		CBaseObj::Run();
-		{
-			int x = GetObj()->GetPosX();
-			int y = GetObj()->GetPosY();
-			int nRand = rand() % 10000;
-			if (nRand > 5000)
-				x += 10;
-			else
-				x -= 10;
-
-			if (x > 1000)
-				x = 1000;
-			else if (x < 1)
-				x = 1;
-
-			nRand = rand() % 10000;
-			if (nRand > 5000)
-				y += 10;
-			else
-				y -= 10;
-
-			if (y > 1000)
-				y = 1000;
-			else if (y < 1)
-				y = 1;
-
-			MoveTo(x, y, 1);
-		}
+		FSMUpdate();
 	}
 }
 

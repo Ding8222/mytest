@@ -12,4 +12,5 @@ function test2()
 	n = n + 1
 end
 
+print("脚本加载成功！")
 SetScriptInitFlag(true)

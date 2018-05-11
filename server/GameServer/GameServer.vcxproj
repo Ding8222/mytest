@@ -144,6 +144,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AIMonster.cpp" />
+    <ClCompile Include="AIMonsterStates.cpp" />
     <ClCompile Include="aoi.c" />
     <ClCompile Include="BaseObj.cpp" />
     <ClCompile Include="CSVLoad.cpp" />
@@ -180,7 +182,10 @@
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AIMonster.h" />
+    <ClInclude Include="AIMonsterStates.h" />
     <ClInclude Include="aoi.h" />
+    <ClInclude Include="AoiDefine.h" />
     <ClInclude Include="BaseObj.h" />
     <ClInclude Include="CSVLoad.h" />
     <ClInclude Include="DoMsgFromCenter.h" />
@@ -206,9 +211,12 @@
     <ClInclude Include="PlayerSaveAndLoadDef.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneMgr.h" />
+    <ClInclude Include="State.h" />
+    <ClInclude Include="StateMachine.h" />
     <ClInclude Include="Status.h" />
     <ClInclude Include="Team.h" />
     <ClInclude Include="Utilities.h" />
+    <ClInclude Include="Vector3D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

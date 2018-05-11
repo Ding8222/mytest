@@ -29,6 +29,9 @@ public:
 	int32 GetNowMP() { return m_NowMP; }
 	void ChangeNowHP(int32 value) { m_NowHP += value; if (m_NowHP < 0)m_NowHP = 0; }
 	void ChangeNowMP(int32 value) { m_NowMP += value; if (m_NowMP < 0)m_NowMP = 0; }
+
+	void SetSpeed(int32 s) { m_SEP = s; }
+	int32 GetSpeed() { return m_SEP; }
 private:
 	//等级
 	int32 m_LEV;
