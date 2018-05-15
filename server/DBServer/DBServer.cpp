@@ -225,6 +225,8 @@ static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 		size = 0;
 
 		DBCenterConnect.GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
+		size = strlen(s_buf);
+		DBCenterConnect.GetDataHandInfo(&s_buf[size], sizeof(s_buf) - size - 1);
 		s_buf[sizeof(s_buf) - 1] = 0;
 		res.PushString(s_buf);
 		sock->SendMsg(&res);

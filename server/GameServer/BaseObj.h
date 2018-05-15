@@ -28,6 +28,7 @@ struct Msg;
 class CPlayer;
 class CMonster;
 class CNPC;
+class serverinfo;
 class CBaseObj :public CObjScene, public CObjAttribute, public CObjStatus, public CObjFight
 {
 public:
@@ -35,13 +36,15 @@ public:
 	~CBaseObj();
 
 	virtual CBaseObj *GetObj() { return this; }
-	virtual void SendMsgToMe(Msg &pMsg, bool bRef = false){}
+	virtual void SendMsgToMe(Msg &pMsg, bool bRef = false) {}
+	void SendRefMsg(Msg &pMsg);
 	virtual void Run();
 	virtual void Die() {}
 
 	CPlayer *ToPlayer() { return IsPlayer() ? (CPlayer *)this : nullptr; }
 	CMonster *ToMonster() { return IsMonster() ? (CMonster *)this : nullptr; }
 	CNPC *ToNPC() { return IsNPC() ? (CNPC *)this : nullptr; }
+
 public:
 	void UpdataObjInfo(CBaseObj *obj = nullptr);
 	void DelObjFromView(uint32 tempid);
@@ -79,4 +82,6 @@ private:
 	// 待移除时间
 	int64 m_WaitRemoveTime;
 	int64 m_DieTime;
+
+	static std::unordered_map<serverinfo *, std::list<int32>> gateinfo;
 };

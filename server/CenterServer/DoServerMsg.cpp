@@ -23,7 +23,7 @@ void DoServerMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		svrData::AddPlayerToCenter msg;
 		_CHECK_PARSE_(pMsg, msg);
 
-		CenterPlayerMgr.AddPlayer(msg.nguid(), msg.account(), msg.nclientid(), info->GetServerID(), msg.ngateid());
+		CenterPlayerMgr.AddPlayer(msg.nguid(), msg.account(), msg.nclientid(), msg.ngameid(), info->GetServerID(), msg.ngateid());
 		ClientAuthMgr.SetGuid(msg.account(), msg.nguid());
 		break;
 	}

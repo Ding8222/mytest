@@ -1,0 +1,1 @@
+@call "C:\Program Files (x86)\PVS-Studio\x64\PVS-Studio.exe" --cfg "C:\mytest\server\NameCheckServer\Config.cpp.PVS-Studio.cfg"

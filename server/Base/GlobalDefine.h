@@ -7,6 +7,7 @@
 #define MAX_NAME_LEN 64
 #define MAX_SECRET_LEN 16
 
+#define GATE_ID_MAX 10					//网关最大id
 #define CLIENT_ID_MAX 800000			//客户端最大id
 #define CLIENT_ID_DELAY_TIME 300000		//释放延时时间
 #define SCENE_ID_MAX 160000				//地图场景中对象的最大id

@@ -11,10 +11,13 @@ public:
 	bool init (freetask func);
 	bool pushtask (void *task);
 	void *poptask ();
+	size_t size() { return m_list.size(); }
+	size_t maxsize() { return m_maxsize; }
 private:
 	freetask m_func;
 	LOCK_struct m_lock;
 	std::list<void*> m_list;
+	size_t m_maxsize;
 };
 
 locklist::locklist()
@@ -22,6 +25,7 @@ locklist::locklist()
 	m_func = NULL;
 	LOCK_INIT(&m_lock);
 	m_list.clear();
+	m_maxsize = 0;
 }
 
 locklist::~locklist()
@@ -35,6 +39,7 @@ locklist::~locklist()
 	LOCK_UNLOCK(&m_lock);
 	m_func = NULL;
 	LOCK_DELETE(&m_lock);
+	m_maxsize = 0;
 }
 
 bool locklist::init (freetask func)
@@ -51,6 +56,8 @@ bool locklist::pushtask (void *task)
 		return false;
 	LOCK_LOCK(&m_lock);
 	m_list.push_back(task);
+	if (m_maxsize < m_list.size())
+		m_maxsize = m_list.size();
 	LOCK_UNLOCK(&m_lock);
 	return true;
 }
@@ -109,3 +116,12 @@ void *taskqueue::poptask ()
 	return m_list->poptask();
 }
 
+size_t taskqueue::size()
+{
+	return m_list->size();
+}
+
+size_t taskqueue::maxsize()
+{
+	return m_list->maxsize();
+}

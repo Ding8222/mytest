@@ -1,5 +1,6 @@
 ﻿#include <stdlib.h>
 #include <new>
+#include <stdio.h>
 #include "datahand.h"
 #include "threadinstance.h"
 #include "serverlog.h"
@@ -52,6 +53,18 @@ void datahand::Destroy ()
 		m_dbinstance->~threadinstance();
 		free(m_dbinstance);
 		m_dbinstance = NULL;
+	}
+}
+
+void datahand::GetCurrentInfo(char *buf, size_t buflen)
+{
+	if (m_dbinstance)
+	{
+		snprintf(buf, buflen - 1, "task最大数量：%d，当前数量：%d\n result最大数量：%d，当前数量：%d\n", (int32)m_dbinstance->taskmaxsize(), (int32)m_dbinstance->tasksize(), (int32)m_dbinstance->resultmaxsize(), (int32)m_dbinstance->resultsize());
+	}
+	else
+	{
+		snprintf(buf, buflen - 1, "dbinstance为空\n");
 	}
 }
 

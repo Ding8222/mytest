@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#define AOI_RADIS 512.0f
+#define AOI_RADIS 200.0f
 #define INVALID_ID (~0)
 #define PRE_ALLOC 16
 #define AOI_RADIS2 (AOI_RADIS * AOI_RADIS)

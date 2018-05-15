@@ -18,7 +18,7 @@ public:
 		return m;
 	}
 
-	bool Init();
+	bool Init(int offset);
 	bool Release();
 	void Run();
 	void Exit();

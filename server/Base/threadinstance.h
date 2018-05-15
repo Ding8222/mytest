@@ -15,7 +15,7 @@ public:
 	// dfunc 指定执行任务的函数。 若任务函数返回true，则返回后释放此任务，并不把任务压缩结果队列； 否则压入结果队列，等待进一步处理
 	// procfunc 指定处理任务结果的函数
 	bool Init (int delay, OnInitFunc initf, freetask ffunc, dofunc dfunc, processresult procfunc);
-
+	
 	//runfunc 每帧run的时候调用的回调
 	void SetRunSomeFunc (runsomcallback runfunc);
 
@@ -24,6 +24,11 @@ public:
 	
 	//在主逻辑线程里调用此函数
 	void InLogicThreadRun ();
+
+	size_t tasksize() { return m_tasklist.size(); }
+	size_t taskmaxsize() { return m_tasklist.maxsize(); }
+	size_t resultsize() { return m_resultlist.size(); }
+	size_t resultmaxsize() { return m_resultlist.maxsize(); }
 private:
 	void RunStep ();
 	void Destroy ();

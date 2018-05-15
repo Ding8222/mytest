@@ -40,6 +40,8 @@ static void clientauthinfo_release(ClientAuthInfo *self)
 
 CClientAuthMgr::CClientAuthMgr()
 {
+	m_NowLoginPlayer = 0;
+	m_MaxLoginPlayer = 0;
 	m_bDBSvrReady = false;
 	m_ClientInfoSet.clear();
 }
@@ -69,6 +71,11 @@ void CClientAuthMgr::Destroy()
 	}
 
 	m_ClientInfoSet.clear();
+}
+
+void CClientAuthMgr::GetCurrentInfo(char *buf, size_t buflen)
+{
+	snprintf(buf, buflen - 1, "最大同时认证玩家数量：%d\n处于登陆认证中玩家数量：%d\n在线玩家数量：%d\n", m_MaxLoginPlayer, m_NowLoginPlayer, (int32)m_PlayerOnlineMap.size());
 }
 
 void CClientAuthMgr::AsLoginServerDisconnect()
@@ -149,6 +156,11 @@ void CClientAuthMgr::QueryAuth(Msg *pMsg, int32 clientid, int32 serverid)
 		m_PlayerOnlineMap[msg.account()] = 0;
 		CentServerMgr.SendMsgToServer(*pMsg, ServerEnum::EST_DB, clientid, Config.GetDBID());
 	}
+
+	++m_NowLoginPlayer;
+
+	if (m_MaxLoginPlayer < m_NowLoginPlayer)
+		m_MaxLoginPlayer = m_NowLoginPlayer;
 }
 
 // 移除认证信息
@@ -162,6 +174,7 @@ void CClientAuthMgr::DelClientAuthInfo(int32 clientid)
 	
 	clientauthinfo_release(m_ClientInfoSet[clientid]);
 	m_ClientInfoSet[clientid] = nullptr;
+	--m_NowLoginPlayer;
 }
 
 ClientAuthInfo *CClientAuthMgr::FindClientAuthInfo(int32 clientid)

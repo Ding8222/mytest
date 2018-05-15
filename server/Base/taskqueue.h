@@ -11,6 +11,8 @@ public:
 	void destroy ();
 	bool pushtask (void *task);
 	void *poptask ();
+	size_t size();
+	size_t maxsize();
 private:
 	locklist *m_list;
 };

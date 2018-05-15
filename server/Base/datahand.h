@@ -12,7 +12,8 @@ public:
 	bool Init (int delay, OnInitFunc initf, freetask ffunc, dofunc dfunc, processresult procfunc, runsomcallback runfunc);
 	void RunOnce ();
 	bool PushTask (void *logicdata);
-	void Destroy ();
+	void Destroy();
+	void GetCurrentInfo(char *buf, size_t buflen);
 private:
 	threadinstance *m_dbinstance;
 };

@@ -163,8 +163,8 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int64 nClientID, int 
 			stCenterPlayer *_pData = CenterPlayerMgr.FindPlayerByGuid(nClientID);
 			if (_pData)
 			{
-				tail.id = _pData->nClientID;
-				nServerID = _pData->nGameID;
+				tail.id = _pData->nGameID;
+				nServerID = _pData->nGameSvrID;
 			}
 			assert(nServerID);
 			assert(tail.id);
@@ -254,8 +254,8 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 			stCenterPlayer *_pData = CenterPlayerMgr.FindPlayerByGuid(nClientID);
 			if (_pData)
 			{
-				tail.id = _pData->nClientID;
-				nServerID = _pData->nGameID;
+				tail.id = _pData->nGameID;
+				nServerID = _pData->nGameSvrID;
 			}
 			assert(nServerID);
 			assert(tail.id);

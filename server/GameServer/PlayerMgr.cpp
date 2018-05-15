@@ -37,7 +37,7 @@ CPlayerMgr::CPlayerMgr()
 {
 	m_PlayerList.clear();
 	m_WaitRemove.clear();
-	m_PlayerSet.clear();
+	m_PlayerMap.clear();
 }
 
 CPlayerMgr::~CPlayerMgr()
@@ -56,6 +56,11 @@ bool CPlayerMgr::init()
 void CPlayerMgr::Destroy()
 {
 	DelAllPlayer();
+}
+
+void CPlayerMgr::GetCurrentInfo(char *buf, size_t buflen)
+{
+	snprintf(buf, buflen - 1, "当前玩家数量：%d\n", (int32)m_PlayerList.size());
 }
 
 void CPlayerMgr::AsGateServerDisconnect(int32 gateserverid)
@@ -105,48 +110,39 @@ void CPlayerMgr::ProcessAllPlayer()
 
 bool CPlayerMgr::AddPlayer(serverinfo * info, int32 clientid)
 {
-	if (clientid <= 0 || static_cast<size_t>(clientid) >= m_PlayerSet.size())
+	int64 gameid = info->GetServerID();
+	gameid = gameid << 32 | clientid;
+	if (FindPlayerByGameID(gameid))
 	{
-		RunStateError("AddPlayer的ClientID错误!");
+		RunStateError("添加Player失败!已经存在的GameIDGameID错误:%I64d,ServerID:%d,clientid:%d", gameid, info->GetServerID(), clientid);
 		return false;
 	}
 
-	assert(m_PlayerSet[clientid] == nullptr);
-	if (m_PlayerSet[clientid] == nullptr)
+	CPlayer *newplayer = player_create();
+	if (!newplayer)
 	{
-		CPlayer *newplayer = player_create();
-		if (!newplayer)
-		{
-			RunStateError("创建CPlayer失败!");
-			return false;
-		}
-
-		newplayer->SetGateInfo(info);
-		newplayer->SetClientID(clientid);
-
-		m_PlayerList.push_back(newplayer);
-		m_PlayerSet[clientid] = newplayer;
-		return true;
+		RunStateError("创建CPlayer失败!");
+		return false;
 	}
-	else
-		RunStateError("clienid为：%d的已经存在玩家数据!", clientid);
 
-	return false;
+	newplayer->SetGateInfo(info);
+	newplayer->SetClientID(clientid);
+	newplayer->SetGameID(gameid);
+
+	m_PlayerList.push_back(newplayer);
+	m_PlayerMap.insert(std::make_pair(gameid, newplayer));
+	return true;
 }
 
-void CPlayerMgr::DelPlayer(int32 clientid)
+void CPlayerMgr::DelPlayer(int64 gameid)
 {
-	if (clientid <= 0 || static_cast<size_t>(clientid) >= m_PlayerSet.size())
+	auto iter = m_PlayerMap.find(gameid);
+	assert(iter != m_PlayerMap.end());
+	if (iter != m_PlayerMap.end())
 	{
-		RunStateError("DelPlayer的ClientID错误!");
-		return;
-	}
-
-	CPlayer *pPlayer = m_PlayerSet[clientid];
-	assert(pPlayer);
-	if (pPlayer)
-	{
+		CPlayer *pPlayer = iter->second;
 		pPlayer->OffLine();
+		m_PlayerMap.erase(iter);
 	}
 }
 
@@ -184,33 +180,24 @@ void CPlayerMgr::ReleasePlayer(CPlayer * player)
 	if (!player)
 		return;
 
-	if (player->GetClientID() <= 0 || player->GetClientID() >= static_cast<int32>(m_PlayerSet.size()))
-	{
-		RunStateError("要释放的PlayerInfo的ClientID错误!");
-		return;
-	}
-
-	m_PlayerSet[player->GetClientID()] = NULL;
+	int64 gameid = player->GetGameID();
+	m_PlayerMap.erase(gameid);
 	player_release(player);
 }
 
-CPlayer *CPlayerMgr::FindPlayerByClientID(int32 clientid)
+CPlayer *CPlayerMgr::FindPlayerByGameID(int64 gameid)
 {
-	if (clientid <= 0 || clientid >= static_cast<int32>(m_PlayerSet.size()))
+	auto iter = m_PlayerMap.find(gameid);
+	if (iter != m_PlayerMap.end())
 	{
-		RunStateError("要查找的Player的ClientID错误!%d", clientid);
-		return nullptr;
+		return iter->second;
 	}
-
-	assert(m_PlayerSet[clientid]);
-	if (m_PlayerSet[clientid])
-		return m_PlayerSet[clientid];
 
 	return nullptr;
 }
 
 bool CPlayerMgr::InitIdMgrAndPlayerSet()
 {
-	m_PlayerSet.resize(CLIENT_ID_MAX + 1, NULL);
+	m_PlayerMap.reserve(player_max);
 	return true;
 }

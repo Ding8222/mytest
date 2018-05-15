@@ -28,7 +28,7 @@ void CAIMonster::FSMUpdate()
 
 bool CAIMonster::AtTargetPos()
 {
-	return (Vec3DDistanceSq(GetNowPosV(), m_vTargetPos) < 3);
+	return (Vec3DDistanceSq(GetNowPosV(), m_vTargetPos) < 4);
 }
 
 bool CAIMonster::TargetObjInView()

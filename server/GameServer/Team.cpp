@@ -28,7 +28,7 @@ void CTeam::DestroyTeam()
 void CTeam::AddTeamMember(int64 guid, const std::string &name, bool online)
 {
 	m_TeamMember.insert(std::make_pair(guid,TeamPlayer(guid, name, online)));
-	CPlayer *player = PlayerMgr.FindPlayerByClientID(guid);
+	CPlayer *player = PlayerMgr.FindPlayerByGameID(guid);
 	if (player)
 	{
 		m_TeamMemberOl.insert(std::make_pair(guid, player));

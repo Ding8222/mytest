@@ -117,7 +117,7 @@ void CServerStatusMgr::AddGameServer(serverinfo *info, Msg *pMsg)
 
 	for (auto &i : msg.info())
 	{
-		CenterPlayerMgr.AddPlayer(i.nguid(), i.account(), i.nclientid(), nServerID, i.ngateid());
+		CenterPlayerMgr.AddPlayer(i.nguid(), i.account(), i.nclientid(), i.ngameid(), nServerID, i.ngateid());
 		ClientAuthMgr.SetPlayerOnline(i.account(), i.nguid());
 	}
 }
@@ -215,10 +215,16 @@ ServerStatusInfo *CServerStatusMgr::GetGameServerInfo(int32 mapid, int32 lineid)
 
 ServerStatusInfo *CServerStatusMgr::GetGateServerInfo()
 {
+	int32 clientcount = 9999;
+	ServerStatusInfo * gateinfo = nullptr;
 	for (auto &i : m_GateServerInfo)
 	{
-		return i.second;
+		if (i.second->nNowClient < clientcount)
+		{
+			clientcount = i.second->nNowClient;
+			gateinfo = i.second;
+		}
 	}
-
-	return nullptr;
+	clientcount = 9999;
+	return gateinfo;
 }

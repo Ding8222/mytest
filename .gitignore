@@ -13,6 +13,8 @@ log_log/
 *.idb
 *.tlog
 *.lastbuildstate
+*.iobj
+*.ipdb
 
 # User-specific files
 *.suo

@@ -38,6 +38,7 @@ public:
 	bool Init();
 	void Run();
 	void Destroy();
+	void GetCurrentInfo(char *buf, size_t buflen);
 	void AsLoginServerDisconnect();
 
 	// Client请求认证,loginSvr调用
@@ -62,4 +63,6 @@ private:
 	std::unordered_map<std::string, int32> m_PlayerLoginMap;
 
 	bool m_bDBSvrReady;
+	int32 m_MaxLoginPlayer;
+	int32 m_NowLoginPlayer;
 };

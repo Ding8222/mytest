@@ -73,6 +73,7 @@ void CGameCenterConnect::ServerRegisterSucc(connector *)
 			if (info)
 			{
 				info->set_nguid(player->GetGuid());
+				info->set_ngameid(player->GetGameID());
 				info->set_nclientid(player->GetClientID());
 				info->set_ngateid(player->GetGateID());
 				info->set_account(player->GetAccount());

@@ -43,14 +43,16 @@ CRobotMgr::~CRobotMgr()
 	m_PingTime = 0;
 }
 
-bool CRobotMgr::Init(const char *ip, int port, int id, int maxrobot, int pingtime, int overtime)
+bool CRobotMgr::Init(const char *ip, int port, int id, int maxrobot, int pingtime, int overtime, int offset)
 {
 	s_LoginServerIP = ip;
 	m_LoginServerPort = port;
 	m_LoginServerID = id;
 	m_PingTime = pingtime;
 	m_OverTime = overtime;
-	for (int i = 0; i < maxrobot; i++)
+	m_MapID = offset + 1;
+	offset = offset * maxrobot;
+	for (int i = offset; i < maxrobot + offset; i++)
 	{
 		CRobot *_pRobot = new CRobot;
 		_pRobot->SetConnectInfo(s_LoginServerIP.c_str(), m_LoginServerPort, m_LoginServerID);
@@ -58,6 +60,7 @@ bool CRobotMgr::Init(const char *ip, int port, int id, int maxrobot, int pingtim
 		m_RobotList.push_back(_pRobot);
 	}
 
+	RunStateLog("机器人数量：%d", m_RobotList.size());
 	return true;
 }
 
@@ -72,14 +75,14 @@ void CRobotMgr::Run()
 		{
 			if ((*tempitr)->TryConnect(g_currenttime))
 			{
-				lxnet::Socketer *co = (*tempitr)->GetCon();
-				if (co)
-				{
-					//co->UseUncompress();
-					//co->UseEncrypt();
-					//co->UseDecrypt();
-					//co->SendTGWInfo(s_LoginServerIP.c_str(), m_LoginServerPort);
-				}
+// 				lxnet::Socketer *co = (*tempitr)->GetCon();
+// 				if (co)
+// 				{
+// 					co->UseUncompress();
+// 					co->UseEncrypt();
+// 					co->UseDecrypt();
+// 					co->SendTGWInfo(s_LoginServerIP.c_str(), m_LoginServerPort);
+// 				}
 				// 请求登陆
 
 				if ((*tempitr)->IsAuth())
@@ -90,6 +93,7 @@ void CRobotMgr::Run()
 					sendMsg.set_secret((*tempitr)->GetSecret());
 
 					(*tempitr)->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN);
+					RunStateLog("Login发送！%I64d", g_currenttime);
 				}
 				else
 				{
@@ -105,6 +109,7 @@ void CRobotMgr::Run()
 					Msg.set_sclientkey(reinterpret_cast<const char*>(key.data()), key.size());
 					(*tempitr)->SendMsg(Msg, LOGIN_TYPE_MAIN, LOGIN_SUB_HANDSHAKE);
 					(*tempitr)->SetHandShake(false);
+					RunStateLog("HANDSHAKE发送！%I64d", g_currenttime);
 				}
 			}
 			continue;
@@ -190,6 +195,7 @@ void CRobotMgr::ProcessRegister(CRobot *con)
 					sendMsg.set_account(con->GetAccount());
 					con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH);
 					con->SetHandShake(true);
+					RunStateLog("Auth发送！%I64d", g_currenttime);
 				}
 				else
 					RunStateError("HandShake失败!account：%s", con->GetAccount().c_str());
@@ -235,36 +241,36 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 						int y = msg.y();
 						int nRand = rand() % 10000;
 						if (nRand > 5000)
-							x += 10;
+							x += 1;
 						else
-							x -= 10;
+							x -= 1;
 
 						if (x > 1000)
-							x = 1000;
-						else if (x < 0)
-							x = 0;
+							x = 999;
+						else if (x < 1)
+							x = 1;
 
 						nRand = rand() % 10000;
 						if (nRand > 5000)
-							y += 10;
+							y += 1;
 						else
-							y -= 10;
+							y -= 1;
 
 						if (y > 1000)
-							y = 1000;
-						else if (y < 0)
-							y = 0;
+							y = 999;
+						else if (y < 1)
+							y = 1;
 
 						sendMsg.set_x(x);
 						sendMsg.set_y(y);
-						sendMsg.set_z(0);
+						sendMsg.set_z(1);
 						_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
 					}
 				}
 				else
 				{
 					netData::ChangeMap SendMsg;
-					SendMsg.set_nmapid(10);
+					SendMsg.set_nmapid(m_MapID);
 					_con->SendMsg(SendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_CHANGEMAP);
 					_con->SetChangeMap();
 				}
@@ -282,6 +288,14 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 					{
 						_con->ChangeConnect(msg.sip().c_str(), msg.nport(), msg.nserverid(), true);
 					}
+				}
+				else
+				{
+					netData::PlayerMove sendMsg;
+					sendMsg.set_x(rand()%1000);
+					sendMsg.set_y(rand() % 1000);
+					sendMsg.set_z(1);
+					_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
 				}
 			}
 			}
@@ -305,6 +319,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 			{
 			case LOGIN_SUB_LOGIN_RET:
 			{
+				RunStateLog("LOGIN返回！%I64d", g_currenttime);
 				netData::LoginRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
@@ -313,9 +328,9 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 					RunStateLog("逻辑服加载数据成功!TempID:%d", msg.ntempid());
 					_con->SetTempID(msg.ntempid());
 					netData::PlayerMove sendMsg;
-					sendMsg.set_x(1);
-					sendMsg.set_y(1);
-					sendMsg.set_z(0);
+					sendMsg.set_x(rand() % 1000);
+					sendMsg.set_y(rand() % 1000);
+					sendMsg.set_z(1);
 					_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
 				}
 				else
@@ -324,6 +339,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 			}
 			case LOGIN_SUB_AUTH_RET:
 			{
+				RunStateLog("AUTH返回！%I64d", g_currenttime);
 				netData::AuthRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
@@ -338,6 +354,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 			}
 			case LOGIN_SUB_PLAYER_LIST_RET:
 			{
+				RunStateLog("PLAYER_LIST返回！%I64d", g_currenttime);
 				netData::PlayerListRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
@@ -363,6 +380,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 			}
 			case LOGIN_SUB_CREATE_PLAYER_RET:
 			{
+				RunStateLog("CREATE_PLAYER返回！%I64d", g_currenttime);
 				netData::CreatePlayerRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 				if (msg.ncode() == netData::CreatePlayerRet::EC_SUCC)
@@ -378,6 +396,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 			}
 			case LOGIN_SUB_SELECT_PLAYER_RET:
 			{
+				RunStateLog("SELECT_PLAYER返回！%I64d", g_currenttime);
 				netData::SelectPlayerRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 

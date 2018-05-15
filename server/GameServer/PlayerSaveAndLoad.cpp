@@ -66,6 +66,7 @@ bool CPlayer::LoadData(Msg *pMsg)
 	{
 		svrData::AddPlayerToCenter SendMsg;
 		SendMsg.set_nguid(GetGuid());
+		SendMsg.set_ngameid(GetGameID());
 		SendMsg.set_nclientid(GetClientID());
 		SendMsg.set_ngateid(GetGateID());
 		SendMsg.set_account(GetAccount());

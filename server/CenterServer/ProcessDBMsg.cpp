@@ -62,7 +62,6 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 				RunStateError("没有找到clientid：%d的认证信息！", tl->id);
 				SendMsg.set_ncode(netData::SelectPlayerRet::EC_AUTH);
 			}
-
 			CentServerMgr.SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER_RET, ServerEnum::EST_LOGIN, tl->id);
 			break;
 		}

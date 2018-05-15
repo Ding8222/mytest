@@ -25,6 +25,7 @@ public:
 	bool Init();
 	void Run();
 	void Destroy();
+	void GetDataHandInfo(char *buf, size_t buflen);
 
 	// 连接断开的处理
 	void ConnectDisconnect(connector *);

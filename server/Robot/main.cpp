@@ -26,7 +26,7 @@
 #define system(a)
 #endif
 
-bool init()
+bool init(int argc, char *argv[])
 {
 #ifdef _WIN32
 	SetConsoleOutputCP(65001);
@@ -38,6 +38,11 @@ bool init()
 		return false;
 	}
 #endif
+	int nRobotID = 0;
+	if (argc == 2)
+	{
+		nRobotID = atoi(argv[1]);
+	}
 
 	if (!init_log("Robot_Log"))
 	{
@@ -75,7 +80,7 @@ bool init()
 		return 0;
 	}
 	// 初始化
-	if (!RobotSvr.Init())
+	if (!RobotSvr.Init(nRobotID))
 	{
 		RunStateError("初始化LoginServer失败!");
 		system("pause");
@@ -95,8 +100,8 @@ bool init()
 	return true;
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
-	init();
+	init(argc, argv);
 	return 0;
 }

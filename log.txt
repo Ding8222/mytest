@@ -166,3 +166,7 @@ DBServer这边看要不要做个缓存
 
 怪物AI
 --开了个头
+
+release模式下的调试信息和minidump
+
+DBServer打印log非常耗时，需要默认关闭

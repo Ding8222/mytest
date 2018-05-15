@@ -19,7 +19,7 @@ public:
 		return m;
 	}
 
-	bool Init(const char *ip, int port, int id, int maxrobot, int pingtime, int overtime);
+	bool Init(const char *ip, int port, int id, int maxrobot, int pingtime, int overtime, int offset);
 
 	void Run();
 	void EndRun();
@@ -35,6 +35,6 @@ private:
 
 	int m_OverTime;
 	int m_PingTime;
-
+	int m_MapID;
 	std::list<CRobot *> m_RobotList;
 };

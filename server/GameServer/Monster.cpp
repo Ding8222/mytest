@@ -3,9 +3,6 @@
 #include "Timer.h"
 #include "Scene.h"
 #include "ServerLog.h"
-#include "msgbase.h"
-#include "Utilities.h"
-#include "GameGatewayMgr.h"
 #include "objectpool.h"
 #include "AIMonster.h"
 
@@ -111,21 +108,7 @@ void CMonster::SendMsgToMe(Msg &pMsg, bool bRef)
 {
 	if (bRef)
 	{
-		msgtail tail;
-		std::unordered_map<uint32, CBaseObj *> *playerlist = GetAoiList();
-		std::unordered_map<uint32, CBaseObj *>::iterator iter = playerlist->begin();
-		for (; iter != playerlist->end(); ++iter)
-		{
-			if (iter->second->IsPlayer())
-			{
-				CPlayer * p = (CPlayer *)iter->second;
-				if (FuncUti::isValidCret(p))
-				{
-					tail.id = p->GetClientID();
-					GameGatewayMgr.SendMsg(p->GetGateInfo(), pMsg, &tail, sizeof(tail));
-				}
-			}
-		}
+		SendRefMsg(pMsg);
 	}
 }
 

@@ -168,20 +168,27 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				svrData::DelClient msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				CPlayer *player = PlayerMgr.FindPlayerByClientID(tl->id);
+				int64 gameid = info->GetServerID();
+				gameid = gameid << 32 | tl->id;
+				CPlayer *player = PlayerMgr.FindPlayerByGameID(gameid);
 				if (FuncUti::isValidCret(player))
 				{
 					msg.set_account(player->GetAccount());
 					FuncUti::SendMsgToCenter(player, msg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT);
 					RunStateLog("玩家连接断开！账号：%s，角色名称：%s", player->GetAccount().c_str(), player->GetName());
-					PlayerMgr.DelPlayer(tl->id);
+					PlayerMgr.DelPlayer(gameid);
 				}
 				break;
 			}
 			case SVR_SUB_PLAYERDATA:
 			{
+				svrData::LoadPlayerData msg;
+				_CHECK_PARSE_(pMsg, msg);
+
 				PlayerMgr.AddPlayer(info, tl->id);
-				CPlayer *player = PlayerMgr.FindPlayerByClientID(tl->id);
+				int64 gameid = info->GetServerID();
+				gameid = gameid << 32 | tl->id;
+				CPlayer *player = PlayerMgr.FindPlayerByGameID(gameid);
 				netData::LoginRet sendMsg;
 				if (FuncUti::isValidCret(player))
 				{
@@ -197,7 +204,7 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 					sendMsg.set_ncode(netData::LoginRet::EC_ADDPLAYER);
 
 				msgtail tail;
-				tail.id = player->GetClientID();
+				tail.id = tl->id;
 				GameGatewayMgr.SendMsg(info, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET, &tail, sizeof(tail));
 				break;
 			}
@@ -210,7 +217,9 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 			{
 			case ServerEnum::EST_GATE:
 			{
-				ProcessClientMsg(tl->id, pMsg);
+				int64 gameid = info->GetServerID();
+				gameid = gameid << 32 | tl->id;
+				ProcessClientMsg(gameid, pMsg);
 				break;
 			}
 			}
@@ -219,9 +228,9 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 	}
 }
 
-void CGameGatewayMgr::ProcessClientMsg(int32 clientid, Msg *pMsg)
+void CGameGatewayMgr::ProcessClientMsg(int64 gameid, Msg *pMsg)
 {
-	CPlayer *player = PlayerMgr.FindPlayerByClientID(clientid);
+	CPlayer *player = PlayerMgr.FindPlayerByGameID(gameid);
 	if (FuncUti::isValidCret(player))
 	{
 		Operate(player, pMsg);

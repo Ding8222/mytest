@@ -14,6 +14,7 @@ CPlayer::CPlayer():CBaseObj(EOT_PLAYER)
 {
 	m_GateInfo = nullptr;
 	m_ClientID = 0;
+	m_GameID = 0;
 	m_Guid = 0;
 	m_CreateTime = 0;
 	m_LoginTime = 0;
@@ -39,26 +40,15 @@ void CPlayer::Run()
 
 void CPlayer::SendMsgToMe(Msg &pMsg, bool bRef)
 {
-	msgtail tail;
-	tail.id = GetClientID();
-	GameGatewayMgr.SendMsg(GetGateInfo(), pMsg, &tail, sizeof(tail));
-
 	if (bRef)
 	{
-		std::unordered_map<uint32, CBaseObj *> *playerlist = GetAoiList();
-		std::unordered_map<uint32, CBaseObj *>::iterator iter = playerlist->begin();
-		for (; iter != playerlist->end(); ++iter)
-		{
-			if (iter->second->IsPlayer())
-			{
-				CPlayer * p = (CPlayer *)iter->second;
-				if (FuncUti::isValidCret(p))
-				{
-					tail.id = p->GetClientID();
-					GameGatewayMgr.SendMsg(p->GetGateInfo(), pMsg, &tail, sizeof(tail));
-				}
-			}
-		}
+		SendRefMsg(pMsg);
+	}
+	else
+	{
+		static msgtail tail;
+		tail.id = GetClientID();
+		GameGatewayMgr.SendMsg(GetGateInfo(), pMsg, &tail, sizeof(tail));
 	}
 }
 

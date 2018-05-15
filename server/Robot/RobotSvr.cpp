@@ -35,7 +35,7 @@ static void cb()
 	RobotSvr.Destroy();
 }
 
-bool CRobotSvr::Init()
+bool CRobotSvr::Init(int offset)
 {
 	do
 	{
@@ -51,7 +51,7 @@ bool CRobotSvr::Init()
 			Config.GetLoginServerID(),
 			Config.GetMaxRobot(),
 			Config.GetPingTime(),
-			Config.GetOverTime()))
+			Config.GetOverTime(), offset))
 		{
 			RunStateError("初始化client mgr 失败!");
 			break;
@@ -90,9 +90,7 @@ void CRobotSvr::Run()
 		}
 		else if (delay > maxdelay)
 		{
-// 			log_error("运行超时:%d\n收到消息数量：%d，发送消息数量：%d\n", delay,
-// 				RobotMgr.GetRecvMsgNum(),
-// 				RobotMgr.GetSendMsgNum());
+			ElapsedLog("运行超时:%d\n", delay);
 		}
 	}
 	delaytime(300);

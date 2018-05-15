@@ -100,9 +100,9 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 					RunStateError("玩家：%s 要去的地图：%d 不存在！", pPlayer->GetName(), nMapID);
 					SendMsg.set_ncode(netData::ChangeMapRet::EC_MAP);
 				}
-				FuncUti::SendPBNoLoop(pPlayer, SendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_CHANGEMAP_RET);
 			}
 		}
+		FuncUti::SendPBNoLoop(pPlayer, SendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_CHANGEMAP_RET);
 		break;
 	}
 	}

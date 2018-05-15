@@ -40,6 +40,7 @@ bool CObjScene::LeaveScene()
 		if (!m_Scene->DelObj(GetObj()))
 			return false;
 		m_Scene = nullptr;
+		return true;
 	}
 	return false;
 }

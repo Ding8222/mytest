@@ -52,9 +52,10 @@ message UpdateServerLoad
 message AddPlayerToCenter
 {
 	int64 nGuid = 1;        // 玩家唯一id
-	int32 nClientID = 2;    // clientid
-	int32 nGateID = 3;      // 所属网关
-	string Account = 4;		// 账号信息
+	int32 nGameID = 2;		// gameid
+	int32 nClientID = 3;    // clientid
+	int32 nGateID = 4;      // 所属网关
+	string Account = 5;		// 账号信息
 }
 
 // 0-8 client断开

@@ -34,6 +34,7 @@ public:
 
 	bool Init();
 	void Destroy();
+	void GetCurrentInfo(char *buf, size_t buflen);
 
 	// 握手
 	void HandShake(CClient *cl, Msg *pMsg);

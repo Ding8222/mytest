@@ -75,6 +75,11 @@ void CClientAuth::Destroy()
 	m_ClientAuthInfoSet.clear();
 }
 
+void CClientAuth::GetCurrentInfo(char *buf, size_t buflen)
+{
+	snprintf(buf, buflen - 1, "认证中Client数量：%d\n", (int32)m_Secret.size());
+}
+
 // 握手
 void CClientAuth::HandShake(CClient *cl, Msg *pMsg)
 {
@@ -122,7 +127,7 @@ void CClientAuth::Auth(CClient *cl, Msg *pMsg)
 {
 	if (!cl || !pMsg)
 		return;
-
+	
 	netData::Auth msg;
 	_CHECK_PARSE_(pMsg, msg);
 

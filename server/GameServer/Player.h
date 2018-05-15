@@ -47,6 +47,8 @@ public:
 	int32 GetGateID() { if (m_GateInfo) return m_GateInfo->GetServerID(); return 0; }
 	void SetClientID(int32 id) { m_ClientID = id; }
 	int32 GetClientID() { return m_ClientID; }
+	void SetGameID(int64 id) { m_GameID = id; }
+	int64 GetGameID() { return m_GameID; }
 	void SetAccount(const std::string &account) { m_Account = std::move(account); }
 	std::string GetAccount() { return m_Account; }
 	void SetGuid(int64 id) { m_Guid = id; }
@@ -58,6 +60,7 @@ public:
 private:
 	serverinfo * m_GateInfo;
 	int32 m_ClientID;
+	int64 m_GameID;
 	std::string m_Account;
 	int64 m_Guid;
 	int64 m_CreateTime;

@@ -134,7 +134,7 @@ void CClientMgr::Destroy()
 
 void CClientMgr::GetCurrentInfo(char *buf, size_t buflen)
 {
-	snprintf(buf, buflen - 1, "最大 Client 限制:%d\n当前 Client 数量:%d\n总ID数量 total:%d\n当前使用ID数量:%d, 待移除 Client 数量:%d\n", m_MaxClientNum, (int)m_ClientList.size(), idmgr_total(m_IDPool), idmgr_usednum(m_IDPool), (int)m_WaitRemove.size());
+	snprintf(buf, buflen - 1, "最大 Client 限制:%d\n当前 Client 数量:%d\n总ID数量 total:%d\n当前使用ID数量:%d\n待移除 Client 数量:%d\n", m_MaxClientNum, (int)m_ClientList.size(), idmgr_total(m_IDPool), idmgr_usednum(m_IDPool), (int)m_WaitRemove.size());
 }
 
 CClient *CClientMgr::FindClient(int clientid)

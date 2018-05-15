@@ -143,6 +143,16 @@ void CDBCenterConnect::Destroy()
 	task::DestroyPools();
 }
 
+void CDBCenterConnect::GetDataHandInfo(char *buf, size_t buflen)
+{
+	if(m_Hand)
+		m_Hand->GetCurrentInfo(buf, buflen);
+	else
+	{
+		snprintf(buf, buflen - 1, "datahand为空\n");
+	}
+}
+
 void CDBCenterConnect::ConnectDisconnect(connector *)
 {
 	

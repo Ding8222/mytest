@@ -2,6 +2,8 @@
 #include "BaseObj.h"
 #include "ServerLog.h"
 #include "Utilities.h"
+#include "msgbase.h"
+#include "GameGatewayMgr.h"
 
 #include "ClientType.h"
 #include "ClientMsg.pb.h"
@@ -32,6 +34,85 @@ void CBaseObj::Run()
 	AoiRun();
 	StatusRun();
 	FightRun();
+}
+std::unordered_map<serverinfo *, std::list<int32>> CBaseObj::gateinfo;
+void CBaseObj::SendRefMsg(Msg &pMsg)
+{
+	for (auto &i : gateinfo)
+	{
+		i.second.clear();
+	}
+
+	static bool bNeeSendMsg = false;
+	static msgtail tail;
+	std::unordered_map<uint32, CBaseObj *> *playerlist = GetAoiList();
+	std::unordered_map<uint32, CBaseObj *>::iterator iter = playerlist->begin();
+	for (; iter != playerlist->end(); ++iter)
+	{
+		if (iter->second->IsPlayer())
+		{
+			CPlayer * p = (CPlayer *)iter->second;
+			if (FuncUti::isValidCret(p))
+			{
+				auto iter = gateinfo.find(p->GetGateInfo());
+				if (iter != gateinfo.end())
+				{
+					std::list<int32> &temp = iter->second;
+					temp.push_back(p->GetClientID());
+					bNeeSendMsg = true;
+				}
+				else
+				{
+					std::list<int32> temp;
+					temp.push_back(p->GetClientID());
+					gateinfo.insert(std::make_pair(p->GetGateInfo(), temp));
+					bNeeSendMsg = true;
+				}
+			}
+		}
+	}
+
+	static bool bIsPlayer = false;
+	bIsPlayer = IsPlayer();
+	if (bNeeSendMsg || bIsPlayer)
+	{
+		if (bIsPlayer)
+		{
+			CPlayer *p = (CPlayer *)this;
+			auto iter = gateinfo.find(p->GetGateInfo());
+			if (iter != gateinfo.end())
+			{
+				std::list<int32> &temp = iter->second;
+				temp.push_back(p->GetClientID());
+			}
+			else
+			{
+				std::list<int32> temp;
+				temp.push_back(p->GetClientID());
+				gateinfo.insert(std::make_pair(p->GetGateInfo(), temp));
+			}
+		}
+
+		bNeeSendMsg = false;
+		MessagePack pkmain;
+		pkmain.PushInt32(pMsg.GetLength());
+		pkmain.PushBlock(&pMsg, pMsg.GetLength());
+		int32 pkmainlen = pkmain.GetLength();
+
+		for (auto &i : gateinfo)
+		{
+			tail.id = 0;
+			std::list<int32> &temp = i.second;
+			for (auto &j : temp)
+			{
+				pkmain.PushInt32(j);
+				--tail.id;
+			}
+			GameGatewayMgr.SendMsg(i.first, pkmain, &tail, sizeof(tail));
+			pkmain.SetLength(pkmainlen);
+			pkmain.m_index = pkmainlen - (int32)sizeof(Msg);
+		}
+	}
 }
 
 void CBaseObj::UpdataObjInfo(CBaseObj *obj)

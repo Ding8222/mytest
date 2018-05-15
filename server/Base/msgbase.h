@@ -67,7 +67,7 @@ struct MessagePack:public Msg {
 		if (msg && CanPush(msg->ByteSize()))
 		{
 			msg->SerializeToArray(m_buf, msg->ByteSize());
-			SetLength(msg->ByteSize() + sizeof(header) + sizeof(msgtype));
+			SetLength(msg->ByteSize() + sizeof(Msg));
 			SetIndex(msg->ByteSize());
 			SetMainType(maintype);
 			SetSubType(subtype);

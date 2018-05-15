@@ -17,7 +17,7 @@ public:
 	void SetCon (lxnet::Socketer *sock);
 	lxnet::Socketer *GetCon () { return m_con; }
 	void SendMsg (Msg *pMsg, void *adddata = NULL, size_t addsize = 0);
-	Msg *GetMsg ();
+	Msg *GetMsg();
 	void SetServerID (int32 serverid);
 	int32 GetServerID () { return m_serverid; }
 	void SetServerType (int32 servertype);

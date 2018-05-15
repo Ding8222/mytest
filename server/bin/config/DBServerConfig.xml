@@ -18,7 +18,7 @@ SQL_Log				是否开启SQL查询日志
 	Server_IP = "127.0.0.1"
 	
 	Begin_MapID = "1"
-	SQL_Log = "true"
+	SQL_Log = "false"
 	
 	>
 	
