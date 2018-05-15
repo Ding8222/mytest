@@ -93,7 +93,6 @@ void CRobotMgr::Run()
 					sendMsg.set_secret((*tempitr)->GetSecret());
 
 					(*tempitr)->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN);
-					RunStateLog("Login发送！%I64d", g_currenttime);
 				}
 				else
 				{
@@ -109,7 +108,6 @@ void CRobotMgr::Run()
 					Msg.set_sclientkey(reinterpret_cast<const char*>(key.data()), key.size());
 					(*tempitr)->SendMsg(Msg, LOGIN_TYPE_MAIN, LOGIN_SUB_HANDSHAKE);
 					(*tempitr)->SetHandShake(false);
-					RunStateLog("HANDSHAKE发送！%I64d", g_currenttime);
 				}
 			}
 			continue;
@@ -195,7 +193,6 @@ void CRobotMgr::ProcessRegister(CRobot *con)
 					sendMsg.set_account(con->GetAccount());
 					con->SendMsg(sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH);
 					con->SetHandShake(true);
-					RunStateLog("Auth发送！%I64d", g_currenttime);
 				}
 				else
 					RunStateError("HandShake失败!account：%s", con->GetAccount().c_str());
@@ -319,7 +316,6 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 			{
 			case LOGIN_SUB_LOGIN_RET:
 			{
-				RunStateLog("LOGIN返回！%I64d", g_currenttime);
 				netData::LoginRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
@@ -339,7 +335,6 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 			}
 			case LOGIN_SUB_AUTH_RET:
 			{
-				RunStateLog("AUTH返回！%I64d", g_currenttime);
 				netData::AuthRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
@@ -354,7 +349,6 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 			}
 			case LOGIN_SUB_PLAYER_LIST_RET:
 			{
-				RunStateLog("PLAYER_LIST返回！%I64d", g_currenttime);
 				netData::PlayerListRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 
@@ -380,7 +374,6 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 			}
 			case LOGIN_SUB_CREATE_PLAYER_RET:
 			{
-				RunStateLog("CREATE_PLAYER返回！%I64d", g_currenttime);
 				netData::CreatePlayerRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 				if (msg.ncode() == netData::CreatePlayerRet::EC_SUCC)
@@ -396,7 +389,6 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 			}
 			case LOGIN_SUB_SELECT_PLAYER_RET:
 			{
-				RunStateLog("SELECT_PLAYER返回！%I64d", g_currenttime);
 				netData::SelectPlayerRet msg;
 				_CHECK_PARSE_(pMsg, msg);
 

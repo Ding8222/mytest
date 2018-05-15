@@ -411,7 +411,6 @@ void CCentServerMgr::ProcessMsg(serverinfo *info)
 			break;
 		}
 		}
-		break;
 	}
 }
 

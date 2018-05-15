@@ -123,14 +123,8 @@ void CLoginCenterConnect::ProcessMsg(connector *_con)
 				LoginClientMgr.SendMsg(tl->id, pMsg);
 				break;
 			}
-			default:
-			{
-			}
 			}
 			break;
-		}
-		default:
-		{
 		}
 		}
 	}
