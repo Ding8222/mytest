@@ -7,6 +7,7 @@
 #include "scene.h"
 #include "zlib.h"
 #include "Base64.h"
+#include "RandomPool.h"
 
 #include "ServerType.h"
 #include "ServerMsg.pb.h"
@@ -45,7 +46,7 @@ bool CPlayer::LoadData(Msg *pMsg)
 	SetLoginTime(msg.nlogintime());
 	SetMapID(msg.nmapid());
 	SetNowPos(msg.nx(), msg.ny(), msg.nz());
-	m_LastSaveTime = CTimer::GetTime();
+	m_LastSaveTime = CTimer::GetTime() + CRandomPool::GetOneLess(60);
 
 	CScene *_pScene = SceneMgr.FindScene(msg.nmapid());
 	if (!_pScene)

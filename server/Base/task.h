@@ -64,7 +64,7 @@ public:
 	 void Reset ();
 
 	 //装入一个消息
-	 void PushMsg (Msg *pMsg);
+	 bool PushMsg (Msg *pMsg);
 
 	 //获取一个消息
 	 Msg *GetMsg ();

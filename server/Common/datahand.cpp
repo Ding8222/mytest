@@ -60,7 +60,7 @@ void datahand::GetCurrentInfo(char *buf, size_t buflen)
 {
 	if (m_dbinstance)
 	{
-		snprintf(buf, buflen - 1, "task最大数量：%d，当前数量：%d\n result最大数量：%d，当前数量：%d\n", (int32)m_dbinstance->taskmaxsize(), (int32)m_dbinstance->tasksize(), (int32)m_dbinstance->resultmaxsize(), (int32)m_dbinstance->resultsize());
+		snprintf(buf, buflen - 1, "task最大数量：%d，当前数量：%d\nresult最大数量：%d，当前数量：%d\n", (int32)m_dbinstance->taskmaxsize(), (int32)m_dbinstance->tasksize(), (int32)m_dbinstance->resultmaxsize(), (int32)m_dbinstance->resultsize());
 	}
 	else
 	{

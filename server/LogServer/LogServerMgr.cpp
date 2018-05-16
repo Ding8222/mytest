@@ -59,7 +59,7 @@ bool CLogServerMgr::Init(const char *ip, int serverid, int port, int overtime)
 		return false;
 	}
 
-	if (!m_Hand->Init(10, nullptr, task_release, DoTask, DoTaskResult, nullptr))
+	if (!m_Hand->Init(20, nullptr, task_release, DoTask, DoTaskResult, nullptr))
 	{
 		RunStateError("初始化DataHand失败!");
 		return false;

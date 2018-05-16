@@ -169,7 +169,6 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int64 nClientID, int 
 			assert(nServerID);
 			assert(tail.id);
 		}
-		tail.id = nClientID;
 		iterList = &m_GameList;
 		break;
 	}

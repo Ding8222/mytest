@@ -210,9 +210,14 @@ void CDBCenterConnect::AddNewTask(Msg *pMsg, int serverid, int tasktype, bool se
 		return;
 	}
 
-	tk->SetInfo(&g_dbhand, serverid, tl->id);
-	tk->PushMsg(pMsg);
+	if (!tk->PushMsg(pMsg))
+	{
+		RunStateError("添加消息至Task失败!");
+		task_release(tk);
+		return;
+	}
 
+	tk->SetInfo(&g_dbhand, serverid, tl->id);
 	tk->SetSendToAll(sendtoall);
 	tk->SetTaskType(tasktype);
 

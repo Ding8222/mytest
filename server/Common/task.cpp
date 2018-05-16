@@ -287,12 +287,12 @@ void task::Reset ()
 }
 
 //装入一个消息
-void task::PushMsg (Msg *pMsg)
+bool task::PushMsg (Msg *pMsg)
 {
 	CheckBlockNull();
 
 	if (!m_currentforpush)
-		return;
+		return false;
 
 	char *src = (char *)pMsg;
 	int len = pMsg->GetLength();
@@ -310,7 +310,7 @@ void task::PushMsg (Msg *pMsg)
 				if (!m_currentforpush->next)
 				{
 					RunStateError("pushmsg, but create new blockbuf failed!, msg type:%d", pMsg->GetType());
-					return;
+					return false;
 				}
 			}
 			
@@ -321,6 +321,7 @@ void task::PushMsg (Msg *pMsg)
 		pushsize = m_currentforpush->pushdata(&src[writesize], len - writesize);
 		writesize += pushsize;
 	}
+	return true;
 }
 
 //获取一个消息
