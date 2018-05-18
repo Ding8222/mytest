@@ -154,6 +154,7 @@
     <ClCompile Include="LogConnecter.cpp" />
     <ClCompile Include="LuaScript.cpp" />
     <ClCompile Include="MiniDump.cpp" />
+    <ClCompile Include="MysqlCache.cpp" />
     <ClCompile Include="NetConfig.cpp" />
     <ClCompile Include="pool.c" />
     <ClCompile Include="RandomPool.cpp" />

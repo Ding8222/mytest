@@ -46,11 +46,14 @@ namespace DataBase
 
 		//是否打开
 		bool IsOpen();
+
+		int GetRowCount() { return m_num_rows; }
 	private:
 		CConnection *m_root;
 		MYSQL_RES *m_mysql_result;	//结果集
 		MYSQL_FIELD *m_fields;		//列名字数组
 		int m_num_fields;			//列数目
+		int m_num_rows;				//行数目
 
 		MYSQL_ROW m_current_row;	//当前行
 	};

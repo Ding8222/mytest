@@ -7,6 +7,7 @@
 #include "dotask.h"
 #include "datahand.h"
 #include "DBCenterConnect.h"
+#include "MysqlCache.h"
 
 #include "ServerType.h"
 #include "DBSvrType.h"
@@ -100,6 +101,12 @@ bool CDBCenterConnect::Init()
 	if (!g_dbhand.SetCharacterSet("utf8"))
 	{
 		RunStateError("设置UTF-8失败!");
+		return false;
+	}
+
+	if (!MysqlCache.Init(Config.GetDBName(), &g_dbhand))
+	{
+		RunStateError("加载Mysql缓存失败!");
 		return false;
 	}
 

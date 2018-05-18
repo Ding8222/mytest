@@ -70,12 +70,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>..\3rd\fmtlib\;..\3rd\protobuf\src\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\json\;..\3rd\fmtlib\;..\3rd\protobuf\src\;$(IncludePath)</IncludePath>
     <OutDir>..\lib\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\lib\</OutDir>
-    <IncludePath>..\3rd\fmtlib\;..\3rd\protobuf\src\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\json\;..\3rd\fmtlib\;..\3rd\protobuf\src\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -174,6 +174,7 @@
     <ClInclude Include="MainType.h" />
     <ClInclude Include="MiniDump.h" />
     <ClInclude Include="msgbase.h" />
+    <ClInclude Include="MysqlCache.h" />
     <ClInclude Include="NetConfig.h" />
     <ClInclude Include="objectpool.h" />
     <ClInclude Include="ossome.h" />

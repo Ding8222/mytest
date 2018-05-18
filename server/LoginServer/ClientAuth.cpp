@@ -184,7 +184,11 @@ void CClientAuth::SelectPlayer(CClient *cl, Msg *pMsg)
 	const std::string &account = GetAccount(cl->GetClientID());
 	if (!account.empty())
 	{
-		LoginCenterConnect.SendMsgToServer(Config.GetCenterServerID(), *pMsg, cl->GetClientID());
+		netData::SelectPlayer sendMsg;
+		_CHECK_PARSE_(pMsg, sendMsg);
+		sendMsg.set_account(account);
+
+		LoginCenterConnect.SendMsgToServer(Config.GetCenterServerID(), sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_SELECT_PLAYER, cl->GetClientID());
 	}
 	else
 		RunStateError("请求选择角色失败！没有认证！clientid：%d", cl->GetClientID());

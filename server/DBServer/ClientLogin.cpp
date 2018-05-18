@@ -10,11 +10,14 @@
 #include "task.h"
 #include "Config.h"
 #include "ServerLog.h"
+#include "MysqlCache.h"
 
 #include "ServerType.h"
 #include "LoginType.h"
 #include "Login.pb.h"
 #include "ServerMsg.pb.h"
+
+//#define _MYSQLCACHE
 
 CClientLogin::CClientLogin()
 {
@@ -39,6 +42,28 @@ void CClientLogin::ClientAuth(task *tk, Msg *pMsg)
 
 		netData::AuthRet sendMsg;
 		sendMsg.set_account(msg.account());
+#ifdef _MYSQLCACHE
+		nlohmann::json reault = MysqlCache.ExecuteSingle("account", msg.account().c_str());
+		if (reault.find("account") != reault.end())
+		{
+			// 存在账号
+			nlohmann::json sql = {
+				{ "account",msg.account() },
+				{"logintime",fmt::format("{0}",CTimer::GetTime()) }
+			};
+			if(MysqlCache.Update("account", sql))
+				sendMsg.set_ncode(netData::AuthRet::EC_SUCC);
+			else
+			{
+				RunStateError("更新账号:%s登陆时间失败！", msg.account().c_str());
+				sendMsg.set_ncode(netData::AuthRet::EC_LOGINTIME);
+			}
+		}
+		else
+		{
+			// 不存在账号
+		}
+#else
 		DataBase::CRecordset *res = dbhand->Execute(fmt::format("select * from account where account = '{0}' limit 1",
 			msg.account()).c_str());
 		if (res && res->IsOpen() && !res->IsEnd())
@@ -73,7 +98,7 @@ void CClientLogin::ClientAuth(task *tk, Msg *pMsg)
 					sendMsg.set_ncode(netData::AuthRet::EC_SUCC);
 			}
 		}
-
+#endif
 		MessagePack pk;
 		pk.Pack(&sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET);
 		tk->PushMsg(&pk);
@@ -91,7 +116,24 @@ void CClientLogin::GetPlayerList(task *tk, Msg *pMsg)
 		_CHECK_PARSE_(pMsg, msg);
 
 		netData::PlayerListRet sendMsg;
+#ifdef _MYSQLCACHE
+		std::list<std::string> filed;
+		filed.push_back("guid");
+		filed.push_back("name");
+		filed.push_back("job");
+		filed.push_back("sex");
 
+		nlohmann::json reault = MysqlCache.ExecuteSingle("playerdate", msg.account().c_str(), &filed);
+
+		netData::PlayerLite *_pInfo = sendMsg.add_list();
+		if (_pInfo)
+		{
+			_pInfo->set_nguid(reault["guid"].get<int64>());
+			_pInfo->set_sname(reault["name"]);
+			_pInfo->set_njob(reault["job"].get<int32>());
+			_pInfo->set_nsex(reault["sex"].get<int32>());
+		}
+#else
 		DataBase::CRecordset *res = dbhand->Execute(fmt::format("select * from playerdate where account = '{0}'", 
 			msg.account()).c_str());
 		if (res && res->IsOpen() && !res->IsEnd())
@@ -110,7 +152,7 @@ void CClientLogin::GetPlayerList(task *tk, Msg *pMsg)
 				res->NextRow();
 			}
 		}
-
+#endif
 		MessagePack pk;
 		pk.Pack(&sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_PLAYER_LIST_RET);
 		tk->PushMsg(&pk);
@@ -177,6 +219,33 @@ void CClientLogin::SelectPlayer(task *tk, Msg *pMsg)
 		_CHECK_PARSE_(pMsg, msg);
 
 		netData::SelectPlayerRet sendMsg;
+#ifdef _MYSQLCACHE
+		nlohmann::json reault = MysqlCache.ExecuteSingle("playerdate", msg.account().c_str());
+		if(!reault.empty())
+		{
+
+			svrData::LoadPlayerData sendMsgToGame;
+			sendMsgToGame.set_account(reault["account"]);
+			sendMsgToGame.set_name(reault["name"]);
+			sendMsgToGame.set_nguid(reault["guid"].get<int64>());
+			sendMsgToGame.set_nsex(reault["sex"].get<int32>());
+			sendMsgToGame.set_njob(reault["job"].get<int32>());
+			sendMsgToGame.set_nlevel(reault["level"].get<int32>());
+			sendMsgToGame.set_ncreatetime(reault["createtime"].get<int64>());
+			sendMsgToGame.set_nlogintime(reault["logintime"].get<int64>());
+			sendMsgToGame.set_nmapid(reault["mapid"].get<int32>());
+			sendMsgToGame.set_nx(reault["x"].get<float>());
+			sendMsgToGame.set_ny(reault["y"].get<float>());
+			sendMsgToGame.set_nz(reault["z"].get<float>());
+			sendMsgToGame.set_data(reault["data"]);
+
+
+			nlohmann::json sql = {
+				{ "account",msg.account() },
+				{ "logintime",fmt::format("{0}",CTimer::GetTime()) }
+			};
+			if (MysqlCache.Update("playerdate", sql))
+#else
 		DataBase::CRecordset *res = dbhand->Execute(fmt::format("select * from playerdate where guid = {0}", 
 			msg.nguid()).c_str());
 		if (res && res->IsOpen() && !res->IsEnd())
@@ -199,6 +268,7 @@ void CClientLogin::SelectPlayer(task *tk, Msg *pMsg)
 			res = dbhand->Execute(fmt::format("update playerdate set logintime ={0} where guid = {1}", 
 				CTimer::GetTime(), msg.nguid()).c_str());
 			if (res)
+#endif
 			{
 				MessagePack pk;
 				pk.Pack(&sendMsgToGame, SERVER_TYPE_MAIN, SVR_SUB_PLAYERDATA);

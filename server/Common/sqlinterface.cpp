@@ -28,6 +28,7 @@ CRecordset::CRecordset()
 	m_mysql_result = NULL;
 	m_fields = NULL;
 	m_num_fields = 0;
+	m_num_rows = 0;
 
 	m_current_row = NULL;
 }
@@ -46,6 +47,7 @@ void CRecordset::Reset ()
 	m_mysql_result = NULL;
 	m_fields = NULL;
 	m_num_fields = 0;
+	m_num_rows = 0;
 
 	m_current_row = NULL;
 }
@@ -60,6 +62,7 @@ void CRecordset::LoadResult (MYSQL *con, CConnection *root)
 	if (m_mysql_result)
 	{
 		//先把列名集以及列数目设置
+		m_num_rows = mysql_num_rows(m_mysql_result);
 		m_num_fields = mysql_num_fields(m_mysql_result);
 		m_fields = mysql_fetch_fields(m_mysql_result);
 

@@ -212,5 +212,8 @@
     <ClInclude Include="LuaScript.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="MysqlCache.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
