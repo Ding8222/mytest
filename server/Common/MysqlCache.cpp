@@ -7,7 +7,90 @@
 #include "Timer.h"
 #include "crosslib.h"
 
+#ifdef _WIN32
+#include <process.h>
+#include <windows.h>
+#define delaytime(v)	Sleep(v)
+#else
+#include <pthread.h>
+#define delaytime(v)	usleep((v) * 1000)
+#endif
+
 extern DataBase::CConnection g_dbhand;
+
+CDBWorkInstance::CDBWorkInstance()
+{
+	m_Run = false;
+	m_WorkFinish = false;
+	LOCK_INIT(&m_lock);
+	m_SqlQueue.clear();
+	m_TempQueue.clear();
+	m_Con = nullptr;
+}
+
+CDBWorkInstance::~CDBWorkInstance()
+{
+	Destroy();
+}
+
+bool CDBWorkInstance::Init(int32 delay, DataBase::CConnection *con)
+{
+	m_Con = con;
+	m_Run = true;
+
+	if (delay < 0)
+		m_Delay = 10;
+	else
+		m_Delay = delay;
+
+	return true;
+}
+
+void CDBWorkInstance::Destroy()
+{
+	//设置退出
+	m_Run = false;
+
+	while (!m_WorkFinish)
+	{
+		delaytime(10);
+	}
+}
+
+void CDBWorkInstance::Push(const std::string &sql)
+{
+	LOCK_LOCK(&m_lock);
+	m_SqlQueue.push_back(sql);
+	LOCK_UNLOCK(&m_lock);
+}
+
+void CDBWorkInstance::Run()
+{
+	static const int maxdelay = m_Delay;
+	int64 currenttime;
+	int64 delay;
+
+	m_WorkFinish = false;
+	while (m_Run && m_SqlQueue.empty())
+	{
+		currenttime = get_microsecond();
+
+		LOCK_LOCK(&m_lock);
+		m_TempQueue = m_SqlQueue;
+		LOCK_UNLOCK(&m_lock);
+		while (!m_TempQueue.empty())
+		{
+			const std::string &sql = m_TempQueue.front();
+			DataBase::CRecordset *res = m_Con->Execute(sql.c_str());
+			m_TempQueue.pop_front();
+		}
+
+		delay = get_microsecond() - currenttime;
+		if (delay < maxdelay)
+			delaytime(maxdelay - delay);
+	}
+	m_WorkFinish = true;
+}
 
 CMysqlCache::CMysqlCache()
 {
@@ -15,6 +98,7 @@ CMysqlCache::CMysqlCache()
 	m_Con = nullptr;
 	m_DBName.clear();
 	m_CacheData.clear();
+	m_WordInstance = nullptr;
 }
 
 CMysqlCache::~CMysqlCache()
@@ -26,6 +110,21 @@ bool CMysqlCache::Init(const std::string &dbname, DataBase::CConnection *con)
 {
 	m_DBName = dbname;
 	m_Con = con;
+
+	m_WordInstance = (CDBWorkInstance *)malloc(sizeof(CDBWorkInstance));
+	if (!m_WordInstance)
+	{
+		RunStateError("创建CDBWorkInstance内存失败!");
+		return false;
+	}
+	new(m_WordInstance) CDBWorkInstance();
+	if (!m_WordInstance->Init(10, m_Con))
+	{
+		RunStateError("初始化CDBWorkInstance失败!");
+		return false;
+	}
+	
+	StartTaskQueueThread(m_WordInstance);
 
 	if (!LoadSchema())
 	{
@@ -77,6 +176,7 @@ void CMysqlCache::Destroy()
 	m_Con = nullptr;
 	m_DBName.clear();
 	m_CacheData.clear();
+	m_WordInstance->Destroy();
 }
 
 const char *CMysqlCache::GetPrimaryKey(const std::string &tablename)
@@ -485,15 +585,7 @@ bool CMysqlCache::Insert(const std::string &tablename, nlohmann::json &fields)
 		}
 		m_CacheData[key] = temp;
 		// 同步到Mysql
-		DataBase::CRecordset *res = m_Con->Execute(fmt::format("insert into {0} ({1}) values({2})", tablename, columns, valus).c_str());
-		if (res)
-		{
-			res = m_Con->Execute("select @@IDENTITY");
-			if (!res || res->IsEnd() || !res->IsOpen())
-			{
-				m_Con->Execute("delete from playerdate where account = ''");
-			}
-		}
+		m_WordInstance->Push(fmt::format("insert into {0} ({1}) values({2})", tablename, columns, valus));
 		return true;
 	}
 
@@ -518,16 +610,34 @@ bool CMysqlCache::Update(const std::string &tablename, nlohmann::json &fields)
 		setvalues.pop_back();
 		std::string pk = m_Schema[tablename]["pk"];
 		// 同步到Mysql
-		DataBase::CRecordset *res = m_Con->Execute(fmt::format("update {0} set {1} where {2} = '{3}')", tablename, setvalues, pk, fields[pk]).c_str());
-		if (res)
-		{
-			res = m_Con->Execute("select @@IDENTITY");
-			if (!res || res->IsEnd() || !res->IsOpen())
-			{
-				m_Con->Execute("delete from playerdate where account = ''");
-			}
-		}
+		m_WordInstance->Push(fmt::format("update {0} set {1} where {2} = '{3}')", tablename, setvalues, pk, fields[pk]));
 		return true;
 	}
 	return false;
+}
+
+#ifdef WIN32
+static void thiread_ran(void *data)
+#else
+static void *thiread_ran(void *data)
+#endif
+{
+	assert(data);
+	CDBWorkInstance *instance = (CDBWorkInstance*)data;
+	instance->Run();
+#ifndef WIN32
+	return nullptr;
+#endif
+}
+
+void StartTaskQueueThread(CDBWorkInstance *instance)
+{
+	//开启逻辑线程
+#ifdef WIN32
+	_beginthread(thiread_ran, 0, instance);
+#else
+	pthread_t thandle;
+	pthread_create(&thandle, 0, thiread_ran, (void*)instance);
+#endif
+
 }

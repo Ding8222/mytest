@@ -42,6 +42,7 @@ CServerStatusMgr::CServerStatusMgr()
 	m_GameServerInfo.clear();
 	m_GateServerInfo.clear();
 	m_ServerMapInfo.clear();
+	m_GateQueue.clear();
 }
 
 CServerStatusMgr::~CServerStatusMgr()
@@ -63,6 +64,7 @@ void CServerStatusMgr::Destroy()
 	}
 	m_GateServerInfo.clear();
 	m_ServerMapInfo.clear();
+	m_GateQueue.clear();
 }
 
 void CServerStatusMgr::AddGameServer(serverinfo *info, Msg *pMsg)
@@ -142,6 +144,7 @@ void CServerStatusMgr::AddGateServer(serverinfo *info, Msg *pMsg)
 			_pInfo->nPort = msg.nport();
 
 			m_GateServerInfo[_pInfo->nServerID] = _pInfo;
+			m_GateQueue.push(_pInfo);
 			RunStateLog("服务器[%s]注册到服务器状态管理器：ID[%d]", info->GetServerName(), _pInfo->nServerID);
 		}
 	}
@@ -215,16 +218,5 @@ ServerStatusInfo *CServerStatusMgr::GetGameServerInfo(int32 mapid, int32 lineid)
 
 ServerStatusInfo *CServerStatusMgr::GetGateServerInfo()
 {
-	int32 clientcount = 9999;
-	ServerStatusInfo * gateinfo = nullptr;
-	for (auto &i : m_GateServerInfo)
-	{
-		if (i.second->nNowClient < clientcount)
-		{
-			clientcount = i.second->nNowClient;
-			gateinfo = i.second;
-		}
-	}
-	clientcount = 9999;
-	return gateinfo;
+	return m_GateQueue.pop();
 }

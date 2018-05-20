@@ -38,6 +38,38 @@ struct stServerInfo
 	int32 nServerID;
 };
 
+struct stQueue
+{
+	int32 nCurrentIndex;
+	int32 nMaxIndex;
+	std::vector<ServerStatusInfo *> vGate;
+
+	void clear()
+	{
+		nCurrentIndex = 0;
+		nMaxIndex = 0;
+		vGate.clear();
+	}
+
+	ServerStatusInfo *pop()
+	{
+		if (nMaxIndex > 0)
+		{
+			if (nCurrentIndex >= nMaxIndex)
+				nCurrentIndex = 0;
+
+			return vGate[nCurrentIndex++];
+		}
+		return nullptr;
+	}
+
+	void push(ServerStatusInfo *info)
+	{
+		vGate.push_back(info);
+		nMaxIndex = vGate.size();
+	}
+};
+
 #define ServerStatusMgr CServerStatusMgr::Instance()
 class CServerStatusMgr
 {
@@ -70,4 +102,5 @@ private:
 	std::unordered_map<int32, ServerStatusInfo *> m_GateServerInfo;
 	// <mapid,serverid>
 	std::unordered_map<int32, std::list<stServerInfo>> m_ServerMapInfo;
+	stQueue m_GateQueue;
 };

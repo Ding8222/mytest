@@ -3,6 +3,28 @@
 #include "platform_config.h"
 #include "sqlinterface.h"
 #include "json.hpp"
+#include "ossome.h"
+
+class CDBWorkInstance
+{
+public:
+	CDBWorkInstance();
+	~CDBWorkInstance();
+
+	bool Init(int32 delay, DataBase::CConnection *con);
+	void Run();
+	void Destroy();
+
+	void Push(const std::string &sql);
+private:
+	bool m_Run;
+	bool m_WorkFinish;
+	int32 m_Delay;
+	LOCK_struct m_lock;
+	std::list<std::string> m_SqlQueue;
+	std::list<std::string> m_TempQueue;
+	DataBase::CConnection *m_Con;
+};
 
 #define MysqlCache CMysqlCache::Instance()
 class CMysqlCache
@@ -52,4 +74,9 @@ private:
 	nlohmann::json m_DBTableConfig;
 	DataBase::CConnection *m_Con;
 	std::string m_DBName;
+
+private:
+	CDBWorkInstance * m_WordInstance;
 };
+
+void StartTaskQueueThread(CDBWorkInstance *instance);
