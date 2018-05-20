@@ -17,7 +17,7 @@
 #include "Login.pb.h"
 #include "ServerMsg.pb.h"
 
-//#define _MYSQLCACHE
+#define _MYSQLCACHE
 
 CClientLogin::CClientLogin()
 {
@@ -128,10 +128,10 @@ void CClientLogin::GetPlayerList(task *tk, Msg *pMsg)
 		netData::PlayerLite *_pInfo = sendMsg.add_list();
 		if (_pInfo)
 		{
-			_pInfo->set_nguid(reault["guid"].get<int64>());
+			_pInfo->set_nguid(reault["guid"]);
 			_pInfo->set_sname(reault["name"]);
-			_pInfo->set_njob(reault["job"].get<int32>());
-			_pInfo->set_nsex(reault["sex"].get<int32>());
+			_pInfo->set_njob(reault["job"]);
+			_pInfo->set_nsex(reault["sex"]);
 		}
 #else
 		DataBase::CRecordset *res = dbhand->Execute(fmt::format("select * from playerdate where account = '{0}'", 
@@ -227,16 +227,16 @@ void CClientLogin::SelectPlayer(task *tk, Msg *pMsg)
 			svrData::LoadPlayerData sendMsgToGame;
 			sendMsgToGame.set_account(reault["account"]);
 			sendMsgToGame.set_name(reault["name"]);
-			sendMsgToGame.set_nguid(reault["guid"].get<int64>());
-			sendMsgToGame.set_nsex(reault["sex"].get<int32>());
-			sendMsgToGame.set_njob(reault["job"].get<int32>());
-			sendMsgToGame.set_nlevel(reault["level"].get<int32>());
-			sendMsgToGame.set_ncreatetime(reault["createtime"].get<int64>());
-			sendMsgToGame.set_nlogintime(reault["logintime"].get<int64>());
-			sendMsgToGame.set_nmapid(reault["mapid"].get<int32>());
-			sendMsgToGame.set_nx(reault["x"].get<float>());
-			sendMsgToGame.set_ny(reault["y"].get<float>());
-			sendMsgToGame.set_nz(reault["z"].get<float>());
+			sendMsgToGame.set_nguid(reault["guid"]);
+			sendMsgToGame.set_nsex(reault["sex"]);
+			sendMsgToGame.set_njob(reault["job"]);
+			sendMsgToGame.set_nlevel(reault["level"]);
+			sendMsgToGame.set_ncreatetime(reault["createtime"]);
+			sendMsgToGame.set_nlogintime(reault["logintime"]);
+			sendMsgToGame.set_nmapid(reault["mapid"]);
+			sendMsgToGame.set_nx(reault["x"]);
+			sendMsgToGame.set_ny(reault["y"]);
+			sendMsgToGame.set_nz(reault["z"]);
 			sendMsgToGame.set_data(reault["data"]);
 
 

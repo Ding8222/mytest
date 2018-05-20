@@ -21,7 +21,7 @@ public:
 	void Destroy();
 
 	nlohmann::json ExecuteSingle(const std::string &tablename, const char *guid = nullptr, std::list<std::string> *fields = nullptr);
-	nlohmann::json ExecuteMulti(const std::string &tablename, int64 guid = 0, int64 id = 0, std::list<std::string> *fields = nullptr);
+	nlohmann::json ExecuteMulti(const std::string &tablename, const std::string &guid, int64 id = 0, std::list<std::string> *fields = nullptr);
 	bool Insert(const std::string &tablename, nlohmann::json &fields);
 	bool Update(const std::string &tablename, nlohmann::json &fields);
 private:
@@ -39,14 +39,14 @@ private:
 	// m_CacheData的key
 	const std::string MakeKey(DataBase::CRecordset *row, const std::string &key);
 	// 加载数据
-	nlohmann::json LoadData(const nlohmann::json &config, const char *guid = nullptr);
-	nlohmann::json LoadDataSingle(const std::string &tablename, const char *uid);
+	std::vector<std::unordered_map<std::string, std::string>> LoadData(const nlohmann::json &config, const char *guid = nullptr);
+	std::unordered_map<std::string, std::string> LoadDataSingle(const std::string &tablename, const char *uid);
 	nlohmann::json LoadDataMulti(const std::string &tablename, const char *uid);
 private:
 	// <tablename,tabledata(<key,set(<key,value>)>)>
 	std::unordered_map<std::string, std::unordered_map<int64, std::unordered_map<std::string*,std::string*>*>*> m_RecordMap;
 	std::unordered_map<std::string, std::unordered_map<std::string, std::string>> m_CacheData;
-	std::unordered_map<std::string, std::string> m_TeamMap;
+	std::unordered_map<std::string, std::string> m_TempMap;
 	// 表结构
 	nlohmann::json m_Schema;
 	nlohmann::json m_DBTableConfig;

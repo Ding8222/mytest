@@ -217,13 +217,13 @@ const std::string CMysqlCache::MakeKey(DataBase::CRecordset *row,const std::stri
 	return cachekey;
 }
 
-nlohmann::json CMysqlCache::LoadData(const nlohmann::json &config, const char *guid)
+std::vector<std::unordered_map<std::string, std::string>> CMysqlCache::LoadData(const nlohmann::json &config, const char *guid)
 {
 	std::string tablename = config["table_name"];
 	std::string pk = m_Schema[tablename]["pk"];
 	int32 offset = 0;
 	std::string sql;
-	nlohmann::json data;
+	std::vector<std::unordered_map<std::string, std::string>> data;
 
 	while (1)
 	{
@@ -258,19 +258,31 @@ nlohmann::json CMysqlCache::LoadData(const nlohmann::json &config, const char *g
 			{
 				// 将获取的数据添加到缓存中
 				std::string key = fmt::format("{0}:{1}", tablename,MakeKey(res, config["cache_key"]));
-				m_TeamMap.clear();
+				m_TempMap.clear();
 				for (auto &i : m_Schema[tablename]["fields"])
 				{
 					std::string field = i.get<std::string>();
-					m_TeamMap[field] = res->GetChar(field.c_str());
+					m_TempMap[field] = res->GetChar(field.c_str());
 				}
-				m_CacheData[key] = m_TeamMap;
+				m_CacheData[key] = m_TempMap;
 				// 对需要排序的数据插入有序集合
-				if (config.find("index_key") == config.end())
+				if (config.find("index_key") != config.end())
 				{
-
+					std::string indexkey = fmt::format("{0}:index:{1}", tablename, MakeKey(res, config["index_key"]));
+					auto iter = m_CacheData.find(indexkey);
+					if (iter != m_CacheData.end())
+					{
+						std::unordered_map<std::string, std::string> &temp = iter->second;
+						temp.insert(std::make_pair(key, ""));
+					}
+					else
+					{
+						std::unordered_map<std::string, std::string> temp;
+						temp.insert(std::make_pair(key, ""));
+						m_CacheData[indexkey] = temp;
+					}
 				}
-				data += m_TeamMap;
+				data.push_back(m_TempMap);
 				res->NextRow();
 			}
 		}
@@ -283,55 +295,54 @@ nlohmann::json CMysqlCache::LoadData(const nlohmann::json &config, const char *g
 		offset += 1000;
 	}
 
-	return std::move(data);
+	return data;
 }
 
-nlohmann::json CMysqlCache::LoadDataSingle(const std::string &tablename, const char *uid)
+std::unordered_map<std::string, std::string> CMysqlCache::LoadDataSingle(const std::string &tablename, const char *uid)
 {
-	return std::move(LoadData(m_DBTableConfig[tablename], uid));
+	std::vector<std::unordered_map<std::string, std::string>> data = LoadData(m_DBTableConfig[tablename], uid);
+	assert(data.size() == 1);
+	return data[0];
 }
 
 nlohmann::json CMysqlCache::LoadDataMulti(const std::string &tablename, const char *uid)
 {
 	nlohmann::json data;
-	nlohmann::json t = LoadData(m_DBTableConfig[tablename], uid);
+	std::vector<std::unordered_map<std::string, std::string>> t = LoadData(m_DBTableConfig[tablename], uid);
 	std::string pk = m_Schema[tablename]["pk"];
 	for (auto &i : t)
 	{
-		data[i[pk].get<std::string>()] = i;
+		data[i[pk]] = i;
 	}
-	return std::move(data);
+	return data;
 }
 
 nlohmann::json CMysqlCache::ExecuteSingle(const std::string &tablename, const char *guid, std::list<std::string> *fields)
 {
 	nlohmann::json result;
 	std::string key = fmt::format("{0}:{1}", tablename, guid);
-	if (fields)
+
+	auto iter = m_CacheData.find(key);
+	if (iter != m_CacheData.end())
 	{
-		auto iter = m_CacheData.find(key);
-		if (iter != m_CacheData.end())
+		std::unordered_map<std::string, std::string> &temp = iter->second;
+		if (fields)
 		{
-			std::unordered_map<std::string, std::string> &temp = iter->second;
 			for (auto &i : *fields)
 			{
 				result[i] = temp[i];
 			}
 		}
-	}
-	else
-	{
-		auto iter = m_CacheData.find(key);
-		if (iter != m_CacheData.end())
+		else
 		{
-			result = iter->second;
+			result = temp;
 		}
 	}
 
 	// 没有找到结果，到数据库中查找
 	if (result.empty())
 	{
-		nlohmann::json t = LoadDataSingle(tablename, guid);
+		std::unordered_map<std::string, std::string> t = LoadDataSingle(tablename, guid);
 		if (fields && !t.empty())
 		{
 			for (auto &i : *fields)
@@ -340,18 +351,110 @@ nlohmann::json CMysqlCache::ExecuteSingle(const std::string &tablename, const ch
 			}
 		}
 		else
-			result = std::move(t);
+			result = t;
 	}
 
 	ConvertRecord(tablename, result);
 
-	return std::move(result);
+	return result;
 }
 
-nlohmann::json CMysqlCache::ExecuteMulti(const std::string &tablename, int64 guid, int64 id, std::list<std::string> *fields)
+nlohmann::json CMysqlCache::ExecuteMulti(const std::string &tablename, const std::string &guid, int64 id, std::list<std::string> *fields)
 {
 	nlohmann::json result;
+	std::string key = fmt::format("{0}:index:{1}", tablename, guid);
 
+	if (id)
+	{
+		// 根据ID获取一条数据
+		auto iter = m_CacheData.find(fmt::format("{0}:{1}", tablename, id));
+		if (iter != m_CacheData.end())
+		{
+			std::unordered_map<std::string, std::string> &temp = iter->second;
+			if (fields)
+			{
+				for (auto &i : *fields)
+				{
+					result[i] = temp[i];
+				}
+			}
+			else
+			{
+				result = temp;
+			}
+
+			ConvertRecord(tablename, result);
+		}
+	}
+	else
+	{
+		auto iter = m_CacheData.find(key);
+		if (iter != m_CacheData.end())
+		{
+			// 获取全部数据
+			std::unordered_map<std::string, std::string> &temp = iter->second;
+			for (auto &i : temp)
+			{
+				auto iter = m_CacheData.find(fmt::format("{0}:{1}", tablename, i.first));
+				if (iter != m_CacheData.end())
+				{
+					std::unordered_map<std::string, std::string> &temp = iter->second;
+					if (fields)
+					{
+						for (auto &j : *fields)
+						{
+							result[i.first][j] = temp[j];
+						}
+					}
+					else
+					{
+						result[i.first] = temp;
+						ConvertRecord(tablename, result[i.first]);
+					}
+				}
+			}
+		}
+	}
+
+	// 没有找到结果，到数据库中查找
+	if (result.empty())
+	{
+		nlohmann::json t = LoadDataMulti(tablename, guid.c_str());
+		if (id)
+		{
+			if (fields)
+			{
+				for (auto &i : *fields)
+				{
+					result[i] = t[id][i];
+				}
+			}
+			else
+			{
+				result = t[id];
+			}
+		}
+		else
+		{
+			if (fields)
+			{
+				for (nlohmann::json::iterator iter = t.begin(); iter != t.end(); ++iter)
+				{
+					std::string pk = iter.key();
+					result[pk] = {};
+					for (auto &j : *fields)
+					{
+						result[pk][j] = iter.value()[j];
+					}
+				}
+			}
+			else
+			{
+				result = t;
+			}
+		}
+	}
+	
 	return result;
 }
 
@@ -363,12 +466,34 @@ bool CMysqlCache::Insert(const std::string &tablename, nlohmann::json &fields)
 	auto iter = m_CacheData.find(key);
 	if (iter == m_CacheData.end())
 	{
+		std::string columns;
+		std::string valus;
 		std::unordered_map<std::string, std::string> temp;
 		for (nlohmann::json::iterator iter = fields.begin(); iter != fields.end(); ++iter)
 		{
 			temp[iter.key()] = iter.value().get<std::string>();
+			if (columns.empty())
+			{
+				columns = iter.key();
+				valus = iter.value().get<std::string>();
+			}
+			else
+			{
+				columns += "," + iter.key();
+				valus += "," + iter.value().get<std::string>();
+			}
 		}
 		m_CacheData[key] = temp;
+		// 同步到Mysql
+		DataBase::CRecordset *res = m_Con->Execute(fmt::format("insert into {0} ({1}) values({2})", tablename, columns, valus).c_str());
+		if (res)
+		{
+			res = m_Con->Execute("select @@IDENTITY");
+			if (!res || res->IsEnd() || !res->IsOpen())
+			{
+				m_Con->Execute("delete from playerdate where account = ''");
+			}
+		}
 		return true;
 	}
 
@@ -383,10 +508,24 @@ bool CMysqlCache::Update(const std::string &tablename, nlohmann::json &fields)
 	auto iter = m_CacheData.find(key);
 	if (iter != m_CacheData.end())
 	{
+		std::string setvalues;
 		std::unordered_map<std::string, std::string> &temp = iter->second;
 		for (nlohmann::json::iterator iter = fields.begin(); iter != fields.end(); ++iter)
 		{
 			temp[iter.key()] = iter.value().get<std::string>();
+			setvalues += iter.key() + "='" + iter.value().get<std::string>() + "',";
+		}
+		setvalues.pop_back();
+		std::string pk = m_Schema[tablename]["pk"];
+		// 同步到Mysql
+		DataBase::CRecordset *res = m_Con->Execute(fmt::format("update {0} set {1} where {2} = '{3}')", tablename, setvalues, pk, fields[pk]).c_str());
+		if (res)
+		{
+			res = m_Con->Execute("select @@IDENTITY");
+			if (!res || res->IsEnd() || !res->IsOpen())
+			{
+				m_Con->Execute("delete from playerdate where account = ''");
+			}
 		}
 		return true;
 	}
