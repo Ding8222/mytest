@@ -1,11 +1,11 @@
-﻿
-#include "task.h"
+﻿#include "task.h"
 #include "msgbase.h"
 #include "ProcessMsg.h"
 #include "GlobalDefine.h"
 #include "Timer.h"
 #include "fmt/ostream.h"
 #include "ServerLog.h"
+#include "DBCache.h"
 
 #include "LoginType.h"
 #include "ServerType.h"
@@ -41,13 +41,19 @@ void ProcessServerMsg(task *tk, Msg *pMsg)
 		svrData::LoadPlayerData msg;
 		_CHECK_PARSE_(pMsg, msg);
 
-		DataBase::CConnection *dbhand = tk->GetDBHand();
+		CDBCache *dbhand = tk->GetCacheDBHand();
 		if (dbhand)
 		{
-			DataBase::CRecordset *res = dbhand->Execute(
-				fmt::format("update playerdate set level = {0},mapid = {1},x = {2},y = {3},z = {4},data = '{5}' where guid = {6}",
-					msg.nlevel(), msg.nmapid(), msg.nx(), msg.ny(), msg.nz(), msg.data(), msg.nguid()).c_str());
-			if (res)
+			nlohmann::json sql = {
+				{ "guid",fmt::format("{0}", msg.nguid()) },
+				{ "level",fmt::format("{0}",msg.nlevel()) },
+				{ "mapid",fmt::format("{0}",msg.nmapid()) },
+				{ "x",fmt::format("{0}",msg.nx()) },
+				{ "y",fmt::format("{0}",msg.ny()) },
+				{ "z",fmt::format("{0}",msg.nz()) },
+				{ "data",msg.data() },
+			};
+			if (dbhand->Update("playerdate", sql))
 			{
 				RunStateLog("玩家数据保存成功！guid：%I64d", msg.nguid());
 			}

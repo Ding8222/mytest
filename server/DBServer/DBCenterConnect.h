@@ -38,4 +38,3 @@ private:
 	datahand * m_Hand;
 };
 
-extern DataBase::CConnection g_dbhand;

@@ -212,7 +212,7 @@
     <ClInclude Include="LuaScript.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="MysqlCache.h">
+    <ClInclude Include="DBCache.h">
       <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>

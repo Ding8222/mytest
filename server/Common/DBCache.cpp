@@ -1,7 +1,5 @@
 ﻿#include <list>
-#include <sstream>
-#include <iostream>
-#include "MysqlCache.h"
+#include "DBCache.h"
 #include "fmt/ostream.h"
 #include "ServerLog.h"
 #include "Timer.h"
@@ -16,16 +14,14 @@
 #define delaytime(v)	usleep((v) * 1000)
 #endif
 
-extern DataBase::CConnection g_dbhand;
-
 CDBWorkInstance::CDBWorkInstance()
 {
 	m_Run = false;
 	m_WorkFinish = false;
+	m_Delay = 0;
 	LOCK_INIT(&m_lock);
 	m_SqlQueue.clear();
 	m_TempQueue.clear();
-	m_Con = nullptr;
 }
 
 CDBWorkInstance::~CDBWorkInstance()
@@ -33,9 +29,25 @@ CDBWorkInstance::~CDBWorkInstance()
 	Destroy();
 }
 
-bool CDBWorkInstance::Init(int32 delay, DataBase::CConnection *con)
+bool CDBWorkInstance::Init(int32 delay, const char* dbname, const char *username, const char* password, const char* ipstring, bool opensqllog)
 {
-	m_Con = con;
+	m_Con.SetLogDirectory("log_log/DBServer_Log/write_dbhand_log");
+	m_Con.SetEnableLog(opensqllog);
+	if (!m_Con.Open(dbname,
+		username,
+		password,
+		ipstring))
+	{
+		RunStateError("连接数据库失败!");
+		return false;
+	}
+
+	if (!m_Con.SetCharacterSet("utf8"))
+	{
+		RunStateError("设置UTF-8失败!");
+		return false;
+	}
+
 	m_Run = true;
 
 	if (delay < 0)
@@ -55,6 +67,9 @@ void CDBWorkInstance::Destroy()
 	{
 		delaytime(10);
 	}
+	m_SqlQueue.clear();
+	m_TempQueue.clear();
+	LOCK_DELETE(&m_lock);
 }
 
 void CDBWorkInstance::Push(const std::string &sql)
@@ -71,20 +86,21 @@ void CDBWorkInstance::Run()
 	int64 delay;
 
 	m_WorkFinish = false;
-	while (m_Run && m_SqlQueue.empty())
+	while (m_Run || !m_SqlQueue.empty())
 	{
 		currenttime = get_microsecond();
 
 		LOCK_LOCK(&m_lock);
 		m_TempQueue = m_SqlQueue;
+		m_SqlQueue.clear();
 		LOCK_UNLOCK(&m_lock);
+
 		while (!m_TempQueue.empty())
 		{
 			const std::string &sql = m_TempQueue.front();
-			DataBase::CRecordset *res = m_Con->Execute(sql.c_str());
+			DataBase::CRecordset *res = m_Con.Execute(sql.c_str());
 			m_TempQueue.pop_front();
 		}
-
 		delay = get_microsecond() - currenttime;
 		if (delay < maxdelay)
 			delaytime(maxdelay - delay);
@@ -92,39 +108,60 @@ void CDBWorkInstance::Run()
 	m_WorkFinish = true;
 }
 
-CMysqlCache::CMysqlCache()
+CDBCache::CDBCache()
 {
-	m_Schema.clear();
-	m_Con = nullptr;
-	m_DBName.clear();
 	m_CacheData.clear();
-	m_WordInstance = nullptr;
+	m_TempMap.clear();
+	m_Schema.clear();
+	m_DBTableConfig.clear();
+	m_DBName.clear();
+	m_WorkInstance = nullptr;
 }
 
-CMysqlCache::~CMysqlCache()
+CDBCache::~CDBCache()
 {
 	Destroy();
 }
 
-bool CMysqlCache::Init(const std::string &dbname, DataBase::CConnection *con)
+bool CDBCache::Init(const char* dbname, const char *username, const char* password, const char* ipstring, bool opensqllog)
 {
 	m_DBName = dbname;
-	m_Con = con;
 
-	m_WordInstance = (CDBWorkInstance *)malloc(sizeof(CDBWorkInstance));
-	if (!m_WordInstance)
+	m_Con.SetLogDirectory("log_log/DBServer_Log/read_dbhand_log");
+	m_Con.SetEnableLog(opensqllog);
+	if (!m_Con.Open(dbname,
+		username,
+		password,
+		ipstring))
+	{
+		RunStateError("连接数据库失败!");
+		return false;
+	}
+
+	if (!m_Con.SetCharacterSet("utf8"))
+	{
+		RunStateError("设置UTF-8失败!");
+		return false;
+	}
+
+	m_WorkInstance = (CDBWorkInstance *)malloc(sizeof(CDBWorkInstance));
+	if (!m_WorkInstance)
 	{
 		RunStateError("创建CDBWorkInstance内存失败!");
 		return false;
 	}
-	new(m_WordInstance) CDBWorkInstance();
-	if (!m_WordInstance->Init(10, m_Con))
+	new(m_WorkInstance) CDBWorkInstance();
+	if (!m_WorkInstance->Init(10, dbname,
+		username,
+		password,
+		ipstring,
+		opensqllog))
 	{
 		RunStateError("初始化CDBWorkInstance失败!");
 		return false;
 	}
 	
-	StartTaskQueueThread(m_WordInstance);
+	StartTaskQueueThread(m_WorkInstance);
 
 	if (!LoadSchema())
 	{
@@ -139,49 +176,43 @@ bool CMysqlCache::Init(const std::string &dbname, DataBase::CConnection *con)
 			{
 				{ "table_name","account" },
 				{ "cache_key","account" },
-			}		
+			}
 		},
 		{ "playerdate" ,
 			{
 				{ "table_name","playerdate" },
-				{ "cache_key","account" },
+				{ "cache_key","guid" },
+				{ "index_key","account" },
 			}
 		}
 	};
 
-	CTimer::UpdateTime();
-	int64 starttime = CTimer::GetTime();
+	int64 time = get_millisecond();
+
 	LoadData(m_DBTableConfig["account"]);
 	LoadData(m_DBTableConfig["playerdate"]);
 
-	CTimer::UpdateTime();
-	RunStateLog("加载Mysql耗时：%d秒", CTimer::GetTime() - starttime);
-
-	int64 time = get_millisecond();
-
-	nlohmann::json reault = ExecuteSingle("account","RoBot_3692");
-
-	RunStateLog("查找耗时：%d ms", get_millisecond() - time);
-
-	time = get_millisecond();
-	DataBase::CRecordset *res = m_Con->Execute(fmt::format("select * from account where account = '{0}' limit 1","RoBot_3692").c_str());
-	RunStateLog("查找2耗时：%d ms", get_millisecond() - time);
-
+	RunStateLog("加载数据库耗时：%d ms", get_millisecond() - time);
 	return true;
 }
 
-void CMysqlCache::Destroy()
+void CDBCache::Destroy()
 {
-	m_Schema.clear();
-	m_Con = nullptr;
-	m_DBName.clear();
 	m_CacheData.clear();
-	m_WordInstance->Destroy();
+	m_TempMap.clear();
+	m_Schema.clear();
+	m_DBTableConfig.clear();
+	m_DBName.clear();
+	if (m_WorkInstance)
+	{
+		m_WorkInstance->Destroy();
+	}
+	m_WorkInstance = nullptr;
 }
 
-const char *CMysqlCache::GetPrimaryKey(const std::string &tablename)
+const char *CDBCache::GetPrimaryKey(const std::string &tablename)
 {
-	DataBase::CRecordset *res = m_Con->Execute(
+	DataBase::CRecordset *res = m_Con.Execute(
 		fmt::format("select k.column_name\
 			from information_schema.table_constraints t\
 			join information_schema.key_column_usage k\
@@ -197,10 +228,10 @@ const char *CMysqlCache::GetPrimaryKey(const std::string &tablename)
 	return nullptr;
 }
 
-std::list<std::string> CMysqlCache::GetFields(const std::string &tablename)
+std::list<std::string> CDBCache::GetFields(const std::string &tablename)
 {
 	std::list<std::string> test;
-	DataBase::CRecordset *res = m_Con->Execute(
+	DataBase::CRecordset *res = m_Con.Execute(
 		fmt::format("select column_name from information_schema.columns where table_schema = '{0}' and table_name = '{1}'",
 			m_DBName, tablename).c_str());
 	if (res && res->IsOpen() && !res->IsEnd())
@@ -214,22 +245,22 @@ std::list<std::string> CMysqlCache::GetFields(const std::string &tablename)
 	return test;
 }
 
-const char *CMysqlCache::GetFieldType(const std::string &tablename, const std::string &field)
+const char *CDBCache::GetFieldType(const std::string &tablename, const std::string &field)
 {
-	DataBase::CRecordset *res = m_Con->Execute(
+	DataBase::CRecordset *res = m_Con.Execute(
 		fmt::format("select data_type from information_schema.columns where table_schema='{0}' and table_name='{1}' and column_name='{2}'",
 			m_DBName, tablename, field).c_str());
 	if (res && res->IsOpen() && !res->IsEnd())
 	{
 		return res->GetChar("data_type");
 	}
-	return nullptr;
+	return "";
 }
 
-bool CMysqlCache::LoadSchema()
+bool CDBCache::LoadSchema()
 {
 	std::list<std::string> tablename;
-	DataBase::CRecordset *res = m_Con->Execute(
+	DataBase::CRecordset *res = m_Con.Execute(
 		fmt::format("select table_name from information_schema.tables where table_schema='{0}'",
 			m_DBName).c_str());
 	if (res && res->IsOpen() && !res->IsEnd())
@@ -248,12 +279,12 @@ bool CMysqlCache::LoadSchema()
 		m_Schema[i]["fields"] = {};
 		m_Schema[i]["fieldtype"] = {};
 		m_Schema[i]["pk"] = GetPrimaryKey(i);
-
 		std::list<std::string> fields = GetFields(i);
 		m_Schema[i]["fields"] = fields;
 		for (auto &j : fields)
 		{
-			std::string fieldtype = GetFieldType(i, j);
+			std::string fieldtype;
+			fieldtype = GetFieldType(i, j);
 			if (fieldtype == "float")
 			{
 				m_Schema[i]["fieldtype"][j] = "float";
@@ -283,7 +314,7 @@ bool CMysqlCache::LoadSchema()
 	return true;
 }
 
-void CMysqlCache::ConvertRecord(const std::string &tablename, nlohmann::json &t)
+void CDBCache::ConvertRecord(const std::string &tablename, nlohmann::json &t)
 {
 	for (nlohmann::json::iterator iter = t.begin(); iter != t.end(); ++iter)
 	{
@@ -309,15 +340,18 @@ void CMysqlCache::ConvertRecord(const std::string &tablename, nlohmann::json &t)
 	}
 }
 
-const std::string CMysqlCache::MakeKey(DataBase::CRecordset *row,const std::string &key)
+const std::string CDBCache::MakeKey(std::unordered_map<std::string, std::string> &fields,const std::string &key)
 {
 	std::string cachekey;
-	cachekey = row->GetChar(key.c_str());
+
+	std::unordered_map<std::string, std::string>::iterator iter = fields.find(key);
+	if (iter != fields.end())
+		cachekey = iter->second;
 
 	return cachekey;
 }
 
-std::vector<std::unordered_map<std::string, std::string>> CMysqlCache::LoadData(const nlohmann::json &config, const char *guid)
+std::vector<std::unordered_map<std::string, std::string>> CDBCache::LoadData(const nlohmann::json &config, const char *guid)
 {
 	std::string tablename = config["table_name"];
 	std::string pk = m_Schema[tablename]["pk"];
@@ -331,11 +365,11 @@ std::vector<std::unordered_map<std::string, std::string>> CMysqlCache::LoadData(
 		{
 			if (config.find("columns") == config.end())
 			{
-				sql = fmt::format("select * from {0} where account = {1} order by {2} asc limit {3}, 1000", tablename, guid, pk, offset);
+				sql = fmt::format("select * from {0} where account = '{1}' order by {2} asc limit {3}, 1000", tablename, guid, pk, offset);
 			}
 			else
 			{
-				sql = fmt::format("select {0} from {1} where account = {2} order by {3} asc limit {4}, 1000", config["columns"], tablename, guid, pk, offset);
+				sql = fmt::format("select {0} from {1} where account = '{2}' order by {3} asc limit {4}, 1000", config["columns"], tablename, guid, pk, offset);
 			}
 		}
 		else
@@ -350,25 +384,24 @@ std::vector<std::unordered_map<std::string, std::string>> CMysqlCache::LoadData(
 			}
 		}
 
-		DataBase::CRecordset *res = m_Con->Execute(sql.c_str());
+		DataBase::CRecordset *res = m_Con.Execute(sql.c_str());
 		if (res && res->IsOpen() && !res->IsEnd())
 		{
 			// 查询到的信息
 			while (!res->IsEnd())
 			{
 				// 将获取的数据添加到缓存中
-				std::string key = fmt::format("{0}:{1}", tablename,MakeKey(res, config["cache_key"]));
-				m_TempMap.clear();
 				for (auto &i : m_Schema[tablename]["fields"])
 				{
 					std::string field = i.get<std::string>();
 					m_TempMap[field] = res->GetChar(field.c_str());
 				}
+				std::string key = fmt::format("{0}:{1}", tablename, MakeKey(m_TempMap, config["cache_key"]));
 				m_CacheData[key] = m_TempMap;
 				// 对需要排序的数据插入有序集合
 				if (config.find("index_key") != config.end())
 				{
-					std::string indexkey = fmt::format("{0}:index:{1}", tablename, MakeKey(res, config["index_key"]));
+					std::string indexkey = fmt::format("{0}:index:{1}", tablename, MakeKey(m_TempMap, config["index_key"]));
 					auto iter = m_CacheData.find(indexkey);
 					if (iter != m_CacheData.end())
 					{
@@ -383,6 +416,7 @@ std::vector<std::unordered_map<std::string, std::string>> CMysqlCache::LoadData(
 					}
 				}
 				data.push_back(m_TempMap);
+				m_TempMap.clear();
 				res->NextRow();
 			}
 		}
@@ -398,14 +432,16 @@ std::vector<std::unordered_map<std::string, std::string>> CMysqlCache::LoadData(
 	return data;
 }
 
-std::unordered_map<std::string, std::string> CMysqlCache::LoadDataSingle(const std::string &tablename, const char *uid)
+std::unordered_map<std::string, std::string> *CDBCache::LoadDataSingle(const std::string &tablename, const char *uid)
 {
 	std::vector<std::unordered_map<std::string, std::string>> data = LoadData(m_DBTableConfig[tablename], uid);
-	assert(data.size() == 1);
-	return data[0];
+	if (data.size() >= 1)
+		return &(data[0]);
+	else
+		return nullptr;
 }
 
-nlohmann::json CMysqlCache::LoadDataMulti(const std::string &tablename, const char *uid)
+nlohmann::json CDBCache::LoadDataMulti(const std::string &tablename, const char *uid)
 {
 	nlohmann::json data;
 	std::vector<std::unordered_map<std::string, std::string>> t = LoadData(m_DBTableConfig[tablename], uid);
@@ -417,7 +453,7 @@ nlohmann::json CMysqlCache::LoadDataMulti(const std::string &tablename, const ch
 	return data;
 }
 
-nlohmann::json CMysqlCache::ExecuteSingle(const std::string &tablename, const char *guid, std::list<std::string> *fields)
+nlohmann::json CDBCache::ExecuteSingle(const std::string &tablename, const char *guid, std::list<std::string> *fields)
 {
 	nlohmann::json result;
 	std::string key = fmt::format("{0}:{1}", tablename, guid);
@@ -442,16 +478,19 @@ nlohmann::json CMysqlCache::ExecuteSingle(const std::string &tablename, const ch
 	// 没有找到结果，到数据库中查找
 	if (result.empty())
 	{
-		std::unordered_map<std::string, std::string> t = LoadDataSingle(tablename, guid);
-		if (fields && !t.empty())
+		std::unordered_map<std::string, std::string> *t = LoadDataSingle(tablename, guid);
+		if (t)
 		{
-			for (auto &i : *fields)
+			if (fields && !(*t).empty())
 			{
-				result[i] = t[i];
+				for (auto &i : *fields)
+				{
+					result[i] = (*t)[i];
+				}
 			}
+			else
+				result = (*t);
 		}
-		else
-			result = t;
 	}
 
 	ConvertRecord(tablename, result);
@@ -459,7 +498,7 @@ nlohmann::json CMysqlCache::ExecuteSingle(const std::string &tablename, const ch
 	return result;
 }
 
-nlohmann::json CMysqlCache::ExecuteMulti(const std::string &tablename, const std::string &guid, int64 id, std::list<std::string> *fields)
+nlohmann::json CDBCache::ExecuteMulti(const std::string &tablename, const std::string &guid, int64 id, std::list<std::string> *fields)
 {
 	nlohmann::json result;
 	std::string key = fmt::format("{0}:index:{1}", tablename, guid);
@@ -495,7 +534,7 @@ nlohmann::json CMysqlCache::ExecuteMulti(const std::string &tablename, const std
 			std::unordered_map<std::string, std::string> &temp = iter->second;
 			for (auto &i : temp)
 			{
-				auto iter = m_CacheData.find(fmt::format("{0}:{1}", tablename, i.first));
+				auto iter = m_CacheData.find(i.first);
 				if (iter != m_CacheData.end())
 				{
 					std::unordered_map<std::string, std::string> &temp = iter->second;
@@ -509,8 +548,8 @@ nlohmann::json CMysqlCache::ExecuteMulti(const std::string &tablename, const std
 					else
 					{
 						result[i.first] = temp;
-						ConvertRecord(tablename, result[i.first]);
 					}
+					ConvertRecord(tablename, result[i.first]);
 				}
 			}
 		}
@@ -550,7 +589,7 @@ nlohmann::json CMysqlCache::ExecuteMulti(const std::string &tablename, const std
 			}
 			else
 			{
-				result = t;
+				result = std::move(t);
 			}
 		}
 	}
@@ -558,7 +597,7 @@ nlohmann::json CMysqlCache::ExecuteMulti(const std::string &tablename, const std
 	return result;
 }
 
-bool CMysqlCache::Insert(const std::string &tablename, nlohmann::json &fields)
+bool CDBCache::Insert(const std::string &tablename, nlohmann::json &fields)
 {
 	nlohmann::json config = m_DBTableConfig[tablename];
 	std::string key = fmt::format("{0}:{1}", tablename, fields[config["cache_key"].get<std::string>()].get<std::string>());
@@ -575,24 +614,41 @@ bool CMysqlCache::Insert(const std::string &tablename, nlohmann::json &fields)
 			if (columns.empty())
 			{
 				columns = iter.key();
-				valus = iter.value().get<std::string>();
+				valus = "'" + iter.value().get<std::string>() + "'";
 			}
 			else
 			{
 				columns += "," + iter.key();
-				valus += "," + iter.value().get<std::string>();
+				valus += ",";
+				valus += "'" + iter.value().get<std::string>() + "'";
 			}
 		}
 		m_CacheData[key] = temp;
-		// 同步到Mysql
-		m_WordInstance->Push(fmt::format("insert into {0} ({1}) values({2})", tablename, columns, valus));
+		if (config.find("index_key") != config.end())
+		{
+			std::string indexkey = fmt::format("{0}:index:{1}", tablename, MakeKey(temp, config["index_key"]));
+			auto iter = m_CacheData.find(indexkey);
+			if (iter != m_CacheData.end())
+			{
+				std::unordered_map<std::string, std::string> &temp = iter->second;
+				temp.insert(std::make_pair(key, ""));
+			}
+			else
+			{
+				std::unordered_map<std::string, std::string> temp;
+				temp.insert(std::make_pair(key, ""));
+				m_CacheData[indexkey] = temp;
+			}
+		}
+		// 同步到数据库
+		m_WorkInstance->Push(fmt::format("insert into {0} ({1}) values({2})", tablename, columns, valus));
 		return true;
 	}
 
 	return false;
 }
 
-bool CMysqlCache::Update(const std::string &tablename, nlohmann::json &fields)
+bool CDBCache::Update(const std::string &tablename, nlohmann::json &fields)
 {
 	nlohmann::json config = m_DBTableConfig[tablename];
 	std::string key = fmt::format("{0}:{1}", tablename, fields[config["cache_key"].get<std::string>()].get<std::string>());
@@ -604,13 +660,16 @@ bool CMysqlCache::Update(const std::string &tablename, nlohmann::json &fields)
 		std::unordered_map<std::string, std::string> &temp = iter->second;
 		for (nlohmann::json::iterator iter = fields.begin(); iter != fields.end(); ++iter)
 		{
+			if (iter.key() == config["cache_key"].get<std::string>())
+				continue;
+
 			temp[iter.key()] = iter.value().get<std::string>();
 			setvalues += iter.key() + "='" + iter.value().get<std::string>() + "',";
 		}
 		setvalues.pop_back();
 		std::string pk = m_Schema[tablename]["pk"];
-		// 同步到Mysql
-		m_WordInstance->Push(fmt::format("update {0} set {1} where {2} = '{3}')", tablename, setvalues, pk, fields[pk]));
+		// 同步到数据库
+		m_WorkInstance->Push(fmt::format("update {0} set {1} where {2} = '{3}'", tablename, setvalues, pk, fields[pk].get<std::string>()));
 		return true;
 	}
 	return false;

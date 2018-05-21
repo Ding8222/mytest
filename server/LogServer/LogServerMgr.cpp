@@ -81,7 +81,7 @@ bool CLogServerMgr::Init(const char *ip, int serverid, int port, int overtime)
 		RunStateError("设置UTF-8失败!");
 		return false;
 	}
-
+	
 	return CServerMgr::Init(ip, serverid, port, overtime);
 }
 

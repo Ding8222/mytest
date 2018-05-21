@@ -10,14 +10,12 @@
 #include "task.h"
 #include "Config.h"
 #include "ServerLog.h"
-#include "MysqlCache.h"
+#include "DBCache.h"
 
 #include "ServerType.h"
 #include "LoginType.h"
 #include "Login.pb.h"
 #include "ServerMsg.pb.h"
-
-#define _MYSQLCACHE
 
 CClientLogin::CClientLogin()
 {
@@ -34,7 +32,7 @@ void CClientLogin::Destroy()
 
 void CClientLogin::ClientAuth(task *tk, Msg *pMsg)
 {
-	DataBase::CConnection *dbhand = tk->GetDBHand();
+	CDBCache *dbhand = tk->GetCacheDBHand();
 	if (dbhand)
 	{
 		netData::Auth msg;
@@ -42,8 +40,9 @@ void CClientLogin::ClientAuth(task *tk, Msg *pMsg)
 
 		netData::AuthRet sendMsg;
 		sendMsg.set_account(msg.account());
-#ifdef _MYSQLCACHE
-		nlohmann::json reault = MysqlCache.ExecuteSingle("account", msg.account().c_str());
+
+		const char *account = msg.account().c_str();
+		nlohmann::json reault = dbhand->ExecuteSingle("account", account);
 		if (reault.find("account") != reault.end())
 		{
 			// 存在账号
@@ -51,54 +50,32 @@ void CClientLogin::ClientAuth(task *tk, Msg *pMsg)
 				{ "account",msg.account() },
 				{"logintime",fmt::format("{0}",CTimer::GetTime()) }
 			};
-			if(MysqlCache.Update("account", sql))
+			if(dbhand->Update("account", sql))
 				sendMsg.set_ncode(netData::AuthRet::EC_SUCC);
 			else
 			{
-				RunStateError("更新账号:%s登陆时间失败！", msg.account().c_str());
-				sendMsg.set_ncode(netData::AuthRet::EC_LOGINTIME);
-			}
-		}
-		else
-		{
-			// 不存在账号
-		}
-#else
-		DataBase::CRecordset *res = dbhand->Execute(fmt::format("select * from account where account = '{0}' limit 1",
-			msg.account()).c_str());
-		if (res && res->IsOpen() && !res->IsEnd())
-		{
-			const std::string &account = msg.account();
-			// 存在的账号
-			res = dbhand->Execute(fmt::format("update account set logintime ={0} where account = '{1}'",
-				CTimer::GetTime(), account.c_str()).c_str());
-			if (res)
-				sendMsg.set_ncode(netData::AuthRet::EC_SUCC);
-			else
-			{
-				RunStateError("更新账号:%s登陆时间失败！", account.c_str());
+				RunStateError("更新账号:%s登陆时间失败！", account);
 				sendMsg.set_ncode(netData::AuthRet::EC_LOGINTIME);
 			}
 		}
 		else
 		{
 			// 不存在的账号，创建
-			res = dbhand->Execute(fmt::format("insert into account (account,createtime,logintime) values ('{0}',{1},{2})",
-				msg.account(), CTimer::GetTime(), CTimer::GetTime()).c_str());
-			if (res)
+			const std::string &nowtime = fmt::format("{0}", CTimer::GetTime());
+			nlohmann::json sql = {
+				{ "account",msg.account() },
+				{ "createtime",nowtime },
+				{ "logintime",nowtime }
+			};
+			if (dbhand->Insert("account", sql))
+				sendMsg.set_ncode(netData::AuthRet::EC_SUCC);
+			else
 			{
-				res = dbhand->Execute("select @@IDENTITY");
-				if (!res || res->IsEnd() || !res->IsOpen())
-				{
-					dbhand->Execute("delete from playerdate where account = ''");
-					sendMsg.set_ncode(netData::AuthRet::EC_CREATE);
-					RunStateError("创建账号:%s失败！", msg.account().c_str());
-				}
-				else
-					sendMsg.set_ncode(netData::AuthRet::EC_SUCC);
+				RunStateError("创建账号:%s失败！", account);
+				sendMsg.set_ncode(netData::AuthRet::EC_LOGINTIME);
 			}
 		}
-#endif
+
 		MessagePack pk;
 		pk.Pack(&sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH_RET);
 		tk->PushMsg(&pk);
@@ -109,50 +86,33 @@ void CClientLogin::ClientAuth(task *tk, Msg *pMsg)
 
 void CClientLogin::GetPlayerList(task *tk, Msg *pMsg)
 {
-	DataBase::CConnection *dbhand = tk->GetDBHand();
+	CDBCache *dbhand = tk->GetCacheDBHand();
 	if (dbhand)
 	{
 		netData::PlayerList msg;
 		_CHECK_PARSE_(pMsg, msg);
 
 		netData::PlayerListRet sendMsg;
-#ifdef _MYSQLCACHE
+
 		std::list<std::string> filed;
 		filed.push_back("guid");
 		filed.push_back("name");
 		filed.push_back("job");
 		filed.push_back("sex");
 
-		nlohmann::json reault = MysqlCache.ExecuteSingle("playerdate", msg.account().c_str(), &filed);
-
-		netData::PlayerLite *_pInfo = sendMsg.add_list();
-		if (_pInfo)
+		nlohmann::json reault = dbhand->ExecuteMulti("playerdate", msg.account(), 0, &filed);
+		for (nlohmann::json::iterator iter = reault.begin(); iter != reault.end(); ++iter)
 		{
-			_pInfo->set_nguid(reault["guid"]);
-			_pInfo->set_sname(reault["name"]);
-			_pInfo->set_njob(reault["job"]);
-			_pInfo->set_nsex(reault["sex"]);
-		}
-#else
-		DataBase::CRecordset *res = dbhand->Execute(fmt::format("select * from playerdate where account = '{0}'", 
-			msg.account()).c_str());
-		if (res && res->IsOpen() && !res->IsEnd())
-		{
-			// 查询到的角色信息
-			while (!res->IsEnd())
+			netData::PlayerLite *_pInfo = sendMsg.add_list();
+			if (_pInfo)
 			{
-				netData::PlayerLite *_pInfo = sendMsg.add_list();
-				if (_pInfo)
-				{
-					_pInfo->set_nguid(res->GetInt64("guid"));
-					_pInfo->set_sname(res->GetChar("name"));
-					_pInfo->set_njob(res->GetInt("job"));
-					_pInfo->set_nsex(res->GetInt("sex"));
-				}
-				res->NextRow();
+				_pInfo->set_nguid(iter.value()["guid"]);
+				_pInfo->set_sname(iter.value()["name"]);
+				_pInfo->set_njob(iter.value()["job"]);
+				_pInfo->set_nsex(iter.value()["sex"]);
 			}
 		}
-#endif
+
 		MessagePack pk;
 		pk.Pack(&sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_PLAYER_LIST_RET);
 		tk->PushMsg(&pk);
@@ -163,7 +123,7 @@ void CClientLogin::GetPlayerList(task *tk, Msg *pMsg)
 
 void CClientLogin::CreatePlayer(task *tk, Msg *pMsg)
 {
-	DataBase::CConnection *dbhand = tk->GetDBHand();
+	CDBCache *dbhand = tk->GetCacheDBHand();
 	if (dbhand)
 	{
 		netData::CreatePlayer msg;
@@ -172,28 +132,33 @@ void CClientLogin::CreatePlayer(task *tk, Msg *pMsg)
 		int64 guid = CGuid::Instance().Generate();
 		netData::CreatePlayerRet sendMsg;
 		sendMsg.set_ncode(netData::CreatePlayerRet::EC_FAIL);
-		DataBase::CRecordset *res = dbhand->Execute(fmt::format("insert into playerdate (account,name,guid,sex,job,level,createtime,logintime,mapid,x,y,z,data) values ('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},'{12}')",
-			msg.account(), msg.sname(), guid, msg.nsex(), msg.njob(), 1, CTimer::GetTime(), CTimer::GetTime(), Config.GetBeginMap(), 1, 1, 1, "").c_str());
-		if (res)
+
+		const std::string &nowtime = fmt::format("{0}", CTimer::GetTime());
+		nlohmann::json sql = {
+		{ "account",fmt::format("{0}", msg.account()) },
+		{ "name",fmt::format("{0}", msg.sname()) },
+		{ "guid",fmt::format("{0}", guid) },
+		{ "sex",fmt::format("{0}", msg.nsex()) },
+		{ "job",fmt::format("{0}", msg.njob()) },
+		{ "level","1" },
+		{ "createtime",nowtime },
+		{ "logintime",nowtime },
+		{ "mapid",fmt::format("{0}",Config.GetBeginMap()) },
+		{ "x","1" },
+		{ "y","1" },
+		{ "z","1" },
+		{ "data","" },
+		};
+		if (dbhand->Insert("playerdate", sql))
 		{
-			res = dbhand->Execute("select @@IDENTITY");
-			if (!res || res->IsEnd() || !res->IsOpen())
+			sendMsg.set_ncode(netData::CreatePlayerRet::EC_SUCC);
+			netData::PlayerLite *_pInfo = sendMsg.mutable_info();
+			if (_pInfo)
 			{
-				RunStateError("账号：%s创建角色：%s失败！", msg.account().c_str(), msg.sname().c_str());
-				dbhand->Execute("delete from playerdate where guid = 0");
-				sendMsg.set_ncode(netData::CreatePlayerRet::EC_CREATE);
-			}
-			else
-			{
-				sendMsg.set_ncode(netData::CreatePlayerRet::EC_SUCC);
-				netData::PlayerLite *_pInfo = sendMsg.mutable_info();
-				if (_pInfo)
-				{
-					_pInfo->set_nguid(guid);
-					_pInfo->set_sname(msg.sname());
-					_pInfo->set_njob(msg.njob());
-					_pInfo->set_nsex(msg.nsex());
-				}
+				_pInfo->set_nguid(guid);
+				_pInfo->set_sname(msg.sname());
+				_pInfo->set_njob(msg.njob());
+				_pInfo->set_nsex(msg.nsex());
 			}
 		}
 		else
@@ -212,18 +177,17 @@ void CClientLogin::CreatePlayer(task *tk, Msg *pMsg)
 
 void CClientLogin::SelectPlayer(task *tk, Msg *pMsg)
 {
-	DataBase::CConnection *dbhand = tk->GetDBHand();
+	CDBCache *dbhand = tk->GetCacheDBHand();
 	if (dbhand)
 	{
 		netData::SelectPlayer msg;
 		_CHECK_PARSE_(pMsg, msg);
 
 		netData::SelectPlayerRet sendMsg;
-#ifdef _MYSQLCACHE
-		nlohmann::json reault = MysqlCache.ExecuteSingle("playerdate", msg.account().c_str());
+
+		nlohmann::json reault = dbhand->ExecuteSingle("playerdate", fmt::format("{0}", msg.nguid()).c_str());
 		if(!reault.empty())
 		{
-
 			svrData::LoadPlayerData sendMsgToGame;
 			sendMsgToGame.set_account(reault["account"]);
 			sendMsgToGame.set_name(reault["name"]);
@@ -241,34 +205,10 @@ void CClientLogin::SelectPlayer(task *tk, Msg *pMsg)
 
 
 			nlohmann::json sql = {
-				{ "account",msg.account() },
+				{ "guid",fmt::format("{0}", msg.nguid()) },
 				{ "logintime",fmt::format("{0}",CTimer::GetTime()) }
 			};
-			if (MysqlCache.Update("playerdate", sql))
-#else
-		DataBase::CRecordset *res = dbhand->Execute(fmt::format("select * from playerdate where guid = {0}", 
-			msg.nguid()).c_str());
-		if (res && res->IsOpen() && !res->IsEnd())
-		{
-			svrData::LoadPlayerData sendMsgToGame;
-			sendMsgToGame.set_account(res->GetChar("account"));
-			sendMsgToGame.set_name(res->GetChar("name"));
-			sendMsgToGame.set_nguid(res->GetInt64("guid"));
-			sendMsgToGame.set_nsex(res->GetInt("sex"));
-			sendMsgToGame.set_njob(res->GetInt("job"));
-			sendMsgToGame.set_nlevel(res->GetInt("level"));
-			sendMsgToGame.set_ncreatetime(res->GetInt("createtime"));
-			sendMsgToGame.set_nlogintime(res->GetInt("logintime"));
-			sendMsgToGame.set_nmapid(res->GetInt("mapid"));
-			sendMsgToGame.set_nx(res->GetFloat("x"));
-			sendMsgToGame.set_ny(res->GetFloat("y"));
-			sendMsgToGame.set_nz(res->GetFloat("z"));
-			sendMsgToGame.set_data(res->GetChar("data"));
-
-			res = dbhand->Execute(fmt::format("update playerdate set logintime ={0} where guid = {1}", 
-				CTimer::GetTime(), msg.nguid()).c_str());
-			if (res)
-#endif
+			if (dbhand->Update("playerdate", sql))
 			{
 				MessagePack pk;
 				pk.Pack(&sendMsgToGame, SERVER_TYPE_MAIN, SVR_SUB_PLAYERDATA);

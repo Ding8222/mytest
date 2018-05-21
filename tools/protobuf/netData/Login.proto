@@ -160,7 +160,6 @@ message CreatePlayerRet
 message SelectPlayer
 {
 	int64 nGuid = 1;
-	string Account = 2;
 }
 
 // 2-14 选择角色返回

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "DBCache.h"
 #include "sqlinterface.h"
 struct Msg;
 class blockbuf;
@@ -25,10 +26,12 @@ public:
 	 static void DestroyPools ();
 
 	 //设置一些必须的附带信息
-	 void SetInfo (DataBase::CConnection *con, int32 serverid, int64 clientid = 0);
+	 void SetInfo(CDBCache *con, int32 serverid, int64 clientid = 0);
+	 void SetInfo(DataBase::CConnection *con, int32 serverid, int64 clientid = 0);
 
 	 //获取数据库操作句柄
-	 DataBase::CConnection *GetDBHand () { return m_con; }
+	 CDBCache *GetCacheDBHand() { return m_cachecon; }
+	 DataBase::CConnection *GetDBHand() { return m_con; }
 
 	 //获取此任务来自哪个服务器
 	 int32 GetServerID () { return m_serverid; }
@@ -75,6 +78,7 @@ private:
 	void Destroy ();
 
 private:
+	CDBCache *m_cachecon;
 	DataBase::CConnection *m_con;
 
 	int8 m_tasktype;

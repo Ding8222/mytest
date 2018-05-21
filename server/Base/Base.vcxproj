@@ -174,7 +174,7 @@
     <ClInclude Include="MainType.h" />
     <ClInclude Include="MiniDump.h" />
     <ClInclude Include="msgbase.h" />
-    <ClInclude Include="MysqlCache.h" />
+    <ClInclude Include="DBCache.h" />
     <ClInclude Include="NetConfig.h" />
     <ClInclude Include="objectpool.h" />
     <ClInclude Include="ossome.h" />

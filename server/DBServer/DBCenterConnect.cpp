@@ -7,12 +7,11 @@
 #include "dotask.h"
 #include "datahand.h"
 #include "DBCenterConnect.h"
-#include "MysqlCache.h"
+#include "DBCache.h"
 
 #include "ServerType.h"
 #include "DBSvrType.h"
 
-DataBase::CConnection g_dbhand;
 extern int64 g_currenttime;
 
 CDBCenterConnect::CDBCenterConnect()
@@ -87,26 +86,13 @@ bool CDBCenterConnect::Init()
 		return false;
 	}
 
-	g_dbhand.SetLogDirectory("log_log/DBServer_Log/dbhand_log");
-	g_dbhand.SetEnableLog(Config.GetIsOpenSQLLog());
-	if (!g_dbhand.Open(Config.GetDBName(),
+	if (!DBCache.Init(Config.GetDBName(),
 		Config.GetDBUser(),
 		Config.GetDBPass(),
-		Config.GetDBIP()))
+		Config.GetDBIP(),
+		Config.GetIsOpenSQLLog()))
 	{
-		RunStateError("连接Mysql失败!");
-		return false;
-	}
-
-	if (!g_dbhand.SetCharacterSet("utf8"))
-	{
-		RunStateError("设置UTF-8失败!");
-		return false;
-	}
-
-	if (!MysqlCache.Init(Config.GetDBName(), &g_dbhand))
-	{
-		RunStateError("加载Mysql缓存失败!");
+		RunStateError("加载数据库缓存失败!");
 		return false;
 	}
 
@@ -148,6 +134,8 @@ void CDBCenterConnect::Destroy()
 	}
 
 	task::DestroyPools();
+
+	DBCache.Destroy();
 }
 
 void CDBCenterConnect::GetDataHandInfo(char *buf, size_t buflen)
@@ -224,7 +212,7 @@ void CDBCenterConnect::AddNewTask(Msg *pMsg, int serverid, int tasktype, bool se
 		return;
 	}
 
-	tk->SetInfo(&g_dbhand, serverid, tl->id);
+	tk->SetInfo(&DBCache, serverid, tl->id);
 	tk->SetSendToAll(sendtoall);
 	tk->SetTaskType(tasktype);
 

@@ -36,7 +36,7 @@ static bool threadinfo_init ()
 	for (int i = 0; i < enum_max_thread_num; ++i)
 	{
 		s_threadbuf.msgbuf[i].threadid = 0;
-		s_threadbuf.msgbuf[i].buf = NULL;
+		s_threadbuf.msgbuf[i].buf = nullptr;
 	}
 
 	s_threadbuf.freeindex = 0;
@@ -54,7 +54,7 @@ static void threadinfo_release ()
 		if (s_threadbuf.msgbuf[i].buf)
 		{
 			free(s_threadbuf.msgbuf[i].buf);
-			s_threadbuf.msgbuf[i].buf = NULL;
+			s_threadbuf.msgbuf[i].buf = nullptr;
 		}
 	}
 }
@@ -73,7 +73,7 @@ char *threadbuf_get_msg_buf ()
 	{
 		if (s_threadbuf.msgbuf[index].threadid == currentthreadid)
 		{
-			if (s_threadbuf.msgbuf[index].buf == NULL)
+			if (s_threadbuf.msgbuf[index].buf == nullptr)
 			{
 				RunStateError("why find this thread local msgbuf, but the buf is nil!, error!");
 				exit(1);
@@ -127,7 +127,7 @@ public:
 
 	blocktempbuf *AllocBlock ()
 	{
-		blocktempbuf *res = NULL;
+		blocktempbuf *res = nullptr;
 		LOCK_LOCK(&m_blocklock);
 		res = m_pool->GetObject();
 		LOCK_UNLOCK(&m_blocklock);
@@ -145,7 +145,7 @@ public:
 
 	task *AllocTask ()
 	{
-		task *res = NULL;
+		task *res = nullptr;
 		LOCK_LOCK(&m_tasklock);
 		res = m_taskpool->GetObject();
 		LOCK_UNLOCK(&m_tasklock);
@@ -181,7 +181,7 @@ static blockbuf *block_create ()
 	if (!self)
 	{
 		RunStateError("create blockbuf failed!");
-		return NULL;
+		return nullptr;
 	}
 	new(self) blockbuf();
 	self->setsize(sizeof(blocktempbuf) - sizeof(blockbuf));
@@ -202,7 +202,7 @@ task *task_create ()
 	if (!self)
 	{
 		RunStateError("create task failed!");
-		return NULL;
+		return nullptr;
 	}
 	new(self) task();
 	return self;
@@ -219,7 +219,8 @@ void task_release (void *self)
 
 task::task ()
 {
-	m_con = NULL;
+	m_cachecon = nullptr;
+	m_con = nullptr;
 
 	m_tasktype = tasktype_process;
 	m_needsend = true;
@@ -227,9 +228,9 @@ task::task ()
 	m_serverid = 0;
 	m_clientid = 0;
 
-	m_head = NULL;
-	m_currentforpush = NULL;
-	m_currentforget = NULL;
+	m_head = nullptr;
+	m_currentforpush = nullptr;
+	m_currentforget = nullptr;
 }
 
 task::~task ()
@@ -254,7 +255,14 @@ void task::DestroyPools ()
 }
 
 //设置一些必须的附带信息
-void task::SetInfo (DataBase::CConnection *con, int32 serverid, int64 clientid)
+void task::SetInfo (CDBCache *con, int32 serverid, int64 clientid)
+{
+	m_cachecon = con;
+	m_serverid = serverid;
+	m_clientid = clientid;
+}
+
+void task::SetInfo(DataBase::CConnection *con, int32 serverid, int64 clientid)
 {
 	m_con = con;
 	m_serverid = serverid;
@@ -328,7 +336,7 @@ bool task::PushMsg (Msg *pMsg)
 Msg *task::GetMsg ()
 {
 	if (!m_currentforget)
-		return NULL;
+		return nullptr;
 
 	char *buf = threadbuf_get_msg_buf();
 	int len = 0;
@@ -337,11 +345,11 @@ Msg *task::GetMsg ()
 	//先读长度信息
 	readsize = getdata((char *)&len, (int)sizeof(len));
 	if (readsize < (int)sizeof(len))
-		return NULL;
+		return nullptr;
 	*(int *)&buf[0] = len;
 	readsize = getdata(&buf[sizeof(len)], len - (int)sizeof(len));
 	if (readsize < (len - (int)sizeof(len)))
-		return NULL;
+		return nullptr;
 	return (Msg *)buf;
 }
 
@@ -385,9 +393,9 @@ void task::Destroy ()
 		next = node->next;
 		block_release(node);
 	}
-	m_head = NULL;
-	m_currentforpush = NULL;
-	m_currentforget = NULL;
+	m_head = nullptr;
+	m_currentforpush = nullptr;
+	m_currentforget = nullptr;
 }
 
 

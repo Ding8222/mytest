@@ -27,6 +27,7 @@ CRobotMgr::CRobotMgr()
 	m_RobotList.clear();
 	m_OverTime = 0;
 	m_PingTime = 0;
+	m_MapID = 0;
 }
 
 CRobotMgr::~CRobotMgr()
