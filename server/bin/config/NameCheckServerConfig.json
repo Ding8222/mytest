@@ -1,0 +1,29 @@
+{
+	"_comment" : {
+		"Server_ID" : "本服的服务器ID",
+		"Listen_Port" : "服务器监听端口",
+		"Server_IP" : "本服的外网IP",
+		"DBList" : {
+			"DBName" : "库名",
+			"DBUser" : "用户名",
+			"DBPass" : "密码",
+			"DBIP" : "IP",
+			"SQL" : "要调用的sql语句",
+			"FieldName" : "字段名"
+		}
+	},
+	
+	"Server_ID" : 7000,
+	"Listen_Port" : 7001,
+	"Server_IP" : "127.0.0.1",
+	
+	"DBList" : [{
+			"DBName" : "test",
+			"DBUser" : "root",
+			"DBPass" : "root",
+			"DBIP" : "127.0.0.1",
+			"SQL" : "select name from playerdate ",
+			"FieldName" : "name"
+		}
+	]	
+}

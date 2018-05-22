@@ -70,13 +70,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>..\3rd\fmtlib\;..\3rd\cryptopp\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\json\;..\3rd\fmtlib\;..\3rd\cryptopp\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;$(IncludePath)</IncludePath>
     <OutDir>..\bin\</OutDir>
     <TargetName>G_$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\bin\</OutDir>
-    <IncludePath>..\3rd\fmtlib\;..\3rd\cryptopp\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\json\;..\3rd\fmtlib\;..\3rd\cryptopp\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;$(IncludePath)</IncludePath>
     <LibraryPath>..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
     <TargetName>G_$(ProjectName)</TargetName>
   </PropertyGroup>

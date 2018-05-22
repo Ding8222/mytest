@@ -70,13 +70,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>..\3rd\;..\3rd\luabind\;..\3rd\luajit\;..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\Common\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\json\;..\3rd\;..\3rd\luabind\;..\3rd\luajit\;..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\Common\;$(IncludePath)</IncludePath>
     <OutDir>..\bin\</OutDir>
     <TargetName>G_$(ProjectName)</TargetName>
-    <LibraryPath>C:\Program Files %28x86%29\Visual Leak Detector\lib\Win32;..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>..\3rd\;..\3rd\luabind\;..\3rd\luajit\;..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\Common\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\json\;..\3rd\;..\3rd\luabind\;..\3rd\luajit\;..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\Common\;$(IncludePath)</IncludePath>
     <LibraryPath>..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
     <OutDir>..\bin\</OutDir>
     <TargetName>G_$(ProjectName)</TargetName>

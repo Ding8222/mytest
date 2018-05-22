@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 08/04/2018 14:35:50
+ Date: 22/05/2018 15:32:56
 */
 
 SET NAMES utf8mb4;
@@ -35,7 +35,7 @@ DROP TABLE IF EXISTS `playerdate`;
 CREATE TABLE `playerdate`  (
   `account` varchar(64) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `name` varchar(64) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `guid` bigint(20) UNSIGNED ZEROFILL NOT NULL,
+  `guid` bigint(19) UNSIGNED ZEROFILL NOT NULL,
   `sex` tinyint(4) NOT NULL,
   `job` tinyint(4) NOT NULL,
   `level` int(11) NOT NULL,

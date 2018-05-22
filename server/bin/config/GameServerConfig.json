@@ -1,0 +1,15 @@
+{
+	"_comment" : {
+		"Server_ID" : "本服的服务器ID",
+		"Listen_Port" : "服务器监听端口",
+		"Server_IP" : "本服的外网IP",
+		
+		"ClientNum_Max" : "最大Client连接数"
+	},
+	
+	"Server_ID" : 4000,
+	"Listen_Port" : 4000,
+	"Server_IP" : "127.0.0.1",
+	
+	"ClientNum_Max" : 2000
+}

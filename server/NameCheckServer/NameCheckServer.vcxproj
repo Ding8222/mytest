@@ -72,12 +72,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetName>G_$(ProjectName)</TargetName>
     <OutDir>..\bin\</OutDir>
-    <IncludePath>..\3rd\mysql\;..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\json\;..\3rd\mysql\;..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <TargetName>G_$(ProjectName)</TargetName>
     <OutDir>..\bin\</OutDir>
-    <IncludePath>..\3rd\mysql\;..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\json\;..\3rd\mysql\;..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;$(IncludePath)</IncludePath>
     <LibraryPath>..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

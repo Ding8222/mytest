@@ -1,0 +1,14 @@
+{
+	"_comment" : {
+		"Server_ID" : "本服的服务器ID",
+		"Listen_Port" : "服务器监听端口",
+		"Server_IP" : "本服的外网IP",
+		"DBID" : "连接到的DB的ID"
+	},
+	
+	"Server_ID" : 1000,
+	"Listen_Port" : 1001,
+	"Server_IP" : "127.0.0.1",
+	"DBID" : 2000
+}
+

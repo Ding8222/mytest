@@ -28,10 +28,10 @@ CGameConnect::~CGameConnect()
 
 bool CGameConnect::Init()
 {
-	std::list<GameSvr> List = Config.GetGameSvrList();
+	std::list<GameSvr *> List = Config.GetGameSvrList();
 	for (auto &i : List)
 	{
-		if (!CConnectMgr::AddNewConnect(i.ip.c_str(), i.port, i.id, i.name.c_str()))
+		if (!CConnectMgr::AddNewConnect(i->ip.c_str(), i->port, i->id, i->name.c_str()))
 		{
 			RunStateError("添加逻辑服务器失败!");
 			return false;

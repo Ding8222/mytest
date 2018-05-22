@@ -181,6 +181,8 @@ bool CDBCache::Init(const char* dbname, const char *username, const char* passwo
 	
 	m_DBTableConfig = nlohmann::json::parse(i);
 	
+	i.close();
+
 	int64 time = get_millisecond();
 
 	for (nlohmann::json::iterator iter = m_DBTableConfig.begin(); iter != m_DBTableConfig.end(); ++iter)
@@ -202,6 +204,7 @@ void CDBCache::Destroy()
 	if (m_WorkInstance)
 	{
 		m_WorkInstance->Destroy();
+		delete m_WorkInstance;
 	}
 	m_WorkInstance = nullptr;
 }

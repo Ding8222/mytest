@@ -1,10 +1,9 @@
-﻿#include "config.h"
+﻿#include <fstream>
+#include "config.h"
 #include "GlobalDefine.h"
-#include "tinyxml2.h"
 #include "log.h"
 #include "fmt/ostream.h"
-
-using namespace tinyxml2;
+#include "json.hpp"
 
 CConfig::CConfig()
 {
@@ -25,26 +24,22 @@ bool CConfig::Init(const char *servername, int lineid)
 	SetServerType(ServerEnum::EST_GAME);
 	SetLineID(lineid);
 
-	std::string filename = fmt::format("./config/{0}Config.xml", servername);
-	XMLDocument doc;
-	if (doc.LoadFile(filename.c_str()) != XML_SUCCESS)
+	std::string filename = fmt::format("./config/{0}Config.json", servername);
+	std::ifstream i(filename);
+	if (!i.is_open())
 	{
 		log_error("加载 %s 失败!", filename.c_str());
 		return false;
 	}
 
-	XMLElement *pinfo = doc.FirstChildElement(servername);
-	if (!pinfo)
-	{
-		log_error("没有找到节点：'%s'", servername);
-		return false;
-	}
+	nlohmann::json config = nlohmann::json::parse(i);
 
-	if (pinfo->QueryIntAttribute("ClientNum_Max", &m_MaxClientNum) != XML_SUCCESS)
+	if (config["ClientNum_Max"].is_null())
 	{
 		log_error("没有找到字段： 'ClientNum_Max'");
 		return false;
 	}
+	m_MaxClientNum = config["ClientNum_Max"];
 
 	return true;
 }

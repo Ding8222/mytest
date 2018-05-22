@@ -1,10 +1,9 @@
-﻿#include "GlobalDefine.h"
+﻿#include <fstream>
+#include "GlobalDefine.h"
 #include "config.h"
-#include "tinyxml2.h"
 #include "log.h"
 #include "fmt/ostream.h"
-
-using namespace tinyxml2;
+#include "json.hpp"
 
 CConfig::CConfig()
 {
@@ -24,26 +23,23 @@ bool CConfig::Init(const char *servername)
 
 	SetServerType(ServerEnum::EST_CENTER);
 
-	std::string filename = fmt::format("./config/{0}Config.xml", servername);
-	XMLDocument doc;
-	if (doc.LoadFile(filename.c_str()) != XML_SUCCESS)
+	std::string filename = fmt::format("./config/{0}Config.json", servername);
+	std::ifstream i(filename);
+	if (!i.is_open())
 	{
 		log_error("加载 %s 失败!", filename.c_str());
 		return false;
 	}
 
-	XMLElement *pinfo = doc.FirstChildElement(servername);
-	if (!pinfo)
-	{
-		log_error("没有找到节点：'%s'", servername);
-		return false;
-	}
+	nlohmann::json config = nlohmann::json::parse(i);
 
-	if (pinfo->QueryIntAttribute("DBID", &m_DBID) != XML_SUCCESS)
+	if (config["DBID"].is_null())
 	{
 		log_error("没有找到字段： 'DBID'");
 		return false;
 	}
+
+	m_DBID = config["DBID"];
 
 	return true;
 }

@@ -1,0 +1,19 @@
+{
+	"_comment" : {
+		"LoginServer_IP" : "登陆服务器IP",
+		"LoginServer_Port" : "登陆服务器端口",
+		"LoginServer_ID" : "登陆服务器ID",
+		"Robot_Max" : "机器人数量",
+		
+		"Over_Time" : "Client 超时重连时间",
+		"Ping_Time" : "Client Ping时间"
+	},
+	
+	"LoginServer_IP" : "127.0.0.1",
+	"LoginServer_Port" : 5001,
+	"LoginServer_ID" : 5000,
+	"Robot_Max" : 200,
+	
+	"Over_Time" : 200000,
+	"Ping_Time" : 50000
+}

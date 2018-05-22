@@ -42,7 +42,7 @@ public:
 	int GetSendDataLimt() { return m_SendDataLimt; }
 	bool IsOpenClientConnectLog() { return m_IsOpenClientConnectLog; }
 
-	std::list<GameSvr> &GetGameSvrList() { return m_GameSvrList; }
+	std::list<GameSvr *> &GetGameSvrList() { return m_GameSvrList; }
 private:
 	int m_LineID;
 
@@ -51,5 +51,5 @@ private:
 	int m_SendDataLimt;
 	bool m_IsOpenClientConnectLog;
 
-	std::list<GameSvr> m_GameSvrList;
+	std::list<GameSvr *> m_GameSvrList;
 };

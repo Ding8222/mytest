@@ -134,8 +134,6 @@ void CDBCenterConnect::Destroy()
 	}
 
 	task::DestroyPools();
-
-	DBCache.Destroy();
 }
 
 void CDBCenterConnect::GetDataHandInfo(char *buf, size_t buflen)

@@ -1,10 +1,9 @@
-﻿#include "GlobalDefine.h"
+﻿#include <fstream>
+#include "GlobalDefine.h"
 #include "config.h"
-#include "tinyxml2.h"
 #include "log.h"
 #include "fmt/ostream.h"
-
-using namespace tinyxml2;
+#include "json.hpp"
 
 CConfig::CConfig()
 {
@@ -26,96 +25,69 @@ bool CConfig::Init(const char *servername)
 
 	SetServerType(ServerEnum::EST_NAME);
 
-	std::string filename = fmt::format("./config/{0}Config.xml", servername);
-	XMLDocument doc;
-	if (doc.LoadFile(filename.c_str()) != XML_SUCCESS)
+	std::string filename = fmt::format("./config/{0}Config.json", servername);
+	std::ifstream i(filename);
+	if (!i.is_open())
 	{
 		log_error("加载 %s 失败!", filename.c_str());
 		return false;
 	}
 
-	XMLElement *pinfo = doc.FirstChildElement(servername);
-	if (!pinfo)
-	{
-		log_error("没有找到节点：'%s'", servername);
-		return false;
-	}
+	nlohmann::json config = nlohmann::json::parse(i);
 	
-	pinfo = doc.FirstChildElement("DBList");
-	if (!pinfo)
-	{
-		log_error("没有找到节点：'DBList'");
-		return false;
-	}
-
-	pinfo = pinfo->FirstChildElement("DBInfo");
-	if (!pinfo)
-	{
-		log_error("没有找到字段： 'DBInfo'");
-		return false;
-	}
-
-	while (pinfo)
+	for (nlohmann::json::iterator iter = config["DBList"].begin(); iter != config["DBList"].end(); ++iter)
 	{
 		DBInfo *server = new DBInfo;
-		
-		const char *tmp = pinfo->Attribute("DBName");
-		if (!tmp)
+
+		if ((*iter)["DBName"].is_null())
 		{
 			log_error("没有找到字段： 'DBName'");
 			delete server;
 			return false;
 		}
-		server->dbname = tmp;
+		server->dbname = (*iter)["DBName"].get<std::string>();
 
-		tmp = pinfo->Attribute("DBUser");
-		if (!tmp)
+		if ((*iter)["DBUser"].is_null())
 		{
 			log_error("没有找到字段： 'DBUser'");
 			delete server;
 			return false;
 		}
-		server->dbusername = tmp;
+		server->dbusername = (*iter)["DBUser"].get<std::string>();
 
-		tmp = pinfo->Attribute("DBPass");
-		if (!tmp)
+		if ((*iter)["DBPass"].is_null())
 		{
 			log_error("没有找到字段： 'DBPass'");
 			delete server;
 			return false;
 		}
-		server->dbpassword = tmp;
+		server->dbpassword = (*iter)["DBPass"].get<std::string>();
 
-		tmp = pinfo->Attribute("DBIP");
-		if (!tmp)
+		if ((*iter)["DBIP"].is_null())
 		{
 			log_error("没有找到字段： 'DBIP'");
 			delete server;
 			return false;
 		}
-		server->dbip = tmp;
-		
-		tmp = pinfo->Attribute("SQL");
-		if (!tmp)
+		server->dbip = (*iter)["DBIP"].get<std::string>();
+
+		if ((*iter)["SQL"].is_null())
 		{
 			log_error("没有找到字段： 'SQL'");
 			delete server;
 			return false;
 		}
-		server->sqlstr = tmp;
+		server->sqlstr = (*iter)["SQL"].get<std::string>();
 
-		tmp = pinfo->Attribute("FieldName");
-		if (!tmp)
+		if ((*iter)["FieldName"].is_null())
 		{
 			log_error("没有找到字段： 'FieldName'");
 			delete server;
 			return false;
 		}
-		server->fieldname = tmp;
+		server->fieldname = (*iter)["FieldName"].get<std::string>();
 
 		m_tablelist.push_back(server);
-
-		pinfo = pinfo->NextSiblingElement("DBInfo");
 	}
 
 	return true;

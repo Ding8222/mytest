@@ -1,10 +1,14 @@
 ﻿#include <string>
+#include <fstream>
 #include "baseconfig.h"
-#include "tinyxml2.h"
 #include "log.h"
 #include "fmt/ostream.h"
+#include "json.hpp"
 
-using namespace tinyxml2;
+/*
+	端口说明:
+	最高位为1,第二位为服务器类型,第三到第四位为一机多服编号,第五位为线路ID
+*/
 
 CBaseConfig::CBaseConfig()
 {
@@ -59,217 +63,253 @@ CBaseConfig::~CBaseConfig()
 
 bool CBaseConfig::Init(const std::string &servername, int32 lineid)
 {
-	std::string filename = "./config/BaseConfig.xml";
-	XMLDocument doc;
-	if (doc.LoadFile(filename.c_str()) != XML_SUCCESS)
+	std::string filename = "./config/BaseConfig.json";
+	std::ifstream i(filename);
+	if (!i.is_open())
 	{
 		log_error("加载 %s 失败!", filename.c_str());
 		return false;
 	}
 
-	XMLElement *pBaseInfo = doc.FirstChildElement("Base");
-	if (!pBaseInfo)
-	{
-		log_error("没有找到节点：'%s'", "Base");
-		return false;
-	}
+	nlohmann::json config = nlohmann::json::parse(i);
 
-	if (pBaseInfo->QueryIntAttribute("Group_ID", &m_GroupID) != XML_SUCCESS)
+	if (config["Group_ID"].is_null())
 	{
 		log_error("没有找到字段： 'Group_ID'");
 		return false;
 	}
-
+	m_GroupID = config["Group_ID"];
 	if (m_GroupID < 0 || m_GroupID > 99)
 	{
 		log_error("Group_ID范围[0,99] ：%d", m_GroupID);
 		return false;
 	}
-
-	if (pBaseInfo->QueryIntAttribute("Over_Time", &m_OverTime) != XML_SUCCESS)
+	if (config["Over_Time"].is_null())
 	{
 		log_error("没有找到字段： 'Over_Time'");
 		return false;
 	}
-
+	m_OverTime = config["Over_Time"];
 	if (m_OverTime <= 0)
 	{
 		log_error("Over_Time小于等于0：%d", m_OverTime);
 		return false;
 	}
-
-	if (pBaseInfo->QueryIntAttribute("Ping_Time", &m_PingTime) != XML_SUCCESS)
+	if (config["Ping_Time"].is_null())
 	{
 		log_error("没有找到字段： 'Ping_Time'");
 		return false;
 	}
-
+	m_PingTime = config["Ping_Time"];
 	if (m_PingTime <= 0)
 	{
 		log_error("Ping_Time小于等于0：%d", m_PingTime);
 		return false;
 	}
-
-	if (pBaseInfo->QueryBoolAttribute("Elapsed_Log", &m_IsOpenElapsedLog) != XML_SUCCESS)
+	if (config["Elapsed_Log"].is_null())
 	{
 		log_error("没有找到字段： 'Elapsed_Log'");
 		return false;
 	}
+	m_IsOpenElapsedLog = config["Elapsed_Log"];
 
-	if (pBaseInfo->QueryIntAttribute("LogServer_ID", &m_LogServerID) != XML_SUCCESS)
+	if (config["LogServer_ID"].is_null())
 	{
 		log_error("没有找到字段： 'LogServer_ID'");
 		return false;
 	}
-
+	m_LogServerID = config["LogServer_ID"];
 	m_LogServerID += GetGroupID() * 10;
-
-	if (pBaseInfo->QueryIntAttribute("LogServer_Port", &m_LogServerPort) != XML_SUCCESS)
+	if (config["LogServer_Port"].is_null())
 	{
 		log_error("没有找到字段： 'LogServer_Port'");
 		return false;
 	}
-
+	m_LogServerPort = config["LogServer_Port"];
 	m_LogServerPort += GetGroupID() * 10;
-
-	m_LogServerIP = pBaseInfo->Attribute("LogServer_IP");
-	if (m_LogServerIP.empty())
+	if (config["LogServer_IP"].is_null())
 	{
 		log_error("没有找到字段： 'LogServer_IP'");
 		return false;
 	}
-
-	m_LogServerName = pBaseInfo->Attribute("LogServer_Name");
-	if (m_LogServerName.empty())
+	m_LogServerIP = config["LogServer_IP"].get<std::string>();
+	if (m_LogServerIP.empty())
+	{
+		log_error("字段： 'LogServer_IP'为空");
+		return false;
+	}
+	if (config["LogServer_Name"].is_null())
 	{
 		log_error("没有找到字段： 'LogServer_Name'");
 		return false;
 	}
+	m_LogServerName = config["LogServer_Name"].get<std::string>();
+	if (m_LogServerName.empty())
+	{
+		log_error("字段： 'LogServer_Name'为空");
+		return false;
+	}
 
-	if (pBaseInfo->QueryIntAttribute("CenterServer_ID", &m_CenterServerID) != XML_SUCCESS)
+	if (config["CenterServer_ID"].is_null())
 	{
 		log_error("没有找到字段： 'CenterServer_ID'");
 		return false;
 	}
-
+	m_CenterServerID = config["CenterServer_ID"];
 	m_CenterServerID += GetGroupID() * 10;
-
-	if (pBaseInfo->QueryIntAttribute("CenterServer_Port", &m_CenterServerPort) != XML_SUCCESS)
+	if (config["CenterServer_Port"].is_null())
 	{
 		log_error("没有找到字段： 'CenterServer_Port'");
 		return false;
 	}
-
+	m_CenterServerPort = config["CenterServer_Port"];
 	m_CenterServerPort += GetGroupID() * 10;
-
-	m_CenterServerIP = pBaseInfo->Attribute("CenterServer_IP");
-	if (m_CenterServerIP.empty())
+	if (config["CenterServer_IP"].is_null())
 	{
 		log_error("没有找到字段： 'CenterServer_IP'");
 		return false;
 	}
-
-	m_CenterServerName = pBaseInfo->Attribute("CenterServer_Name");
-	if (m_CenterServerName.empty())
+	m_CenterServerIP = config["CenterServer_IP"].get<std::string>();
+	if (m_CenterServerIP.empty())
+	{
+		log_error("字段： 'CenterServer_IP'为空");
+		return false;
+	}
+	if (config["CenterServer_Name"].is_null())
 	{
 		log_error("没有找到字段： 'CenterServer_Name'");
 		return false;
 	}
+	m_CenterServerName = config["CenterServer_Name"].get<std::string>();
+	if (m_CenterServerName.empty())
+	{
+		log_error("字段： 'CenterServer_Name'为空");
+		return false;
+	}
 
-	if (pBaseInfo->QueryIntAttribute("NameCheckServer_ID", &m_NameCheckServerID) != XML_SUCCESS)
+	if (config["NameCheckServer_ID"].is_null())
 	{
 		log_error("没有找到字段： 'NameCheckServer_ID'");
 		return false;
 	}
-
-	if (pBaseInfo->QueryIntAttribute("NameCheckServer_Port", &m_NameCheckServerPort) != XML_SUCCESS)
+	m_NameCheckServerID = config["NameCheckServer_ID"];
+	if (config["NameCheckServer_Port"].is_null())
 	{
 		log_error("没有找到字段： 'NameCheckServer_Port'");
 		return false;
 	}
-
-	m_NameCheckServerIP = pBaseInfo->Attribute("NameCheckServer_IP");
-	if (m_NameCheckServerIP.empty())
+	m_NameCheckServerPort = config["NameCheckServer_Port"];
+	if (config["NameCheckServer_IP"].is_null())
 	{
 		log_error("没有找到字段： 'NameCheckServer_IP'");
 		return false;
 	}
-
-	m_NameCheckServerName = pBaseInfo->Attribute("NameCheckServer_Name");
-	if (m_NameCheckServerName.empty())
+	m_NameCheckServerIP = config["NameCheckServer_IP"].get<std::string>();
+	if (m_NameCheckServerIP.empty())
+	{
+		log_error("字段： 'NameCheckServer_IP'为空");
+		return false;
+	}
+	if (config["NameCheckServer_Name"].is_null())
 	{
 		log_error("没有找到字段： 'NameCheckServer_Name'");
 		return false;
 	}
+	m_NameCheckServerName = config["NameCheckServer_Name"].get<std::string>();
+	if (m_NameCheckServerName.empty())
+	{
+		log_error("字段： 'NameCheckServer_Name'为空");
+		return false;
+	}
 
-	m_DBName = pBaseInfo->Attribute("DBName");
-	if (m_DBName.empty())
+	if (config["DBName"].is_null())
 	{
 		log_error("没有找到字段： 'DBName'");
 		return false;
 	}
-
-	m_DBUser = pBaseInfo->Attribute("DBUser");
-	if (m_DBUser.empty())
+	m_DBName = config["DBName"].get<std::string>();
+	if (m_DBName.empty())
+	{
+		log_error("字段： 'DBName'为空");
+		return false;
+	}
+	if (config["DBUser"].is_null())
 	{
 		log_error("没有找到字段： 'DBUser'");
 		return false;
 	}
-
-	m_DBPass = pBaseInfo->Attribute("DBPass");
-	if (m_DBPass.empty())
+	m_DBUser = config["DBUser"].get<std::string>();
+	if (m_DBUser.empty())
+	{
+		log_error("字段： 'DBUser'为空");
+		return false;
+	}
+	if (config["DBPass"].is_null())
 	{
 		log_error("没有找到字段： 'DBPass'");
 		return false;
 	}
-
-	m_DBIP = pBaseInfo->Attribute("DBIP");
-	if (m_DBIP.empty())
+	m_DBPass = config["DBPass"].get<std::string>();
+	if (m_DBPass.empty())
+	{
+		log_error("字段： 'DBPass'为空");
+		return false;
+	}
+	if (config["DBIP"].is_null())
 	{
 		log_error("没有找到字段： 'DBIP'");
 		return false;
 	}
+	m_DBIP = config["DBIP"].get<std::string>();
+	if (m_DBIP.empty())
+	{
+		log_error("字段： 'DBIP'为空");
+		return false;
+	}
 
-	doc.Clear();
-	std::string serverconfig = fmt::format("./config/{0}Config.xml", servername);
-	if (doc.LoadFile(serverconfig.c_str()) != XML_SUCCESS)
+	i.close();
+	config.clear();
+	std::string serverconfig = fmt::format("./config/{0}Config.json", servername);
+	i.open(serverconfig);
+	if (!i.is_open())
 	{
 		log_error("加载 %s 失败!", serverconfig.c_str());
 		return false;
 	}
 
-	XMLElement *pServerInfo = doc.FirstChildElement(servername.c_str());
-	if (!pServerInfo)
-	{
-		log_error("没有找到节点：'%s'", servername.c_str());
-		return false;
-	}
+	config = nlohmann::json::parse(i);
 
-	if (pServerInfo->QueryIntAttribute("Server_ID", &m_ServerID) != XML_SUCCESS)
+	if (config["Server_ID"].is_null())
 	{
 		log_error("没有找到字段： 'Server_ID'");
 		return false;
 	}
-
+	m_ServerID = config["Server_ID"];
 	m_ServerID += GetGroupID() * 10 + lineid;
-
-	if (pServerInfo->QueryIntAttribute("Listen_Port", &m_ListenPort) != XML_SUCCESS)
+	if (config["Listen_Port"].is_null())
 	{
 		log_error("没有找到字段： 'Listen_Port'");
 		return false;
 	}
-
+	m_ListenPort = config["Listen_Port"];
 	m_ListenPort += GetGroupID() * 10 + lineid;
-	
-	m_ServerIP = pServerInfo->Attribute("Server_IP");
-	if (m_ServerIP.empty())
+	if (config["Server_IP"].is_null())
 	{
 		log_error("没有找到字段： 'Server_IP'");
+		return false;
+	}
+	m_ServerIP = config["Server_IP"].get<std::string>();
+	if (m_ServerIP.empty())
+	{
+		log_error("字段： 'Server_IP'为空");
 		return false;
 	}
 
 	SetMonitorPort(m_ListenPort + 10000);
 	SetServerName(servername.c_str());
+
+	i.close();
+	config.clear();
 
 	return true;
 }

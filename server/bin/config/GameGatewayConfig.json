@@ -1,0 +1,41 @@
+{
+	"_comment" : {
+		"Server_ID" : "本服的服务器ID",
+		"Listen_Port" : "服务器监听端口",
+		"Server_IP" : "本服的外网IP",
+		"ClientNum_Max" : "最大Client连接数",
+		"DataLimt_Recv" : "接收数据大小限制，必须大于等于0，小于等于204857600，若为0则不限制",
+		"DataLimt_Send" : "发送数据发小限制，必须大于等于0，小于等于204857600，若为0则不限制",
+		"ClientConnect_Log" : "是否开启client连接log",
+		"GameSvrList" : {
+			"ID" : "4001",
+			"IP" : "127.0.0.1",
+			"PORT" : "4001",
+			"NAME" : "GameServer"
+		}
+	},
+	
+	"Server_ID" : 3000,
+	"Listen_Port" : 3000,
+	"Server_IP" : "127.0.0.1",
+	
+	"ClientNum_Max" : 2000,
+	"DataLimt_Recv" : 32768,
+	"DataLimt_Send" : 173056,
+	
+	"ClientConnect_Log" : true,
+	
+	"GameSvrList" : [{
+			"ID" : 4001,
+			"IP" : "127.0.0.1",
+			"PORT" : 4001,
+			"NAME" : "GameServer"
+		},
+		{
+			"ID" : 4002,
+			"IP" : "127.0.0.1",
+			"PORT" : 4002,
+			"NAME" : "GameServer"
+		}
+	]	
+}

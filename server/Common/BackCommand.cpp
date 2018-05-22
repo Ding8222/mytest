@@ -1,6 +1,5 @@
 ﻿#include <limits.h>
 #include "BackCommand.h"
-#include "tinyxml2.h"
 #include "serverlog.h"
 #include "msgbase.h"
 #include "GlobalDefine.h"

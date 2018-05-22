@@ -1,10 +1,9 @@
-﻿#include "config.h"
+﻿#include <fstream>
+#include "config.h"
 #include "GlobalDefine.h"
-#include "tinyxml2.h"
 #include "log.h"
 #include "fmt/ostream.h"
-
-using namespace tinyxml2;
+#include "json.hpp"
 
 CConfig::CConfig()
 {
@@ -26,6 +25,10 @@ CConfig::~CConfig()
 	m_SendDataLimt = 0;
 	m_IsOpenClientConnectLog = false;
 
+	for (auto &i : m_GameSvrList)
+	{
+		delete i;
+	}
 	m_GameSvrList.clear();
 }
 
@@ -37,96 +40,83 @@ bool CConfig::Init(const char *servername, int lineid)
 	SetServerType(ServerEnum::EST_GATE);
 	SetLineID(lineid);
 
-	std::string filename = fmt::format("./config/{0}Config.xml", servername);
-	XMLDocument doc;
-	if (doc.LoadFile(filename.c_str()) != XML_SUCCESS)
+	std::string filename = fmt::format("./config/{0}Config.json", servername);
+	std::ifstream i(filename);
+	if (!i.is_open())
 	{
 		log_error("加载 %s 失败!", filename.c_str());
 		return false;
 	}
 
-	XMLElement *pinfo = doc.FirstChildElement(servername);
-	if (!pinfo)
-	{
-		log_error("没有找到节点：'%s'", servername);
-		return false;
-	}
+	nlohmann::json config = nlohmann::json::parse(i);
 
-	if (pinfo->QueryIntAttribute("ClientNum_Max", &m_MaxClientNum) != XML_SUCCESS)
+	if (config["ClientNum_Max"].is_null())
 	{
 		log_error("没有找到字段： 'ClientNum_Max'");
 		return false;
 	}
+	m_MaxClientNum = config["ClientNum_Max"];
 
-	if (pinfo->QueryIntAttribute("DataLimt_Recv", &m_RecvDataLimt) != XML_SUCCESS)
+	if (config["DataLimt_Recv"].is_null())
 	{
 		log_error("没有找到字段： 'DataLimt_Recv'");
 		return false;
 	}
+	m_RecvDataLimt = config["DataLimt_Recv"];
 
-	if (pinfo->QueryIntAttribute("DataLimt_Send", &m_SendDataLimt) != XML_SUCCESS)
+	if (config["DataLimt_Send"].is_null())
 	{
 		log_error("没有找到字段： 'DataLimt_Send'");
 		return false;
 	}
+	m_SendDataLimt = config["DataLimt_Send"];
 
-	if (pinfo->QueryBoolAttribute("ClientConnect_Log", &m_IsOpenClientConnectLog) != XML_SUCCESS)
+	if (config["ClientConnect_Log"].is_null())
 	{
 		log_error("没有找到字段： 'ClientConnect_Log'");
 		return false;
 	}
+	m_IsOpenClientConnectLog = config["ClientConnect_Log"];
 
-	pinfo = doc.FirstChildElement("GameSvrList");
-	if (!pinfo)
+	for (nlohmann::json::iterator iter = config["GameSvrList"].begin(); iter != config["GameSvrList"].end(); ++iter)
 	{
-		log_error("没有找到节点：'GameSvrList'");
-		return false;
-	}
+		GameSvr *server = new GameSvr;
 
-	pinfo = pinfo->FirstChildElement("GameSvr");
-	if (!pinfo)
-	{
-		log_error("没有找到字段： 'GameSvr'");
-		return false;
-	}
-
-	while (pinfo)
-	{
-		GameSvr server;
-
-		server.ip = pinfo->Attribute("IP");
-		if (server.ip.empty())
+		if ((*iter)["IP"].is_null())
 		{
 			log_error("没有找到字段： 'IP'");
+			delete server;
 			return false;
 		}
-
-		if (pinfo->QueryIntAttribute("PORT", &server.port) != XML_SUCCESS)
+		server->ip = (*iter)["IP"].get<std::string>();
+		
+		if ((*iter)["PORT"].is_null())
 		{
 			log_error("没有找到字段： 'PORT'");
+			delete server;
 			return false;
 		}
+		server->port = (*iter)["PORT"];
+		server->port += GetGroupID() * 10;
 
-		server.port += GetGroupID() * 10;
-
-		if (pinfo->QueryIntAttribute("ID", &server.id) != XML_SUCCESS)
+		if ((*iter)["ID"].is_null())
 		{
 			log_error("没有找到字段： 'ID'");
+			delete server;
 			return false;
 		}
+		server->id = (*iter)["ID"];
+		server->id += GetGroupID() * 10;
 
-		server.id += GetGroupID() * 10;
-
-		server.name = pinfo->Attribute("NAME");
-		if (server.name.empty())
+		if ((*iter)["NAME"].is_null())
 		{
 			log_error("没有找到字段： 'NAME'");
+			delete server;
 			return false;
 		}
+		server->name = (*iter)["NAME"].get<std::string>();
 
 		m_GameSvrList.push_back(server);
-
-		pinfo = pinfo->NextSiblingElement("GameSvr");
 	}
 
 	return true;
