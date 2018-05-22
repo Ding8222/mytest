@@ -1,4 +1,5 @@
 ﻿#include <list>
+#include <fstream>
 #include "DBCache.h"
 #include "fmt/ostream.h"
 #include "ServerLog.h"
@@ -171,26 +172,21 @@ bool CDBCache::Init(const char* dbname, const char *username, const char* passwo
 	
 	m_CacheData.reserve(m_Schema.size());
 	
-	m_DBTableConfig = {
-		{ "account" ,
-			{
-				{ "table_name","account" },
-				{ "cache_key","account" },
-			}
-		},
-		{ "playerdate" ,
-			{
-				{ "table_name","playerdate" },
-				{ "cache_key","guid" },
-				{ "index_key","account" },
-			}
-		}
-	};
-
+	std::ifstream i("./config/DBTable.json");
+	if (!i.is_open())
+	{
+		RunStateError("加载DBTable.json失败!");
+		return false;
+	}
+	
+	m_DBTableConfig = nlohmann::json::parse(i);
+	
 	int64 time = get_millisecond();
 
-	LoadData(m_DBTableConfig["account"]);
-	LoadData(m_DBTableConfig["playerdate"]);
+	for (nlohmann::json::iterator iter = m_DBTableConfig.begin(); iter != m_DBTableConfig.end(); ++iter)
+	{
+		LoadData(iter.value());
+	}
 
 	RunStateLog("加载数据库耗时：%d ms", get_millisecond() - time);
 	return true;

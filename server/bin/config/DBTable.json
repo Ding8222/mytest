@@ -1,0 +1,11 @@
+ {
+	 "account": {
+		 "table_name":"account",
+		 "cache_key":"account"
+	 },
+	 "playerdate": {
+		 "table_name":"playerdate",
+		 "cache_key":"guid",
+		 "index_key":"account"
+	 }
+ }

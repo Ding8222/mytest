@@ -170,3 +170,5 @@ DBServer这边看要不要做个缓存
 --开了个头
 
 release模式下的调试信息和minidump
+
+可以去掉xml的读取，使用json格式，减少项目对三方库的依赖
