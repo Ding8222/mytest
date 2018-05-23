@@ -73,7 +73,7 @@
     <IncludePath>..\3rd\json\;..\3rd\;..\3rd\luabind\;..\3rd\luajit\;..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\Common\;$(IncludePath)</IncludePath>
     <OutDir>..\bin\</OutDir>
     <TargetName>G_$(ProjectName)</TargetName>
-    <LibraryPath>C:\Program Files %28x86%29\Visual Leak Detector\lib\Win32;..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>..\3rd\json\;..\3rd\;..\3rd\luabind\;..\3rd\luajit\;..\3rd\fmtlib\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\Common\;$(IncludePath)</IncludePath>
@@ -96,7 +96,6 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>lxnet.lib;Common.lib;libprotobuf.lib;zlib.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\base;..\lib\tinyxml2;..\lib\lxnet;%(AdditionalIncludeDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
