@@ -94,7 +94,7 @@
       <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>Base.lib;lxnet.lib;Common.lib;libprotobuf.lib;cryptlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lxnet.lib;Common.lib;libprotobuf.lib;cryptlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -124,7 +124,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>Base.lib;lxnet.lib;Common.lib;libprotobuf.lib;cryptlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lxnet.lib;Common.lib;libprotobuf.lib;cryptlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -144,6 +144,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Base\PB\ClientMsg.pb.cc" />
+    <ClCompile Include="..\Base\PB\DBServer.pb.cc" />
+    <ClCompile Include="..\Base\PB\Login.pb.cc" />
+    <ClCompile Include="..\Base\PB\ServerMsg.pb.cc" />
+    <ClCompile Include="..\Base\PB\Team.pb.cc" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Robot.cpp" />
@@ -151,6 +156,57 @@
     <ClCompile Include="RobotSvr.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\3rd\json\json.hpp" />
+    <ClInclude Include="..\Base\BackCommand.h" />
+    <ClInclude Include="..\Base\Base64.h" />
+    <ClInclude Include="..\Base\BaseConfig.h" />
+    <ClInclude Include="..\Base\blockbuf.h" />
+    <ClInclude Include="..\Base\Client.h" />
+    <ClInclude Include="..\Base\ClientMgr.h" />
+    <ClInclude Include="..\Base\ClientType.h" />
+    <ClInclude Include="..\Base\ConnectMgr.h" />
+    <ClInclude Include="..\Base\connector.h" />
+    <ClInclude Include="..\Base\crosslib.h" />
+    <ClInclude Include="..\Base\CSVParser.h" />
+    <ClInclude Include="..\Base\CtrlHandler.h" />
+    <ClInclude Include="..\Base\datahand.h" />
+    <ClInclude Include="..\Base\DBCache.h" />
+    <ClInclude Include="..\Base\DBSvrType.h" />
+    <ClInclude Include="..\Base\funcdef.h" />
+    <ClInclude Include="..\Base\GlobalDefine.h" />
+    <ClInclude Include="..\Base\Guid.h" />
+    <ClInclude Include="..\Base\idmgr.h" />
+    <ClInclude Include="..\Base\log.h" />
+    <ClInclude Include="..\Base\LogConnecter.h" />
+    <ClInclude Include="..\Base\LoginType.h" />
+    <ClInclude Include="..\Base\LuaScript.h" />
+    <ClInclude Include="..\Base\lxnet.h" />
+    <ClInclude Include="..\Base\MainType.h" />
+    <ClInclude Include="..\Base\MiniDump.h" />
+    <ClInclude Include="..\Base\msgbase.h" />
+    <ClInclude Include="..\Base\NetConfig.h" />
+    <ClInclude Include="..\Base\objectpool.h" />
+    <ClInclude Include="..\Base\ossome.h" />
+    <ClInclude Include="..\Base\PB\ClientMsg.pb.h" />
+    <ClInclude Include="..\Base\PB\DBServer.pb.h" />
+    <ClInclude Include="..\Base\PB\Login.pb.h" />
+    <ClInclude Include="..\Base\PB\ServerMsg.pb.h" />
+    <ClInclude Include="..\Base\PB\Team.pb.h" />
+    <ClInclude Include="..\Base\platform_config.h" />
+    <ClInclude Include="..\Base\pool.h" />
+    <ClInclude Include="..\Base\RandomPool.h" />
+    <ClInclude Include="..\Base\SendMail.h" />
+    <ClInclude Include="..\Base\serverinfo.h" />
+    <ClInclude Include="..\Base\ServerLog.h" />
+    <ClInclude Include="..\Base\ServerMgr.h" />
+    <ClInclude Include="..\Base\ServerType.h" />
+    <ClInclude Include="..\Base\sqlinterface.h" />
+    <ClInclude Include="..\Base\task.h" />
+    <ClInclude Include="..\Base\taskqueue.h" />
+    <ClInclude Include="..\Base\TeamType.h" />
+    <ClInclude Include="..\Base\threadinstance.h" />
+    <ClInclude Include="..\Base\Timer.h" />
+    <ClInclude Include="..\Base\zlib.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Robot.h" />
     <ClInclude Include="RobotMgr.h" />

@@ -31,6 +31,18 @@
     <Filter Include="处理服务器消息\处理具体消息">
       <UniqueIdentifier>{d24c620c-a20e-4385-b2e9-46a14558d2b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{51e3b30e-97df-4fc0-85ac-0687ab7252d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\pb">
+      <UniqueIdentifier>{8f265697-0030-44cf-8655-d14de65d63bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\msgtype">
+      <UniqueIdentifier>{d4ab52b4-d513-42dc-b413-c39402c2d671}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\json">
+      <UniqueIdentifier>{3571973a-e508-405b-a703-6e71ec5f880a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -87,6 +99,21 @@
     <ClCompile Include="Utilities.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="..\Base\PB\ClientMsg.pb.cc">
+      <Filter>common\pb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Base\PB\DBServer.pb.cc">
+      <Filter>common\pb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Base\PB\Login.pb.cc">
+      <Filter>common\pb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Base\PB\ServerMsg.pb.cc">
+      <Filter>common\pb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Base\PB\Team.pb.cc">
+      <Filter>common\pb</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CenterServer.h">
@@ -124,6 +151,159 @@
     </ClInclude>
     <ClInclude Include="Utilities.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\zlib.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\Timer.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\threadinstance.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\taskqueue.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\task.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\sqlinterface.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\ServerMgr.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\ServerLog.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\serverinfo.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\SendMail.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\RandomPool.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\pool.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\platform_config.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\ossome.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\objectpool.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\NetConfig.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\msgbase.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\MiniDump.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\lxnet.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\LuaScript.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\LogConnecter.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\log.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\idmgr.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\Guid.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\GlobalDefine.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\funcdef.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\DBSvrType.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\DBCache.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\datahand.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\CtrlHandler.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\CSVParser.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\crosslib.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\connector.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\ConnectMgr.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\ClientMgr.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\Client.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\blockbuf.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\BaseConfig.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\Base64.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\BackCommand.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\PB\ClientMsg.pb.h">
+      <Filter>common\pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\PB\DBServer.pb.h">
+      <Filter>common\pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\PB\Login.pb.h">
+      <Filter>common\pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\PB\ServerMsg.pb.h">
+      <Filter>common\pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\PB\Team.pb.h">
+      <Filter>common\pb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\MainType.h">
+      <Filter>common\msgtype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\ServerType.h">
+      <Filter>common\msgtype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\TeamType.h">
+      <Filter>common\msgtype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\LoginType.h">
+      <Filter>common\msgtype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Base\ClientType.h">
+      <Filter>common\msgtype</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rd\json\json.hpp">
+      <Filter>common\json</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
