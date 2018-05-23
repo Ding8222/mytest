@@ -1,13 +1,11 @@
 ﻿#include"MapConfig.h"
 #include"MapInfo.h"
-#include"tinyxml2.h"
 #include"log.h"
 #include "objectpool.h"
 #include "serverlog.h"
 #include "Config.h"
 #include "CSVLoad.h"
 
-using namespace tinyxml2;
 #define MAP_ID_MAX 10000
 
 static objectpool<CMapInfo> &MapPool()

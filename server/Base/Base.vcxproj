@@ -197,7 +197,6 @@
     <ClInclude Include="TeamType.h" />
     <ClInclude Include="threadinstance.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="tinyxml2.h" />
     <ClInclude Include="zlib.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

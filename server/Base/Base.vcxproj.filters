@@ -104,9 +104,6 @@
     <ClInclude Include="ServerMgr.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="tinyxml2.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="GlobalDefine.h">
       <Filter>Common</Filter>
     </ClInclude>

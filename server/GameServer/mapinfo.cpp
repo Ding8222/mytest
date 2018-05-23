@@ -1,9 +1,8 @@
-﻿#include"MapInfo.h"
-#include"tinyxml2.h"
+﻿#include <fstream>
+#include"MapInfo.h"
 #include"log.h"
 #include "serverlog.h"
-
-using namespace tinyxml2;
+#include "json.hpp"
 
 CMapInfo::CMapInfo()
 {
@@ -33,40 +32,33 @@ bool CMapInfo::Init(int32 mapid, int32 type, const char *bar_filename)
 	m_MapID = mapid;
 	m_MapType = type;
 
-	XMLDocument doc;
-	if (doc.LoadFile(bar_filename) != XML_SUCCESS)
+	std::ifstream i(bar_filename);
+	if (!i.is_open())
 	{
 		RunStateError("加载 %s 失败!", bar_filename);
 		return false;
 	}
 
-	// 添加地图阻挡点信息
+	nlohmann::json config = nlohmann::json::parse(i);
 
-	XMLElement *pinfo = doc.FirstChildElement("bar_map");
-	if (!pinfo)
-	{
-		RunStateError("没有找到字段： 'bar_map'");
-		return false;
-	}
-
-	if (pinfo->QueryIntAttribute("width", &m_Width) != XML_SUCCESS)
+	if (config["width"].is_null())
 	{
 		RunStateError("没有找到字段： 'width'");
 		return false;
 	}
-
+	m_Width = config["width"];
 	if (m_Width <= 0)
 	{
 		RunStateError("地图宽 <= 0 ,地图ID：%d ", mapid);
 		return false;
 	}
 
-	if (pinfo->QueryIntAttribute("height", &m_Height) != XML_SUCCESS)
+	if (config["height"].is_null())
 	{
 		RunStateError("没有找到字段： 'height'");
 		return false;
 	}
-
+	m_Height = config["height"];
 	if (m_Height <= 0)
 	{
 		RunStateError("地图宽 <= 0 ,地图ID：%d ", mapid);
@@ -89,43 +81,40 @@ bool CMapInfo::Init(int32 mapid, int32 type, const char *bar_filename)
 	}
 	memset(barinfo, 0, m_Width * m_Height * sizeof(bool));
 
-	pinfo = pinfo->FirstChildElement("bar");
-
-	while (pinfo)
+	for (nlohmann::json::iterator iter = config["bar"].begin(); iter != config["bar"].end(); ++iter)
 	{
 		int row = 0;
 		int col = 0;
 
-		if (pinfo->QueryIntAttribute("row", &row) != XML_SUCCESS)
+		if ((*iter)["row"].is_null())
 		{
 			RunStateError("没有找到字段： 'row'");
-			delete []barinfo;
+			delete[]barinfo;
 			return false;
 		}
-
+		row = (*iter)["row"];
 		if (row < 0 || row > m_Width)
 		{
 			RunStateError("地图阻挡点行数 < 0 或者行数大于地图宽 ,地图ID：%d ", mapid);
-			delete []barinfo;
+			delete[]barinfo;
 			return false;
 		}
 
-		if (pinfo->QueryIntAttribute("col", &col) != XML_SUCCESS)
+		if ((*iter)["col"].is_null())
 		{
 			RunStateError("没有找到字段： 'col'");
-			delete []barinfo;
+			delete[]barinfo;
 			return false;
 		}
-
+		col = (*iter)["col"];
 		if (col < 0 || col > m_Height)
 		{
 			RunStateError("地图阻挡点列数 < 0 或者列数大于地图高 ,地图ID：%d ", mapid);
-			delete []barinfo;
+			delete[]barinfo;
 			return false;
 		}
 
 		barinfo[row * col] = true;
-		pinfo = pinfo->NextSiblingElement("bar");
 	}
 
 	m_BarInfo = barinfo;

@@ -12,6 +12,7 @@
 #include "objectpool.h"
 #include "lxnet.h"
 #include "google/protobuf/message.h"
+#include <cpr/cpr.h>
 
 #pragma comment(lib,"fmt.lib") 
 
@@ -100,6 +101,11 @@ bool init()
 
 int main(void)
 {
+	auto r = cpr::Get(cpr::Url{ "https://baidu.com/" }, cpr::VerifySsl(false));
+	r.status_code;                  // 200
+	r.header["content-type"];       // application/json; charset=utf-8
+	r.text;                         // JSON text string
+
 	init();
 	return 0;
 }
