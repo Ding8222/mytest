@@ -7,6 +7,7 @@
 #include "LogConnecter.h"
 #include "BackCommand.h"
 #include "objectpool.h"
+#include "DBCache.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -85,6 +86,7 @@ bool CDBServer::Init()
 	DBCenterConnect.Destroy();
 	LogConnecter.Destroy();
 	ClientLogin.Destroy();
+	DBCache.Destroy();
 	Destroy();
 
 	return false;
@@ -125,6 +127,7 @@ void CDBServer::Run()
 	DBCenterConnect.Destroy();
 	LogConnecter.Destroy();
 	ClientLogin.Destroy();
+	DBCache.Destroy();
 
 	Destroy();
 }

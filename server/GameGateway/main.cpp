@@ -27,79 +27,83 @@
 #define system(a)
 #endif
 
-bool init(int argc, char *argv[])
+void init(int argc, char *argv[])
 {
-#ifdef _WIN32
-	SetConsoleOutputCP(65001);
-
-	if (!CMiniDump::Begin())
+	do
 	{
-		RunStateError("初始化MiniDump失败!");
-		system("pause");
-		return false;
-	}
+#ifdef _WIN32
+		SetConsoleOutputCP(65001);
+
+		if (!CMiniDump::Begin())
+		{
+			RunStateError("初始化MiniDump失败!");
+			system("pause");
+			break;
+		}
 #endif
 
-	if (argc < 2)
-	{
-		RunStateError("没有填写线路ID！");
-		return false;
-	}
-	
-	int nLineID = atoi(argv[1]);
-	if (nLineID <= 0)
-	{
-		RunStateError("线路ID填写错误！");
-		return false;
-	}
+		if (argc < 2)
+		{
+			RunStateError("没有填写线路ID！");
+			break;
+		}
 
-	if (!init_log(fmt::format("GameGateway_Log_Line_{0}", nLineID).c_str()))
-	{
-		RunStateError("初始化Log失败!");
-		return false;
-	}
+		int nLineID = atoi(argv[1]);
+		if (nLineID <= 0)
+		{
+			RunStateError("线路ID填写错误！");
+			break;
+		}
 
-	//读取网络配置文件
-	if (!NetConfig.Init())
-	{
-		RunStateError("初始化NetConfig失败!");
-		system("pause");
-		return 0;
-	}
+		if (!init_log(fmt::format("GameGateway_Log_Line_{0}", nLineID).c_str()))
+		{
+			RunStateError("初始化Log失败!");
+			break;
+		}
 
-	//读取配置文件
-	if (!Config.Init("GameGateway", nLineID))
-	{
-		RunStateError("初始化Config失败!");
-		system("pause");
-		return 0;
-	}
+		//读取网络配置文件
+		if (!NetConfig.Init())
+		{
+			RunStateError("初始化NetConfig失败!");
+			system("pause");
+			break;
+		}
 
-	g_client_connectlog_flag = Config.IsOpenClientConnectLog();
-	g_elapsed_log_flag = Config.IsOpenElapsedLog();
-	sPoolInfo.SetMeminfoFileName("log_log/GameGateway_Log/mempoolinfo.txt");
+		//读取配置文件
+		if (!Config.Init("GameGateway", nLineID))
+		{
+			RunStateError("初始化Config失败!");
+			system("pause");
+			break;
+		}
 
-	RunStateLog("[%d线]网关服务器开始启动!", Config.GetLineID());
+		g_client_connectlog_flag = Config.IsOpenClientConnectLog();
+		g_elapsed_log_flag = Config.IsOpenElapsedLog();
+		sPoolInfo.SetMeminfoFileName("log_log/GameGateway_Log/mempoolinfo.txt");
 
-	//初始化网络库
-	if (!lxnet::net_init(NetConfig.GetBigBufSize(), NetConfig.GetBigBufNum(),
-		NetConfig.GetSmallBufSize(), NetConfig.GetSmallBufNum(),
-		NetConfig.GetListenerNum(), NetConfig.GetSocketerNum(),
-		NetConfig.GetThreadNum()))
-	{
-		RunStateError("初始化网络库失败!");
-		system("pause");
-		return 0;
-	}
-	//设置监听端口，创建listener
-	if (!GameGateway.Init())
-	{
-		RunStateError("初始化失败!");
-		system("pause");
-		return 0;
-	}
+		RunStateLog("[%d线]网关服务器开始启动!", Config.GetLineID());
 
-	GameGateway.Run();
+		//初始化网络库
+		if (!lxnet::net_init(NetConfig.GetBigBufSize(), NetConfig.GetBigBufNum(),
+			NetConfig.GetSmallBufSize(), NetConfig.GetSmallBufNum(),
+			NetConfig.GetListenerNum(), NetConfig.GetSocketerNum(),
+			NetConfig.GetThreadNum()))
+		{
+			RunStateError("初始化网络库失败!");
+			system("pause");
+			break;
+		}
+		//设置监听端口，创建listener
+		if (!GameGateway.Init())
+		{
+			RunStateError("初始化失败!");
+			system("pause");
+			break;
+		}
+
+		GameGateway.Run();
+		break;
+	} while (true);
 	RunStateLog("[%d线]网关服务器关闭!", Config.GetLineID());
 	//循环结束后的资源释放
 	GameGateway.Release();
@@ -109,7 +113,6 @@ bool init(int argc, char *argv[])
 #ifdef _WIN32
 	CMiniDump::End();
 #endif
-	return true;
 }
 
 int main(int argc, char *argv[])

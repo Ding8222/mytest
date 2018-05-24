@@ -163,6 +163,7 @@
     <ClCompile Include="ServerLog.cpp" />
     <ClCompile Include="ServerMgr.cpp" />
     <ClCompile Include="sqlinterface.cpp" />
+    <ClCompile Include="StringPool.cpp" />
     <ClCompile Include="task.cpp" />
     <ClCompile Include="taskqueue.cpp" />
     <ClCompile Include="threadinstance.cpp" />

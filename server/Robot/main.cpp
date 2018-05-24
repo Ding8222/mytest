@@ -26,68 +26,72 @@
 #define system(a)
 #endif
 
-bool init(int argc, char *argv[])
+void init(int argc, char *argv[])
 {
+	do
+	{
 #ifdef _WIN32
-	SetConsoleOutputCP(65001);
+		SetConsoleOutputCP(65001);
 
-	if (!CMiniDump::Begin())
-	{
-		RunStateError("初始化MiniDump失败!");
-		system("pause");
-		return false;
-	}
+		if (!CMiniDump::Begin())
+		{
+			RunStateError("初始化MiniDump失败!");
+			system("pause");
+			break;
+		}
 #endif
-	int nRobotID = 0;
-	if (argc == 2)
-	{
-		nRobotID = atoi(argv[1]);
-	}
+		int nRobotID = 0;
+		if (argc == 2)
+		{
+			nRobotID = atoi(argv[1]);
+		}
 
-	if (!init_log("Robot_Log"))
-	{
-		RunStateError("初始化Log失败!");
-		return false;
-	}
+		if (!init_log("Robot_Log"))
+		{
+			RunStateError("初始化Log失败!");
+			break;
+		}
 
-	// 读取网络配置文件
-	if (!NetConfig.Init())
-	{
-		RunStateError("初始化NetConfig失败!");
-		system("pause");
-		return 0;
-	}
+		// 读取网络配置文件
+		if (!NetConfig.Init())
+		{
+			RunStateError("初始化NetConfig失败!");
+			system("pause");
+			break;
+		}
 
-	// 读取配置文件
-	if (!Config.Init("Robot"))
-	{
-		RunStateError("初始化Config失败!");
-		system("pause");
-		return 0;
-	}
+		// 读取配置文件
+		if (!Config.Init("Robot"))
+		{
+			RunStateError("初始化Config失败!");
+			system("pause");
+			break;
+		}
 
-	sPoolInfo.SetMeminfoFileName("log_log/Robot_Log/mempoolinfo.txt");
-	log_writelog("机器人开始启动!");
+		sPoolInfo.SetMeminfoFileName("log_log/Robot_Log/mempoolinfo.txt");
+		log_writelog("机器人开始启动!");
 
-	// 初始化网络库
-	if (!lxnet::net_init(NetConfig.GetBigBufSize(), NetConfig.GetBigBufNum(),
-		NetConfig.GetSmallBufSize(), NetConfig.GetSmallBufNum(),
-		NetConfig.GetListenerNum(), NetConfig.GetSocketerNum(),
-		NetConfig.GetThreadNum()))
-	{
-		RunStateError("初始化网络库失败!");
-		system("pause");
-		return 0;
-	}
-	// 初始化
-	if (!RobotSvr.Init(nRobotID))
-	{
-		RunStateError("初始化LoginServer失败!");
-		system("pause");
-		return 0;
-	}
+		// 初始化网络库
+		if (!lxnet::net_init(NetConfig.GetBigBufSize(), NetConfig.GetBigBufNum(),
+			NetConfig.GetSmallBufSize(), NetConfig.GetSmallBufNum(),
+			NetConfig.GetListenerNum(), NetConfig.GetSocketerNum(),
+			NetConfig.GetThreadNum()))
+		{
+			RunStateError("初始化网络库失败!");
+			system("pause");
+			break;
+		}
+		// 初始化
+		if (!RobotSvr.Init(nRobotID))
+		{
+			RunStateError("初始化LoginServer失败!");
+			system("pause");
+			break;
+		}
 
-	RobotSvr.Run();
+		RobotSvr.Run();
+		break;
+	} while (true);
 	// 循环结束后的资源释放
 	RobotSvr.Release();
 	lxnet::net_release();
@@ -97,7 +101,6 @@ bool init(int argc, char *argv[])
 #ifdef _WIN32
 	CMiniDump::End();
 #endif
-	return true;
 }
 
 int main(int argc, char *argv[])

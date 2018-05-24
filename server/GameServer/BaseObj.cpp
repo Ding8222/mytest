@@ -38,11 +38,7 @@ void CBaseObj::Run()
 std::unordered_map<serverinfo *, std::list<int32>> CBaseObj::gateinfo;
 void CBaseObj::SendRefMsg(Msg &pMsg)
 {
-	for (auto &i : gateinfo)
-	{
-		i.second.clear();
-	}
-
+	gateinfo.clear();
 	static bool bNeeSendMsg = false;
 	static msgtail tail;
 	std::unordered_map<uint32, CBaseObj *> *playerlist = GetAoiList();

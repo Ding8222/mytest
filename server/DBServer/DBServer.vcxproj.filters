@@ -204,6 +204,9 @@
     <ClInclude Include="..\3rd\json\json.hpp">
       <Filter>common\json</Filter>
     </ClInclude>
+    <ClInclude Include="..\Base\StringPool.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Config.cpp">

@@ -5,6 +5,7 @@
 #include "ServerLog.h"
 #include "Timer.h"
 #include "crosslib.h"
+#include "StringPool.h"
 
 #ifdef _WIN32
 #include <process.h>
@@ -73,7 +74,7 @@ void CDBWorkInstance::Destroy()
 	LOCK_DELETE(&m_lock);
 }
 
-void CDBWorkInstance::Push(const std::string &sql)
+void CDBWorkInstance::Push(void *sql)
 {
 	LOCK_LOCK(&m_lock);
 	m_SqlQueue.push_back(sql);
@@ -92,15 +93,19 @@ void CDBWorkInstance::Run()
 		currenttime = get_microsecond();
 
 		LOCK_LOCK(&m_lock);
-		m_TempQueue = m_SqlQueue;
-		m_SqlQueue.clear();
+		m_TempQueue = std::move(m_SqlQueue);
 		LOCK_UNLOCK(&m_lock);
 
 		while (!m_TempQueue.empty())
 		{
-			const std::string &sql = m_TempQueue.front();
-			DataBase::CRecordset *res = m_Con.Execute(sql.c_str());
-			m_TempQueue.pop_front();
+			CStringPool *sql = (CStringPool *)m_TempQueue.front();
+			const char *str = sql->GetMsg();
+			if (str)
+			{
+				DataBase::CRecordset *res = m_Con.Execute(str);
+			}
+			string_release(sql);
+			m_TempQueue.pop_front(); 
 		}
 		delay = get_microsecond() - currenttime;
 		if (delay < maxdelay)
@@ -126,6 +131,12 @@ CDBCache::~CDBCache()
 
 bool CDBCache::Init(const char* dbname, const char *username, const char* password, const char* ipstring, bool opensqllog)
 {
+	if (!CStringPool::InitPools())
+	{
+		RunStateError("初始化task pool失败!");
+		return false;
+	}
+
 	m_DBName = dbname;
 
 	m_Con.SetLogDirectory("log_log/DBServer_Log/read_dbhand_log");
@@ -207,6 +218,7 @@ void CDBCache::Destroy()
 		delete m_WorkInstance;
 	}
 	m_WorkInstance = nullptr;
+	CStringPool::DestroyPools();
 }
 
 const char *CDBCache::GetPrimaryKey(const std::string &tablename)
@@ -271,19 +283,19 @@ bool CDBCache::LoadSchema()
 			res->NextRow();
 		}
 	}
-
+	std::list<std::string> fields;
 	for(auto &i: tablename)
 	{
 		m_Schema[i] = {};
 		m_Schema[i]["fields"] = {};
 		m_Schema[i]["fieldtype"] = {};
 		m_Schema[i]["pk"] = GetPrimaryKey(i);
-		std::list<std::string> fields = GetFields(i);
+		fields = GetFields(i);
+
 		m_Schema[i]["fields"] = fields;
 		for (auto &j : fields)
 		{
-			std::string fieldtype;
-			fieldtype = GetFieldType(i, j);
+			const std::string &fieldtype = GetFieldType(i, j);
 			if (fieldtype == "float")
 			{
 				m_Schema[i]["fieldtype"][j] = "float";
@@ -317,9 +329,9 @@ void CDBCache::ConvertRecord(const std::string &tablename, nlohmann::json &t)
 {
 	for (nlohmann::json::iterator iter = t.begin(); iter != t.end(); ++iter)
 	{
-		std::string field = iter.key();
-		std::string value = iter.value();
-		std::string type = m_Schema[tablename]["fieldtype"][field].get<std::string>();
+		const std::string &field = iter.key();
+		const std::string &value = iter.value();
+		const std::string &type = m_Schema[tablename]["fieldtype"][field].get<std::string>();
 		if (type == "float")
 		{
 			t[field] = std::stof(value);
@@ -352,8 +364,8 @@ const std::string CDBCache::MakeKey(std::unordered_map<std::string, std::string>
 
 std::vector<std::unordered_map<std::string, std::string>> CDBCache::LoadData(const nlohmann::json &config, const char *guid)
 {
-	std::string tablename = config["table_name"];
-	std::string pk = m_Schema[tablename]["pk"];
+	const std::string &tablename = config["table_name"];
+	const std::string &pk = m_Schema[tablename]["pk"];
 	int32 offset = 0;
 	std::string sql;
 	std::vector<std::unordered_map<std::string, std::string>> data;
@@ -395,12 +407,12 @@ std::vector<std::unordered_map<std::string, std::string>> CDBCache::LoadData(con
 					std::string field = i.get<std::string>();
 					m_TempMap[field] = res->GetChar(field.c_str());
 				}
-				std::string key = fmt::format("{0}:{1}", tablename, MakeKey(m_TempMap, config["cache_key"]));
+				const std::string &key = fmt::format("{0}:{1}", tablename, MakeKey(m_TempMap, config["cache_key"]));
 				m_CacheData[key] = m_TempMap;
 				// 对需要排序的数据插入有序集合
 				if (config.find("index_key") != config.end())
 				{
-					std::string indexkey = fmt::format("{0}:index:{1}", tablename, MakeKey(m_TempMap, config["index_key"]));
+					const std::string &indexkey = fmt::format("{0}:index:{1}", tablename, MakeKey(m_TempMap, config["index_key"]));
 					auto iter = m_CacheData.find(indexkey);
 					if (iter != m_CacheData.end())
 					{
@@ -455,7 +467,7 @@ nlohmann::json CDBCache::LoadDataMulti(const std::string &tablename, const char 
 nlohmann::json CDBCache::ExecuteSingle(const std::string &tablename, const char *guid, std::list<std::string> *fields)
 {
 	nlohmann::json result;
-	std::string key = fmt::format("{0}:{1}", tablename, guid);
+	const std::string &key = fmt::format("{0}:{1}", tablename, guid);
 
 	auto iter = m_CacheData.find(key);
 	if (iter != m_CacheData.end())
@@ -500,7 +512,7 @@ nlohmann::json CDBCache::ExecuteSingle(const std::string &tablename, const char 
 nlohmann::json CDBCache::ExecuteMulti(const std::string &tablename, const std::string &guid, int64 id, std::list<std::string> *fields)
 {
 	nlohmann::json result;
-	std::string key = fmt::format("{0}:index:{1}", tablename, guid);
+	const std::string &key = fmt::format("{0}:index:{1}", tablename, guid);
 
 	if (id)
 	{
@@ -599,7 +611,7 @@ nlohmann::json CDBCache::ExecuteMulti(const std::string &tablename, const std::s
 bool CDBCache::Insert(const std::string &tablename, nlohmann::json &fields)
 {
 	nlohmann::json config = m_DBTableConfig[tablename];
-	std::string key = fmt::format("{0}:{1}", tablename, fields[config["cache_key"].get<std::string>()].get<std::string>());
+	const std::string &key = fmt::format("{0}:{1}", tablename, fields[config["cache_key"].get<std::string>()].get<std::string>());
 
 	auto iter = m_CacheData.find(key);
 	if (iter == m_CacheData.end())
@@ -640,7 +652,19 @@ bool CDBCache::Insert(const std::string &tablename, nlohmann::json &fields)
 			}
 		}
 		// 同步到数据库
-		m_WorkInstance->Push(fmt::format("insert into {0} ({1}) values({2})", tablename, columns, valus));
+		CStringPool *str = string_create();
+		if (!str)
+		{
+			RunStateError("创建String失败!");
+			return false;
+		}
+		if (!str->PushMsg(fmt::format("insert into {0} ({1}) values({2})\0", tablename, columns, valus)))
+		{
+			RunStateError("添加消息至String失败!");
+			string_release(str);
+			return false;
+		}
+		m_WorkInstance->Push(str);
 		return true;
 	}
 
@@ -650,7 +674,7 @@ bool CDBCache::Insert(const std::string &tablename, nlohmann::json &fields)
 bool CDBCache::Update(const std::string &tablename, nlohmann::json &fields)
 {
 	nlohmann::json config = m_DBTableConfig[tablename];
-	std::string key = fmt::format("{0}:{1}", tablename, fields[config["cache_key"].get<std::string>()].get<std::string>());
+	const std::string &key = fmt::format("{0}:{1}", tablename, fields[config["cache_key"].get<std::string>()].get<std::string>());
 
 	auto iter = m_CacheData.find(key);
 	if (iter != m_CacheData.end())
@@ -668,7 +692,19 @@ bool CDBCache::Update(const std::string &tablename, nlohmann::json &fields)
 		setvalues.pop_back();
 		std::string pk = m_Schema[tablename]["pk"];
 		// 同步到数据库
-		m_WorkInstance->Push(fmt::format("update {0} set {1} where {2} = '{3}'", tablename, setvalues, pk, fields[pk].get<std::string>()));
+		CStringPool *str = string_create();
+		if (!str)
+		{
+			RunStateError("创建String失败!");
+			return false;
+		}
+		if (!str->PushMsg(fmt::format("update {0} set {1} where {2} = '{3}'\0", tablename, setvalues, pk, fields[pk].get<std::string>())))
+		{
+			RunStateError("添加消息至String失败!");
+			string_release(str);
+			return false;
+		}
+		m_WorkInstance->Push(str);
 		return true;
 	}
 	return false;

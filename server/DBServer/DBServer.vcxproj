@@ -189,6 +189,7 @@
     <ClInclude Include="..\Base\ServerMgr.h" />
     <ClInclude Include="..\Base\ServerType.h" />
     <ClInclude Include="..\Base\sqlinterface.h" />
+    <ClInclude Include="..\Base\StringPool.h" />
     <ClInclude Include="..\Base\task.h" />
     <ClInclude Include="..\Base\taskqueue.h" />
     <ClInclude Include="..\Base\TeamType.h" />

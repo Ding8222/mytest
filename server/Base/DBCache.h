@@ -5,6 +5,7 @@
 #include "json.hpp"
 #include "ossome.h"
 
+class CStringPool;
 class CDBWorkInstance
 {
 public:
@@ -15,14 +16,14 @@ public:
 	void Run();
 	void Destroy();
 
-	void Push(const std::string &sql);
+	void Push(void *sql);
 private:
 	volatile bool m_Run;
 	volatile bool m_WorkFinish;
 	int32 m_Delay;
 	LOCK_struct m_lock;
-	std::list<std::string> m_SqlQueue;
-	std::list<std::string> m_TempQueue;
+	std::list<void *> m_SqlQueue;
+	std::list<void *> m_TempQueue;
 	DataBase::CConnection m_Con;
 };
 

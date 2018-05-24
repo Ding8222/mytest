@@ -1,6 +1,6 @@
-﻿#include <string.h>
+﻿#include "StringPool.h"
+#include <string.h>
 #include <stdlib.h>
-#include "task.h"
 #include "msgbase.h"
 #include "ossome.h"
 #include "objectpool.h"
@@ -9,7 +9,7 @@
 
 enum
 {
-	enum_max_thread_num = 16,	//
+	enum_max_thread_num = 16,
 };
 struct thread_localuse
 {
@@ -20,20 +20,20 @@ struct thread_localuse
 struct threadinfo
 {
 	bool isinit;
-	int msgmaxsize;
+	int32 msgmaxsize;
 	struct thread_localuse msgbuf[enum_max_thread_num];
 	volatile long freeindex;
 };
 
-static struct threadinfo s_threadbuf = {false};
+static struct threadinfo s_threadbuf = { false };
 
-static bool threadinfo_init ()
+static bool threadinfo_init()
 {
 	if (s_threadbuf.isinit)
 		return false;
-	s_threadbuf.msgmaxsize = 256*1024;
+	s_threadbuf.msgmaxsize = 256 * 1024;
 
-	for (int i = 0; i < enum_max_thread_num; ++i)
+	for (int32 i = 0; i < enum_max_thread_num; ++i)
 	{
 		s_threadbuf.msgbuf[i].threadid = 0;
 		s_threadbuf.msgbuf[i].buf = nullptr;
@@ -44,12 +44,12 @@ static bool threadinfo_init ()
 	return true;
 }
 
-static void threadinfo_release ()
+static void threadinfo_release()
 {
 	if (!s_threadbuf.isinit)
 		return;
 	s_threadbuf.isinit = false;
-	for (int i = 0; i < enum_max_thread_num; ++i)
+	for (int32 i = 0; i < enum_max_thread_num; ++i)
 	{
 		if (s_threadbuf.msgbuf[i].buf)
 		{
@@ -59,7 +59,7 @@ static void threadinfo_release ()
 	}
 }
 
-static char *threadbuf_get_msg_buf ()
+static char *threadbuf_get_msg_buf()
 {
 	if (!s_threadbuf.isinit)
 	{
@@ -68,7 +68,7 @@ static char *threadbuf_get_msg_buf ()
 	}
 	THREAD_ID currentthreadid = CURRENT_THREAD;
 
-	int index;
+	int32 index;
 	for (index = 0; index < enum_max_thread_num; ++index)
 	{
 		if (s_threadbuf.msgbuf[index].threadid == currentthreadid)
@@ -81,7 +81,7 @@ static char *threadbuf_get_msg_buf ()
 			return s_threadbuf.msgbuf[index].buf;
 		}
 	}
-	index = (int)atom_fetch_add(&s_threadbuf.freeindex, 1);
+	index = (int32)atom_fetch_add(&s_threadbuf.freeindex, 1);
 	if (index < 0 || index >= enum_max_thread_num)
 	{
 		RunStateError("thread num is overtop, failed!, index:%d, enum_max_thread_num:%d", index, enum_max_thread_num);
@@ -96,45 +96,43 @@ static char *threadbuf_get_msg_buf ()
 	s_threadbuf.msgbuf[index].threadid = currentthreadid;
 	return s_threadbuf.msgbuf[index].buf;
 }
-
-
-struct blocktempbuf
+struct stringblock
 {
-	char buf[1024*8];
+	char buf[80];
 };
 
-class TaskSomePool
+class StringSomePool
 {
 public:
 
-	TaskSomePool ()
+	StringSomePool()
 	{
-		m_pool = new objectpool<blocktempbuf>(16000, "blocktempbuf pools");
+		m_pool = new objectpool<stringblock>(16000, "stringblock pools");
 		LOCK_INIT(&m_blocklock);
 
-		m_taskpool = new objectpool<task>(16000, "task pools");
-		LOCK_INIT(&m_tasklock);
+		m_stringpool = new objectpool<CStringPool>(16000, "CStringPool pools");
+		LOCK_INIT(&m_stringlock);
 	}
 
-	~TaskSomePool ()
+	~StringSomePool()
 	{
 		delete m_pool;
 		LOCK_DELETE(&m_blocklock);
 
-		delete m_taskpool;
-		LOCK_DELETE(&m_tasklock);
+		delete m_stringpool;
+		LOCK_DELETE(&m_stringlock);
 	}
 
-	blocktempbuf *AllocBlock ()
+	stringblock *AllocBlock()
 	{
-		blocktempbuf *res = nullptr;
+		stringblock *res = nullptr;
 		LOCK_LOCK(&m_blocklock);
 		res = m_pool->GetObject();
 		LOCK_UNLOCK(&m_blocklock);
 		return res;
 	}
 
-	void ReleaseBlock (blocktempbuf *tk)
+	void ReleaseBlock(stringblock *tk)
 	{
 		if (!tk)
 			return;
@@ -143,39 +141,39 @@ public:
 		LOCK_UNLOCK(&m_blocklock);
 	}
 
-	task *AllocTask ()
+	CStringPool *AllocString()
 	{
-		task *res = nullptr;
-		LOCK_LOCK(&m_tasklock);
-		res = m_taskpool->GetObject();
-		LOCK_UNLOCK(&m_tasklock);
+		CStringPool *res = nullptr;
+		LOCK_LOCK(&m_stringlock);
+		res = m_stringpool->GetObject();
+		LOCK_UNLOCK(&m_stringlock);
 		return res;
 	}
 
-	void ReleaseTask (task *tk)
+	void ReleaseString(CStringPool *tk)
 	{
 		if (!tk)
 			return;
-		LOCK_LOCK(&m_tasklock);
-		m_taskpool->FreeObject(tk);
-		LOCK_UNLOCK(&m_tasklock);
+		LOCK_LOCK(&m_stringlock);
+		m_stringpool->FreeObject(tk);
+		LOCK_UNLOCK(&m_stringlock);
 	}
 
 private:
-	objectpool<blocktempbuf> *m_pool;
+	objectpool<stringblock> *m_pool;
 	LOCK_struct m_blocklock;
 
-	objectpool<task> *m_taskpool;
-	LOCK_struct m_tasklock;
+	objectpool<CStringPool> *m_stringpool;
+	LOCK_struct m_stringlock;
 };
 
-static TaskSomePool &SomePool ()
+static StringSomePool &SomePool()
 {
-	static TaskSomePool m;
+	static StringSomePool m;
 	return m;
 }
 
-static blockbuf *block_create ()
+static blockbuf *block_create()
 {
 	blockbuf *self = (blockbuf *)SomePool().AllocBlock();
 	if (!self)
@@ -184,105 +182,69 @@ static blockbuf *block_create ()
 		return nullptr;
 	}
 	new(self) blockbuf();
-	self->setsize(sizeof(blocktempbuf) - sizeof(blockbuf));
+	self->setsize(sizeof(stringblock) - sizeof(blockbuf));
 	return self;
 }
 
-static void block_release (blockbuf *self)
+static void block_release(blockbuf *self)
 {
 	if (!self)
 		return;
 	self->~blockbuf();
-	SomePool().ReleaseBlock((blocktempbuf *)self);
+	SomePool().ReleaseBlock((stringblock *)self);
 }
 
-task *task_create ()
+CStringPool *string_create()
 {
-	task *self = SomePool().AllocTask();
+	CStringPool *self = SomePool().AllocString();
 	if (!self)
 	{
-		RunStateError("create task failed!");
+		RunStateError("create CStringPool failed!");
 		return nullptr;
 	}
-	new(self) task();
+	new(self) CStringPool();
 	return self;
 }
 
-void task_release (void *self)
+void string_release(void *self)
 {
-	task *tk = (task *)self;
+	CStringPool *tk = (CStringPool *)self;
 	if (!tk)
 		return;
-	tk->~task();
-	SomePool().ReleaseTask(tk);
+	tk->~CStringPool();
+	SomePool().ReleaseString(tk);
 }
 
-task::task ()
+CStringPool::CStringPool()
 {
-	m_cachecon = nullptr;
-	m_con = nullptr;
-
-	m_tasktype = tasktype_process;
-	m_needsend = true;
-	m_sendtoall = false;
-	m_serverid = 0;
-	m_clientid = 0;
-
 	m_head = nullptr;
 	m_currentforpush = nullptr;
 	m_currentforget = nullptr;
 }
 
-task::~task ()
+CStringPool::~CStringPool()
 {
 	Destroy();
 }
 
-bool task::InitPools ()
+bool CStringPool::InitPools()
 {
-	blocktempbuf *bf = SomePool().AllocBlock();
+	stringblock *bf = SomePool().AllocBlock();
 	SomePool().ReleaseBlock(bf);
 
-	task *tk = SomePool().AllocTask();
-	SomePool().ReleaseTask(tk);
+	CStringPool *tk = SomePool().AllocString();
+	SomePool().ReleaseString(tk);
 
 	return threadinfo_init();
 }
 
-void task::DestroyPools ()
+void CStringPool::DestroyPools()
 {
 	threadinfo_release();
 }
 
-//设置一些必须的附带信息
-void task::SetInfo (CDBCache *con, int32 serverid, int64 clientid)
-{
-	m_cachecon = con;
-	m_serverid = serverid;
-	m_clientid = clientid;
-}
-
-void task::SetInfo(DataBase::CConnection *con, int32 serverid, int64 clientid)
-{
-	m_con = con;
-	m_serverid = serverid;
-	m_clientid = clientid;
-}
-
-//设置是否需要发送
-void task::SetAsNeedSend (bool flag)
-{
-	m_needsend = flag;
-}
-
-//设置是否发送到所有连接，默认只发送到关联的连接
-void task::SetSendToAll (bool flag)
-{
-	m_sendtoall = flag;
-}
-
 //重置
-void task::Reset ()
+void CStringPool::Reset()
 {
 	blockbuf *node, *next;
 	for (node = m_head; node; node = next)
@@ -295,17 +257,19 @@ void task::Reset ()
 }
 
 //装入一个消息
-bool task::PushMsg (Msg *pMsg)
+bool CStringPool::PushMsg(std::string &str)
 {
 	CheckBlockNull();
 
 	if (!m_currentforpush)
 		return false;
 
-	char *src = (char *)pMsg;
-	int len = pMsg->GetLength();
-	int writesize = 0;
-	int pushsize = 0;
+	const char * src= str.c_str();
+	int32 len = str.size();
+	int32 writesize = 0;
+	int32 pushsize = 0;
+
+	m_currentforpush->pushdata(&len, sizeof(len));
 	while (writesize < len)
 	{
 		//当前块可写字节为0时
@@ -317,45 +281,46 @@ bool task::PushMsg (Msg *pMsg)
 				m_currentforpush->next = block_create();
 				if (!m_currentforpush->next)
 				{
-					RunStateError("pushmsg, but create new blockbuf failed!, msg type:%d", pMsg->GetType());
+					RunStateError("push string, but create new blockbuf failed!, string:%d", src);
 					return false;
 				}
 			}
-			
+
 			//当前块存在下一个块，变更当前块
 			m_currentforpush = m_currentforpush->next;
 			assert(m_currentforpush->isempty());
 		}
-		pushsize = m_currentforpush->pushdata(&src[writesize], len - writesize);
+		pushsize = m_currentforpush->pushdata((char *)&(src[writesize]), len - writesize);
 		writesize += pushsize;
 	}
 	return true;
 }
 
 //获取一个消息
-Msg *task::GetMsg ()
+const char *CStringPool::GetMsg()
 {
 	if (!m_currentforget)
 		return nullptr;
 
 	char *buf = threadbuf_get_msg_buf();
-	int len = 0;
-	int readsize = 0;
-	
+	int32 len = 0;
+	int32 readsize = 0;
+
 	//先读长度信息
-	readsize = getdata((char *)&len, (int)sizeof(len));
-	if (readsize < (int)sizeof(len))
+	readsize = getdata((char *)&len, (int32)sizeof(len));
+	if (readsize < (int32)sizeof(len))
 		return nullptr;
 	if (len >= s_threadbuf.msgmaxsize)
 		return nullptr;
-	*(int *)&buf[0] = len;
-	readsize = getdata(&buf[sizeof(len)], len - (int)sizeof(len));
-	if (readsize < (len - (int)sizeof(len)))
+	readsize = getdata(buf, len);
+	if (readsize < len)
 		return nullptr;
-	return (Msg *)buf;
+
+	buf[len] = '\0';
+	return buf;
 }
 
-void task::CheckBlockNull ()
+void CStringPool::CheckBlockNull()
 {
 	if (m_head)
 		return;
@@ -369,12 +334,12 @@ void task::CheckBlockNull ()
 	m_currentforget = m_head;
 }
 
-int task::getdata (char *buf, int len)
+int32 CStringPool::getdata(char *buf, int32 len)
 {
 	if (!m_currentforget)
 		return 0;
-	int readsize = 0;
-	int getsize = 0;
+	int32 readsize = 0;
+	int32 getsize = 0;
 	while (readsize < len)
 	{
 		if (m_currentforget->getreadsize() == 0)
@@ -387,7 +352,7 @@ int task::getdata (char *buf, int len)
 	return readsize;
 }
 
-void task::Destroy ()
+void CStringPool::Destroy()
 {
 	blockbuf *node, *next;
 	for (node = m_head; node; node = next)
@@ -399,5 +364,3 @@ void task::Destroy ()
 	m_currentforpush = nullptr;
 	m_currentforget = nullptr;
 }
-
-

@@ -108,5 +108,8 @@
     <ClCompile Include="DBCache.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="StringPool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
