@@ -13,10 +13,14 @@ struct stCenterPlayer
 		Account.clear();
 		Name.clear();
 	}
+	// gate中查找用的id
 	int32 nClientID;
+	// 所在网关id
 	int32 nGateID;
+	// 所在gamesvr id
 	int32 nGameSvrID;
-	int32 nGameID;
+	// game中查找用的id
+	int64 nGameID;
 	std::string Account;
 	std::string Name;
 };
@@ -36,7 +40,7 @@ public:
 
 	void Destroy();
 
-	void AddPlayer(int64 guid, const std::string &account, int32 nClientID, int32 nGameID, int32 nGameSvrID, int32 nGateID);
+	void AddPlayer(int64 guid, const std::string &account, int32 nClientID, int64 nGameID, int32 nGameSvrID, int32 nGateID);
 	void DelPlayer(int64 guid);
 	void UpdatePlayerGameSvr(int64 guid, int32 nGameID);
 

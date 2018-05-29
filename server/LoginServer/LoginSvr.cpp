@@ -216,7 +216,7 @@ static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 	if (strcmp(commandstr, "help") == 0)
 	{
 		snprintf(s_buf, sizeof(s_buf) - 1, "help 帮助\nopenelapsed/closeelapsed 打开/关闭帧开销实时日志\ncurrentinfo 输出当前信息\nnetmeminfo 输出网络库内存使用情况\nallmeminfo 输出此程序内存池使用信息到文件\n");
-		size = (short)strlen(s_buf) + 1;
+		size = static_cast<short>(strlen(s_buf)) + 1;
 		s_buf[size] = 0;
 		res.PushString(s_buf);
 		sock->SendMsg(&res);
@@ -226,7 +226,7 @@ static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 		g_elapsed_log_flag = true;
 
 		snprintf(s_buf, sizeof(s_buf) - 1, "帧开销实时日志已打开");
-		size = (short)strlen(s_buf) + 1;
+		size = static_cast<short>(strlen(s_buf)) + 1;
 		s_buf[size] = 0;
 		res.PushString(s_buf);
 		sock->SendMsg(&res);
@@ -236,7 +236,7 @@ static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 		g_elapsed_log_flag = false;
 
 		snprintf(s_buf, sizeof(s_buf) - 1, "帧开销实时日志已关闭");
-		size = (short)strlen(s_buf) + 1;
+		size = static_cast<short>(strlen(s_buf)) + 1;
 		s_buf[size] = 0;
 		res.PushString(s_buf);
 		sock->SendMsg(&res);
@@ -246,9 +246,9 @@ static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 		size = 0;
 
 		LoginCenterConnect.GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
-		size = strlen(s_buf);
+		size = static_cast<short>(strlen(s_buf));
 		LoginClientMgr.GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
-		size = strlen(s_buf);
+		size = static_cast<short>(strlen(s_buf));
 		ClientAuth.GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
 		s_buf[sizeof(s_buf) - 1] = 0;
 		res.PushString(s_buf);
@@ -257,7 +257,7 @@ static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 	else if (strcmp(commandstr, "netmeminfo") == 0)
 	{
 		snprintf(s_buf, sizeof(s_buf) - 1, "%s", lxnet::net_get_memory_info(s_buf, sizeof(s_buf) - 1));
-		size = (short)strlen(s_buf) + 1;
+		size = static_cast<short>(strlen(s_buf)) + 1;
 		s_buf[size] = 0;
 		res.PushString(s_buf);
 		sock->SendMsg(&res);
@@ -267,7 +267,7 @@ static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 		sPoolInfo.writeinfotofile();
 
 		snprintf(s_buf, sizeof(s_buf) - 1, "所有内存信息已经写入到文件");
-		size = (short)strlen(s_buf) + 1;
+		size = static_cast<short>(strlen(s_buf)) + 1;
 		s_buf[size] = 0;
 		res.PushString(s_buf);
 		sock->SendMsg(&res);

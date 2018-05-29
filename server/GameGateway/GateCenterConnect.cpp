@@ -100,7 +100,7 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 			}
 			case SVR_SUB_KICKCLIENT:
 			{
-				ClientAuth.KickClient(tl->id);
+				ClientAuth.KickClient(static_cast<int32>(tl->id));
 				break;
 			}
 			case SVR_SUB_CHANGELINE_RET:
@@ -109,14 +109,14 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 				_CHECK_PARSE_(pMsg, msg);
 				if (msg.ncode() != svrData::ChangeLineRet::EC_SUCC)
 				{
-					ClientAuthInfo *info = ClientAuth.FindAuthInfo(tl->id);
+					ClientAuthInfo *info = ClientAuth.FindAuthInfo(static_cast<int32>(tl->id));
 					if(info)
 						RunStateError("玩家换线失败！踢下线！账号：%s，目标地图：%d，目标线路：%d", info->Account.c_str(), msg.nmapid(), msg.nlineid());
 					else
 						RunStateError("玩家换线失败！踢下线！目标地图：%d，目标线路：%d", msg.nmapid(), msg.nlineid());
-					ClientAuth.KickClient(tl->id);
+					ClientAuth.KickClient(static_cast<int32>(tl->id));
 				}
-				GateClientMgr.SendMsg(tl->id, pMsg);
+				GateClientMgr.SendMsg(static_cast<int32>(tl->id), pMsg);
 				break;
 			}
 			case SVR_SUB_CHANGELINE:
@@ -124,10 +124,10 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 				svrData::ChangeLine msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				CClient *cl = GateClientMgr.FindClientByClientID(tl->id);
+				CClient *cl = GateClientMgr.FindClientByClientID(static_cast<int32>(tl->id));
 				if(cl)
 				{
-					ClientAuth.UpdateGameSvrID(tl->id, msg.ngameid());
+					ClientAuth.UpdateGameSvrID(static_cast<int32>(tl->id), msg.ngameid());
 					cl->SetLogicServerID(msg.ngameid());
 					svrData::LoadPlayerData Data;
 					Data.CopyFrom(msg.data());
@@ -147,7 +147,7 @@ void CGateCenterConnect::ProcessMsg(connector *_con)
 			case LOGIN_SUB_CREATE_PLAYER_RET:
 			case LOGIN_SUB_SELECT_PLAYER_RET:
 			{
-				GateClientMgr.SendMsg(tl->id, pMsg);
+				GateClientMgr.SendMsg(static_cast<int32>(tl->id), pMsg);
 				break;
 			}
 			}

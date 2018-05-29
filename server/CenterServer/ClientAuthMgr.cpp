@@ -75,7 +75,7 @@ void CClientAuthMgr::Destroy()
 
 void CClientAuthMgr::GetCurrentInfo(char *buf, size_t buflen)
 {
-	snprintf(buf, buflen - 1, "最大同时认证玩家数量：%d\n处于登陆认证中玩家数量：%d\n在线玩家数量：%d\n", m_MaxLoginPlayer, m_NowLoginPlayer, (int32)m_PlayerOnlineMap.size());
+	snprintf(buf, buflen - 1, "最大同时认证玩家数量:%d\n处于登陆认证中玩家数量:%d\n在线玩家数量:%d\n", m_MaxLoginPlayer, m_NowLoginPlayer, (int32)m_PlayerOnlineMap.size());
 }
 
 void CClientAuthMgr::AsLoginServerDisconnect()

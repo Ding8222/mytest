@@ -62,15 +62,15 @@ struct MessagePack:public Msg {
 		m_enable_assert = true;
 	}
 
-	bool Pack(google::protobuf::Message *msg, int8 maintype, int8 subtype)
+	bool Pack(google::protobuf::Message *msg, int8 _maintype, int8 _subtype)
 	{
 		if (msg && CanPush(msg->ByteSize()))
 		{
 			msg->SerializeToArray(m_buf, msg->ByteSize());
 			SetLength(msg->ByteSize() + sizeof(Msg));
 			SetIndex(msg->ByteSize());
-			SetMainType(maintype);
-			SetSubType(subtype);
+			SetMainType(_maintype);
+			SetSubType(_subtype);
 			return true;
 		}
 

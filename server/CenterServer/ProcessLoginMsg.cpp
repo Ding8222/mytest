@@ -21,7 +21,7 @@ void ProcessLoginMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			svrData::DelClient msg;
 			_CHECK_PARSE_(pMsg, msg);
 
-			ClientAuthMgr.DelClientAuthInfo(tl->id);
+			ClientAuthMgr.DelClientAuthInfo(static_cast<int32>(tl->id));
 			if(msg.offline())
 				ClientAuthMgr.SetPlayerOffline(msg.account());
 			break;

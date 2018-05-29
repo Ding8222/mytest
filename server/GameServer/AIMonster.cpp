@@ -22,7 +22,7 @@ void CAIMonster::FSMUpdate()
 	
 	SetHeading(Vec3DNormalize(m_vTargetPos - GetNowPosV()));
 	Vector3D vNowPos = GetNowPosV();
-	vNowPos += GetHeading() * GetSpeed() * 0.01f;
+	vNowPos += GetHeading() * static_cast<float>(GetSpeed() * 0.01f);
 	MoveTo(vNowPos.x, vNowPos.y, vNowPos.z);
 }
 

@@ -14,7 +14,7 @@ void DoLoginMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 	{
 	case LOGIN_SUB_AUTH:
 	{
-		ClientAuthMgr.QueryAuth(pMsg, tl->id, info->GetServerID());
+		ClientAuthMgr.QueryAuth(pMsg, static_cast<int32>(tl->id), info->GetServerID());
 		break;
 	}
 	case LOGIN_SUB_AUTH_RET:
@@ -23,7 +23,7 @@ void DoLoginMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 		_CHECK_PARSE_(pMsg, msg);
 		msg.set_ncode(netData::AuthRet::EC_AUTHINFO);
 
-		ClientAuthInfo *clientinfo = ClientAuthMgr.FindClientAuthInfo(tl->id);
+		ClientAuthInfo *clientinfo = ClientAuthMgr.FindClientAuthInfo(static_cast<int32>(tl->id));
 		if (clientinfo)
 		{
 			msg.set_account(clientinfo->Account);

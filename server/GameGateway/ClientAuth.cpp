@@ -53,6 +53,12 @@ CClientAuth::~CClientAuth()
 	Destroy();
 }
 
+bool CClientAuth::Init()
+{
+	m_ClientAuthInfo.resize(CLIENT_ID_MAX + 1, nullptr);
+	return true;
+}
+
 void CClientAuth::Destroy()
 {
 	for (auto &i : m_ClientSecretInfo)
@@ -75,7 +81,14 @@ void CClientAuth::AsLogicServerDisconnect(int logicserverid)
 		ClientAuthInfo *info = iterB->second;
 		if (info->GameServerID == logicserverid)
 		{
-			m_ClientAuthInfo.erase(info->ClientID);
+			int32 &clientid = info->ClientID;
+			if (clientid <= 0 || clientid >= (int32)m_ClientAuthInfo.size())
+			{
+				RunStateError("game连接断开时时Client的ID错误!");
+				return;
+			}
+
+			m_ClientAuthInfo[clientid] = nullptr;
 			clientauthinfo_release(info);
 			iterB = m_ClientSecretInfo.erase(iterB);
 		}
@@ -112,21 +125,28 @@ void CClientAuth::AddAccountInfo(Msg *pMsg)
 
 void CClientAuth::UpdateGameSvrID(int32 clientid, int32 gameid)
 {
-	auto iter = m_ClientAuthInfo.find(clientid);
-	assert(iter != m_ClientAuthInfo.end());
-	if (iter != m_ClientAuthInfo.end())
+	if (clientid <= 0 || clientid >= (int32)m_ClientAuthInfo.size())
 	{
-		iter->second->GameServerID = gameid;
+		RunStateError("更新GameSvrID时Client的ID错误!");
+		return;
 	}
+
+	assert(m_ClientAuthInfo[clientid]);
+	m_ClientAuthInfo[clientid]->GameServerID = gameid;
 }
 
 void CClientAuth::KickClient(int32 clientid, bool closeclient)
 {
-	auto iter = m_ClientAuthInfo.find(clientid);
-	assert(iter != m_ClientAuthInfo.end());
-	if (iter != m_ClientAuthInfo.end())
+	if (clientid <= 0 || clientid >= (int32)m_ClientAuthInfo.size())
 	{
-		ClientAuthInfo *info = iter->second;
+		RunStateError("踢出Client的ID错误!");
+		return;
+	}
+
+	ClientAuthInfo *info = m_ClientAuthInfo[clientid];
+	assert(info);
+	if (info)
+	{
 		// 通知玩家下线处理
 		svrData::DelClient sendMsg;
 		GameConnect.SendMsgToServer(info->GameServerID, sendMsg, SERVER_TYPE_MAIN, SVR_SUB_DEL_CLIENT, clientid);
@@ -142,7 +162,7 @@ void CClientAuth::KickClient(int32 clientid, bool closeclient)
 
 		m_ClientSecretInfo.erase(info->Account);
 		clientauthinfo_release(info);
-		m_ClientAuthInfo.erase(iter);
+		m_ClientAuthInfo[clientid] = nullptr;
 	}
 }
 
@@ -157,41 +177,48 @@ void CClientAuth::QueryLogin(Msg *pMsg, CClient *cl)
 	netData::LoginRet sendMsg;
 
 	int nClientID = cl->GetClientID();
-	auto iter = m_ClientSecretInfo.find(msg.account());
-	if (iter != m_ClientSecretInfo.end())
+	if (nClientID > 0 && nClientID < (int32)m_ClientAuthInfo.size())
 	{
-		ClientAuthInfo *_pData = iter->second;
-		if (!_pData->Secret.empty() &&_pData->Secret == msg.secret())
+		auto iter = m_ClientSecretInfo.find(msg.account());
+		if (iter != m_ClientSecretInfo.end())
 		{
-			assert(_pData->ClientID == 0);
-			_pData->ClientID = nClientID;
-			m_ClientAuthInfo.insert(std::make_pair(nClientID, _pData));
-			_pData->Data.set_bchangeline(false);
-			GameConnect.SendMsgToServer(_pData->GameServerID, _pData->Data, SERVER_TYPE_MAIN, SVR_SUB_PLAYERDATA, nClientID);
-			cl->SetAlreadyAuth();
-			return;
+			ClientAuthInfo *_pData = iter->second;
+			if (!_pData->Secret.empty() && _pData->Secret == msg.secret())
+			{
+				assert(_pData->ClientID == 0);
+				_pData->ClientID = nClientID;
+				m_ClientAuthInfo[nClientID] = _pData;
+				_pData->Data.set_bchangeline(false);
+				GameConnect.SendMsgToServer(_pData->GameServerID, _pData->Data, SERVER_TYPE_MAIN, SVR_SUB_PLAYERDATA, nClientID);
+				cl->SetAlreadyAuth();
+				return;
+			}
+			else
+			{
+				sendMsg.set_ncode(netData::LoginRet::EC_SECRET);
+				ClientConnectError("登陆失败！account:%s，秘钥：[%s]错误！存储秘钥：[%s]", msg.account().c_str(), msg.secret().c_str(), _pData->Secret.c_str());
+			}
 		}
 		else
 		{
-			sendMsg.set_ncode(netData::LoginRet::EC_SECRET);
-			ClientConnectError("登陆失败！account:%s，秘钥：[%s]错误！存储秘钥：[%s]", msg.account().c_str(), msg.secret().c_str(), _pData->Secret.c_str());
+			sendMsg.set_ncode(netData::LoginRet::EC_ACCOUNT);
+			ClientConnectError("登陆失败！account:%s，没有找到账号信息", msg.account().c_str());
 		}
 	}
 	else
-	{
-		sendMsg.set_ncode(netData::LoginRet::EC_ACCOUNT);
-		ClientConnectError("登陆失败！account:%s，没有找到账号信息", msg.account().c_str());
-	}
+		RunStateError("请求登陆时Client的ID错误!");
 
 	GateClientMgr.SendMsg(cl, sendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_LOGIN_RET);
 }
 
 ClientAuthInfo *CClientAuth::FindAuthInfo(int32 clientid)
 {
-	auto iter = m_ClientAuthInfo.find(clientid);
-	assert(iter != m_ClientAuthInfo.end());
-	if (iter != m_ClientAuthInfo.end())
-		return iter->second;
+	if (clientid <= 0 || clientid >= (int32)m_ClientAuthInfo.size())
+	{
+		RunStateError("要超找的Client的ID错误!");
+		return nullptr;
+	}
 
-	return nullptr;
+	assert(m_ClientAuthInfo[clientid]);
+	return m_ClientAuthInfo[clientid];
 }

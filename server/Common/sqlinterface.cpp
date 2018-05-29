@@ -92,7 +92,7 @@ int64 CRecordset::GetInt64(const char* fieldname)
 	return 0;
 }
 
-int CRecordset::GetInt(const char* fieldname)
+int32 CRecordset::GetInt(const char* fieldname)
 {
 	const char* _Ret = Get(fieldname);
 	assert(_Ret);
@@ -158,7 +158,7 @@ const char* CRecordset::Get (const char* fieldname)
 		return NULL;
 
 	//先获取此字段是第几个字段
-	int index;
+	int32 index;
 	for(index = 0; index < m_num_fields; index++)
 	{
 		if (strcmp(m_fields[index].name, fieldname) == 0)
@@ -221,9 +221,9 @@ CConnection::~CConnection()
 
 //解析ip:port
 //默认端口为 MYSQL_PORT
-static unsigned int parse_ipstr (char *tempbuf, size_t buflen, const char *ipstring)
+static uint32 parse_ipstr (char *tempbuf, size_t buflen, const char *ipstring)
 {
-	unsigned int port = MYSQL_PORT;
+	uint32 port = MYSQL_PORT;
 	strncpy(tempbuf, ipstring, buflen-1);
 	tempbuf[buflen-1] = 0;
 
@@ -238,10 +238,10 @@ static unsigned int parse_ipstr (char *tempbuf, size_t buflen, const char *ipstr
 
 //打开数据库 overtime 指定最长多少秒不执行sql语句就断开。
 //ipstring 指定ip:port 为字符串，若仅仅是ip，则端口用默认的。
-bool CConnection::Open (const char* dbname, const char *username, const char* password, const char* ipstring, int overtime)
+bool CConnection::Open (const char* dbname, const char *username, const char* password, const char* ipstring, int32 overtime)
 {
 	char tempbuf[512];
-	unsigned int port = parse_ipstr(tempbuf, sizeof(tempbuf), ipstring);
+	uint32 port = parse_ipstr(tempbuf, sizeof(tempbuf), ipstring);
 
 	return Real_Open(dbname, username, password, tempbuf, overtime, port);
 }
@@ -437,7 +437,7 @@ void CConnection::ErrorOut (const char *text)
 }
 
 //打开数据库 overtime 指定最长多少秒不执行sql语句就断开。
-bool CConnection::Real_Open (const char* dbname, const char *username, const char* password, const char* ip, int overtime, unsigned int port)
+bool CConnection::Real_Open (const char* dbname, const char *username, const char* password, const char* ip, int32 overtime, uint32 port)
 {
 	assert(dbname != NULL);
 	assert(username != NULL);

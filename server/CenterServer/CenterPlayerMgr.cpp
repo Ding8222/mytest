@@ -50,7 +50,7 @@ void CCenterPlayerMgr::Destroy()
 	m_PlayerMap.clear();
 }
 
-void CCenterPlayerMgr::AddPlayer(int64 guid, const std::string &account, int32 nClientID, int32 nGameID, int32 nGameSvrID, int32 nGateID)
+void CCenterPlayerMgr::AddPlayer(int64 guid, const std::string &account, int32 nClientID, int64 nGameID, int32 nGameSvrID, int32 nGateID)
 {
 	auto iter = m_PlayerMap.find(guid);
 	assert(iter == m_PlayerMap.end());

@@ -77,7 +77,7 @@ void CClientAuth::Destroy()
 
 void CClientAuth::GetCurrentInfo(char *buf, size_t buflen)
 {
-	snprintf(buf, buflen - 1, "认证中Client数量：%d\n", (int32)m_Secret.size());
+	snprintf(buf, buflen - 1, "认证中Client数量:%d\n", (int32)m_Secret.size());
 }
 
 // 握手

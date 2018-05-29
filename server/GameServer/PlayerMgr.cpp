@@ -60,7 +60,7 @@ void CPlayerMgr::Destroy()
 
 void CPlayerMgr::GetCurrentInfo(char *buf, size_t buflen)
 {
-	snprintf(buf, buflen - 1, "当前玩家数量：%d\n", (int32)m_PlayerList.size());
+	snprintf(buf, buflen - 1, "当前玩家数量:%d\n", (int32)m_PlayerList.size());
 }
 
 void CPlayerMgr::AsGateServerDisconnect(int32 gateserverid)

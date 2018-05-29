@@ -93,7 +93,7 @@ void CLoginCenterConnect::ProcessMsg(connector *_con)
 			case LOGIN_SUB_PLAYER_LIST_RET:
 			case LOGIN_SUB_CREATE_PLAYER_RET:
 			{
-				LoginClientMgr.SendMsg(tl->id, pMsg);
+				LoginClientMgr.SendMsg(static_cast<int32>(tl->id), pMsg);
 				break;
 			}
 			case LOGIN_SUB_SELECT_PLAYER_RET:
@@ -103,9 +103,9 @@ void CLoginCenterConnect::ProcessMsg(connector *_con)
 
 				if (msg.ncode() == netData::SelectPlayerRet::EC_SUCC)
 				{
-					ClientAuth.SetSelectPlayerSucc(tl->id);
+					ClientAuth.SetSelectPlayerSucc(static_cast<int32>(tl->id));
 				}
-				LoginClientMgr.SendMsg(tl->id, pMsg);
+				LoginClientMgr.SendMsg(static_cast<int32>(tl->id), pMsg);
 				break;
 			}
 			case LOGIN_SUB_AUTH_RET:
@@ -115,12 +115,12 @@ void CLoginCenterConnect::ProcessMsg(connector *_con)
 
 				if (msg.ncode() == netData::AuthRet::EC_SUCC)
 				{
-					if (ClientAuth.AddAccount(tl->id, msg.account()))
-						LoginClientMgr.SetClientAuthSucceed(tl->id);
+					if (ClientAuth.AddAccount(static_cast<int32>(tl->id), msg.account()))
+						LoginClientMgr.SetClientAuthSucceed(static_cast<int32>(tl->id));
 					else
 						msg.set_ncode(netData::AuthRet::EC_ADDACCOUNT);
 				}
-				LoginClientMgr.SendMsg(tl->id, pMsg);
+				LoginClientMgr.SendMsg(static_cast<int32>(tl->id), pMsg);
 				break;
 			}
 			}

@@ -110,7 +110,7 @@ void threadinstance::Run ()
 		RunStep();
 		delay = get_microsecond() - currenttime;
 		if (delay < maxdelay)
-			delaytime(maxdelay - delay);
+			delaytime(static_cast<DWORD>(maxdelay - delay));
 	}
 	m_exitok = true;
 }

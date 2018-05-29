@@ -70,7 +70,7 @@ private:
 	// 根据类型查找服务器
 	virtual serverinfo *FindServer(int nServerID, int nType) = 0;
 	// 注册成功后的回调
-	virtual void ServerRegisterSucc(serverinfo *info) {}
+	virtual void ServerRegisterSucc(serverinfo *) {}
 private:
 	std::string ServerIP;
 	int m_ListenPort;

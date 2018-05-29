@@ -26,7 +26,7 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 			_CHECK_PARSE_(pMsg, msg);
 
 			netData::SelectPlayerRet SendMsg;
-			ClientAuthInfo *_pAuthInfo = ClientAuthMgr.FindClientAuthInfo(tl->id);
+			ClientAuthInfo *_pAuthInfo = ClientAuthMgr.FindClientAuthInfo(static_cast<int32>(tl->id));
 			if (_pAuthInfo)
 			{
 				ServerStatusInfo *_pGameInfo = ServerStatusMgr.GetGameServerInfo(msg.nmapid());
@@ -72,11 +72,7 @@ void ProcessDBMsg(serverinfo *info, Msg *pMsg, msgtail *tl)
 	}
 	case LOGIN_TYPE_MAIN:
 	{
-		switch (pMsg->GetSubType())
-		{
-		default:
-			DoLoginMsg(info, pMsg, tl);
-		}
+		DoLoginMsg(info, pMsg, tl);
 		break;
 	}
 	}

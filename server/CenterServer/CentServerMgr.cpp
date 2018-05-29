@@ -51,7 +51,7 @@ void CCentServerMgr::Destroy()
 
 void CCentServerMgr::GetCurrentInfo(char *buf, size_t buflen)
 {
-	snprintf(buf, buflen - 1, "当前注册的服务器信息：\n网关数量：%d\n逻辑服务器数量：%d\n登陆服务器数量：%d\n数据服务器数量：%d\n",
+	snprintf(buf, buflen - 1, "当前注册的服务器信息:\n网关数量:%d\n逻辑服务器数量:%d\n登陆服务器数量:%d\n数据服务器数量:%d\n",
 		(int)m_GateList.size(), (int)m_GameList.size(), (int)m_LoginList.size(), (int)m_DBList.size());
 }
 
@@ -176,7 +176,7 @@ void CCentServerMgr::SendMsgToServer(Msg &pMsg, int nType, int64 nClientID, int 
 	{
 		if (!bBroad && nServerID == 0)
 		{
-			ClientAuthInfo *_pAuthInfo = ClientAuthMgr.FindClientAuthInfo(nClientID);
+			ClientAuthInfo *_pAuthInfo = ClientAuthMgr.FindClientAuthInfo(static_cast<int32>(nClientID));
 			if (_pAuthInfo)
 			{
 				tail.id = nClientID;
@@ -266,7 +266,7 @@ void CCentServerMgr::SendMsgToServer(google::protobuf::Message &pMsg, int mainty
 	{
 		if (!bBroad && nServerID == 0)
 		{
-			ClientAuthInfo *_pAuthInfo = ClientAuthMgr.FindClientAuthInfo(nClientID);
+			ClientAuthInfo *_pAuthInfo = ClientAuthMgr.FindClientAuthInfo(static_cast<int32>(nClientID));
 			if (_pAuthInfo)
 			{
 				tail.id = nClientID;

@@ -107,7 +107,7 @@ void CLogServerMgr::Destroy()
 
 void CLogServerMgr::GetCurrentInfo(char *buf, size_t buflen)
 {
-	snprintf(buf, buflen - 1, "当前注册的服务器信息：\n网关数量：%d\n逻辑服务器数量：%d\n登陆服务器数量：%d\n数据服务器数量：%d\n中心服务器数量：%d\n",
+	snprintf(buf, buflen - 1, "当前注册的服务器信息:\n网关数量:%d\n逻辑服务器数量:%d\n登陆服务器数量:%d\n数据服务器数量:%d\n中心服务器数量:%d\n",
 		(int)m_GateList.size(), (int)m_GameList.size(), (int)m_LoginList.size(), (int)m_DBList.size(), (int)m_CenterList.size());
 }
 

@@ -11,6 +11,7 @@
 #include "ServerLog.h"
 #include "lxnet.h"
 #include "objectpool.h"
+#include "fmt/ostream.h"
 #include "google/protobuf/message.h"
 
 #ifdef _WIN32
@@ -46,7 +47,7 @@ void init(int argc, char *argv[])
 			nRobotID = atoi(argv[1]);
 		}
 
-		if (!init_log("Robot_Log"))
+		if (!init_log(fmt::format("Robot_Log_{0}", nRobotID).c_str()))
 		{
 			RunStateError("初始化Log失败!");
 			break;

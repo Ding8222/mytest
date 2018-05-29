@@ -38,7 +38,7 @@ void CGameGatewayMgr::Destroy()
 
 void CGameGatewayMgr::GetCurrentInfo(char *buf, size_t buflen)
 {
-	snprintf(buf, buflen - 1, "当前注册的网关服务器数量：%d\n", (int)m_GateList.size());
+	snprintf(buf, buflen - 1, "当前注册的网关服务器数量:%d\n", (int)m_GateList.size());
 }
 
 void CGameGatewayMgr::ResetMsgNum()
@@ -185,20 +185,24 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 				svrData::LoadPlayerData msg;
 				_CHECK_PARSE_(pMsg, msg);
 
-				PlayerMgr.AddPlayer(info, tl->id);
-				int64 gameid = info->GetServerID();
-				gameid = gameid << 32 | tl->id;
-				CPlayer *player = PlayerMgr.FindPlayerByGameID(gameid);
 				netData::LoginRet sendMsg;
-				if (FuncUti::isValidCret(player))
+				if (PlayerMgr.AddPlayer(info, static_cast<int32>(tl->id)))
 				{
-					if (player->LoadData(pMsg))
+					int64 gameid = info->GetServerID();
+					gameid = gameid << 32 | tl->id;
+					CPlayer *player = PlayerMgr.FindPlayerByGameID(gameid);
+					if (FuncUti::isValidCret(player))
 					{
-						sendMsg.set_ntempid(player->GetTempID());
-						sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
+						if (player->LoadData(pMsg))
+						{
+							sendMsg.set_ntempid(player->GetTempID());
+							sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
+						}
+						else
+							sendMsg.set_ncode(netData::LoginRet::EC_LOADDATA);
 					}
 					else
-						sendMsg.set_ncode(netData::LoginRet::EC_LOADDATA);
+						sendMsg.set_ncode(netData::LoginRet::EC_ADDPLAYER);
 				}
 				else
 					sendMsg.set_ncode(netData::LoginRet::EC_ADDPLAYER);

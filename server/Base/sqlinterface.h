@@ -27,7 +27,7 @@ namespace DataBase
 
 	public:
 		int64		GetInt64(const char* fieldname);
-		int			GetInt(const char* fieldname);
+		int32		GetInt(const char* fieldname);
 		float		GetFloat(const char* fieldname);
 		double		GetDouble(const char* fieldname);
 		const char*	GetChar(const char* fieldname);
@@ -47,13 +47,13 @@ namespace DataBase
 		//是否打开
 		bool IsOpen();
 
-		int GetRowCount() { return m_num_rows; }
+		int64 GetRowCount() { return m_num_rows; }
 	private:
 		CConnection *m_root;
 		MYSQL_RES *m_mysql_result;	//结果集
 		MYSQL_FIELD *m_fields;		//列名字数组
-		int m_num_fields;			//列数目
-		int m_num_rows;				//行数目
+		int32 m_num_fields;			//列数目
+		int64 m_num_rows;				//行数目
 
 		MYSQL_ROW m_current_row;	//当前行
 	};
@@ -69,7 +69,7 @@ namespace DataBase
 
 		//打开数据库 overtime 指定最长多少秒不执行sql语句就断开。
 		//ipstring 指定ip:port 为字符串，若仅仅是ip，则端口用默认的。
-		bool Open (const char* dbname, const char *username, const char* password, const char* ipstring, int overtime = 7*24*3600);
+		bool Open (const char* dbname, const char *username, const char* password, const char* ipstring, int32 overtime = 7*24*3600);
 
 		//当连接成功后，可以设置字符集，如:utf8
 		bool SetCharacterSet (const char *coding);
@@ -107,15 +107,15 @@ namespace DataBase
 		void ErrorOut (const char *text);
 	private:
 		//打开数据库 overtime 指定最长多少秒不执行sql语句就断开。
-		bool Real_Open (const char* dbname, const char *username, const char* password, const char* ip, int overtime, unsigned int port);
+		bool Real_Open (const char* dbname, const char *username, const char* password, const char* ip, int32 overtime, uint32 port);
 	private:
 		//记录一些连接参数，重连时使用
 		std::string m_dbname;
 		std::string m_username;
 		std::string m_password;
 		std::string m_ip;
-		int m_overtime;
-		unsigned int m_port;
+		int32 m_overtime;
+		uint32 m_port;
 	private:
 		//与数据库交互相关
 		bool m_isopen;				//连接状态

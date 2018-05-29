@@ -235,8 +235,8 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 					if (msg.ntempid() == _con->GetTempID())
 					{
 						netData::PlayerMove sendMsg;
-						int x = msg.x();
-						int y = msg.y();
+						int x = static_cast<int>(msg.x());
+						int y = static_cast<int>(msg.y());
 						int nRand = rand() % 10000;
 						if (nRand > 5000)
 							x += 1;
@@ -259,8 +259,8 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 						else if (y < 1)
 							y = 1;
 
-						sendMsg.set_x(x);
-						sendMsg.set_y(y);
+						sendMsg.set_x(static_cast<float>(x));
+						sendMsg.set_y(static_cast<float>(y));
 						sendMsg.set_z(1);
 						_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
 					}
@@ -290,8 +290,8 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 				else
 				{
 					netData::PlayerMove sendMsg;
-					sendMsg.set_x(rand()%1000);
-					sendMsg.set_y(rand() % 1000);
+					sendMsg.set_x(static_cast<float>(rand()%1000));
+					sendMsg.set_y(static_cast<float>(rand() % 1000));
 					sendMsg.set_z(1);
 					_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
 				}
@@ -325,8 +325,8 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 					RunStateLog("逻辑服加载数据成功!TempID:%d", msg.ntempid());
 					_con->SetTempID(msg.ntempid());
 					netData::PlayerMove sendMsg;
-					sendMsg.set_x(rand() % 1000);
-					sendMsg.set_y(rand() % 1000);
+					sendMsg.set_x(static_cast<float>(rand() % 1000));
+					sendMsg.set_y(static_cast<float>(rand() % 1000));
 					sendMsg.set_z(1);
 					_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
 				}

@@ -109,7 +109,7 @@ void CDBWorkInstance::Run()
 		}
 		delay = get_microsecond() - currenttime;
 		if (delay < maxdelay)
-			delaytime(maxdelay - delay);
+			delaytime(static_cast<DWORD>(maxdelay - delay));
 	}
 	m_WorkFinish = true;
 }
@@ -572,16 +572,17 @@ nlohmann::json CDBCache::ExecuteMulti(const std::string &tablename, const std::s
 		nlohmann::json t = LoadDataMulti(tablename, guid.c_str());
 		if (id)
 		{
+			std::string idstr = fmt::format("{0}", id);
 			if (fields)
 			{
 				for (auto &i : *fields)
 				{
-					result[i] = t[id][i];
+					result[i] = t[idstr][i];
 				}
 			}
 			else
 			{
-				result = t[id];
+				result = t[idstr];
 			}
 		}
 		else

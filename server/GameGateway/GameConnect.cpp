@@ -89,7 +89,7 @@ void CGameConnect::ProcessMsg(connector *_con)
 			}
 		}
 		else
-			GateClientMgr.SendMsg(tl->id, pMsg);
+			GateClientMgr.SendMsg(static_cast<int32>(tl->id), pMsg);
 		
 		switch (pMsg->GetMainType())
 		{
@@ -115,10 +115,10 @@ void CGameConnect::ProcessMsg(connector *_con)
 				_CHECK_PARSE_(pMsg, msg);
 				if (msg.ncode() == netData::LoginRet::EC_SUCC)
 				{
-					ClientAuthInfo *info = ClientAuth.FindAuthInfo(tl->id);
+					ClientAuthInfo *info = ClientAuth.FindAuthInfo(static_cast<int32>((tl->id)));
 					if (info)
 					{
-						GateClientMgr.SetClientAlreadyLogin(tl->id, _con->GetConnectID());
+						GateClientMgr.SetClientAlreadyLogin(static_cast<int32>(tl->id), _con->GetConnectID());
 						ClientConnectLog("账号：%s登陆成功！目标服务器：%d", info->Account.c_str(), _con->GetConnectID());
 					}
 				}
