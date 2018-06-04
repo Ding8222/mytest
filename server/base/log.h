@@ -155,7 +155,8 @@ void filelog_release(struct filelog *self);
 
 
 
-
+#define log_release()													\
+		filelog_release(g_filelog_obj_)
 
 #define log_set_directory(directory)									\
 	do {																\
