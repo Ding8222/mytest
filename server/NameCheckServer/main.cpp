@@ -12,8 +12,6 @@
 #include "lxnet.h"
 #include "google/protobuf/message.h"
 
-#pragma comment(lib,"fmt.lib") 
-
 #ifdef _WIN32
 #include <windows.h>
 #include "MiniDump.h"

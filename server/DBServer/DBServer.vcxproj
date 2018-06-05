@@ -98,19 +98,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>..\3rd\fmtlib\;..\3rd\json\;..\3rd\mysql\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\;..\3rd\json\;..\3rd\mysql\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;$(IncludePath)</IncludePath>
     <OutDir>..\bin\</OutDir>
     <TargetName>G_$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\bin\</OutDir>
-    <IncludePath>..\3rd\fmtlib\;..\3rd\json\;..\3rd\mysql\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\;..\3rd\json\;..\3rd\mysql\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;$(IncludePath)</IncludePath>
     <LibraryPath>..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
     <TargetName>G_$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
     <OutDir>..\bin\</OutDir>
-    <IncludePath>..\3rd\fmtlib\;..\3rd\json\;..\3rd\mysql\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\;..\3rd\json\;..\3rd\mysql\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;$(IncludePath)</IncludePath>
     <LibraryPath>..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
     <TargetName>G_$(ProjectName)</TargetName>
   </PropertyGroup>
@@ -128,7 +128,7 @@
       <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>lxnet.lib;Common.lib;libprotobuf.lib;libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lxnetd.lib;Common.lib;libprotobufd.lib;libmysql.lib;fmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -158,7 +158,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>lxnet.lib;Common.lib;libprotobuf.lib;libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lxnet.lib;Common.lib;libprotobuf.lib;libmysql.lib;fmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
@@ -179,7 +179,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>lxnet.lib;Common.lib;libprotobuf.lib;libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lxnet.lib;Common.lib;libprotobuf.lib;libmysql.lib;fmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>

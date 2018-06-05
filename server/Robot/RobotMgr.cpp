@@ -15,8 +15,6 @@
 
 #include "ServerType.h"
 
-#pragma comment(lib,"fmt.lib") 
-
 extern int64 g_currenttime;
 
 CRobotMgr::CRobotMgr()
