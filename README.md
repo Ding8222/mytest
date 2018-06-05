@@ -4,31 +4,38 @@
 
 需要用到的工具有：CMAKE
 
-1.用vs2017打开server目录下的server.sln。
+编译时Debug和RelWithDebInfo的选择：
+Debug模式下，后台有全日志输出，RelWithDebInfo输出不全，但二者都会在bin目录下生成log日志。
+RelWithDebInfo模式是带调试信息的release模式，生产环境使用该模式。
+一般开发都可以只使用RelWithDebInfo模式。
+一下配置需要配置debug、release、RelWithDebInfo，也可以只配置你想编译用的配置。例如只在debug模式下编译，那么其它两个的配置可以不管，不影响正常编译。
 
-2.三方库的处理：
-使用CMAKE为zlib和fmtlib生成.sln文件至各自根目录下的build文件
+1.使用命令git submodule update --init下载第三方库
 
-fmt：
-"C/C++--常规--附加包含目录" 去掉fmt\
+2.使用CMAKE为protobuf库生成VS项目
+生成至项目的根目录下的builds文件夹中，如果生成失败，则在CMAKE中取消勾选protobuf_BUILD_TESTS选项（额外需要其他库），重新生成
 
-zlib：
-将build目录下的zconf.h文件拷贝至zlib根目录下
+3.用vs2017打开server目录下的server.sln。
+如果提示升级lxnet库，升级即可。
 
-protobuf：
-右击生成protoc项目，得到protoc.exe，将该文件放至"server/lib"目录下
+4.三方库的处理：
+cryptlib:
+右击属性--配置属性--常规--输出目录修改为"..\..\lib"
+字符集修改为"使用Unicode字符集"
+属性--配置属性--C/C++--代码生成--运行库 根据编译模式（debug、release）分别修改为（多线程调试DLL、多线程DLL）
 
-将libprotobuf的属性中
-"C/C++--代码生成--运行库"修改为"多线程DLL"或者"多线程调试DLL"(分别对应release和debug模式)。
+libprotobuf：
+右击属性--配置属性--常规--输出目录修改为"..\..\..\lib"
+字符集修改为"使用Unicode字符集"
+属性--配置属性--C/C++--代码生成--运行库 根据编译模式（debug、release、RelWithDebInfo）分别修改为（多线程调试DLL、多线程DLL、多线程DLL）
 
 lxnet：
-将属性中
-"C/C++--代码生成--运行库"修改为"多线程DLL"或者"多线程调试DLL"(分别对应release和debug模式)。
-"库管理器--常规--输出文件"清空。
+右击属性--配置属性--常规--输出目录修改为"..\..\..\..\lib"
+字符集修改为"使用Unicode字符集"
+属性--配置属性--C/C++--代码生成--运行库 根据编译模式（debug、release）分别修改为（多线程调试DLL、多线程DLL）
+"配置属性--库管理器--常规--输出文件"，点击下拉按钮，选择<从父级或项目默认设置继承>。
 
-4.在解决方案中3rd目录下，将所有的三方库的输出目录修改至目录./server/lib下（"..\..\..\..\lib\"）。
-
-5.双击GenAllPB.bat用于生成项目使用的pb.cc等文件
+5.双击目录tools/protobuf下的GenAllPB.bat用于生成项目使用的pb.cc等文件
 GenPB.bat为差异生成（在.proto被修改后，还未提交时，使用该文件可以最小量生成pb.cc）
 GenAllPB.bat为强制生成所有pb.cc文件
 
@@ -42,4 +49,3 @@ GenAllPB.bat为强制生成所有pb.cc文件
 
 机器人：
 双击"server/bin"目录下"robot_start.bat"批量启动机器人，机器人进程根据bat中配置启动，每个进程中机器人数量由"server/bin/config/robotconfig.json"中的字段控制。
-

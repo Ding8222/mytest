@@ -128,7 +128,7 @@
       </UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>lxnetd.lib;Common.lib;libprotobufd.lib;cpr-d.lib;libcurl_imp.lib;fmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lxnet.lib;Common.lib;libprotobufd.lib;cpr-d.lib;libcurl_imp.lib;fmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
