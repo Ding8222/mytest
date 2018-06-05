@@ -13,10 +13,11 @@ RelWithDebInfo模式是带调试信息的release模式，生产环境使用该�
 1.使用命令git submodule update --init下载第三方库
 
 2.使用CMAKE为protobuf库生成VS项目
+CMAKE目录在protobuf/cmake
 生成至项目的根目录下的builds文件夹中，如果生成失败，则在CMAKE中取消勾选protobuf_BUILD_TESTS选项（额外需要其他库），重新生成
 
 3.用vs2017打开server目录下的server.sln。
-如果提示升级lxnet库，升级即可。
+如果提示重定向lxnet，点击确定即可。
 
 4.三方库的处理：
 cryptlib:

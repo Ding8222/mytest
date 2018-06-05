@@ -101,16 +101,17 @@
     <IncludePath>..\3rd\json\;..\3rd\;..\3rd\cryptopp\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;$(IncludePath)</IncludePath>
     <OutDir>..\bin\</OutDir>
     <TargetName>G_$(ProjectName)</TargetName>
+    <LibraryPath>..\3rd\cryptopp\Win32\Output\Debug;..\3rd\protobuf\builds\Debug;..\3rd\lxnet\lib\lxnet;..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>..\3rd\json\;..\3rd\;..\3rd\cryptopp\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;$(IncludePath)</IncludePath>
-    <LibraryPath>..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\3rd\protobuf\builds\Release;..\3rd\lxnet\lib\lxnet;..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
     <OutDir>..\bin\</OutDir>
     <TargetName>G_$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
     <IncludePath>..\3rd\json\;..\3rd\;..\3rd\cryptopp\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;$(IncludePath)</IncludePath>
-    <LibraryPath>..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\3rd\protobuf\builds\RelWithDebInfo;..\3rd\lxnet\lib\lxnet;..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
     <OutDir>..\bin\</OutDir>
     <TargetName>G_$(ProjectName)</TargetName>
   </PropertyGroup>
@@ -128,7 +129,7 @@
       <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>lxnet.lib;Common.lib;libprotobufd.lib;cryptlib.lib;fmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lxnet-debug.lib;Common.lib;libprotobufd.lib;cryptlib.lib;fmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -158,7 +159,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>lxnet.lib;Common.lib;libprotobuf.lib;cryptlib.lib;fmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lxnet-release.lib;Common.lib;libprotobuf.lib;fmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
@@ -179,7 +180,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>lxnet.lib;Common.lib;libprotobuf.lib;cryptlib.lib;fmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lxnet-release.lib;Common.lib;libprotobuf.lib;fmt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>

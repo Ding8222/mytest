@@ -99,14 +99,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>..\lib\</OutDir>
-    <IncludePath>..\3rd\;..\3rd\luabind\;..\3rd\luajit\;..\3rd\libssh\;..\3rd\openssl\;..\3rd\curllib\;..\3rd\fmtlib\;..\3rd\json\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\3rd\mysql\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\;..\3rd\luabind\;..\3rd\luajit\;..\3rd\json\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\3rd\mysql\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>..\3rd\;..\3rd\luabind\;..\3rd\luajit\;..\3rd\libssh\;..\3rd\openssl\;..\3rd\curllib\;..\3rd\fmtlib\;..\3rd\json\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\3rd\mysql\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\;..\3rd\luabind\;..\3rd\luajit\;..\3rd\json\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\3rd\mysql\;$(IncludePath)</IncludePath>
     <OutDir>..\lib\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
-    <IncludePath>..\3rd\;..\3rd\luabind\;..\3rd\luajit\;..\3rd\libssh\;..\3rd\openssl\;..\3rd\curllib\;..\3rd\fmtlib\;..\3rd\json\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\3rd\mysql\;$(IncludePath)</IncludePath>
+    <IncludePath>..\3rd\;..\3rd\luabind\;..\3rd\luajit\;..\3rd\json\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;..\3rd\mysql\;$(IncludePath)</IncludePath>
     <OutDir>..\lib\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -121,6 +121,7 @@
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
       <DisableSpecificWarnings>4819</DisableSpecificWarnings>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -146,6 +147,7 @@
       </UndefinePreprocessorDefinitions>
       <DisableSpecificWarnings>4819</DisableSpecificWarnings>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

@@ -12,7 +12,7 @@ echo end
 
 cd ..
 xcopy "cpp\*.h" "..\..\server\Base\PB" /S /Y
-xcopy "cpp\*.h" "..\..\server\Base\PB" /S /Y
+xcopy "cpp\*.cc" "..\..\server\Base\PB" /S /Y
 
 del /s /Q "cpp\*.h"
 del /s /Q "cpp\*.cc"
