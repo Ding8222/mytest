@@ -31,9 +31,9 @@ void CPlayer::Run()
 {
 	CBaseObj::Run();
 
-	if (CTimer::GetTime() > m_LastSaveTime + 5 * 60)
+	if (CTimer::GetTime() > m_LastSaveTime + 30 * 60)
 	{
-		// 5分钟保存一次数据
+		// 保存数据
 		SaveData();
 	}
 }

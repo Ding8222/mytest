@@ -230,6 +230,8 @@ static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 		DBCenterConnect.GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
 		size = static_cast<short>(strlen(s_buf));
 		DBCenterConnect.GetDataHandInfo(&s_buf[size], sizeof(s_buf) - size - 1);
+		size = static_cast<short>(strlen(s_buf));
+		DBCache.GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
 		s_buf[sizeof(s_buf) - 1] = 0;
 		res.PushString(s_buf);
 		sock->SendMsg(&res);

@@ -24,6 +24,7 @@ CDBWorkInstance::CDBWorkInstance()
 	LOCK_INIT(&m_lock);
 	m_SqlQueue.clear();
 	m_TempQueue.clear();
+	m_MaxSize = 0;
 }
 
 CDBWorkInstance::~CDBWorkInstance()
@@ -92,21 +93,30 @@ void CDBWorkInstance::Run()
 	{
 		currenttime = get_microsecond();
 
-		LOCK_LOCK(&m_lock);
-		m_TempQueue = std::move(m_SqlQueue);
-		LOCK_UNLOCK(&m_lock);
-
-		while (!m_TempQueue.empty())
+		if (!m_SqlQueue.empty())
 		{
-			CStringPool *sql = (CStringPool *)m_TempQueue.front();
-			const char *str = sql->GetMsg();
-			if (str)
+			LOCK_LOCK(&m_lock);
+			m_TempQueue = std::move(m_SqlQueue);
+			LOCK_UNLOCK(&m_lock);
+
+			if (m_MaxSize < static_cast<int32>(m_TempQueue.size()))
 			{
-				DataBase::CRecordset *res = m_Con.Execute(str);
+				m_MaxSize = m_TempQueue.size();
 			}
-			string_release(sql);
-			m_TempQueue.pop_front(); 
+
+			while (!m_TempQueue.empty())
+			{
+				CStringPool *sql = (CStringPool *)m_TempQueue.front();
+				const char *str = sql->GetMsg();
+				if (str)
+				{
+					DataBase::CRecordset *res = m_Con.Execute(str);
+				}
+				string_release(sql);
+				m_TempQueue.pop_front(); 
+			}
 		}
+
 		delay = get_microsecond() - currenttime;
 		if (delay < maxdelay)
 			delaytime(static_cast<DWORD>(maxdelay - delay));
@@ -219,6 +229,12 @@ void CDBCache::Destroy()
 	}
 	m_WorkInstance = nullptr;
 	CStringPool::DestroyPools();
+}
+
+void CDBCache::GetCurrentInfo(char *buf, size_t buflen)
+{
+	if(m_WorkInstance)
+		snprintf(buf, buflen - 1, "当前待处理语句队列数量:%d\n当前正在处理语句队列数量:%d\n最大语句队列数量:%d\n", m_WorkInstance->GetSize(), m_WorkInstance->GetTempSize(), m_WorkInstance->GetMaxSize());
 }
 
 const char *CDBCache::GetPrimaryKey(const std::string &tablename)

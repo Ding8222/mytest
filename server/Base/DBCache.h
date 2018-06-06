@@ -16,11 +16,16 @@ public:
 	void Run();
 	void Destroy();
 
+	int32 GetSize() { return m_SqlQueue.size(); }
+	int32 GetTempSize() { return m_TempQueue.size(); }
+	int32 GetMaxSize() { return m_MaxSize; }
+
 	void Push(void *sql);
 private:
 	volatile bool m_Run;
 	volatile bool m_WorkFinish;
 	int32 m_Delay;
+	int32 m_MaxSize;
 	LOCK_struct m_lock;
 	std::list<void *> m_SqlQueue;
 	std::list<void *> m_TempQueue;
@@ -42,6 +47,7 @@ public:
 
 	bool Init(const char* dbname, const char *username, const char* password, const char* ipstring, bool opensqllog);
 	void Destroy();
+	void GetCurrentInfo(char *buf, size_t buflen);
 
 	// 查询单条数据
 	nlohmann::json ExecuteSingle(const std::string &tablename, const char *guid = nullptr, std::list<std::string> *fields = nullptr);
