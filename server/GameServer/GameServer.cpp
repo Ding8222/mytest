@@ -190,13 +190,13 @@ void CGameServer::Run()
 	}
 	delaytime(300);
 
+	PlayerMgr.Destroy();
+	InstanceMgr.Destroy();
+	SceneMgr.Destroy();
+	MapConfig.Destroy();
 	GameGatewayMgr.Destroy();
 	GameCenterConnect.Destroy();
 	LogConnecter.Destroy();
-	MapConfig.Destroy();
-	PlayerMgr.Destroy();
-	SceneMgr.Destroy();
-	InstanceMgr.Destroy();
 	CSVData::Destroy();
 
 	Destroy();
@@ -308,6 +308,10 @@ static void ProcessCommand(lxnet::Socketer *sock, const char *commandstr)
 		GameGatewayMgr.GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
 		size = static_cast<short>(strlen(s_buf));
 		PlayerMgr.GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
+		size = static_cast<short>(strlen(s_buf));
+		SceneMgr.GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
+		size = static_cast<short>(strlen(s_buf));
+		InstanceMgr.GetCurrentInfo(&s_buf[size], sizeof(s_buf) - size - 1);
 		s_buf[sizeof(s_buf) - 1] = 0;
 		res.PushString(s_buf);
 		sock->SendMsg(&res);

@@ -75,33 +75,6 @@ message AuthRet
 	string Account = 2;	//账号
 }
 
-// 2-7 登陆
-message Login
-{
-	// handshake = base64encode(token.user)@base64encode(token.server)#base64encode(subid):index)
-	// hmac = hmac64(hashkey(handshake), secret)
-	string Account = 1;	// handshake:base64encode(hmac)
-	bytes Secret = 2;
-}
-
-// 2-8 登录返回
-message LoginRet
-{
-	enum EC
-	{
-		EC_OTHER = 0;
-		EC_SUCC = 1;
-		EC_FAIL = 2;
-		EC_ACCOUNT = 3;	//没有账号信息
-		EC_SECRET = 4;	//秘钥错误
-		EC_CENTERID = 5;//中心服务器分配id失败
-		EC_ADDPLAYER = 6;//逻辑服添加玩家失败
-		EC_LOADDATA = 7;//逻辑服加载玩家数据失败
-	};
-	int32 nCode = 1;
-	int32 nTempID = 2;
-}
-
 message PlayerLite
 {
 	int64 nGuid = 1;
@@ -110,20 +83,20 @@ message PlayerLite
 	int32 nSex = 4;
 }
 
-// 2-9 请求角色列表
+// 2-7 请求角色列表
 message PlayerList
 {
 	// 空消息
 	string Account = 1;	//请求不用填写
 }
 
-// 2-10 返回角色列表
+// 2-8 返回角色列表
 message PlayerListRet
 {
 	repeated PlayerLite list = 1;
 }
 
-// 2-11 请求创建角色
+// 2-9 请求创建角色
 message CreatePlayer
 {
 	enum EC
@@ -140,7 +113,7 @@ message CreatePlayer
 	int32 nNameCheckRet = 5;	//名称检查服务器返回的结果，请求不用填写
 }
 
-// 2-12 创建角色返回
+// 2-10 创建角色返回
 message CreatePlayerRet
 {
 	enum EC
@@ -156,13 +129,13 @@ message CreatePlayerRet
 	PlayerLite Info = 2;
 }
 
-// 2-13 请求选择角色
+// 2-11 请求选择角色
 message SelectPlayer
 {
 	int64 nGuid = 1;
 }
 
-// 2-14 选择角色返回
+// 2-12 选择角色返回
 message SelectPlayerRet
 {
 	enum EC
@@ -181,4 +154,31 @@ message SelectPlayerRet
 	int32 nLineID = 4;	// 线路ID
 	int32 nPort = 5;	// 服务器端口
 	string sIP = 6;		// 需要去连接的服务器ip
+}
+
+// 2-13 登陆
+message Login
+{
+	// handshake = base64encode(token.user)@base64encode(token.server)#base64encode(subid):index)
+	// hmac = hmac64(hashkey(handshake), secret)
+	string Account = 1;	// handshake:base64encode(hmac)
+	bytes Secret = 2;
+}
+
+// 2-14 登录返回
+message LoginRet
+{
+	enum EC
+	{
+		EC_OTHER = 0;
+		EC_SUCC = 1;
+		EC_FAIL = 2;
+		EC_ACCOUNT = 3;	//没有账号信息
+		EC_SECRET = 4;	//秘钥错误
+		EC_CENTERID = 5;//中心服务器分配id失败
+		EC_ADDPLAYER = 6;//逻辑服添加玩家失败
+		EC_LOADDATA = 7;//逻辑服加载玩家数据失败
+	};
+	int32 nCode = 1;
+	int32 nTempID = 2;
 }

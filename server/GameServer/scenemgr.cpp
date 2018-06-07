@@ -101,6 +101,17 @@ void CSceneMgr::Run()
 	}
 }
 
+void CSceneMgr::GetCurrentInfo(char *buf, size_t buflen)
+{
+	snprintf(buf, buflen - 1, "普通地图数量:%d\n", (int32)m_SceneMap.size());
+	short size;
+	for (auto &i : m_SceneMap)
+	{
+		size = static_cast<short>(strlen(buf));
+		i.second->GetCurrentInfo(&buf[size], sizeof(buf) - size - 1);
+	}
+}
+
 bool CSceneMgr::AddNPC(int32 npcid, int32 mapid, float x, float y, float z)
 {
 	CScene *map = FindScene(mapid);

@@ -26,6 +26,7 @@ public:
 	bool Init();
 	void Destroy();
 	void Run();
+	void GetCurrentInfo(char *buf, size_t buflen);
 
 public:
 	CScene *FindScene(int32 mapid);

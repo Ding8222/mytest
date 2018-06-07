@@ -37,7 +37,6 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 		_CHECK_PARSE_(pMsg, msg);
 
 		netData::ChangeMapRet SendMsg;
-		SendMsg.set_bchangeip(false);
 		int32 nMapID = msg.nmapid();
 		if (nMapID != pPlayer->GetMapID())
 		{
@@ -49,6 +48,8 @@ void DoClientMsg(CPlayer *pPlayer, Msg *pMsg)
 				{
 					if (scene->AddObj(pPlayer))
 					{
+						SendMsg.set_nmapid(nMapID);
+						SendMsg.set_ntempid(pPlayer->GetTempID());
 						SendMsg.set_ncode(netData::ChangeMapRet::EC_SUCC);
 					}
 				}

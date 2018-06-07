@@ -124,7 +124,7 @@ void CRobotMgr::Run()
 		}
 		if ((*tempitr)->IsClose())
 		{
-			RunStateError("远程服务器断开连接，准备断开重连!", (*tempitr)->GetConnectID());
+			RunStateError("远程服务器:[%d] 断开连接，准备断开重连!", (*tempitr)->GetConnectID());
 			(*tempitr)->OnConnectDisconnect();
 			continue;
 		}
@@ -280,10 +280,13 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 
 				if (msg.ncode() == netData::ChangeMapRet::EC_SUCC)
 				{
-					if (msg.bchangeip())
-					{
-						_con->ChangeConnect(msg.sip().c_str(), msg.nport(), msg.nserverid(), true);
-					}
+					// 本服改变地图的时候，设置新的tempid
+					_con->SetTempID(msg.ntempid());
+					netData::PlayerMove sendMsg;
+					sendMsg.set_x(static_cast<float>(rand() % 1000));
+					sendMsg.set_y(static_cast<float>(rand() % 1000));
+					sendMsg.set_z(1);
+					_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
 				}
 				else
 				{

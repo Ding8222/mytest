@@ -45,6 +45,7 @@ public:
 	bool Init(CMapInfo * _mapinfo);
 	void Destroy();
 	void Run();
+	void GetCurrentInfo(char *buf, size_t buflen);
 
 	// 进入场景
 	bool AddObj(CBaseObj * obj);

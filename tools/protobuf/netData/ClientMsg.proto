@@ -46,7 +46,7 @@ message ChangeMap
 	bytes sSecret = 3;	// 秘钥,前端不用填写
 }
 
-// 3-6 切换地图返回
+// 3-6 切换地图返回，如果涉及到换线，那么不会返回该消息，返回的是2-8
 message ChangeMapRet
 {
 	enum EC
@@ -60,11 +60,8 @@ message ChangeMapRet
 		EC_PACKDATA = 7;//打包数据失败
 	};
 	int32 nCode = 1;		// 返回的信息
-	bool bChangeIP = 2;		// 是否需要改变服务器地址
-	int32 nServerID = 3;	// 返回要连接的服务器ID
-	string sIP = 4;			// 返回要去连接的ip地址
-	int32 nPort = 5;		// 返回要去连接的port
-	int32 nMapID = 6;		// 要加载的地图ID
+	int32 nMapID = 2;		// 要加载的地图ID
+	int32 nTempID = 3;		// 新的tempid
 }
 
 // 3-7 更新对象信息（有则更新，无则添加）

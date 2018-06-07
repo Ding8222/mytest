@@ -96,6 +96,17 @@ void CInstanceMgr::Destroy()
 	}
 }
 
+void CInstanceMgr::GetCurrentInfo(char *buf, size_t buflen)
+{
+	snprintf(buf, buflen - 1, "副本地图数量:%d\n待移除副本数量:%d\n", (int32)m_InstanceList.size(), (int32)m_WaitRemove.size());
+	short size;
+	for (auto &i : m_InstanceList)
+	{
+		size = static_cast<short>(strlen(buf));
+		i->GetCurrentInfo(&buf[size], sizeof(buf) - size - 1);
+	}
+}
+
 int32 CInstanceMgr::AddInstance(int32 instancebaseid)
 {
 	int32 id = idmgr_allocid(m_IDPool);

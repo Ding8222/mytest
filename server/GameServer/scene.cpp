@@ -105,21 +105,6 @@ bool CScene::Init(CMapInfo * _mapinfo)
 	return true;
 }
 
-void CScene::Run()
-{
-	if (m_bMessage)
-	{
-		Message();
-		m_bMessage = false;
-	}
-
-	ProcessAllMonster();
-	ProcessAllNPC();
-
-	CheckAndRemoveMonster();
-	CheckAndRemoveNPC();
-}
-
 void CScene::Destroy()
 {
 	DelAllNPC();
@@ -145,6 +130,27 @@ void CScene::Destroy()
 
 	m_ObjMap.clear();
 	m_ObjSet.clear();
+}
+
+void CScene::Run()
+{
+	if (m_bMessage)
+	{
+		Message();
+		m_bMessage = false;
+	}
+
+	ProcessAllMonster();
+	ProcessAllNPC();
+
+	CheckAndRemoveMonster();
+	CheckAndRemoveNPC();
+}
+
+void CScene::GetCurrentInfo(char *buf, size_t buflen)
+{
+	if(m_Cookie)
+		snprintf(buf, buflen - 1, "当前地图ID:%d\n地图对象数量:%d\nAOI最大内存:%d\nAOI当前内存:%d\nAOI当前数量:%d\n", GetMapID(), (int32)m_ObjMap.size(), m_Cookie->max, m_Cookie->current, m_Cookie->count);
 }
 
 bool CScene::AddObj(CBaseObj * obj)
@@ -199,8 +205,8 @@ bool CScene::DelObj(CBaseObj * obj)
 	}
 
 	obj->LeaveAoi();
-	obj->SetTempID(0);
 	m_ObjMap.erase(obj->GetTempID());
+	obj->SetTempID(0);
 	return true;
 }
 

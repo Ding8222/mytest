@@ -184,7 +184,7 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 			{
 				svrData::LoadPlayerData msg;
 				_CHECK_PARSE_(pMsg, msg);
-
+								
 				netData::LoginRet sendMsg;
 				if (PlayerMgr.AddPlayer(info, static_cast<int32>(tl->id)))
 				{
@@ -195,6 +195,9 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 					{
 						if (player->LoadData(pMsg))
 						{
+							if (msg.bchangeline())
+								RunStateLog("账号%s切换到本线路", player->GetAccount());
+
 							sendMsg.set_ntempid(player->GetTempID());
 							sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
 						}

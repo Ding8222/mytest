@@ -24,6 +24,7 @@ public:
 	bool Init();
 	void Run();
 	void Destroy();
+	void GetCurrentInfo(char *buf, size_t buflen);
 
 	// 传入副本基本ID，返回副本实例ID
 	int32 AddInstance(int32 instancebaseid);

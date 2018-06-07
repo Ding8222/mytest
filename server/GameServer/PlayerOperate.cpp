@@ -9,9 +9,6 @@ void Operate(CPlayer *pPlayer, Msg *pMsg)
 	if (!pMsg)
 		return;
 
-	if (!FuncUti::isValidCret(pPlayer))
-		return;
-
 	switch (pMsg->GetMainType())
 	{
 	case LOGIN_TYPE_MAIN:
