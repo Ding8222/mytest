@@ -80,7 +80,7 @@ public:
 	bool LeaveScene();
 
 	// 设置AOI模式
-	void SetAoiMode(const char *mode) { if (mode)strncpy_s(m_AoiMode, mode, MAX_AOIMODE_LEN); }
+	void SetAoiMode(const char *mode) { if (mode)strncpy_s(m_AoiMode, mode, MAX_AOIMODE_LEN - 1); }
 	const char *GetAoiMode() { return m_AoiMode; }
 private:
 	// 当前地图ID

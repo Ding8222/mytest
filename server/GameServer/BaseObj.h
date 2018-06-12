@@ -60,7 +60,7 @@ public:
 	bool IsNPC() { return m_ObjType == EOT_NPC; }
 	char *GetName() { return m_ObjName; }
 	void SetName(const char *_Name) {
-		strncpy_s(m_ObjName, _Name, MAX_NAME_LEN); m_ObjName
+		strncpy_s(m_ObjName, _Name, MAX_NAME_LEN - 1); m_ObjName
 			[MAX_NAME_LEN - 1] = '\0';
 	}
 private:

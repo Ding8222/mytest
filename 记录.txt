@@ -18,3 +18,5 @@ http://blog.csdn.net/solstice/article/details/6300108
 
 数据库缓存这边可能还需要调整，看有没有必要将json库改为RapidJSON
 vs配置里面有字符串池的选项，看需不需要启用
+
+字符串拷贝使用：strncpy_s(dest,src,sizeof(dest) - 1)
