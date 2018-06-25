@@ -12,6 +12,7 @@
 #include "msgbase.h"
 #include "GlobalDefine.h"
 #include "fmt/ostream.h"
+#include "RandomPool.h"
 
 #include "ServerType.h"
 
@@ -235,7 +236,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 						netData::PlayerMove sendMsg;
 						int x = static_cast<int>(msg.x());
 						int y = static_cast<int>(msg.y());
-						int nRand = rand() % 10000;
+						int nRand = CRandomPool::GetOne() % 10000;
 						if (nRand > 5000)
 							x += 1;
 						else
@@ -246,7 +247,7 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 						else if (x < 1)
 							x = 1;
 
-						nRand = rand() % 10000;
+						nRand = CRandomPool::GetOne() % 10000;
 						if (nRand > 5000)
 							y += 1;
 						else
@@ -283,16 +284,16 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 					// 本服改变地图的时候，设置新的tempid
 					_con->SetTempID(msg.ntempid());
 					netData::PlayerMove sendMsg;
-					sendMsg.set_x(static_cast<float>(rand() % 1000));
-					sendMsg.set_y(static_cast<float>(rand() % 1000));
+					sendMsg.set_x(static_cast<float>(CRandomPool::GetOne() % 1000));
+					sendMsg.set_y(static_cast<float>(CRandomPool::GetOne() % 1000));
 					sendMsg.set_z(1);
 					_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
 				}
 				else
 				{
 					netData::PlayerMove sendMsg;
-					sendMsg.set_x(static_cast<float>(rand()%1000));
-					sendMsg.set_y(static_cast<float>(rand() % 1000));
+					sendMsg.set_x(static_cast<float>(CRandomPool::GetOne() % 1000));
+					sendMsg.set_y(static_cast<float>(CRandomPool::GetOne() % 1000));
 					sendMsg.set_z(1);
 					_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
 				}
@@ -326,8 +327,8 @@ void CRobotMgr::ProcessMsg(CRobot *_con)
 					RunStateLog("逻辑服加载数据成功!TempID:%d", msg.ntempid());
 					_con->SetTempID(msg.ntempid());
 					netData::PlayerMove sendMsg;
-					sendMsg.set_x(static_cast<float>(rand() % 1000));
-					sendMsg.set_y(static_cast<float>(rand() % 1000));
+					sendMsg.set_x(static_cast<float>(CRandomPool::GetOne() % 1000));
+					sendMsg.set_y(static_cast<float>(CRandomPool::GetOne() % 1000));
 					sendMsg.set_z(1);
 					_con->SendMsg(sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_MOVE);
 				}

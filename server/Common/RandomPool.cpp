@@ -12,7 +12,7 @@ CRandomPool::~CRandomPool()
 
 std::random_device CRandomPool::rd;
 std::default_random_engine CRandomPool::gen = std::default_random_engine(CRandomPool::rd());
-std::uniform_int_distribution<int> CRandomPool::dis(1,10000000);
+std::uniform_int_distribution<int> CRandomPool::dis(1,9999999);
 
 uint32 CRandomPool::GetOne()
 {
