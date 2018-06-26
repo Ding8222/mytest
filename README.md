@@ -7,6 +7,11 @@ Debug模式下，后台有全日志输出，RelWithDebInfo输出不全，但二�
 RelWithDebInfo模式是带调试信息的release模式，生产环境使用该模式。
 一般开发都可以只使用RelWithDebInfo模式(会快一些)。
 
+项目使用了vld检测内存泄露，如果没有安装的话，可以全局搜索，将
+#define VLD_FORCE_ENABLE
+#include "vld.h"
+这两行代码注释，或者选择安装vld
+
 1.使用命令git submodule update --init下载第三方库
 
 2.双击目录tools/protobuf下的GenAllPB.bat用于生成项目使用的pb.cc等文件

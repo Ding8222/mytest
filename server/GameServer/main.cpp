@@ -3,6 +3,8 @@
 * Copyright (C) ddl
 * 2018
 */
+
+#define VLD_FORCE_ENABLE
 #include "vld.h"
 #include "config.h"
 #include "GameServer.h"

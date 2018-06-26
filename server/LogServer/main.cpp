@@ -4,6 +4,7 @@
 * 2018
 */
 
+#define VLD_FORCE_ENABLE
 #include "vld.h"
 #include "config.h"
 #include "LogServer.h"

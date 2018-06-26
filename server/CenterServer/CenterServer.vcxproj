@@ -251,7 +251,6 @@
     <ClInclude Include="..\Base\ClientType.h" />
     <ClInclude Include="..\Base\ConnectMgr.h" />
     <ClInclude Include="..\Base\connector.h" />
-    <ClInclude Include="..\Base\crosslib.h" />
     <ClInclude Include="..\Base\CSVParser.h" />
     <ClInclude Include="..\Base\CtrlHandler.h" />
     <ClInclude Include="..\Base\datahand.h" />
@@ -276,8 +275,6 @@
     <ClInclude Include="..\Base\PB\Login.pb.h" />
     <ClInclude Include="..\Base\PB\ServerMsg.pb.h" />
     <ClInclude Include="..\Base\PB\Team.pb.h" />
-    <ClInclude Include="..\Base\platform_config.h" />
-    <ClInclude Include="..\Base\pool.h" />
     <ClInclude Include="..\Base\RandomPool.h" />
     <ClInclude Include="..\Base\SendMail.h" />
     <ClInclude Include="..\Base\serverinfo.h" />

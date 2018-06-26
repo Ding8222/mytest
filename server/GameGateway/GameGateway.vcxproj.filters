@@ -81,12 +81,6 @@
     <ClInclude Include="..\Base\RandomPool.h">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="..\Base\pool.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Base\platform_config.h">
-      <Filter>common</Filter>
-    </ClInclude>
     <ClInclude Include="..\Base\objectpool.h">
       <Filter>common</Filter>
     </ClInclude>
@@ -136,9 +130,6 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="..\Base\CSVParser.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Base\crosslib.h">
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="..\Base\connector.h">
