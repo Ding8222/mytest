@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <limits>
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 
 const float  MinFloat = (std::numeric_limits<float>::min)();
 

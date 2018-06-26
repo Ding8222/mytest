@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 #include "log.h"
 
 extern int64 g_currenttime;

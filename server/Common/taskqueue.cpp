@@ -1,6 +1,6 @@
 ﻿#include <stdlib.h>
 #include <list>
-#include "ossome.h"
+#include "lxnet\base\cthread.h"
 #include "taskqueue.h"
 
 class locklist
@@ -15,7 +15,7 @@ public:
 	size_t maxsize() { return m_maxsize; }
 private:
 	freetask m_func;
-	LOCK_struct m_lock;
+	cspin m_lock;
 	std::list<void*> m_list;
 	size_t m_maxsize;
 };
@@ -23,22 +23,22 @@ private:
 locklist::locklist()
 {
 	m_func = NULL;
-	LOCK_INIT(&m_lock);
+	cspin_init(&m_lock);
 	m_list.clear();
 	m_maxsize = 0;
 }
 
 locklist::~locklist()
 {
-	LOCK_LOCK(&m_lock);
+	cspin_lock(&m_lock);
 	for (std::list<void*>::iterator itr = m_list.begin(); itr != m_list.end(); ++itr)
 	{
 		m_func(*itr);
 	}
 	m_list.clear();
-	LOCK_UNLOCK(&m_lock);
+	cspin_unlock(&m_lock);
 	m_func = NULL;
-	LOCK_DELETE(&m_lock);
+	cspin_destroy(&m_lock);
 	m_maxsize = 0;
 }
 
@@ -54,24 +54,24 @@ bool locklist::pushtask (void *task)
 {
 	if (!task)
 		return false;
-	LOCK_LOCK(&m_lock);
+	cspin_lock(&m_lock);
 	m_list.push_back(task);
 	if (m_maxsize < m_list.size())
 		m_maxsize = m_list.size();
-	LOCK_UNLOCK(&m_lock);
+	cspin_unlock(&m_lock);
 	return true;
 }
 
 void *locklist::poptask ()
 {
-	LOCK_LOCK(&m_lock);
+	cspin_lock(&m_lock);
 	void *task = NULL;
 	if (!m_list.empty())
 	{
 		task = m_list.front();
 		m_list.pop_front();
 	}
-	LOCK_UNLOCK(&m_lock);
+	cspin_unlock(&m_lock);
 	return task;
 }
 

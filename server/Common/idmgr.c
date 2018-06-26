@@ -2,7 +2,7 @@
 #include <assert.h>
 #include "idmgr.h"
 #include "log.h"
-#include "crosslib.h"
+#include "lxnet\base\crosslib.h"
 
 enum enum_id_use_type
 {

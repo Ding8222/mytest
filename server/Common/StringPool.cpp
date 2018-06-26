@@ -2,7 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "msgbase.h"
-#include "ossome.h"
+#include "lxnet\base\catomic.h"
+#include "lxnet\base\cthread.h"
 #include "objectpool.h"
 #include "blockbuf.h"
 #include "serverlog.h"
@@ -13,7 +14,7 @@ enum
 };
 struct thread_localuse
 {
-	THREAD_ID threadid;
+	unsigned int threadid;
 	char *buf;
 };
 
@@ -22,7 +23,7 @@ struct threadinfo
 	bool isinit;
 	int32 msgmaxsize;
 	struct thread_localuse msgbuf[enum_max_thread_num];
-	volatile long freeindex;
+	catomic freeindex;
 };
 
 static struct threadinfo s_threadbuf = { false };
@@ -39,7 +40,7 @@ static bool threadinfo_init()
 		s_threadbuf.msgbuf[i].buf = nullptr;
 	}
 
-	s_threadbuf.freeindex = 0;
+	catomic_inc(&s_threadbuf.freeindex);
 	s_threadbuf.isinit = true;
 	return true;
 }
@@ -66,7 +67,7 @@ static char *threadbuf_get_msg_buf()
 		RunStateError("not init s_threadbuf, error!");
 		exit(1);
 	}
-	THREAD_ID currentthreadid = CURRENT_THREAD;
+	unsigned int currentthreadid = cthread_self_id();
 
 	int32 index;
 	for (index = 0; index < enum_max_thread_num; ++index)
@@ -81,7 +82,7 @@ static char *threadbuf_get_msg_buf()
 			return s_threadbuf.msgbuf[index].buf;
 		}
 	}
-	index = (int32)atom_fetch_add(&s_threadbuf.freeindex, 1);
+	index = (int32)catomic_fetch_add(&s_threadbuf.freeindex, 1);
 	if (index < 0 || index >= enum_max_thread_num)
 	{
 		RunStateError("thread num is overtop, failed!, index:%d, enum_max_thread_num:%d", index, enum_max_thread_num);
@@ -108,27 +109,27 @@ public:
 	StringSomePool()
 	{
 		m_pool = new objectpool<stringblock>(16000, "stringblock pools");
-		LOCK_INIT(&m_blocklock);
+		cspin_init(&m_blocklock);
 
 		m_stringpool = new objectpool<CStringPool>(16000, "CStringPool pools");
-		LOCK_INIT(&m_stringlock);
+		cspin_init(&m_stringlock);
 	}
 
 	~StringSomePool()
 	{
 		delete m_pool;
-		LOCK_DELETE(&m_blocklock);
+		cspin_destroy(&m_blocklock);
 
 		delete m_stringpool;
-		LOCK_DELETE(&m_stringlock);
+		cspin_destroy(&m_stringlock);
 	}
 
 	stringblock *AllocBlock()
 	{
 		stringblock *res = nullptr;
-		LOCK_LOCK(&m_blocklock);
+		cspin_lock(&m_blocklock);
 		res = m_pool->GetObject();
-		LOCK_UNLOCK(&m_blocklock);
+		cspin_unlock(&m_blocklock);
 		return res;
 	}
 
@@ -136,17 +137,17 @@ public:
 	{
 		if (!tk)
 			return;
-		LOCK_LOCK(&m_blocklock);
+		cspin_lock(&m_blocklock);
 		m_pool->FreeObject(tk);
-		LOCK_UNLOCK(&m_blocklock);
+		cspin_unlock(&m_blocklock);
 	}
 
 	CStringPool *AllocString()
 	{
 		CStringPool *res = nullptr;
-		LOCK_LOCK(&m_stringlock);
+		cspin_lock(&m_stringlock);
 		res = m_stringpool->GetObject();
-		LOCK_UNLOCK(&m_stringlock);
+		cspin_unlock(&m_stringlock);
 		return res;
 	}
 
@@ -154,17 +155,17 @@ public:
 	{
 		if (!tk)
 			return;
-		LOCK_LOCK(&m_stringlock);
+		cspin_lock(&m_stringlock);
 		m_stringpool->FreeObject(tk);
-		LOCK_UNLOCK(&m_stringlock);
+		cspin_unlock(&m_stringlock);
 	}
 
 private:
 	objectpool<stringblock> *m_pool;
-	LOCK_struct m_blocklock;
+	cspin m_blocklock;
 
 	objectpool<CStringPool> *m_stringpool;
-	LOCK_struct m_stringlock;
+	cspin m_stringlock;
 };
 
 static StringSomePool &SomePool()

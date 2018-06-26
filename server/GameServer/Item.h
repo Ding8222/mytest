@@ -5,7 +5,7 @@
 */
 #pragma once
 #include <string>
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 #include "CSVLoad.h"
 
 #pragma pack(push,1)

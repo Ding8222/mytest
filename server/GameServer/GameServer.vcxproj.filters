@@ -28,9 +28,6 @@
     <Filter Include="基础对象\NPC">
       <UniqueIdentifier>{aa2e093c-c08c-4efd-9f40-52205509a5a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="基础对象\玩家\玩家操作">
-      <UniqueIdentifier>{eb345bdc-9e0a-4a8d-8af3-1336f86ce3a3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="背包">
       <UniqueIdentifier>{f7c8b007-98dd-49fb-9dea-659f20c1e6c5}</UniqueIdentifier>
     </Filter>
@@ -46,12 +43,6 @@
     <Filter Include="处理Center消息">
       <UniqueIdentifier>{3e8486ae-75ae-40b0-9cc5-3a6865658a24}</UniqueIdentifier>
     </Filter>
-    <Filter Include="基础对象\AI">
-      <UniqueIdentifier>{7051c6b1-434b-4b5a-90fb-9739d541f84a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="基础对象\AI\FSM">
-      <UniqueIdentifier>{508d3111-9635-4f64-9a4e-5bb60710be99}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Define">
       <UniqueIdentifier>{8c72fc3f-15d1-41e8-bd71-0ea7e1c9728c}</UniqueIdentifier>
     </Filter>
@@ -66,6 +57,15 @@
     </Filter>
     <Filter Include="common\json">
       <UniqueIdentifier>{cc974abc-953b-4d97-835a-9dc46a1b1542}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="基础对象\怪物\AI">
+      <UniqueIdentifier>{7051c6b1-434b-4b5a-90fb-9739d541f84a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="基础对象\怪物\AI\FSM">
+      <UniqueIdentifier>{508d3111-9635-4f64-9a4e-5bb60710be99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="玩家操作">
+      <UniqueIdentifier>{eb345bdc-9e0a-4a8d-8af3-1336f86ce3a3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -109,7 +109,7 @@
       <Filter>基础对象\玩家</Filter>
     </ClCompile>
     <ClCompile Include="PlayerOperate.cpp">
-      <Filter>基础对象\玩家\玩家操作</Filter>
+      <Filter>玩家操作</Filter>
     </ClCompile>
     <ClCompile Include="CSVLoad.cpp">
       <Filter>源文件</Filter>
@@ -136,10 +136,10 @@
       <Filter>基础对象\NPC</Filter>
     </ClCompile>
     <ClCompile Include="DoClientMsg.cpp">
-      <Filter>基础对象\玩家\玩家操作</Filter>
+      <Filter>玩家操作</Filter>
     </ClCompile>
     <ClCompile Include="DoLoginMsg.cpp">
-      <Filter>基础对象\玩家\玩家操作</Filter>
+      <Filter>玩家操作</Filter>
     </ClCompile>
     <ClCompile Include="Status.cpp">
       <Filter>基础对象</Filter>
@@ -163,7 +163,7 @@
       <Filter>组队</Filter>
     </ClCompile>
     <ClCompile Include="DoTeamMsg.cpp">
-      <Filter>基础对象\玩家\玩家操作</Filter>
+      <Filter>玩家操作</Filter>
     </ClCompile>
     <ClCompile Include="DoTeamMsgFromCenter.cpp">
       <Filter>处理Center消息</Filter>
@@ -172,10 +172,10 @@
       <Filter>处理Center消息</Filter>
     </ClCompile>
     <ClCompile Include="AIMonsterStates.cpp">
-      <Filter>基础对象\AI\FSM</Filter>
+      <Filter>基础对象\怪物\AI\FSM</Filter>
     </ClCompile>
     <ClCompile Include="AIMonster.cpp">
-      <Filter>基础对象\AI</Filter>
+      <Filter>基础对象\怪物\AI</Filter>
     </ClCompile>
     <ClCompile Include="..\Base\PB\ClientMsg.pb.cc">
       <Filter>common\pb</Filter>
@@ -231,7 +231,7 @@
       <Filter>基础对象\玩家</Filter>
     </ClInclude>
     <ClInclude Include="PlayerOperate.h">
-      <Filter>基础对象\玩家\玩家操作</Filter>
+      <Filter>玩家操作</Filter>
     </ClInclude>
     <ClInclude Include="CSVLoad.h">
       <Filter>头文件</Filter>
@@ -282,19 +282,19 @@
       <Filter>处理Center消息</Filter>
     </ClInclude>
     <ClInclude Include="AIMonsterStates.h">
-      <Filter>基础对象\AI\FSM</Filter>
+      <Filter>基础对象\怪物\AI\FSM</Filter>
     </ClInclude>
     <ClInclude Include="State.h">
-      <Filter>基础对象\AI\FSM</Filter>
+      <Filter>基础对象\怪物\AI\FSM</Filter>
     </ClInclude>
     <ClInclude Include="StateMachine.h">
-      <Filter>基础对象\AI\FSM</Filter>
+      <Filter>基础对象\怪物\AI\FSM</Filter>
     </ClInclude>
     <ClInclude Include="AIMonster.h">
-      <Filter>基础对象\AI</Filter>
+      <Filter>基础对象\怪物\AI</Filter>
     </ClInclude>
     <ClInclude Include="Vector3D.h">
-      <Filter>基础对象\AI</Filter>
+      <Filter>基础对象\怪物\AI</Filter>
     </ClInclude>
     <ClInclude Include="AoiDefine.h">
       <Filter>Define</Filter>
@@ -336,9 +336,6 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="..\Base\platform_config.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Base\ossome.h">
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="..\Base\objectpool.h">

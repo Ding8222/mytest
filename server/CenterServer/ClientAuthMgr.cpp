@@ -1,11 +1,11 @@
 ﻿#include "GlobalDefine.h"
-#include "idmgr.c"
 #include "ClientAuthMgr.h"
 #include "CentServerMgr.h"
 #include "ServerStatusMgr.h"
 #include "objectpool.h"
 #include "ServerLog.h"
 #include "Config.h"
+#include "idmgr.h"
 
 #include "ServerType.h"
 #include "LoginType.h"

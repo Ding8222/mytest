@@ -1,10 +1,10 @@
 ﻿#include "Client.h"
-#include "GateClientMgr.h"
 #include "GameConnect.h"
 #include "GateCenterConnect.h"
 #include "Config.h"
 #include "ClientAuth.h"
 #include "msgbase.h"
+#include "GateClientMgr.h"
 
 #include "ServerType.h"
 #include "LoginType.h"

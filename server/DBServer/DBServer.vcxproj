@@ -247,7 +247,6 @@
     <ClInclude Include="..\Base\msgbase.h" />
     <ClInclude Include="..\Base\NetConfig.h" />
     <ClInclude Include="..\Base\objectpool.h" />
-    <ClInclude Include="..\Base\ossome.h" />
     <ClInclude Include="..\Base\PB\ClientMsg.pb.h" />
     <ClInclude Include="..\Base\PB\DBServer.pb.h" />
     <ClInclude Include="..\Base\PB\Login.pb.h" />

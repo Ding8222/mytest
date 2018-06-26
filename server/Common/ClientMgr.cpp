@@ -1,9 +1,10 @@
 ﻿#include "ClientMgr.h"
 #include "Client.h"
-#include "idmgr.c"
+#include "idmgr.h"
 #include "objectpool.h"
 #include "GlobalDefine.h"
 #include "msgbase.h"
+#include "log.h"
 
 static const int32 s_backlog = 128;
 extern int64 g_currenttime;

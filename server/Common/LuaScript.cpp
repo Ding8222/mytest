@@ -1,7 +1,7 @@
 ﻿#include "LuaScript.h"
 #include "lua.hpp"
 #include "ServerLog.h"
-#include "crosslib.h"
+#include "lxnet\base\crosslib.h"
 
 CLuaScript::CLuaScript()
 {

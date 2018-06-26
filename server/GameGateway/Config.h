@@ -2,7 +2,7 @@
 #include <string>
 #include <list>
 #include "BaseConfig.h"
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 
 struct GameSvr
 {

@@ -9,7 +9,7 @@ extern "C"
 {
 #include "aoi.h"
 }
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 #include "MapInfo.h"
 #include "Monster.h"
 #include "NPC.h"

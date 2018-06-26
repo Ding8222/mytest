@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include "task.h"
 #include "msgbase.h"
-#include "ossome.h"
+#include "lxnet\base\catomic.h"
+#include "lxnet\base\cthread.h"
 #include "objectpool.h"
 #include "blockbuf.h"
 #include "serverlog.h"
@@ -13,7 +14,7 @@ enum
 };
 struct thread_localuse
 {
-	THREAD_ID threadid;
+	unsigned int threadid;
 	char *buf;
 };
 
@@ -22,7 +23,7 @@ struct threadinfo
 	bool isinit;
 	int msgmaxsize;
 	struct thread_localuse msgbuf[enum_max_thread_num];
-	volatile long freeindex;
+	catomic freeindex;
 };
 
 static struct threadinfo s_threadbuf = {false};
@@ -39,7 +40,7 @@ static bool threadinfo_init ()
 		s_threadbuf.msgbuf[i].buf = nullptr;
 	}
 
-	s_threadbuf.freeindex = 0;
+	catomic_inc(&s_threadbuf.freeindex);
 	s_threadbuf.isinit = true;
 	return true;
 }
@@ -66,7 +67,7 @@ static char *threadbuf_get_msg_buf ()
 		RunStateError("not init s_threadbuf, error!");
 		exit(1);
 	}
-	THREAD_ID currentthreadid = CURRENT_THREAD;
+	unsigned int currentthreadid = cthread_self_id();
 
 	int index;
 	for (index = 0; index < enum_max_thread_num; ++index)
@@ -81,7 +82,7 @@ static char *threadbuf_get_msg_buf ()
 			return s_threadbuf.msgbuf[index].buf;
 		}
 	}
-	index = (int)atom_fetch_add(&s_threadbuf.freeindex, 1);
+	index = (int)catomic_fetch_add(&s_threadbuf.freeindex, 1);
 	if (index < 0 || index >= enum_max_thread_num)
 	{
 		RunStateError("thread num is overtop, failed!, index:%d, enum_max_thread_num:%d", index, enum_max_thread_num);
@@ -110,27 +111,27 @@ public:
 	TaskSomePool ()
 	{
 		m_pool = new objectpool<blocktempbuf>(16000, "blocktempbuf pools");
-		LOCK_INIT(&m_blocklock);
+		cspin_init(&m_blocklock);
 
 		m_taskpool = new objectpool<task>(16000, "task pools");
-		LOCK_INIT(&m_tasklock);
+		cspin_init(&m_tasklock);
 	}
 
 	~TaskSomePool ()
 	{
 		delete m_pool;
-		LOCK_DELETE(&m_blocklock);
+		cspin_destroy(&m_blocklock);
 
 		delete m_taskpool;
-		LOCK_DELETE(&m_tasklock);
+		cspin_destroy(&m_tasklock);
 	}
 
 	blocktempbuf *AllocBlock ()
 	{
 		blocktempbuf *res = nullptr;
-		LOCK_LOCK(&m_blocklock);
+		cspin_lock(&m_blocklock);
 		res = m_pool->GetObject();
-		LOCK_UNLOCK(&m_blocklock);
+		cspin_unlock(&m_blocklock);
 		return res;
 	}
 
@@ -138,17 +139,17 @@ public:
 	{
 		if (!tk)
 			return;
-		LOCK_LOCK(&m_blocklock);
+		cspin_lock(&m_blocklock);
 		m_pool->FreeObject(tk);
-		LOCK_UNLOCK(&m_blocklock);
+		cspin_unlock(&m_blocklock);
 	}
 
 	task *AllocTask ()
 	{
 		task *res = nullptr;
-		LOCK_LOCK(&m_tasklock);
+		cspin_lock(&m_tasklock);
 		res = m_taskpool->GetObject();
-		LOCK_UNLOCK(&m_tasklock);
+		cspin_unlock(&m_tasklock);
 		return res;
 	}
 
@@ -156,17 +157,17 @@ public:
 	{
 		if (!tk)
 			return;
-		LOCK_LOCK(&m_tasklock);
+		cspin_lock(&m_tasklock);
 		m_taskpool->FreeObject(tk);
-		LOCK_UNLOCK(&m_tasklock);
+		cspin_unlock(&m_tasklock);
 	}
 
 private:
 	objectpool<blocktempbuf> *m_pool;
-	LOCK_struct m_blocklock;
+	cspin m_blocklock;
 
 	objectpool<task> *m_taskpool;
-	LOCK_struct m_tasklock;
+	cspin m_tasklock;
 };
 
 static TaskSomePool &SomePool ()

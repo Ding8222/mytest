@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <string>
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 
 class blockbuf;
 class CStringPool

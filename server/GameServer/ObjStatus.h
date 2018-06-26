@@ -7,7 +7,7 @@
 #pragma once
 #include <unordered_map>
 #include <list>
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 
 class CStatus;
 class CBaseObj;

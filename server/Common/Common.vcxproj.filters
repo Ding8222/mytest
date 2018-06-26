@@ -36,16 +36,10 @@
     <ClCompile Include="ServerMgr.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="crosslib.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="idmgr.c">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="log.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="pool.c">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="NetConfig.cpp">

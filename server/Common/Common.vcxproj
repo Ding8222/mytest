@@ -214,7 +214,6 @@
     <ClCompile Include="ClientMgr.cpp" />
     <ClCompile Include="ConnectMgr.cpp" />
     <ClCompile Include="connector.cpp" />
-    <ClCompile Include="crosslib.c" />
     <ClCompile Include="CSVParser.cpp" />
     <ClCompile Include="CtrlHandler.cpp" />
     <ClCompile Include="datahand.cpp" />
@@ -226,7 +225,6 @@
     <ClCompile Include="MiniDump.cpp" />
     <ClCompile Include="DBCache.cpp" />
     <ClCompile Include="NetConfig.cpp" />
-    <ClCompile Include="pool.c" />
     <ClCompile Include="RandomPool.cpp" />
     <ClCompile Include="SendMail.cpp" />
     <ClCompile Include="serverinfo.cpp" />

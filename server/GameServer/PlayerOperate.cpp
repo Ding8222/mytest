@@ -21,5 +21,10 @@ void Operate(CPlayer *pPlayer, Msg *pMsg)
 		DoClientMsg(pPlayer, pMsg);
 		break;
 	}
+	case TEAM_TYPE_MAIN:
+	{
+		DoTeamMsg(pPlayer, pMsg);
+		break;
+	}
 	}
 }

@@ -1,9 +1,9 @@
 ﻿#pragma once
 #include <unordered_map>
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 #include "sqlinterface.h"
 #include "json.hpp"
-#include "ossome.h"
+#include "lxnet\base\cthread.h"
 
 class CStringPool;
 class CDBWorkInstance
@@ -26,7 +26,7 @@ private:
 	volatile bool m_WorkFinish;
 	int32 m_Delay;
 	int32 m_MaxSize;
-	LOCK_struct m_lock;
+	cspin m_lock;
 	std::list<void *> m_SqlQueue;
 	std::list<void *> m_TempQueue;
 	DataBase::CConnection m_Con;

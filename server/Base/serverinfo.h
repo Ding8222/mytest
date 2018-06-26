@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <string>
 #include "lxnet.h"
-#include "crosslib.h"
+#include "lxnet\base\crosslib.h"
 
 struct Msg;
 class serverinfo

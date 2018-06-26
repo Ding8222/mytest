@@ -3,7 +3,7 @@
 extern "C" {
 #endif
 
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 
 int mymkdir_r(const char *directory);
 

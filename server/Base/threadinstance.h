@@ -1,7 +1,7 @@
 ﻿
 #pragma once
 #include "taskqueue.h"
-#include "crosslib.h"
+#include "lxnet\base\crosslib.h"
 
 class threadinstance
 {

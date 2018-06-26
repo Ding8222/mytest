@@ -2,7 +2,7 @@
 #include "RobotMgr.h"
 #include "Config.h"
 #include "serverlog.h"
-#include "crosslib.h"
+#include "lxnet\base\crosslib.h"
 #include "lxnet.h"
 #include "Timer.h"
 

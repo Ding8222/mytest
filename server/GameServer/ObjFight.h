@@ -7,7 +7,7 @@
 #pragma once
 #include <map>
 #include <list>
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 
 #define HURT_REMOVE_TIME 60
 

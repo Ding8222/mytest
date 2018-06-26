@@ -3,7 +3,7 @@
 #include "config.h"
 #include "Timer.h"
 #include "ServerLog.h"
-#include "crosslib.h"
+#include "lxnet\base\crosslib.h"
 #include "ServerStatusMgr.h"
 #include "ClientAuthMgr.h"
 #include "LogConnecter.h"

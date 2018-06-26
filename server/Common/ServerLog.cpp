@@ -1,5 +1,5 @@
-﻿#include "serverlog.h"
-#include <string>
+﻿#include <string>
+#include "serverlog.h"
 
 struct filelog *g_client_connectlog = NULL;
 struct filelog *g_elapsed_log = NULL;

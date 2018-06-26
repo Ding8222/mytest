@@ -2,7 +2,7 @@
 #include <string.h>
 #include <assert.h>
 #include <limits.h>
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 #include "google/protobuf/message.h"
 
 #pragma pack(push, 1)

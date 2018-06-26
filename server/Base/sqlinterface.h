@@ -5,8 +5,7 @@
 #endif
 #include "mysql.h"
 #include <string>
-#include <stdio.h>
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 
 namespace DataBase
 {

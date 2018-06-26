@@ -1,4 +1,4 @@
-﻿#include "platform_config.h"
+﻿#include "lxnet\base\platform_config.h"
 #include "Instance.h"
 #include "MapConfig.h"
 #include "Timer.h"

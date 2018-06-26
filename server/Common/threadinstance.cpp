@@ -9,7 +9,7 @@
 
 #include <assert.h>
 #include "threadinstance.h"
-#include "crosslib.h"
+#include "lxnet\base\crosslib.h"
 
 threadinstance::threadinstance()
 {

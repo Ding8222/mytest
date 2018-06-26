@@ -6,7 +6,7 @@
 #pragma once
 #include <unordered_map>
 #include <set>
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 
 class CTeam;
 struct idmgr;

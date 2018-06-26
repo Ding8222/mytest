@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
-#include "pool.h"
+#include "lxnet\base\pool.h"
 
 
 class objectpoolbase

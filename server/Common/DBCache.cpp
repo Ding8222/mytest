@@ -4,7 +4,7 @@
 #include "fmt/ostream.h"
 #include "ServerLog.h"
 #include "Timer.h"
-#include "crosslib.h"
+#include "lxnet\base\crosslib.h"
 #include "StringPool.h"
 
 #ifdef _WIN32
@@ -21,7 +21,7 @@ CDBWorkInstance::CDBWorkInstance()
 	m_Run = false;
 	m_WorkFinish = false;
 	m_Delay = 0;
-	LOCK_INIT(&m_lock);
+	cspin_init(&m_lock);
 	m_SqlQueue.clear();
 	m_TempQueue.clear();
 	m_MaxSize = 0;
@@ -72,14 +72,14 @@ void CDBWorkInstance::Destroy()
 	}
 	m_SqlQueue.clear();
 	m_TempQueue.clear();
-	LOCK_DELETE(&m_lock);
+	cspin_destroy(&m_lock);
 }
 
 void CDBWorkInstance::Push(void *sql)
 {
-	LOCK_LOCK(&m_lock);
+	cspin_lock(&m_lock);
 	m_SqlQueue.push_back(sql);
-	LOCK_UNLOCK(&m_lock);
+	cspin_unlock(&m_lock);
 }
 
 void CDBWorkInstance::Run()
@@ -95,9 +95,9 @@ void CDBWorkInstance::Run()
 
 		if (!m_SqlQueue.empty())
 		{
-			LOCK_LOCK(&m_lock);
+			cspin_lock(&m_lock);
 			m_TempQueue = std::move(m_SqlQueue);
-			LOCK_UNLOCK(&m_lock);
+			cspin_unlock(&m_lock);
 
 			if (m_MaxSize < static_cast<int32>(m_TempQueue.size()))
 			{

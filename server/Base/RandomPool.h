@@ -4,8 +4,8 @@
 * 2018
 */
 #pragma once
-#include "crosslib.h"
 #include <random>
+#include "lxnet\base\crosslib.h"
 
 class CRandomPool
 {

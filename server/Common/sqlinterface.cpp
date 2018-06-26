@@ -1,24 +1,11 @@
-﻿#include "platform_config.h"
-#include "sqlinterface.h"
-#include "errmsg.h"
-#include "log.h"
-#include "ossome.h"
-#include <string.h>
+﻿#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <time.h>
-
-#ifdef _WIN32
-#include <direct.h>
-#include <io.h>
-#define my_mkdir _mkdir
-#define snprintf _snprintf
-#else
-#include <sys/stat.h>
-#include <sys/types.h>
-#define my_mkdir(a) mkdir((a), 0777)
-#endif
+#include "sqlinterface.h"
+#include "errmsg.h"
+#include "log.h"
 
 namespace DataBase{
 

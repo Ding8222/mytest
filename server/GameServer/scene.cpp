@@ -1,8 +1,8 @@
-﻿#include "platform_config.h"
+﻿#include "lxnet\base\platform_config.h"
 #include "BaseObj.h"
 #include "Scene.h"
 #include "MapInfo.h"
-#include "idmgr.c"
+#include "idmgr.h"
 #include "serverlog.h"
 #include "Utilities.h"
 

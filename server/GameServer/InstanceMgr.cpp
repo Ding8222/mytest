@@ -1,4 +1,4 @@
-﻿#include "idmgr.c"
+﻿#include "idmgr.h"
 #include "Instance.h"
 #include "InstanceMgr.h"
 #include "MapInfo.h"

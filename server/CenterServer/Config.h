@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <string>
 #include "BaseConfig.h"
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 
 #define Config CConfig::Instance()
 class CConfig:public CBaseConfig

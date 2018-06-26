@@ -5,7 +5,7 @@
 */
 
 #pragma once
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 
 static int status_delay_time = 30000;
 

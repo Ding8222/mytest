@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <string>
 #include "lxnet.h"
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 
 class CBackCommand
 {

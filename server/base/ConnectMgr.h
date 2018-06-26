@@ -8,8 +8,8 @@
 #include <unordered_map>
 #include "lxnet.h"
 #include <google/protobuf/message.h>
-#include "platform_config.h"
-#include "crosslib.h"
+#include "lxnet\base\platform_config.h"
+#include "lxnet\base\crosslib.h"
 
 class connector;
 class CConnectMgr

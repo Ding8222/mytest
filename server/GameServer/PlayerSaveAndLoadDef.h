@@ -4,7 +4,7 @@
 * 2018
 */
 #pragma once
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 
 // 数据长度(int32) 数据编号(int8) 数据版本(int8) 数据个数(int32)
 static int32 s_Data_Base_Size = sizeof(int32) + sizeof(int8) + sizeof(int8) + sizeof(int32);

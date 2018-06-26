@@ -7,7 +7,7 @@
 #include <list>
 #include "lxnet.h"
 #include <google/protobuf/message.h>
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 #include "msgbase.h"
 
 class serverinfo;

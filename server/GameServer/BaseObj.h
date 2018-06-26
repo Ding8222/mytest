@@ -7,7 +7,7 @@
 #pragma once
 #include <unordered_map>
 #include "GlobalDefine.h"
-#include "platform_config.h"
+#include "lxnet\base\platform_config.h"
 #include "ObjScene.h"
 #include "ObjAttribute.h"
 #include "ObjStatus.h"

@@ -4,10 +4,10 @@
 * 2018
 */
 #pragma once
-#include "platform_config.h"
 #include <set>
 #include <vector>
 #include <list>
+#include "lxnet\base\platform_config.h"
 
 class CMapInfo;
 
