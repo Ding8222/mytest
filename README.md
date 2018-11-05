@@ -1,4 +1,4 @@
-# mytest
+# Game Server
 
 使用到的数据库为mysql
 
