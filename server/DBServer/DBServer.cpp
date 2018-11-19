@@ -1,7 +1,6 @@
 ﻿#include "DBServer.h"
 #include "DBCenterConnect.h"
 #include "ClientLogin.h"
-#include "config.h"
 #include "Timer.h"
 #include "ServerLog.h"
 #include "LogConnecter.h"
@@ -20,6 +19,8 @@
 #define delaytime(v)	usleep((v) * 1000)
 #define system(a)
 #endif
+
+#include "config.h"
 
 int64 g_currenttime;
 

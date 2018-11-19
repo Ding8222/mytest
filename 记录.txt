@@ -20,3 +20,5 @@ http://blog.csdn.net/solstice/article/details/6300108
 vs配置里面有字符串池的选项，看需不需要启用
 
 字符串拷贝使用：strncpy_s(dest,src,sizeof(dest) - 1)
+
+libs下的lib最好用相同的编译器重新编译一下

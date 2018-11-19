@@ -1,6 +1,5 @@
 ﻿#include "RobotSvr.h"
 #include "RobotMgr.h"
-#include "Config.h"
 #include "serverlog.h"
 #include "lxnet\base\crosslib.h"
 #include "lxnet.h"
@@ -17,6 +16,8 @@
 #define delaytime(v)	usleep((v) * 1000)
 #define system(a)
 #endif
+
+#include "Config.h"
 
 int64 g_currenttime;
 

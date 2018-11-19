@@ -57,15 +57,15 @@ bool CSceneMgr::Init()
 		// 只加载普通地图
 		if (info->GetMapType() == MapEnum::MapType::EMT_NORMAL)
 		{
-			if (AddScene(iter))
-				RunStateLog("加载普通场景成功，地图ID： %d", (*iter).GetMapID());
-			else
+			if (!AddScene(iter))
 			{
 				RunStateError("加载普通场景失败，地图ID： %d", (*iter).GetMapID());
 				return false;
 			}
 		}
 	}
+
+	RunStateLog("加载所有普通场景成功!总数： %d", maplist.size());
 
 	if (!LoadNPC())
 	{

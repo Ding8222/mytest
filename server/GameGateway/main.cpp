@@ -5,8 +5,7 @@
 */
 
 #define VLD_FORCE_ENABLE
-#include "vld.h"
-#include "config.h"
+//#include "vld.h"
 #include "GameGateway.h"
 #include "NetConfig.h"
 #include "ServerLog.h"
@@ -27,6 +26,8 @@
 #define system(a)
 #endif
 
+#include "config.h"
+
 void init(int argc, char *argv[])
 {
 	do
@@ -42,13 +43,13 @@ void init(int argc, char *argv[])
 		}
 #endif
 
-		if (argc < 2)
+		int nLineID = 1;
+
+		if (argc == 2)
 		{
-			RunStateError("没有填写线路ID！");
-			break;
+			nLineID = atoi(argv[1]);
 		}
 
-		int nLineID = atoi(argv[1]);
 		if (nLineID <= 0)
 		{
 			RunStateError("线路ID填写错误！");

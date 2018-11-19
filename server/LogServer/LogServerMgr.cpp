@@ -1,17 +1,17 @@
 ﻿#include <map>
-#include "ServerMsg.pb.h"
-
 #include "serverinfo.h"
-#include "Config.h"
 #include "serverlog.h"
 #include "GlobalDefine.h"
-#include "sqlinterface.h"
-#include "task.h"
-#include "dotask.h"
-#include "datahand.h"
-#include "LogServerMgr.h"
 
 #include "ServerType.h"
+#include "ServerMsg.pb.h"
+
+#include "sqlinterface.h"
+#include "LogServerMgr.h"
+#include "datahand.h"
+#include "task.h"
+#include "dotask.h"
+#include "Config.h"
 
 DataBase::CConnection g_dbhand;
 extern int64 g_currenttime;

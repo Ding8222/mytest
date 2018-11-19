@@ -1,5 +1,4 @@
-﻿#include "config.h"
-#include "GameGateway.h"
+﻿#include "GameGateway.h"
 #include "GameConnect.h"
 #include "GateClientMgr.h"
 #include "GateCenterConnect.h"
@@ -21,6 +20,8 @@
 #define delaytime(v)	usleep((v) * 1000)
 #define system(a)
 #endif
+
+#include "config.h"
 
 int64 g_currenttime;
 

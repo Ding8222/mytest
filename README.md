@@ -12,6 +12,8 @@ RelWithDebInfo模式是带调试信息的release模式，生产环境使用该�
 #include "vld.h"
 这两行代码注释，或者选择安装vld
 
+如果项目不在C盘根目录的话，需要使用CMAKE重新生成一下protobuf的build文件
+
 1.使用命令git submodule update --init下载第三方库
 
 2.双击目录tools/protobuf下的GenAllPB.bat用于生成项目使用的pb.cc等文件

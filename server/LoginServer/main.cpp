@@ -5,9 +5,8 @@
 */
 
 #define VLD_FORCE_ENABLE
-#include "vld.h"
+//#include "vld.h"
 #include "LoginSvr.h"
-#include "config.h"
 #include "NetConfig.h"
 #include "ServerLog.h"
 #include "objectpool.h"
@@ -25,6 +24,8 @@
 #define delaytime(v)	usleep((v) * 1000)
 #define system(a)
 #endif
+
+#include "config.h"
 
 void init()
 {

@@ -1,15 +1,16 @@
 ﻿#include <map>
 #include "serverinfo.h"
-#include "Config.h"
 #include "serverlog.h"
 #include "GlobalDefine.h"
-#include "sqlinterface.h"
-#include "NameCheckServerMgr.h"
 #include "NameSet.h"
 
 #include "ServerType.h"
 #include "LoginType.h"
 #include "Login.pb.h"
+
+#include "sqlinterface.h"
+#include "NameCheckServerMgr.h"
+#include "Config.h"
 
 extern int64 g_currenttime;
 

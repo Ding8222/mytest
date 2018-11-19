@@ -30,7 +30,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{A34F896C-CDB2-408E-BB13-1F501829B412}</ProjectGuid>
     <RootNamespace>LogServer</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

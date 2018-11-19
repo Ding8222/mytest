@@ -1,5 +1,4 @@
 ﻿#include "connector.h"
-#include "config.h"
 #include "sqlinterface.h"
 #include "serverlog.h"
 #include "msgbase.h"
@@ -11,6 +10,8 @@
 
 #include "ServerType.h"
 #include "DBSvrType.h"
+
+#include "config.h"
 
 extern int64 g_currenttime;
 

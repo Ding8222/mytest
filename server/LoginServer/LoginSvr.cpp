@@ -2,7 +2,6 @@
 #include "loginsvr.h"
 #include "LoginClientMgr.h"
 #include "LoginCenterConnect.h"
-#include "config.h"
 #include "Timer.h"
 #include "ServerLog.h"
 #include "ClientAuth.h"
@@ -21,6 +20,8 @@
 #define delaytime(v)	usleep((v) * 1000)
 #define system(a)
 #endif
+
+#include "config.h"
 
 int64 g_currenttime;
 

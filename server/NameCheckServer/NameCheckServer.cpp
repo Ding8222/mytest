@@ -1,6 +1,5 @@
 ﻿#include "NameCheckServer.h"
 #include "NameCheckServerMgr.h"
-#include "config.h"
 #include "Timer.h"
 #include "ServerLog.h"
 #include "lxnet\base\crosslib.h"
@@ -17,6 +16,8 @@
 #define delaytime(v)	usleep((v) * 1000)
 #define system(a)
 #endif
+
+#include "config.h"
 
 int64 g_currenttime;
 

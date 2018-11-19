@@ -1,9 +1,9 @@
 ﻿#include <fstream>
-#include "config.h"
 #include "GlobalDefine.h"
 #include "log.h"
 #include "fmt/ostream.h"
 #include "json.hpp"
+#include "config.h"
 
 CConfig::CConfig()
 {
