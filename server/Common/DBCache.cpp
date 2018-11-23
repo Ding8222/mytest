@@ -265,7 +265,7 @@ std::list<std::string> CDBCache::GetFields(const std::string &tablename)
 	{
 		while (!res->IsEnd())
 		{
-			test.push_back(res->GetChar("column_name"));
+			test.push_back(res->GetChar("COLUMN_NAME"));
 			res->NextRow();
 		}
 	}
@@ -279,7 +279,7 @@ const char *CDBCache::GetFieldType(const std::string &tablename, const std::stri
 			m_DBName, tablename, field).c_str());
 	if (res && res->IsOpen() && !res->IsEnd())
 	{
-		return res->GetChar("data_type");
+		return res->GetChar("DATA_TYPE");
 	}
 	return "";
 }
@@ -295,7 +295,7 @@ bool CDBCache::LoadSchema()
 		// 查询到的信息
 		while (!res->IsEnd())
 		{
-			tablename.push_back(res->GetChar("table_name"));
+			tablename.push_back(res->GetChar("TABLE_NAME"));
 			res->NextRow();
 		}
 	}

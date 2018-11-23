@@ -115,9 +115,7 @@ void CLoginCenterConnect::ProcessMsg(connector *_con)
 
 				if (msg.ncode() == netData::AuthRet::EC_SUCC)
 				{
-					if (ClientAuth.AddAccount(static_cast<int32>(tl->id), msg.account()))
-						LoginClientMgr.SetClientAuthSucceed(static_cast<int32>(tl->id));
-					else
+					if (!ClientAuth.AddAccount(static_cast<int32>(tl->id), msg.account()))
 						msg.set_ncode(netData::AuthRet::EC_ADDACCOUNT);
 				}
 				LoginClientMgr.SendMsg(static_cast<int32>(tl->id), pMsg);

@@ -136,6 +136,9 @@ void CClientAuth::Auth(CClient *cl, Msg *pMsg)
 	{
 		msg.set_secret(secret);
 		LoginCenterConnect.SendMsgToServer(Config.GetCenterServerID(), msg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH, cl->GetClientID());
+		// 这边发消息之后,Center那边就会有玩家账号的记录
+		// 需要确保玩家在这个操作之后的所有情况都能正确通知移除保存的记录
+		LoginClientMgr.SetClientAuthSucceed(cl->GetClientID());
 	}
 	else
 	{

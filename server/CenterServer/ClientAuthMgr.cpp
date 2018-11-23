@@ -231,12 +231,15 @@ void CClientAuthMgr::SetPlayerOffline(const std::string &account)
 		if (iterF != m_PlayerLoginMap.end())
 		{
 			assert(iterF->second);
-			ClientAuthInfo *info = m_ClientInfoSet[iterF->second];
 			m_PlayerOnlineMap[account] = 0;
-			netData::Auth SendMsg;
-			SendMsg.set_account(info->Account);
-			SendMsg.set_secret(info->Secret);
-			CentServerMgr.SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH, ServerEnum::EST_DB, iterF->second, Config.GetDBID());
+			ClientAuthInfo *info = FindClientAuthInfo(iterF->second);
+			if (info)
+			{
+				netData::Auth SendMsg;
+				SendMsg.set_account(info->Account);
+				SendMsg.set_secret(info->Secret);
+				CentServerMgr.SendMsgToServer(SendMsg, LOGIN_TYPE_MAIN, LOGIN_SUB_AUTH, ServerEnum::EST_DB, iterF->second, Config.GetDBID());
+			}
 			m_PlayerLoginMap.erase(iterF);
 		}
 		else

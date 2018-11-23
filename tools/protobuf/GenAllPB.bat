@@ -6,7 +6,8 @@ for %%i in (*.proto) do (
 echo %%i
 SET filename=%%i
 "..\protoc" --cpp_out=..\cpp %%i
-"..\protoc.exe" -o ..\lua\!filename:~0,-6!.pb %%i
+"..\protoc-csharp" --csharp_out=..\csharp %%i
+"..\protoc" -o ..\lua\!filename:~0,-6!.pb %%i
 )
 echo end
 

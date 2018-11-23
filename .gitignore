@@ -4,6 +4,7 @@
 server/Base/PB/*.cc
 server/Base/PB/*.h
 tools/protobuf/lua/*.pb
+tools/protobuf/csharp/*.cs
 log_log/
 *.lastcodeanalysissucceeded
 *.diagsession

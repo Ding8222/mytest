@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "MainType.h"
 
-// #define CLIENT_TYPE_MAIN 1
+// #define CLIENT_TYPE_MAIN 3
 
 // ping消息
 #define CLIENT_SUB_PING 1

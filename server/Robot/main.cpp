@@ -5,7 +5,7 @@
 */
 
 #define VLD_FORCE_ENABLE
-//#include "vld.h"
+#include "vld.h"
 #include "RobotSvr.h"
 #include "NetConfig.h"
 #include "ServerLog.h"
