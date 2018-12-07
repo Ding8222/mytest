@@ -150,10 +150,10 @@ void CCenterServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			ElapsedLog("运行超时:%d\n%s日志服务器连接：%s名称检查服务器连接：%s", delay, 
-				CentServerMgr.GetMsgNumInfo(), 
-				LogConnecter.GetMsgNumInfo(),
-				NameCheckConnecter.GetMsgNumInfo());
+			ElapsedLog("运行超时:%d", delay);
+			ElapsedLog("\n%s", CentServerMgr.GetMsgNumInfo());
+			ElapsedLog("日志服务器连接：%s", LogConnecter.GetMsgNumInfo());
+			ElapsedLog("名称检查服务器连接：%s", NameCheckConnecter.GetMsgNumInfo());
 		}
 	}
 	delaytime(300);

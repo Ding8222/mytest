@@ -94,7 +94,8 @@ void CCheckNameServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			ElapsedLog("运行超时:%d\n%s", delay, NameCheckServerMgr.GetMsgNumInfo());
+			ElapsedLog("运行超时:%d", delay);
+			ElapsedLog("\n%s", delay, NameCheckServerMgr.GetMsgNumInfo());
 		}
 	}
 	delaytime(300);

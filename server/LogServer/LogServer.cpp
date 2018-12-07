@@ -91,7 +91,8 @@ void CLogServer::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			ElapsedLog("运行超时:%d\n%s", delay, LogServerMgr.GetMsgNumInfo());
+			ElapsedLog("运行超时:%d", delay);
+			ElapsedLog("\n%s", delay, LogServerMgr.GetMsgNumInfo());
 		}
 	}
 	delaytime(300);

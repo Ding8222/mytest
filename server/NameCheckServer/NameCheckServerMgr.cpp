@@ -118,6 +118,7 @@ const char *CNameCheckServerMgr::GetMsgNumInfo()
 	}
 
 	tempbuf[sizeof(tempbuf) - len] = 0;
+	tempbuf[sizeof(tempbuf) - len - 1] = 0;
 	tempbuf[sizeof(tempbuf) - 1] = 0;
 	return tempbuf;
 }
