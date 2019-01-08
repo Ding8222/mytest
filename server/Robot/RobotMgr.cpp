@@ -5,8 +5,6 @@
 #include "ClientMsg.pb.h"
 #include "LoginType.h"
 #include "ClientType.h"
-#include "des.h"
-#include "osrng.h"
 #include <string>
 #include "serverlog.h"
 #include "msgbase.h"
@@ -99,13 +97,21 @@ void CRobotMgr::Run()
 					// 登录服
 
 					// 生成client key
-					CryptoPP::AutoSeededRandomPool prng;
-					CryptoPP::SecByteBlock key(0x00, CryptoPP::DES::DEFAULT_KEYLENGTH);
-					prng.GenerateBlock(key, key.size());
-					(*tempitr)->SetClientKey(key);
+					char tmp[8];
+					int i;
+					char x = 0;
+					for (i = 0; i < 8; i++) {
+						tmp[i] = CRandomPool::GetOne() & 0xff;
+						x ^= tmp[i];
+					}
+					if (x == 0) {
+						tmp[0] |= 1;
+					}
+
+					(*tempitr)->SetClientKey(tmp);
 
 					netData::HandShake Msg;
-					Msg.set_sclientkey(reinterpret_cast<const char*>(key.data()), key.size());
+					Msg.set_sclientkey(tmp);
 					(*tempitr)->SendMsg(Msg, LOGIN_TYPE_MAIN, LOGIN_SUB_HANDSHAKE);
 					(*tempitr)->SetHandShake(false);
 				}

@@ -6,7 +6,6 @@
 #pragma once
 #include <string>
 #include "connector.h"
-#include "osrng.h"
 class CRobot :public connector
 {
 public:
@@ -31,8 +30,8 @@ private:
 	void ProcessMsg(connector *);
 
 public:
-	void SetClientKey(CryptoPP::SecByteBlock key) { sClientKey = std::move(key); }
-	void SetServerKey(CryptoPP::SecByteBlock key) { sServerKey = std::move(key); }
+	void SetClientKey(std::string key) { sClientKey = std::move(key); }
+	void SetServerKey(std::string key) { sServerKey = std::move(key); }
 	void SetSecret(std::string key) { sSecret = std::move(key); }
 	std::string GetSecret() { return sSecret; }
 	void SetAccount(std::string name) { sAccount = std::move(name); }
@@ -45,8 +44,8 @@ private:
 	bool m_isHandShake;
 	bool m_isAuth;
 
-	CryptoPP::SecByteBlock sClientKey;
-	CryptoPP::SecByteBlock sServerKey;
+	std::string sClientKey;
+	std::string sServerKey;
 	std::string sSecret;
 	std::string sAccount;
 	int32 m_TempID;

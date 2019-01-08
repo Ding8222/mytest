@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include <unordered_map>
-#include "osrng.h"
 
 struct ClientAuthInfo
 {
@@ -72,5 +71,4 @@ private:
 	std::unordered_map<int32, std::string > m_Secret;
 
 	std::vector<ClientAuthInfo *> m_ClientAuthInfoSet;
-	static CryptoPP::AutoSeededRandomPool prng;
 };

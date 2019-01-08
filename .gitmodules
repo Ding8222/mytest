@@ -4,6 +4,3 @@
 [submodule "server/3rd/protobuf"]
 	path = server/3rd/protobuf
 	url = https://github.com/Ding8222/protobuf.git
-[submodule "server/3rd/cryptopp"]
-	path = server/3rd/cryptopp
-	url = https://github.com/Ding8222/cryptopp.git

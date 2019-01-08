@@ -7,9 +7,8 @@
 #include "ClientAuth.h"
 #include "objectpool.h"
 #include "serverlog.h"
+#include "RandomPool.h"
 
-#include "osrng.h"
-#include "des.h"
 #include <string>
 
 #include "ServerType.h"
@@ -19,8 +18,6 @@
 #include "ClientMsg.pb.h"
 #include "Login.pb.h"
 #include "DBServer.pb.h"
-
-CryptoPP::AutoSeededRandomPool CClientAuth::prng;
 
 static objectpool<ClientAuthInfo> &ClientAuthInfoPool()
 {
@@ -89,12 +86,19 @@ void CClientAuth::HandShake(CClient *cl, Msg *pMsg)
 	netData::HandShake msg;
 	_CHECK_PARSE_(pMsg, msg);
 	
-	CryptoPP::SecByteBlock Challenge(0x00, CryptoPP::DES::DEFAULT_KEYLENGTH);
-
-	prng.GenerateBlock(Challenge, Challenge.size());
+	char tmp[8];
+	int i;
+	char x = 0;
+	for (i = 0; i < 8; i++) {
+		tmp[i] = CRandomPool::GetOne() & 0xff;
+		x ^= tmp[i];
+	}
+	if (x == 0) {
+		tmp[0] |= 1;
+	}
 
 	netData::HandShakeRet sendMsg;
-	sendMsg.set_schallenge(reinterpret_cast<const char*>(Challenge.data()), Challenge.size());
+	sendMsg.set_schallenge(tmp);
 	
 	if (AddSecret(cl->GetClientID(), sendMsg.schallenge()))
 		sendMsg.set_ncode(netData::HandShakeRet::EC_SUCC);
