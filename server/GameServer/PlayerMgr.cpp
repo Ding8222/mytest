@@ -153,8 +153,8 @@ void CPlayerMgr::DelAllPlayer()
 		(*itr)->OffLine();
 		ReleasePlayer(*itr);
 	}
+	GameCenterConnect.EndRun();
 	m_PlayerList.clear();
-
 	for (std::list<CPlayer*>::iterator itr = m_WaitRemove.begin(); itr != m_WaitRemove.end(); ++itr)
 	{
 		ReleasePlayer(*itr);

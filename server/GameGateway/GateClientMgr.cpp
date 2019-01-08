@@ -72,37 +72,19 @@ void CGateClientMgr::ProcessClientMsg(CClient *cl)
 
 		if (cl->IsAlreadyLogin())
 		{
-			switch (pMsg->GetMainType())
+			if (pMsg->GetMainType() == CLIENT_TYPE_MAIN &&
+				pMsg->GetSubType() == CLIENT_SUB_PING)
 			{
-			case CLIENT_TYPE_MAIN:
-			{
-				switch (pMsg->GetSubType())
-				{
-				case CLIENT_SUB_PING:
-				{
-					cl->SendMsg(pMsg);
-					cl->SetPingTime(g_currenttime);
-					break;
-				}
-				default:
-				{
-					// 登录成功的,转发至GameServer
-					if (GameConnect.IsAlreadyRegister(cl->GetLogicServer()))
-					{
-						GameConnect.SendMsgToServer(cl->GetLogicServer(), *pMsg, cl->GetClientID());
-					}
-				}
-				}
-				break;
+				cl->SendMsg(pMsg);
+				cl->SetPingTime(g_currenttime);
 			}
-			default:
+			else
 			{
 				// 登录成功的,转发至GameServer
 				if (GameConnect.IsAlreadyRegister(cl->GetLogicServer()))
 				{
 					GameConnect.SendMsgToServer(cl->GetLogicServer(), *pMsg, cl->GetClientID());
 				}
-			}
 			}
 		}
 		else

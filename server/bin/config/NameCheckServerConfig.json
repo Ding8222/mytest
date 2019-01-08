@@ -20,7 +20,7 @@
 	"DBList" : [{
 			"DBName" : "test",
 			"DBUser" : "root",
-			"DBPass" : "root",
+			"DBPass" : "123456qi",
 			"DBIP" : "127.0.0.1",
 			"SQL" : "select name from playerdate ",
 			"FieldName" : "name"

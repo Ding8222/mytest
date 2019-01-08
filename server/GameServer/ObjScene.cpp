@@ -114,9 +114,9 @@ void CObjScene::AddToAoiList(CBaseObj *p)
 		GetObj()->UpdataObjInfo(p);
 
 #ifdef _DEBUG
-	float _Pos[EOP_MAX] = { 0 };
-	p->GetNowPos(_Pos[EOP_X], _Pos[EOP_Y], _Pos[EOP_Z]);
-	RunStateLog("[%d]进入[%d]视野,DIST2:%0.01f", p->GetTempID(), GetTempID(), DIST2(_Pos, m_NowPos));
+	//float _Pos[EOP_MAX] = { 0 };
+	//p->GetNowPos(_Pos[EOP_X], _Pos[EOP_Y], _Pos[EOP_Z]);
+	//RunStateLog("[%d]进入[%d]视野,DIST2:%0.01f", p->GetTempID(), GetTempID(), DIST2(_Pos, m_NowPos));
 #endif
 }
 
@@ -143,8 +143,8 @@ void CObjScene::AddToAoiListOut(CBaseObj *p)
 	m_AoiListOut[p->GetTempID()] = p;
 
 #ifdef _DEBUG
-	float _Pos[EOP_MAX] = { 0 };
-	p->GetNowPos(_Pos[EOP_X], _Pos[EOP_Y], _Pos[EOP_Z]);
+	//float _Pos[EOP_MAX] = { 0 };
+	//p->GetNowPos(_Pos[EOP_X], _Pos[EOP_Y], _Pos[EOP_Z]);
 	//RunStateLog("[%d]离开[%d]视野%d", p->GetTempID(), GetTempID(), (int)DIST2(_Pos, m_NowPos));
 #endif
 }
