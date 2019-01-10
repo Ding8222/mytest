@@ -271,7 +271,9 @@ void CServerMgr::SendMsg(serverinfo *info, google::protobuf::Message &pMsg, int 
 	assert(info != nullptr);
 
 	MessagePack pk;
-	pk.Pack(&pMsg, maintype, subtype);
+	pk.Pack(&pMsg, maintype, subtype, adddata, addsize);
+	adddata = nullptr;
+	addsize = 0;
 	info->SendMsg(&pk, adddata, addsize);
 }
 

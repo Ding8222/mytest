@@ -10,9 +10,9 @@
 	},
 	
 	"LoginServer_IP" : "127.0.0.1",
-	"LoginServer_Port" : 5001,
+	"LoginServer_Port" : 8005,
 	"LoginServer_ID" : 5000,
-	"Robot_Max" : 200,
+	"Robot_Max" : 1,
 	
 	"Over_Time" : 200000,
 	"Ping_Time" : 50000

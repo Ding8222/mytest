@@ -12,8 +12,8 @@
 	},
 	
 	"Server_ID" : 5000,
-	"Listen_Port" : 5001,
-	"Server_IP" : "127.0.0.1",
+	"Listen_Port" : 8005,
+	"Server_IP" : "127.1.1.1",
 	
 	"ClientNum_Max" : 2000,
 	"DataLimt_Recv" : 32768,

@@ -7,6 +7,7 @@
 
 #include "ServerMgr.h"
 #include "sqlinterface.h"
+#include <map>
 
 #define NameCheckServerMgr CNameCheckServerMgr::Instance()
 class CNameCheckServerMgr :public CServerMgr

@@ -6,6 +6,7 @@
 #pragma once
 #include "ServerMgr.h"
 #include "sqlinterface.h"
+#include <map>
 
 class datahand;
 #define LogServerMgr CLogServerMgr::Instance()

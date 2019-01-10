@@ -13,6 +13,14 @@ struct MsgHeader {
 
 struct Msg {
 	MsgHeader header;
+	int16 unusedata;
+	union {
+		struct {
+			int8 unusedata21;
+			int8 unusedata22;
+		};
+		int16 unusedata2;
+	};
 	union {
 		struct {
 			int8 maintype;
@@ -20,19 +28,24 @@ struct Msg {
 		};
 		int16 msgtype;
 	};
+	int32 pblen;
 
 	Msg() {
-		SetLength(sizeof(header) + sizeof(msgtype));
+		SetLength(sizeof(header) + sizeof(unusedata) + sizeof(unusedata2) + sizeof(msgtype) + sizeof(pblen));
+		unusedata21 = (int8)254;
+		unusedata22 = 0;
 	}
 
-	void SetLength(int32 length) { header.length = length; }
-	int32 GetLength() { return header.length; }
-	void SetType(int16 type) { msgtype = type; }
-	int16 GetType() { return msgtype; }
-	int8 GetMainType() { return maintype; }
-	int8 GetSubType() { return subtype; }
-	void SetMainType(int8 type) { maintype = type; }
-	void SetSubType(int8 type) { subtype = type; }
+	inline void SetLength(int32 length) { header.length = length; }
+	inline int32 GetLength() { return header.length; }
+	inline void SetType(int16 type) { msgtype = type; }
+	inline int16 GetType() { return msgtype; }
+	inline int8 GetMainType() { return maintype; }
+	inline int8 GetSubType() { return subtype; }
+	inline int32 GetPBLength() { return pblen; }
+	inline void SetPBLength(int32 length) {	pblen = length; }
+	inline void SetMainType(int8 type) { maintype = type; }
+	inline void SetSubType(int8 type) { subtype = type; }
 };
 
 struct MessagePack:public Msg {
@@ -62,13 +75,18 @@ struct MessagePack:public Msg {
 		m_enable_assert = true;
 	}
 
-	bool Pack(google::protobuf::Message *msg, int8 _maintype, int8 _subtype)
+	bool Pack(google::protobuf::Message *msg, int8 _maintype, int8 _subtype, void *adddata = nullptr, size_t addsize = 0)
 	{
-		if (msg && CanPush(msg->ByteSize()))
+		int32 msgSize = msg->ByteSize();
+		if (msg && CanPush(msgSize + addsize))
 		{
-			msg->SerializeToArray(m_buf, msg->ByteSize());
-			SetLength(msg->ByteSize() + sizeof(Msg));
-			SetIndex(msg->ByteSize());
+			msg->SerializeToArray(m_buf, msgSize);
+			SetIndex(msgSize);
+			if (addsize > 0)
+				PushBlock(adddata, addsize);
+			SetPBLength(msgSize);
+			SetLength(msgSize + addsize + 8);
+			SetIndex(msgSize + addsize);
 			SetMainType(_maintype);
 			SetSubType(_subtype);
 			return true;
@@ -81,7 +99,7 @@ struct MessagePack:public Msg {
 	bool UnPack(google::protobuf::Message &msg)
 	{
 		Begin();
-		if (msg.ParseFromArray(m_buf, m_maxindex))
+		if (msg.ParseFromArray(m_buf, pblen))
 			return true;
 
 		__on_error();

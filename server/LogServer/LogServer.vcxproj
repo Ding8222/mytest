@@ -101,7 +101,7 @@
     <OutDir>..\bin\</OutDir>
     <IncludePath>..\3rd\json\;..\3rd\mysql\;..\3rd\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;$(IncludePath)</IncludePath>
     <TargetName>G_$(ProjectName)</TargetName>
-    <LibraryPath>..\3rd\protobuf\builds\Debug;..\3rd\lxnet\lib\lxnet;..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\3rd\protobuf\vsprojects\Debug;..\3rd\lxnet\lib\lxnet;..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\bin\</OutDir>
@@ -130,7 +130,7 @@
       <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>lxnet-debug.lib;Common.lib;libprotobufd.lib;libmysql.lib;fmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lxnet-debug.lib;Common.lib;libprotobuf.lib;libmysql.lib;fmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

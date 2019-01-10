@@ -30,8 +30,8 @@ void CLoginClientMgr::Destroy()
 
 int32 CLoginClientMgr::OnNewClient()
 {
-	if (!LoginCenterConnect.IsAlreadyRegister(Config.GetCenterServerID()))
-		return 0;
+	//if (!LoginCenterConnect.IsAlreadyRegister(Config.GetCenterServerID()))
+	//	return 0;
 
 	int32 nClientID = CClientMgr::OnNewClient();
 	if (nClientID == 0)
@@ -71,6 +71,40 @@ void CLoginClientMgr::ProcessClientMsg(CClient *cl)
 
 		switch (pMsg->GetMainType())
 		{
+		case 1:
+		{
+			switch (pMsg->GetSubType())
+			{
+			case 1:
+			{
+				svrData::linkServer getMsg;
+				_CHECK_PARSE_(pMsg, getMsg);
+
+				svrData::roleinfos sendMsg;
+				sendMsg.set_iuseronlyid(0);
+				sendMsg.set_icreatetime(1);
+				sendMsg.set_ilasttime(1);
+				sendMsg.set_sname("aaa");
+
+				LoginClientMgr.SendMsg(cl, sendMsg, 1, 2);
+				break;
+			}
+			case 3:
+			{
+				svrData::roleCreate getMsg;
+				_CHECK_PARSE_(pMsg, getMsg);
+
+				svrData::EnterReport sendMsg;
+				sendMsg.set_ierrorcode(0);
+				sendMsg.set_sname("aaa");
+				sendMsg.set_iip("127.0.0.1");
+				sendMsg.set_iport(8888);
+
+				LoginClientMgr.SendMsg(cl, sendMsg, 1, 5);
+			}
+			}
+			break;
+		}
 		case CLIENT_TYPE_MAIN:
 		{
 			switch (pMsg->GetSubType())

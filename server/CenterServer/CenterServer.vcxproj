@@ -101,7 +101,7 @@
     <IncludePath>..\3rd\json\;..\3rd\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;..\Common\;$(IncludePath)</IncludePath>
     <OutDir>..\bin\</OutDir>
     <TargetName>G_$(ProjectName)</TargetName>
-    <LibraryPath>..\3rd\protobuf\builds\Debug;..\3rd\lxnet\lib\lxnet;..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\3rd\protobuf\vsprojects\Debug;..\3rd\lxnet\lib\lxnet;..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>..\3rd\json\;..\3rd\;..\3rd\protobuf\src\;..\Base\PB\;..\Base\;..\Common\;$(IncludePath)</IncludePath>
@@ -129,7 +129,7 @@
       </UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>lxnet-debug.lib;Common.lib;libprotobufd.lib;cpr-d.lib;libcurl_imp.lib;fmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>lxnet-debug.lib;Common.lib;libprotobuf.lib;cpr-d.lib;libcurl_imp.lib;fmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

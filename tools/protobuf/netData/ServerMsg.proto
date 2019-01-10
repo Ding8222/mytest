@@ -1,5 +1,44 @@
-syntax = "proto3";
+syntax = "proto2";
 package svrData;
+
+/// 1-1 请求链接区服
+message linkServer
+{
+	optional string sOpenid = 1; // openid
+  	optional string sPswd = 2; // pswd - 计算方法:md5(appid + opendi)
+  	optional int32 iZoneID = 3; //区标
+}
+
+/// 1-2 登录区分角色反馈 * 若无角色则iUserOnlyId=0
+message roleinfos
+{	
+	// 角色名
+	optional 	string 	sName = 1;
+	/// 角色唯一id
+	optional	int64 	iUserOnlyId = 2;
+	/// 上次登陆时间
+	optional	int64	iLastTime = 3;
+	/// 创建时间
+	optional	int64	iCreateTime = 4;
+}
+
+/// 1-3 请求创建角色
+message roleCreate
+{
+	// 角色名
+	optional 	string 	sName = 1;
+	optional 	string 	Group = 2;
+	optional 	int32 	heroID = 3;
+}
+
+/// 1-5 登入角色反馈,切换线路
+message EnterReport
+{
+	optional	int32	iErrorCode = 1;
+	optional	string	sName = 2;
+	optional	string	iIp = 3;
+	optional	int32   iPort = 4;  
+}
 
 // 0-1 ping
 message Ping
@@ -10,10 +49,10 @@ message Ping
 // 0-2 请求服务器注册
 message ServerRegister
 {
-	int32 nServerID = 1;		// 此服的ID
-	int32 nServerType = 2;		// 此服的类型
-	int32 nConnectID = 3;		// 要连接的服的id
-	string Name = 4;			// 此服名称
+	optional int32 nServerID = 1;		// 此服的ID
+	optional int32 nServerType = 2;		// 此服的类型
+	optional int32 nConnectID = 3;		// 要连接的服的id
+	optional string Name = 4;			// 此服名称
 }
 
 // 0-3 服务器注册返回
@@ -26,17 +65,17 @@ message ServerRegisterRet
 		EC_SERVER_ID_EXIST = 2;
 		EC_TO_CONNECT_ID_NOT_EQUAL = 3;
 	};
-	int32 nRetCode = 1;		// 返回的信息
+	optional int32 nRetCode = 1;		// 返回的信息
 }
 
 // 0-4 发送服务器负载
 message ServerLoadInfo
 {
-	int32 nLineID = 1;		// 线路ID
-	int32 nMaxClient = 2;   // 最大Client
-	int32 nNowClient = 3;   // 当前Client
-	int32 nPort = 4;        // 端口
-	string sIP = 5;			// IP
+	optional int32 nLineID = 1;		// 线路ID
+	optional int32 nMaxClient = 2;   // 最大Client
+	optional int32 nNowClient = 3;   // 当前Client
+	optional int32 nPort = 4;        // 端口
+	optional string sIP = 5;			// IP
 	repeated int32 mapid = 6;// 加载了哪些地图
 	repeated AddPlayerToCenter info = 7;
 }
@@ -44,62 +83,62 @@ message ServerLoadInfo
 // 0-5 服务器负载更新
 message UpdateServerLoad
 {
-	int32 nClientCountNow = 1;	// 服务器当前client数量
-	int32 nClientCountMax = 2;	// 服务器最大client数量
+	optional int32 nClientCountNow = 1;	// 服务器当前client数量
+	optional int32 nClientCountMax = 2;	// 服务器最大client数量
 }
 
 // 0-6 新的client连接
 message AddPlayerToCenter
 {
-	int64 nGuid = 1;        // 玩家唯一id
-	int64 nGameID = 2;		// gameid
-	int32 nClientID = 3;    // clientid
-	int32 nGateID = 4;      // 所属网关
-	string Account = 5;		// 账号信息
+	optional int64 nGuid = 1;        // 玩家唯一id
+	optional int64 nGameID = 2;		// gameid
+	optional int32 nClientID = 3;    // clientid
+	optional int32 nGateID = 4;      // 所属网关
+	optional string Account = 5;		// 账号信息
 }
 
 // 0-8 client断开
 message DelClient
 {
-	string Account = 1;
-	bool OffLine = 2;
+	optional string Account = 1;
+	optional bool OffLine = 2;
 }
 
 // 0-9 ClientToken
 message ClientAccount
 {
-	int32 nGameID = 1;			//要去的逻辑服ID
-	string Account = 2;			// 账号信息
-	bytes Secret = 3;			// 秘钥
-	LoadPlayerData Data = 4;	// 玩家数据
+	optional int32 nGameID = 1;			//要去的逻辑服ID
+	optional string Account = 2;			// 账号信息
+	optional bytes Secret = 3;			// 秘钥
+	optional LoadPlayerData Data = 4;	// 玩家数据
 }
 
 // 0-10 通知game加载玩家数据
 message LoadPlayerData
 {
-	string Account = 1;
-	string Name = 2;
-	int64 nGuid = 3;
-	int32 nSex = 4;
-	int32 nJob = 5;
-	int32 nLevel = 6;
-	int64 nCreateTime = 7;
-	int64 nLoginTime = 8;
-	int32 nMapID = 9;
-	float nX = 10;
-	float nY = 11;
-	float nZ = 12;
-	bool bChangeLine = 13;
-	bytes Data = 14;
+	optional string Account = 1;
+	optional string Name = 2;
+	optional int64 nGuid = 3;
+	optional int32 nSex = 4;
+	optional int32 nJob = 5;
+	optional int32 nLevel = 6;
+	optional int64 nCreateTime = 7;
+	optional int64 nLoginTime = 8;
+	optional int32 nMapID = 9;
+	optional float nX = 10;
+	optional float nY = 11;
+	optional float nZ = 12;
+	optional bool bChangeLine = 13;
+	optional bytes Data = 14;
 }
 
 // 0-11 切换线路
 message ChangeLine
 {
-	int32 nMapID = 1;			// 目标地图ID
-	int32 nLineID = 2;			// 目标线路ID
-	int32 nGameID = 3;			// 返回的逻辑ID
-	LoadPlayerData Data = 4;	// 玩家数据
+	optional int32 nMapID = 1;			// 目标地图ID
+	optional int32 nLineID = 2;			// 目标线路ID
+	optional int32 nGameID = 3;			// 返回的逻辑ID
+	optional LoadPlayerData Data = 4;	// 玩家数据
 }
 
 // 0-12 切换线路返回
@@ -112,9 +151,9 @@ message ChangeLineRet
 		EC_FAIL = 2;
 		EC_SERVER = 3;	//分配server失败
 	};
-	int32 nCode = 1;		// 返回的信息
-	int32 nMapID = 2;		// 要去的逻辑服ID
-	int32 nLineID = 3;		// 要去的线路ID
+	optional int32 nCode = 1;		// 返回的信息
+	optional int32 nMapID = 2;		// 要去的逻辑服ID
+	optional int32 nLineID = 3;		// 要去的线路ID
 }
 
 // 0-13 踢下玩家

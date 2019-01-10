@@ -1,10 +1,10 @@
-syntax = "proto3";
+syntax = "proto2";
 package netData;
 
 // 2-1 握手
 message HandShake
 {
-	bytes sClientKey = 1;		//base64encode(randomkey)
+	optional bytes sClientKey = 1;		//base64encode(randomkey)
 }
 
 // 2-2 握手返回
@@ -16,9 +16,9 @@ message HandShakeRet
 		EC_SUCC = 1;
 		EC_FAIL = 2;
 	};
-	int32 nCode = 1;	//握手结果
-	bytes sChallenge = 2;		//base64encode(randomkey)
-	bytes sServerKey = 3;		//base64encode(dhexchange(randomkey))
+	optional int32 nCode = 1;	//握手结果
+	optional bytes sChallenge = 2;		//base64encode(randomkey)
+	optional bytes sServerKey = 3;		//base64encode(dhexchange(randomkey))
 }
 
 // 收到1-2之后
@@ -29,7 +29,7 @@ message HandShakeRet
 // 2-3 挑战握手
 message Challenge
 {
-	string sHmac = 1;		//base64encode(hmac64(nChallenge,secret))
+	optional string sHmac = 1;		//base64encode(hmac64(nChallenge,secret))
 }
 
 // 2-4 挑战握手返回
@@ -41,15 +41,15 @@ message ChallengeRet
 		EC_SUCC = 1;
 		EC_FAIL = 2;
 	};
-	int32 nCode = 1;	//握手结果
+	optional int32 nCode = 1;	//握手结果
 }
 
 // 2-5 认证(账号密码)
 message Auth
 {
 	//token:base64encode(账号)@base64encode(要登陆的服务器ID)@base64encode(密码)
-	string Account = 1;	//base64encode(desencode(secret,token))
-	bytes Secret = 2; 	//client不用填写
+	optional string Account = 1;	//base64encode(desencode(secret,token))
+	optional bytes Secret = 2; 	//client不用填写
 }
 
 // 2-6 认证返回
@@ -71,23 +71,23 @@ message AuthRet
 		EC_CREATE = 11;		// 创建账号失败
 		EC_DBSTAUTS = 12;	// 数据库没有启动
 	};
-	int32 nCode = 1;
-	string Account = 2;	//账号
+	optional int32 nCode = 1;
+	optional string Account = 2;	//账号
 }
 
 message PlayerLite
 {
-	int64 nGuid = 1;
-	string sName = 2;
-	int32 nJob = 3;
-	int32 nSex = 4;
+	optional int64 nGuid = 1;
+	optional string sName = 2;
+	optional int32 nJob = 3;
+	optional int32 nSex = 4;
 }
 
 // 2-7 请求角色列表
 message PlayerList
 {
 	// 空消息
-	string Account = 1;	//请求不用填写
+	optional string Account = 1;	//请求不用填写
 }
 
 // 2-8 返回角色列表
@@ -106,11 +106,11 @@ message CreatePlayer
 		EC_FAIL = 2;
 		EC_REPEATED = 4;//名称重复
 	};
-	string sName = 1;
-	int32 nJob = 2;
-	int32 nSex = 3;
-	string Account = 4;//请求不用填写
-	int32 nNameCheckRet = 5;	//名称检查服务器返回的结果，请求不用填写
+	optional string sName = 1;
+	optional int32 nJob = 2;
+	optional int32 nSex = 3;
+	optional string Account = 4;//请求不用填写
+	optional int32 nNameCheckRet = 5;	//名称检查服务器返回的结果，请求不用填写
 }
 
 // 2-10 创建角色返回
@@ -125,14 +125,14 @@ message CreatePlayerRet
 		EC_REPEATED = 4;//名称重复
 		EC_NAMESVR = 5;//名称检查服务器未连接
 	};
-	int32 nCode = 1;
-	PlayerLite Info = 2;
+	optional int32 nCode = 1;
+	optional PlayerLite Info = 2;
 }
 
 // 2-11 请求选择角色
 message SelectPlayer
 {
-	int64 nGuid = 1;
+	optional int64 nGuid = 1;
 }
 
 // 2-12 选择角色返回
@@ -148,12 +148,12 @@ message SelectPlayerRet
 		EC_NONE = 5;	// 找有找到角色
 		EC_LOGINTIME = 6;	// 更新登陆时间失败
 	};
-	int32 nCode = 1;
-	int32 nMapID = 2;	// 要加载的地图ID
-	int32 nServerID = 3;// 服务器ID
-	int32 nLineID = 4;	// 线路ID
-	int32 nPort = 5;	// 服务器端口
-	string sIP = 6;		// 需要去连接的服务器ip
+	optional int32 nCode = 1;
+	optional int32 nMapID = 2;	// 要加载的地图ID
+	optional int32 nServerID = 3;// 服务器ID
+	optional int32 nLineID = 4;	// 线路ID
+	optional int32 nPort = 5;	// 服务器端口
+	optional string sIP = 6;		// 需要去连接的服务器ip
 }
 
 // 2-13 登陆
@@ -161,8 +161,8 @@ message Login
 {
 	// handshake = base64encode(token.user)@base64encode(token.server)#base64encode(subid):index)
 	// hmac = hmac64(hashkey(handshake), secret)
-	string Account = 1;	// handshake:base64encode(hmac)
-	bytes Secret = 2;
+	optional string Account = 1;	// handshake:base64encode(hmac)
+	optional bytes Secret = 2;
 }
 
 // 2-14 登录返回
@@ -179,6 +179,6 @@ message LoginRet
 		EC_ADDPLAYER = 6;//逻辑服添加玩家失败
 		EC_LOADDATA = 7;//逻辑服加载玩家数据失败
 	};
-	int32 nCode = 1;
-	int32 nTempID = 2;
+	optional int32 nCode = 1;
+	optional int32 nTempID = 2;
 }

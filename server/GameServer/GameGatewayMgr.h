@@ -5,6 +5,7 @@
 */
 #pragma once
 #include "ServerMgr.h"
+#include <map>
 
 #define GameGatewayMgr CGameGatewayMgr::Instance()
 

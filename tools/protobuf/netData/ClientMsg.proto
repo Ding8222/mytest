@@ -1,4 +1,4 @@
-syntax = "proto3";
+syntax = "proto2";
 package netData;
 
 // 3-1 ping
@@ -16,34 +16,34 @@ message LoadPlayerDataFinish
 		EC_SUCC = 1;
 		EC_FAIL = 2;
 	};
-	int32 nCode = 1;	// 返回的信息
-	uint32 nTempID = 2;
+	optional int32 nCode = 1;	// 返回的信息
+	optional uint32 nTempID = 2;
 }
 
 // 3-3 请求移动
 message PlayerMove
 {
-	float x = 1;
-	float y = 2;
-	float z = 3;
+	optional float x = 1;
+	optional float y = 2;
+	optional float z = 3;
 }
 
 // 3-4 移动返回
 message PlayerMoveRet
 {
-	float x = 1;
-	float y = 2;
-	float z = 3;
-	uint32 nTempID = 4;//对象的临时ID
-	int32 nCode = 5;//返回的错误码
+	optional float x = 1;
+	optional float y = 2;
+	optional float z = 3;
+	optional uint32 nTempID = 4;//对象的临时ID
+	optional int32 nCode = 5;//返回的错误码
 }
 
 // 3-5 请求切换地图
 message ChangeMap
 {
-	int32 nMapID = 1;
-	string sEtoken = 2;	// 账号信息,前端不用填写
-	bytes sSecret = 3;	// 秘钥,前端不用填写
+	optional int32 nMapID = 1;
+	optional string sEtoken = 2;	// 账号信息,前端不用填写
+	optional bytes sSecret = 3;	// 秘钥,前端不用填写
 }
 
 // 3-6 切换地图返回，如果涉及到换线，那么不会返回该消息，返回的是2-8
@@ -59,23 +59,23 @@ message ChangeMapRet
 		EC_LEAVEMAP = 6;//离开地图失败
 		EC_PACKDATA = 7;//打包数据失败
 	};
-	int32 nCode = 1;		// 返回的信息
-	int32 nMapID = 2;		// 要加载的地图ID
-	int32 nTempID = 3;		// 新的tempid
+	optional int32 nCode = 1;		// 返回的信息
+	optional int32 nMapID = 2;		// 要加载的地图ID
+	optional int32 nTempID = 3;		// 新的tempid
 }
 
 // 3-7 更新对象信息（有则更新，无则添加）
 message UpdataObjInfo
 {
-	float x = 1;
-	float y = 2;
-	float z = 3;
-	uint32 nTempID = 4;//对象的临时ID
-	string Name = 5;//名称
+	optional float x = 1;
+	optional float y = 2;
+	optional float z = 3;
+	optional uint32 nTempID = 4;//对象的临时ID
+	optional string Name = 5;//名称
 }
 
 // 3-8 删除视野中的对象
 message DelObjFromView
 {
-	uint32 nTempID = 1;//对象的临时ID
+	optional uint32 nTempID = 1;//对象的临时ID
 }
