@@ -235,6 +235,8 @@
     <ClCompile Include="Instance.cpp" />
     <ClCompile Include="InstanceMgr.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="GameLevel.cpp" />
+    <ClCompile Include="GameLevelMgr.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="ObjAttribute.cpp" />
@@ -242,6 +244,8 @@
     <ClCompile Include="ObjScene.cpp" />
     <ClCompile Include="ObjStatus.cpp" />
     <ClCompile Include="Package.cpp" />
+    <ClCompile Include="PlayerBase.cpp" />
+    <ClCompile Include="PlayerGameLevel.cpp" />
     <ClCompile Include="PlayerMgr.cpp" />
     <ClCompile Include="config.cpp" />
     <ClCompile Include="GameCenterConnect.cpp" />
@@ -317,6 +321,8 @@
     <ClInclude Include="Instance.h" />
     <ClInclude Include="InstanceMgr.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="GameLevel.h" />
+    <ClInclude Include="GameLevelMgr.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="ObjAttribute.h" />
@@ -324,6 +330,8 @@
     <ClInclude Include="ObjScene.h" />
     <ClInclude Include="ObjStatus.h" />
     <ClInclude Include="Package.h" />
+    <ClInclude Include="PlayerBase.h" />
+    <ClInclude Include="PlayerGameLevel.h" />
     <ClInclude Include="PlayerMgr.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="GameCenterConnect.h" />

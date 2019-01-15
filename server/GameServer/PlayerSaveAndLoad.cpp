@@ -3,8 +3,7 @@
 #include "Utilities.h"
 #include "GameGatewayMgr.h"
 #include "serverlog.h"
-#include "scenemgr.h"
-#include "scene.h"
+#include "SceneMgr.h"
 #include "zlib.h"
 #include "Base64.h"
 #include "RandomPool.h"
@@ -47,19 +46,6 @@ bool CPlayer::LoadData(Msg *pMsg)
 	SetMapID(msg.nmapid());
 	SetNowPos(msg.nx(), msg.ny(), msg.nz());
 	m_LastSaveTime = CTimer::GetTime() + CRandomPool::GetOneLess(60);
-
-	CScene *_pScene = SceneMgr.FindScene(msg.nmapid());
-	if (!_pScene)
-	{
-		RunStateLog("没有找到玩家：%s要登陆的地图：%d", GetName(), msg.nmapid());
-		return false;
-	}
-
-	if (!_pScene->AddObj(this))
-	{
-		RunStateLog("添加玩家：%s到地图：%d，失败！", GetName(), msg.nmapid());
-		return false;
-	}
 
 	RunStateLog("加载玩家：%s数据成功！账号：%s", GetName(), msg.account().c_str());
 

@@ -101,17 +101,17 @@
     <IncludePath>..\3rd\json\;..\3rd\;..\3rd\cryptopp\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;$(IncludePath)</IncludePath>
     <OutDir>..\bin\</OutDir>
     <TargetName>G_$(ProjectName)</TargetName>
-    <LibraryPath>..\3rd\cryptopp\Win32\Output\Debug;..\3rd\protobuf\builds\Debug;..\3rd\lxnet\lib\lxnet;..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\3rd\protobuf\builds\Debug;..\3rd\lxnet\lib\lxnet;..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>..\3rd\json\;..\3rd\;..\3rd\cryptopp\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;$(IncludePath)</IncludePath>
-    <LibraryPath>..\3rd\cryptopp\Win32\Output\Release;..\3rd\protobuf\builds\Release;..\3rd\lxnet\lib\lxnet;..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\3rd\protobuf\builds\Release;..\3rd\lxnet\lib\lxnet;..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
     <OutDir>..\bin\</OutDir>
     <TargetName>G_$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
     <IncludePath>..\3rd\json\;..\3rd\;..\3rd\cryptopp\;..\3rd\protobuf\src\;..\Base\;..\Base\PB\;$(IncludePath)</IncludePath>
-    <LibraryPath>..\3rd\cryptopp\Win32\Output\Release;..\3rd\protobuf\builds\RelWithDebInfo;..\3rd\lxnet\lib\lxnet;..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\3rd\protobuf\builds\RelWithDebInfo;..\3rd\lxnet\lib\lxnet;..\lib\libs;..\lib;$(LibraryPath)</LibraryPath>
     <OutDir>..\bin\</OutDir>
     <TargetName>G_$(ProjectName)</TargetName>
   </PropertyGroup>

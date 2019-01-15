@@ -5,6 +5,7 @@
 */
 #pragma once
 #include<unordered_map>
+#include "Scene.h"
 
 #define SceneMgr CSceneMgr::Instance()
 

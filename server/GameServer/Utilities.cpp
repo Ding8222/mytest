@@ -39,4 +39,27 @@ namespace FuncUti
 		pk.Pack(&pMsg, maintype, subtype);
 		player->SendMsgToMe(pk, bRef);
 	}
+
+	std::vector<int32> stringSplitToi(const std::string& str, const std::string& delim)
+	{
+		std::vector<int32> res;
+		if (str.empty()) return  res;
+
+		std::string strs = str + delim;
+		size_t pos;
+		size_t size = strs.size();
+
+		for (size_t i = 0; i < size; ++i)
+		{
+			pos = strs.find(delim, i);
+			if (pos < size)
+			{
+				std::string s = strs.substr(i, pos - i);
+				if (s.size() > 0)
+					res.push_back(std::stoi(s));
+				i = pos + delim.size() - 1;
+			}
+		}
+		return res;
+	}
 }

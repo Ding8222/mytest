@@ -3,6 +3,7 @@
 #include "GameCenterConnect.h"
 #include "PlayerMgr.h"
 #include "SceneMgr.h"
+#include "GameLevelMgr.h"
 #include "InstanceMgr.h"
 #include "MapConfig.h"
 #include "Timer.h"
@@ -120,6 +121,12 @@ bool CGameServer::Init()
 			break;
 		}
 
+		if (!GameLevelMgr.Init())
+		{
+			RunStateError("初始化GameLevelMgr失败!");
+			break;
+		}
+
 		if (!SceneMgr.Init())
 		{
 			RunStateError("初始化Scenemgr失败!");
@@ -149,6 +156,7 @@ bool CGameServer::Init()
 	MapConfig.Destroy();
 	PlayerMgr.Destroy();
 	SceneMgr.Destroy();
+	GameLevelMgr.Destroy();
 	InstanceMgr.Destroy();
 	CSVData::Destroy();
 	LuaScript.Destroy();
@@ -194,6 +202,7 @@ void CGameServer::Run()
 	PlayerMgr.Destroy();
 	InstanceMgr.Destroy();
 	SceneMgr.Destroy();
+	GameLevelMgr.Destroy();
 	MapConfig.Destroy();
 	GameGatewayMgr.Destroy();
 	GameCenterConnect.Destroy();

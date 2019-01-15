@@ -197,9 +197,13 @@ void CGameGatewayMgr::ProcessMsg(serverinfo *info)
 						{
 							if (msg.bchangeline())
 								RunStateLog("账号%s切换到本线路", player->GetAccount().c_str());
-
-							sendMsg.set_ntempid(player->GetTempID());
-							sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
+							if (player->OnLine())
+							{
+								sendMsg.set_ntempid(player->GetTempID());
+								sendMsg.set_ncode(netData::LoginRet::EC_SUCC);
+							}
+							else
+								sendMsg.set_ncode(netData::LoginRet::EC_ONLINE);
 						}
 						else
 							sendMsg.set_ncode(netData::LoginRet::EC_LOADDATA);

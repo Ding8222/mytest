@@ -2,7 +2,6 @@
 #include "SceneMgr.h"
 #include "MapConfig.h"
 #include "MapInfo.h"
-#include "Scene.h"
 #include "idmgr.h"
 #include "serverlog.h"
 #include "objectpool.h"

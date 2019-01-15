@@ -191,9 +191,7 @@ bool CConnectMgr::SendMsg(connector *con, google::protobuf::Message &pMsg, int32
 	assert(con != nullptr);
 
 	MessagePack pk;
-	pk.Pack(&pMsg, maintype, subtype, adddata, addsize);
-	adddata = nullptr;
-	addsize = 0;
+	pk.Pack(&pMsg, maintype, subtype);
 	return con->SendMsg(&pk, adddata, addsize);
 }
 

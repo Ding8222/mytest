@@ -36,6 +36,7 @@ public:
 	bool AddMonster(int32 monsterid, int32 instanceid, float x, float y, float z);
 	// 进入副本
 	bool EnterInstance(CBaseObj * obj, int32 instanceid);
+	bool EnterInstance(CBaseObj * obj, CInstance * instance);
 private:
 	void ProcessAllInstance();
 	void CheckAndRemove();

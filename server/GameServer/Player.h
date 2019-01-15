@@ -7,16 +7,13 @@
 #pragma once
 #include<unordered_map>
 #include "BaseObj.h"
+#include "PlayerBase.h"
 #include "Package.h"
+#include "PlayerGameLevel.h"
 #include "Team.h"
-#include "serverinfo.h"
 #include "google/protobuf/Message.h"
 
-class serverinfo;
-class CClient;
-class scene;
-struct Msg;
-class CPlayer :public CBaseObj, public CTeam
+class CPlayer :public CPlayerBase, public CBaseObj, public CTeam
 {
 public:
 	CPlayer();
@@ -34,37 +31,21 @@ public:
 	// 打包数据
 	bool PackData();
 	// 解析数据
-	bool UnPackData(const char *data,int32 len);
+	bool UnPackData(const char *data, int32 len);
+	// 上线
+	bool OnLine();
 	// 下线
 	void OffLine();
 	
 private:
 	// 背包
 	CPackage m_Package;
+	// 关卡
+	CPlayerGameLevel m_GameLevel;
 public:
-	void SetGateInfo(serverinfo * info) { m_GateInfo = info; }
-	serverinfo *GetGateInfo() { return m_GateInfo; }
-	int32 GetGateID() { if (m_GateInfo) return m_GateInfo->GetServerID(); return 0; }
-	void SetClientID(int32 id) { m_ClientID = id; }
-	int32 GetClientID() { return m_ClientID; }
-	void SetGameID(int64 id) { m_GameID = id; }
-	int64 GetGameID() { return m_GameID; }
-	void SetAccount(const std::string &account) { m_Account = std::move(account); }
-	std::string GetAccount() { return m_Account; }
-	void SetGuid(int64 id) { m_Guid = id; }
-	int64 GetGuid() { return m_Guid; }
-	void SetCreateTime(int64 time) { m_CreateTime = time; }
-	int64 GetCreateTime() { return m_CreateTime; }
-	void SetLoginTime(int64 time) { m_LoginTime = time; }
-	int64 GetLoginTime() { return m_LoginTime; }
 private:
-	serverinfo * m_GateInfo;
-	int32 m_ClientID;
-	int64 m_GameID;
-	std::string m_Account;
-	int64 m_Guid;
-	int64 m_CreateTime;
-	int64 m_LoginTime;
-	int64 m_LastSaveTime;
-	bool m_LoadDataSucc;
+	// 副本实例ID
+	int32 m_Instance;
+	// 副本模板Id
+	int32 m_InstanceBaseId;
 };

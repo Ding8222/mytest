@@ -7,7 +7,7 @@
 #include "GlobalDefine.h"
 
 extern int64 g_currenttime;
-#define INSTANCE_ID_MAX 2000			//副本数量
+#define INSTANCE_ID_MAX 160000			//副本最大数量
 #define INSTANCE_ID_DELAY_TIME 300000	//释放延时时间
 
 static objectpool<CInstance> &InstancePool()
@@ -178,12 +178,12 @@ bool CInstanceMgr::AddMonster(int32 monsterid, int32 instanceid, float x, float 
 bool CInstanceMgr::EnterInstance(CBaseObj * obj, int32 instanceid)
 {
 	CInstance *instance = FindInstance(instanceid);
-	if (instance && !instance->IsNeedRemove())
-	{
-		return instance->AddObj(obj);
-	}
+	return EnterInstance(obj, instance);
+}
 
-	return false;
+bool CInstanceMgr::EnterInstance(CBaseObj * obj, CInstance * instance)
+{
+	return instance != nullptr && !instance->IsNeedRemove() && instance->AddObj(obj);
 }
 
 void CInstanceMgr::ProcessAllInstance()

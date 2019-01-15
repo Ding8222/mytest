@@ -444,4 +444,64 @@ namespace CSVData
 
 			static std::unordered_map<int64, stItem *> m_Data;
 	};
+
+	// GameLevel
+	struct stGameLevel
+	{
+		stGameLevel()
+		{
+			nGameLevelID = 0;
+			vMapList.clear();
+			vShopType.clear();
+			vBox.clear();
+			bThree = false;
+		}
+		int32 nGameLevelID;
+		std::vector<int32> vMapList;
+		std::vector<int32> vShopType;
+		std::vector<int32> vBox;
+		bool bThree;
+	};
+
+	class CGameLevelDB
+	{
+	public:
+		static bool AddData(CSV::Row & _Row);
+		static stGameLevel *FindById(int64 _Key)
+		{
+			std::unordered_map<int64, stGameLevel *>::iterator iter = m_Data.find(_Key);
+			if (iter != m_Data.end())
+				return iter->second;
+
+			return nullptr;
+		}
+
+		static std::unordered_map<int32, int32> *FindInfoById(int32 _Key)
+		{
+			std::unordered_map<int32, std::unordered_map<int32, int32> *>::iterator iter = m_GameLevelInfoData.find(_Key);
+			if (iter != m_GameLevelInfoData.end())
+				return iter->second;
+
+			return nullptr;
+		}
+
+		static void Destroy()
+		{
+			for (auto &i : m_Data)
+			{
+				delete i.second;
+			}
+			m_Data.clear();
+
+			for (auto &i : m_GameLevelInfoData)
+			{
+				i.second->clear();
+				delete i.second;
+			}
+			m_GameLevelInfoData.clear();
+		}
+
+		static std::unordered_map<int64, stGameLevel *> m_Data;
+		static std::unordered_map<int32, std::unordered_map<int32,int32> *> m_GameLevelInfoData;
+	};
 }

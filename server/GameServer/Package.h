@@ -17,8 +17,8 @@ public:
 	bool Init();
 	void Run();
 	void Destroy();
-	bool Save(char *dest, int &retlen);
-	bool Load(const char *dest, int &retlen);
+	bool Save(char *dest, int32 &retlen);
+	bool Load(const char *dest, int32 &retlen);
 
 	// 添加道具
 	bool AddItem(int32 itemid, int32 count);

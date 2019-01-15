@@ -67,6 +67,9 @@
     <Filter Include="玩家操作">
       <UniqueIdentifier>{eb345bdc-9e0a-4a8d-8af3-1336f86ce3a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="关卡">
+      <UniqueIdentifier>{4271860f-5c1f-459c-8cd2-79d4f37b3e6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="config.cpp">
@@ -192,6 +195,18 @@
     <ClCompile Include="..\Base\PB\Team.pb.cc">
       <Filter>common\pb</Filter>
     </ClCompile>
+    <ClCompile Include="GameLevel.cpp">
+      <Filter>关卡</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLevelMgr.cpp">
+      <Filter>关卡</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerGameLevel.cpp">
+      <Filter>关卡</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerBase.cpp">
+      <Filter>基础对象\玩家</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -291,9 +306,6 @@
       <Filter>基础对象\怪物\AI\FSM</Filter>
     </ClInclude>
     <ClInclude Include="AIMonster.h">
-      <Filter>基础对象\怪物\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector3D.h">
       <Filter>基础对象\怪物\AI</Filter>
     </ClInclude>
     <ClInclude Include="AoiDefine.h">
@@ -439,6 +451,21 @@
     </ClInclude>
     <ClInclude Include="..\3rd\json\json.hpp">
       <Filter>common\json</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3D.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLevel.h">
+      <Filter>关卡</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLevelMgr.h">
+      <Filter>关卡</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerGameLevel.h">
+      <Filter>关卡</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerBase.h">
+      <Filter>基础对象\玩家</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

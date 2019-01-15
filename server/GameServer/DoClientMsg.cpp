@@ -1,7 +1,6 @@
 ﻿#include "PlayerOperate.h"
 #include "SceneMgr.h"
 #include "MapConfig.h"
-#include "Scene.h"
 
 #include "ClientType.h"
 #include "ServerType.h"

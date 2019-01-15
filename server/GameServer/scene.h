@@ -18,6 +18,7 @@ class CMapInfo;
 class CBaseObj;
 struct idmgr;
 
+#define SCENE_ID_MAX 200				//地图场景最大数量
 struct alloc_cookie {
 	alloc_cookie()
 	{

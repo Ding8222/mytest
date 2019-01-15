@@ -1,6 +1,18 @@
 ﻿#include "CSVLoad.h"
 #include "serverlog.h"
 #include "fmt/ostream.h"
+#include "Utilities.h"
+
+
+static char s_CharString1[5120];
+static char s_CharString2[5120];
+static char s_CharString3[5120];
+static char s_CharString4[5120];
+static char s_CharString5[5120];
+static char s_CharString6[5120];
+static char s_CharString7[5120];
+static char s_CharString8[5120];
+static char s_CharString9[5120];
 
 namespace CSVData
 {
@@ -41,6 +53,9 @@ namespace CSVData
 		if (!CSV::CsvLoader::LoadCsv<CItemDB>("Item"))
 			return false;
 
+		if (!CSV::CsvLoader::LoadCsv<CGameLevelDB>("GameLevel"))
+			return false;
+
 		RunStateLog("加载所有CSV成功！");
 		return true;
 	}
@@ -59,6 +74,7 @@ namespace CSVData
 		CMapMonsterDB::Destroy();
 		CInstanceMonsterDB::Destroy();
 		CItemDB::Destroy();
+		CGameLevelDB::Destroy();
 	}
 
 	// 例子
@@ -362,6 +378,64 @@ namespace CSVData
 		}
 
 		m_Data.insert(std::make_pair(pdata->nItemID, pdata));
+		return true;
+	}
+
+	// GameLevel
+	std::unordered_map<int64, stGameLevel *> CGameLevelDB::m_Data;
+	std::unordered_map<int32, std::unordered_map<int32, int32> *> CGameLevelDB::m_GameLevelInfoData;
+	bool CGameLevelDB::AddData(CSV::Row & _Row)
+	{
+		stGameLevel *pdata = new stGameLevel;
+		_Row.getValue(pdata->nGameLevelID, "关卡");
+		_Row.getValue(s_CharString1, "地图集合");
+		_Row.getValue(s_CharString2, "商店类型");
+		_Row.getValue(s_CharString3, "通关宝箱");
+		_Row.getValue(pdata->bThree, "是否三选一");
+
+		if (FindById(pdata->nGameLevelID))
+		{
+			RunStateError("添加重复项目 %d ！", pdata->nGameLevelID);
+			delete pdata;
+			return false;
+		}
+
+		if (pdata->nGameLevelID <= 0)
+		{
+			RunStateError("配置错误 %d ！", pdata->nGameLevelID);
+			delete pdata;
+			return false;
+		}
+		pdata->vMapList = FuncUti::stringSplitToi(s_CharString1, "|");
+		pdata->vShopType = FuncUti::stringSplitToi(s_CharString2, "|");
+		pdata->vBox = FuncUti::stringSplitToi(s_CharString3, "|");
+		m_Data.insert(std::make_pair(pdata->nGameLevelID, pdata));
+
+		int32 biglevelid = pdata->nGameLevelID / 10000;
+		int32 midlevelid = pdata->nGameLevelID / 100 % 10;
+		int32 sublevelid = pdata->nGameLevelID % 10;
+
+		std::unordered_map<int32, std::unordered_map<int32, int32> *>::iterator iter = m_GameLevelInfoData.find(biglevelid);
+		if (iter == m_GameLevelInfoData.end())
+		{
+			std::unordered_map<int32, int32> *temp = new std::unordered_map<int32, int32>;
+			(*temp)[midlevelid] = 1;
+			m_GameLevelInfoData.insert(std::make_pair(biglevelid, temp));
+
+		}
+		else
+		{
+			std::unordered_map<int32, int32> *temp = iter->second;
+			std::unordered_map<int32, int32>::iterator iter2 = temp->find(midlevelid);
+			if (iter2 == temp->end())
+			{
+				temp->insert(std::make_pair(midlevelid, 1));
+			}
+			else
+			{
+				iter2->second++;
+			}
+		}
 		return true;
 	}
 }

@@ -84,7 +84,7 @@ public:
 	const char *GetAoiMode() { return m_AoiMode; }
 private:
 	// 当前地图ID
-	int m_NowMapID;
+	int32 m_NowMapID;
 	// 当前坐标
 	float m_NowPos[EOP_MAX];
 	Vector3D m_vNowPos;

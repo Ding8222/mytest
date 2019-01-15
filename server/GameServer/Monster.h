@@ -18,7 +18,7 @@ public:
 private:
 };
 
-enum MonsterType
+enum eMonsterType
 {
 	EMT_NORMAL = 0,		// 普通怪物
 	EMT_BOSS,			// BOSS

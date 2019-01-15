@@ -22,7 +22,6 @@ BOOL Handler(DWORD fdwCtrlType)
 	case CTRL_C_EVENT:
 		log_error("Ctrl-C event");
 		CtrlHandler.Destroy();
-
 		return(TRUE);
 
 		// CTRL-CLOSE: confirm that the user wants to exit. 

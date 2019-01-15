@@ -178,6 +178,7 @@ message LoginRet
 		EC_CENTERID = 5;//中心服务器分配id失败
 		EC_ADDPLAYER = 6;//逻辑服添加玩家失败
 		EC_LOADDATA = 7;//逻辑服加载玩家数据失败
+		EC_ONLINE = 8;//online处理失败失败
 	};
 	int32 nCode = 1;
 	int32 nTempID = 2;
