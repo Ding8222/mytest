@@ -22,3 +22,9 @@ vs配置里面有字符串池的选项，看需不需要启用
 字符串拷贝使用：strncpy_s(dest,src,sizeof(dest) - 1)
 
 libs下的lib最好用相同的编译器重新编译一下
+
+tcmalloc
+使用的时候，需要在链接器的附加依赖项添加lib，然后在强制符号引用里面添加__tcmalloc
+这个和vld有冲突，使用的时候需要屏蔽vld
+
+vld比较影响性能，发布版需要移除
