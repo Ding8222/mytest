@@ -10,9 +10,12 @@
 
 extern int64 g_currenttime;
 
+//地图场景最大数量
+#define SCENE_COUNT_MAX 200
+
 static objectpool<CScene> &ScenePool()
 {
-	static objectpool<CScene> m(SCENE_ID_MAX, "CScene pools");
+	static objectpool<CScene> m(SCENE_COUNT_MAX, "CScene pools");
 	return m;
 }
 

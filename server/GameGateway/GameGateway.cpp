@@ -142,7 +142,7 @@ void CGameGateway::Run()
 		}
 		else if (delay > maxdelay)
 		{
-			ElapsedLog("运行超时:%d,%I64d", delay, g_currenttime);
+			ElapsedLog("运行超时:%d", delay);
 			ElapsedLog("逻辑服务器连接：%s", GameConnect.GetMsgNumInfo());
 			ElapsedLog("中心服务器连接：%s", GateCenterConnect.GetMsgNumInfo());
 			ElapsedLog("日志服务器连接：%s", LogConnecter.GetMsgNumInfo());

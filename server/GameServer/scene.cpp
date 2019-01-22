@@ -6,6 +6,9 @@
 #include "serverlog.h"
 #include "Utilities.h"
 
+//地图场景中对象的最大id
+#define SCENE_ID_MAX 160000
+
 CScene::CScene()
 {
 	m_MapInfo = nullptr;
