@@ -17,7 +17,7 @@
 	
 	"Server_ID" : 3000,
 	"Listen_Port" : 3000,
-	"Server_IP" : "127.0.0.1",
+	"Server_IP" : "192.168.0.191",
 	
 	"ClientNum_Max" : 2000,
 	"DataLimt_Recv" : 32768,
