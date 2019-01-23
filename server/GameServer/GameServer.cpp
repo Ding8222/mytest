@@ -127,6 +127,12 @@ bool CGameServer::Init()
 			break;
 		}
 
+		if (!PlayerMgr.init())
+		{
+			RunStateError("初始化PlayerMgr失败!");
+			break;
+		}
+
 		if (!SceneMgr.Init())
 		{
 			RunStateError("初始化Scenemgr失败!");
@@ -136,12 +142,6 @@ bool CGameServer::Init()
 		if (!InstanceMgr.Init())
 		{
 			RunStateError("初始化InstanceMgr失败!");
-			break;
-		}
-				
-		if (!PlayerMgr.init())
-		{
-			RunStateError("初始化PlayerMgr失败!");
 			break;
 		}
 

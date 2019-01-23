@@ -35,3 +35,7 @@ cache：17秒
 gateway:CPU:5~8% 网络20~40Mb带宽
 game:5%左右
 登录完成后无超时log
+
+优化game后
+gateway:CPU:2~5% 网络10~15Mb带宽
+game:2~4%左右

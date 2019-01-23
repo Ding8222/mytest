@@ -75,7 +75,7 @@ bool CRobotSvr::Release()
 
 void CRobotSvr::Run()
 {
-	const int normaldelay = 50;
+	const int normaldelay = 100;
 	const int maxdelay = normaldelay * 2;
 	int delay;
 	while (m_Run)

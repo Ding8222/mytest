@@ -13,7 +13,9 @@
 #include "ObjStatus.h"
 #include "ObjFight.h"
 
-static int obj_delay_time = 30000;
+static int32 obj_delay_time = 30000;
+static const int32 gateinfo_count = 3010;
+static const int32 clientid_count = 10000;
 extern int64 g_currenttime;
 
 enum eObjType
@@ -24,11 +26,28 @@ enum eObjType
 	EOT_MAX ,
 };
 
+class serverinfo;
+struct stGateInfo
+{
+	void Reset()
+	{
+		nCount = 0;
+	}
+
+	void Clean()
+	{
+		nCount = 0;
+		memset(nClientId, 0, sizeof(nClientId));
+	}
+	int32 nCount;
+	int32 nClientId[clientid_count];
+	serverinfo *gate;
+};
+
 struct Msg;
 class CPlayer;
 class CMonster;
 class CNPC;
-class serverinfo;
 class CBaseObj :public CObjScene, public CObjAttribute, public CObjStatus, public CObjFight
 {
 public:
@@ -78,10 +97,15 @@ public:
 	void SetDieTime(int64 time) { m_DieTime = time; }
 	int64 GetDieTime() { return m_DieTime; }
 	bool IsDie() { return m_DieTime > 0; }
+	static bool InitGateInfo();
+	static void ReleaseGateInfo();
 private:
 	// 待移除时间
 	int64 m_WaitRemoveTime;
 	int64 m_DieTime;
 
-	static std::unordered_map<serverinfo *, std::list<int32>> gateinfo;
+	//static std::unordered_map<serverinfo *, std::list<int32>> gateinfo;
+	static std::vector<stGateInfo *> gateinfo;
+	static int32 m_GateIDMin;
+	static int32 m_GateIDMax;
 };

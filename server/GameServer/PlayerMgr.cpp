@@ -50,12 +50,16 @@ bool CPlayerMgr::init()
 	if (!InitIdMgrAndPlayerSet())
 		return false;
 
+	if (!CBaseObj::InitGateInfo())
+		return false;
+
 	return true;
 }
 
 void CPlayerMgr::Destroy()
 {
 	DelAllPlayer();
+	CBaseObj::ReleaseGateInfo();
 }
 
 void CPlayerMgr::GetCurrentInfo(char *buf, size_t buflen)

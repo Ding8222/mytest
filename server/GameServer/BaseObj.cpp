@@ -35,10 +35,15 @@ void CBaseObj::Run()
 	StatusRun();
 	FightRun();
 }
-std::unordered_map<serverinfo *, std::list<int32>> CBaseObj::gateinfo;
+
 void CBaseObj::SendRefMsg(Msg &pMsg)
 {
-	gateinfo.clear();
+	assert(m_GateIDMax < gateinfo_count);
+	for (int i = m_GateIDMin; i <= m_GateIDMax; ++i)
+	{
+		gateinfo[i]->Reset();
+	}
+
 	static bool bNeeSendMsg = false;
 	static msgtail tail;
 	std::unordered_map<uint32, CBaseObj *> *playerlist = GetAoiList();
@@ -50,19 +55,24 @@ void CBaseObj::SendRefMsg(Msg &pMsg)
 			CPlayer * p = (CPlayer *)iter->second;
 			if (FuncUti::isValidCret(p))
 			{
-				auto iter = gateinfo.find(p->GetGateInfo());
-				if (iter != gateinfo.end())
+				int32 gateid = p->GetGateID();
+				if (gateid >= 0 && gateid < gateinfo_count)
 				{
-					std::list<int32> &temp = iter->second;
-					temp.push_back(p->GetClientID());
-					bNeeSendMsg = true;
-				}
-				else
-				{
-					std::list<int32> temp;
-					temp.push_back(p->GetClientID());
-					gateinfo.insert(std::make_pair(p->GetGateInfo(), temp));
-					bNeeSendMsg = true;
+					if (gateid > m_GateIDMax)
+					{
+						m_GateIDMax = gateid;
+					}
+					else if (gateid < m_GateIDMin)
+					{
+						m_GateIDMin = gateid;
+					}
+
+					if (gateinfo[gateid]->gate == nullptr)
+					{
+						gateinfo[gateid]->gate = p->GetGateInfo();
+					}
+					gateinfo[gateid]->nClientId[gateinfo[gateid]->nCount] = p->GetClientID();
+					gateinfo[gateid]->nCount += 1;
 				}
 			}
 		}
@@ -75,17 +85,25 @@ void CBaseObj::SendRefMsg(Msg &pMsg)
 		if (bIsPlayer)
 		{
 			CPlayer *p = (CPlayer *)this;
-			auto iter = gateinfo.find(p->GetGateInfo());
-			if (iter != gateinfo.end())
+			int32 gateid = p->GetGateID();
+			if (gateid >= 0 && gateid < gateinfo_count)
 			{
-				std::list<int32> &temp = iter->second;
-				temp.push_back(p->GetClientID());
-			}
-			else
-			{
-				std::list<int32> temp;
-				temp.push_back(p->GetClientID());
-				gateinfo.insert(std::make_pair(p->GetGateInfo(), temp));
+				if (gateid > m_GateIDMax)
+				{
+					m_GateIDMax = gateid;
+				}
+				else if (gateid < m_GateIDMin)
+				{
+					m_GateIDMin = gateid;
+				}
+
+				if (gateinfo[gateid]->gate == nullptr)
+				{
+					gateinfo[gateid]->gate = p->GetGateInfo();
+				}
+
+				gateinfo[gateid]->nClientId[gateinfo[gateid]->nCount] = p->GetClientID();
+				gateinfo[gateid]->nCount += 1;
 			}
 		}
 
@@ -95,18 +113,20 @@ void CBaseObj::SendRefMsg(Msg &pMsg)
 		pkmain.PushBlock(&pMsg, pMsg.GetLength());
 		int32 pkmainlen = pkmain.GetLength();
 
-		for (auto &i : gateinfo)
+		for (int i = m_GateIDMin; i < m_GateIDMax; ++i)
 		{
-			tail.id = 0;
-			std::list<int32> &temp = i.second;
-			for (auto &j : temp)
+			if (gateinfo[i]->nCount > 0)
 			{
-				pkmain.PushInt32(j);
-				--tail.id;
+				tail.id = 0;
+				for (int j = 0; j < gateinfo[i]->nCount; ++j)
+				{
+					pkmain.PushInt32(gateinfo[i]->nClientId[j]);
+					--tail.id;
+				}
+				GameGatewayMgr.SendMsg(gateinfo[i]->gate, pkmain, &tail, sizeof(tail));
+				pkmain.SetLength(pkmainlen);
+				pkmain.m_index = pkmainlen - (int32)sizeof(Msg);
 			}
-			GameGatewayMgr.SendMsg(i.first, pkmain, &tail, sizeof(tail));
-			pkmain.SetLength(pkmainlen);
-			pkmain.m_index = pkmainlen - (int32)sizeof(Msg);
 		}
 	}
 }
@@ -145,4 +165,32 @@ void CBaseObj::DelObjFromView(uint32 tempid)
 	sendMsg.set_ntempid(tempid);
 
 	FuncUti::SendPBNoLoop(ToPlayer(), sendMsg, CLIENT_TYPE_MAIN, CLIENT_SUB_DELOBJ_FROM_VIEW);
+}
+
+std::vector<stGateInfo *> CBaseObj::gateinfo;
+int32 CBaseObj::m_GateIDMin;
+int32 CBaseObj::m_GateIDMax;
+
+bool CBaseObj::InitGateInfo()
+{
+	gateinfo.resize(gateinfo_count);
+	for (int i = 0; i < gateinfo_count; ++i)
+	{
+		stGateInfo *newgateinfo = new stGateInfo;
+		newgateinfo->Clean();
+		newgateinfo->gate = nullptr;
+		gateinfo[i] = newgateinfo;
+	}
+	m_GateIDMin = 3000;
+	m_GateIDMax = gateinfo_count - 1;
+	return true;
+}
+
+void CBaseObj::ReleaseGateInfo()
+{
+	for (size_t i = 0; i < gateinfo.size(); ++i)
+	{
+		delete gateinfo[i];
+	}
+	gateinfo.clear();
 }
