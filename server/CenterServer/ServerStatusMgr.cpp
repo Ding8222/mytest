@@ -63,6 +63,12 @@ void CServerStatusMgr::Destroy()
 		serverstatusinfo_release(i.second);
 	}
 	m_GateServerInfo.clear();
+
+	for (auto &i : m_ServerMapInfo)
+	{
+		i.second->clear();
+		delete i.second;
+	}
 	m_ServerMapInfo.clear();
 	m_GateQueue.clear();
 }
@@ -96,24 +102,26 @@ void CServerStatusMgr::AddGameServer(serverinfo *info, Msg *pMsg)
 		auto iter = m_ServerMapInfo.find(i);
 		if (iter != m_ServerMapInfo.end())
 		{
-			std::list<stServerInfo> &maplist = iter->second;
+			stQueue<ServerStatusInfo> *queue = iter->second;
 
-			stServerInfo temp;
-			temp.nLineiD = msg.nlineid();
-			temp.nServerID = nServerID;
-
-			maplist.push_back(temp);
+			auto iter2 = m_GameServerInfo.find(nServerID);
+			assert(iter2 != m_GameServerInfo.end());
+			if (iter2 != m_GameServerInfo.end())
+			{
+				queue->add(iter2->second);
+			}
 		}
 		else
 		{
-			stServerInfo temp;
-			temp.nLineiD = msg.nlineid();
-			temp.nServerID = nServerID;
+			auto iter2 = m_GameServerInfo.find(nServerID);
+			assert(iter2 != m_GameServerInfo.end());
+			if (iter2 != m_GameServerInfo.end())
+			{
+				stQueue<ServerStatusInfo> *queue = new stQueue<ServerStatusInfo>();
+				queue->add(iter2->second);
 
-			std::list<stServerInfo> maplist;
-			maplist.push_back(temp);
-
-			m_ServerMapInfo.insert(std::make_pair(i, maplist));
+				m_ServerMapInfo.insert(std::make_pair(i, queue));
+			}
 		}
 	}
 
@@ -144,7 +152,7 @@ void CServerStatusMgr::AddGateServer(serverinfo *info, Msg *pMsg)
 			_pInfo->nPort = msg.nport();
 
 			m_GateServerInfo[_pInfo->nServerID] = _pInfo;
-			m_GateQueue.push(_pInfo);
+			m_GateQueue.add(_pInfo);
 			RunStateLog("服务器[%s]注册到服务器状态管理器：ID[%d]", info->GetServerName(), _pInfo->nServerID);
 		}
 	}
@@ -175,6 +183,10 @@ void CServerStatusMgr::DelGameServer(int32 serverid)
 	auto iter = m_GameServerInfo.find(serverid);
 	if (iter != m_GameServerInfo.end())
 	{
+		for (auto &i : m_ServerMapInfo)
+		{
+			i.second->del(iter->second);
+		}
 		serverstatusinfo_release(iter->second);
 		m_GameServerInfo.erase(iter);
 	}
@@ -185,6 +197,7 @@ void CServerStatusMgr::DelGateServer(int32 serverid)
 	auto iter = m_GateServerInfo.find(serverid);
 	if (iter != m_GateServerInfo.end())
 	{
+		m_GateQueue.del(iter->second);
 		serverstatusinfo_release(iter->second);
 		m_GateServerInfo.erase(iter);
 	}
@@ -195,19 +208,20 @@ ServerStatusInfo *CServerStatusMgr::GetGameServerInfo(int32 mapid, int32 lineid)
 	auto iter = m_ServerMapInfo.find(mapid);
 	if (iter != m_ServerMapInfo.end())
 	{
-		std::list<stServerInfo> &serverset = iter->second;
-		if (serverset.size() > 0)
+		stQueue<ServerStatusInfo> *serverqueue = iter->second;
+		if (serverqueue->size() > 0)
 		{
 			//这里列出了所有可进入的服务器ID
 			//可以根据负载选择一个服务器信息返回
-			for (auto &i : serverset)
+			ServerStatusInfo *info = nullptr;
+			for (size_t i = 0; i < serverqueue->size(); ++i)
 			{
-				if (lineid == 0 || i.nLineiD == lineid)
+				info = serverqueue->pop();
+				if (info)
 				{
-					auto iterG = m_GameServerInfo.find(i.nServerID);
-					if (iterG != m_GameServerInfo.end())
+					if (lineid == 0 || info->nLineID == lineid)
 					{
-						return iterG->second;
+						return info;
 					}
 				}
 			}

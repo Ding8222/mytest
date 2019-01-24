@@ -38,36 +38,66 @@ struct stServerInfo
 	int32 nServerID;
 };
 
-struct stQueue
+template <typename T>
+class stQueue
 {
-	int32 nCurrentIndex;
-	int32 nMaxIndex;
-	std::vector<ServerStatusInfo *> vGate;
-
+public:
+	stQueue()
+	{
+		nCurrentIndex = 0;
+		nMaxIndex = 0;
+		vQueue.clear();
+	}
+	
 	void clear()
 	{
 		nCurrentIndex = 0;
 		nMaxIndex = 0;
-		vGate.clear();
+		vQueue.clear();
 	}
 
-	ServerStatusInfo *pop()
+	T *pop()
 	{
 		if (nMaxIndex > 0)
 		{
 			if (nCurrentIndex >= nMaxIndex)
 				nCurrentIndex = 0;
 
-			return vGate[nCurrentIndex++];
+			return vQueue[nCurrentIndex++];
 		}
 		return nullptr;
 	}
 
-	void push(ServerStatusInfo *info)
+	void add(T *info)
 	{
-		vGate.push_back(info);
-		nMaxIndex = vGate.size();
+		if (info == nullptr)
+			return;
+
+		vQueue.push_back(info);
+		nMaxIndex = vQueue.size();
 	}
+
+	void del(T *info)
+	{
+		if (info == nullptr)
+			return;
+
+		std::vector<T *>::iterator _Iter
+			= std::find_if(vQueue.begin(), vQueue.end(), [&](T* q)->bool { return q->nServerID == info->nServerID; });
+		if (_Iter != vQueue.end())
+			vQueue.erase(_Iter);
+		nMaxIndex = vQueue.size();
+	}
+
+	size_t size()
+	{
+		return vQueue.size();
+	}
+
+private:
+	int32 nCurrentIndex;
+	int32 nMaxIndex;
+	std::vector<T *> vQueue;
 };
 
 #define ServerStatusMgr CServerStatusMgr::Instance()
@@ -101,6 +131,6 @@ private:
 	std::unordered_map<int32, ServerStatusInfo *> m_GameServerInfo;
 	std::unordered_map<int32, ServerStatusInfo *> m_GateServerInfo;
 	// <mapid,serverid>
-	std::unordered_map<int32, std::list<stServerInfo>> m_ServerMapInfo;
-	stQueue m_GateQueue;
+	std::unordered_map<int32, stQueue<ServerStatusInfo> *> m_ServerMapInfo;
+	stQueue<ServerStatusInfo> m_GateQueue;
 };

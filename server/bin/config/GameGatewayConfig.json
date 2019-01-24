@@ -36,6 +36,24 @@
 			"IP" : "127.0.0.1",
 			"PORT" : 4002,
 			"NAME" : "GameServer"
+		},
+		{
+			"ID" : 4003,
+			"IP" : "127.0.0.1",
+			"PORT" : 4003,
+			"NAME" : "GameServer"
+		},
+		{
+			"ID" : 4004,
+			"IP" : "127.0.0.1",
+			"PORT" : 4004,
+			"NAME" : "GameServer"
+		},
+		{
+			"ID" : 4005,
+			"IP" : "127.0.0.1",
+			"PORT" : 4005,
+			"NAME" : "GameServer"
 		}
 	]	
 }

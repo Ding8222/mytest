@@ -1,0 +1,1 @@
+﻿新增Game和Gate的时候，记得到Gate的配置文件中添加Game信息

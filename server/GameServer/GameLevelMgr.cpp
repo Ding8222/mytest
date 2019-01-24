@@ -7,7 +7,12 @@
 #include "Timer.h"
 
 // 预生成的地图形状个数
+#ifdef DEBUG
+#define LEVEL_LIST_MAX 1000
+#else
 #define LEVEL_LIST_MAX 10000
+#endif // DEBUG
+
 
 CGameLevelMgr::CGameLevelMgr()
 {
